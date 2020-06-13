@@ -5,7 +5,7 @@
 namespace hry::memory
 {
 
-class Trampoline
+class Detour
 {
 // use minhook here
 };
