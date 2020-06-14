@@ -6,5 +6,4 @@ struct PluginInfo
 {
     std::string name;
     int version;
-    
 };

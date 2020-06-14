@@ -1,4 +1,4 @@
-#include "Detour.hpp"
+#include "Memory/Detour.hpp"
 
 namespace hry::memory
 {
