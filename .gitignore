@@ -1,1 +1,3 @@
 build
+.vscode/cquery_cached_index
+.clangd

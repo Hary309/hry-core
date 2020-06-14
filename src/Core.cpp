@@ -1,4 +1,5 @@
 #include "Core.hpp"
+
 namespace hry
 {
 
