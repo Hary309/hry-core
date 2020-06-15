@@ -11,7 +11,7 @@ class Detour
 public:
     enum class Status
     {
-        Uknown = -1,
+        Unknown = -1,
         Ok = 0,
         AlreadyInitialized,
         NotInitialized,
