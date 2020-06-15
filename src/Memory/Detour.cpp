@@ -1,6 +1,6 @@
 #include "Memory/Detour.hpp"
-#include "MinHook.h"
-#include <vadefs.h>
+
+#include <MinHook.h>
 
 namespace hry::memory
 {
