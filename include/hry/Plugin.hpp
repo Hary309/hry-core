@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Core.hpp"
-
 #include "PluginInfo.hpp"
 
 namespace hry 

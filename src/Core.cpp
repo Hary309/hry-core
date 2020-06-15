@@ -3,9 +3,12 @@
 namespace hry
 {
 
-void Foo()
+Core::Core()
 {
+}
 
+Core::~Core()
+{
 }
 
 }

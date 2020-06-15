@@ -9,7 +9,7 @@ namespace hry
 class Event
 {
 private:
-    std::variant<KeyboardEvent> _event;
+    std::variant<events::KeyboardEvent> _event;
 };
 
 }
