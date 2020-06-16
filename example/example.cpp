@@ -1,14 +1,42 @@
-#include "hry/Memory/Detour.hpp"
 #include <windows.h>
 #include <iostream>
 
-#include <hry/Memory/Detour.hpp>
+#include <hry/Plugin.hpp>
 
 #include <imgui.h>
 
-BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
+class ExamplePlugin : public hry::Plugin
 {
-    return TRUE;
+private:
+    hry::PluginInfo _pluginInfo = {
+            "Example plugin",
+            "Example plugin showing how implement it",
+            1000,
+    };
+
+public:
+    virtual void update(float deltaTime)
+    {
+
+    }
+
+    virtual void imguiRender()
+    {
+
+    }
+
+    virtual void event(const hry::Event& e)
+    {
+
+    }
+
+    virtual const hry::PluginInfo& getPluginInfo()
+    {
+        return _pluginInfo;
+    }
+};
+
+hry::Plugin* CreatePlugin()
+{
+    return new ExamplePlugin();
 }
-
-

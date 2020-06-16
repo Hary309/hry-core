@@ -1,16 +1,17 @@
 #pragma once
 
+#include <windows.h>
+
 namespace hry
 {
 
 class Core
 {
 public:
-    Core();
-    Core(Core &&) = default;
-    Core(const Core &) = default;
-    Core &operator=(Core &&) = default;
-    Core &operator=(const Core &) = default;
+    static inline HINSTANCE hInstance;
+
+public:
+    Core(HINSTANCE hInst);
     ~Core();
 
 private:

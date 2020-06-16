@@ -3,8 +3,9 @@
 namespace hry
 {
 
-Core::Core()
+Core::Core(HINSTANCE hInst)
 {
+    hInstance = hInst;
 }
 
 Core::~Core()

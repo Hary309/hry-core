@@ -42,7 +42,7 @@ public:
     Status disable();
 
     template<typename T>
-    T* get() { return reinteprate_cast<T>(_original); } 
+    T* get() { return reinterpret_cast<T>(_original); } 
 };
 
 }

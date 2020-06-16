@@ -1,11 +1,9 @@
 #pragma once
-
 #include "PluginInfo.hpp"
+#include "Event.hpp"
 
 namespace hry 
 {
-
-class Event;
 
 class Plugin
 {
