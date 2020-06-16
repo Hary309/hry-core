@@ -1,16 +1,16 @@
 #include <windows.h>
 #include <iostream>
 
-#include <hry/Plugin.hpp>
-
 #include <imgui.h>
+
+#include <hry/Plugin.hpp>
 
 class ExamplePlugin : public hry::Plugin
 {
 private:
     hry::PluginInfo _pluginInfo = {
             "Example plugin",
-            "Example plugin showing how implement it",
+            "Example implementation of plugin",
             1000,
     };
 
