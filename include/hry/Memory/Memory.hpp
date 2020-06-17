@@ -1,13 +1,25 @@
 #pragma once
 
+#include <Windows.h>
+#include <memory>
+#include <cstdint>
+
 namespace hry::memory
 {
 
-// wrap memset or sth
-// template<typename T>
-// void set()
+template<typename T, typename U>
+void WriteMemory(T* target, U data, const size_t size)
+{
+    DWORD oldProtect, newProtect;
+    
+    VirtualProtect(reinterpret_cast<void*>(target), size, PAGE_READWRITE, &oldProtect);
+    
+    memcpy(reinterpret_cast<void*>(target), &data, size);
+    
+    VirtualProtect(reinterpret_cast<void*>(target), size, oldProtect, &newProtect);
+}
 
-// 
+
 
 }
 
