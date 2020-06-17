@@ -19,7 +19,11 @@ void WriteMemory(T* target, U data, const size_t size)
     VirtualProtect(reinterpret_cast<void*>(target), size, oldProtect, &newProtect);
 }
 
-
+template<typename T, typename U>
+void WriteMemory(T* target, U data)
+{
+    WriteMemory(target, data, sizeof(U));
+}
 
 }
 

@@ -11,7 +11,10 @@ namespace hry::hooks
 {
 
 using IDXGISwapChain__Present_t = typeof(IDXGISwapChainVtbl::Present);
+using IDXGISwapChain__ResizeBuffers_t = typeof(IDXGISwapChainVtbl::ResizeBuffers);
+
 static IDXGISwapChain__Present_t oSwapChainPresent;
+static IDXGISwapChain__ResizeBuffers_t oSwapChainResizeBuffers;
 
 // original code: https://github.com/Rebzzel/kiero
 IDXGISwapChainVtbl* GetSwapChainVTable()
@@ -124,6 +127,11 @@ HRESULT __stdcall IDXGISwapChain__Present(IDXGISwapChain* swapChain, UINT syncIn
     return oSwapChainPresent(swapChain, syncInterval, flags);
 }
 
+HRESULT __stdcall IDXGISwapChain__ResizeBuffer(IDXGISwapChain* swapChain, UINT bufferCount, UINT width, UINT height, DXGI_FORMAT format, UINT flags)
+{
+    return oSwapChainResizeBuffers(swapChain, bufferCount, width, height, format, flags);
+}
+
 void D3D11Hook::Install() 
 {
     IDXGISwapChainVtbl* scVTable = GetSwapChainVTable();
@@ -133,8 +141,11 @@ void D3D11Hook::Install()
         // write sth with logger
     }
 
-    oSwapChainPresent = scVTable->Present;
-    memory::WriteMemory(scVTable->Present, &IDXGISwapChain__Present, sizeof(&IDXGISwapChain__Present));
+
+
+    oSwapChainPresent = memory::HookVTableField(scVTable->Present, &IDXGISwapChain__Present);
+
+    oSwapChainResizeBuffers = memory::HookVTableField(scVTable->ResizeBuffers, &IDXGISwapChain__ResizeBuffer);
 }
 
 }

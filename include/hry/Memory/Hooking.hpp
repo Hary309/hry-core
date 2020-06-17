@@ -4,15 +4,14 @@
 namespace hry::memory
 {
 
-template<typename T, typename Func>
-Func HookVTable(T* target, size_t index, Func function)
+template<typename Func>
+Func HookVTableField(Func vtableMethod, Func function)
 {
-    auto vtable = reinterpret_cast<uintptr_t*>(target);
-    auto oFunc = reinterpret_cast<Func>(vtable[index]);
+    Func original = vtableMethod;
 
-    WriteMemory(vtable + index, function, sizeof(uintptr_t*));
+    WriteMemory(vtableMethod, function);
 
-    return oFunc;
+    return original;
 }
 
 }
