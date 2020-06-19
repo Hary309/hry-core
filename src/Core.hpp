@@ -22,7 +22,7 @@ public:
     bool init(scs_telemetry_init_params_v100_t* scsTelemetry);
 
 private:
-    
+    void installHooks();
 };
 
 }

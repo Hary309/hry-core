@@ -1,5 +1,6 @@
 #include "D3D11Hook.hpp"
 
+#include <cstdio>
 #define CINTERFACE
 #include <d3d11.h>
 #include <windows.h>
@@ -124,28 +125,32 @@ IDXGISwapChainVtbl* GetSwapChainVTable()
 
 HRESULT __stdcall IDXGISwapChain__Present(IDXGISwapChain* swapChain, UINT syncInterval, UINT flags)
 {
+    printf(".");
     return oSwapChainPresent(swapChain, syncInterval, flags);
 }
 
 HRESULT __stdcall IDXGISwapChain__ResizeBuffer(IDXGISwapChain* swapChain, UINT bufferCount, UINT width, UINT height, DXGI_FORMAT format, UINT flags)
 {
+    printf("Resize");
     return oSwapChainResizeBuffers(swapChain, bufferCount, width, height, format, flags);
 }
 
-void D3D11Hook::Install() 
+void D3D11Hook::install() 
 {
     IDXGISwapChainVtbl* scVTable = GetSwapChainVTable();
 
     if (scVTable == nullptr)
     {
-        // write sth with logger
+        printf("Cannot find swap chain's vtable\n");
+        return;
+        // TODO: handle it
     }
 
+    printf("Hooking present...\n");
+    oSwapChainPresent = memory::HookVTableField(&scVTable->Present, &IDXGISwapChain__Present);
 
-
-    oSwapChainPresent = memory::HookVTableField(scVTable->Present, &IDXGISwapChain__Present);
-
-    oSwapChainResizeBuffers = memory::HookVTableField(scVTable->ResizeBuffers, &IDXGISwapChain__ResizeBuffer);
+    printf("Hooking resize buffers...\n");
+    oSwapChainResizeBuffers = memory::HookVTableField(&scVTable->ResizeBuffers, &IDXGISwapChain__ResizeBuffer);
 }
 
 }

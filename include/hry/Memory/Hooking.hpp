@@ -5,9 +5,9 @@ namespace hry::memory
 {
 
 template<typename Func>
-Func HookVTableField(Func vtableMethod, Func function)
+Func HookVTableField(Func* vtableMethod, Func function)
 {
-    Func original = vtableMethod;
+    Func original = *vtableMethod;
 
     WriteMemory(vtableMethod, function);
 
