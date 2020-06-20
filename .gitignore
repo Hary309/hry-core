@@ -3,3 +3,5 @@ build
 .clangd
 compile_commands.json
 .vs
+cmake-build-debug
+.idea
