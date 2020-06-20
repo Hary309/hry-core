@@ -11,11 +11,13 @@
 namespace hry::hooks
 {
 
-using IDXGISwapChain__Present_t = typeof(IDXGISwapChainVtbl::Present);
-using IDXGISwapChain__ResizeBuffers_t = typeof(IDXGISwapChainVtbl::ResizeBuffers);
+using IDXGISwapChain_Present_t = typeof(IDXGISwapChainVtbl::Present);
+using IDXGISwapChain_ResizeBuffers_t = typeof(IDXGISwapChainVtbl::ResizeBuffers);
 
-static IDXGISwapChain__Present_t oSwapChainPresent;
-static IDXGISwapChain__ResizeBuffers_t oSwapChainResizeBuffers;
+static IDXGISwapChain_Present_t oSwapChainPresent;
+static IDXGISwapChain_ResizeBuffers_t oSwapChainResizeBuffers;
+
+static IDXGISwapChainVtbl* swapChainVTable;
 
 // original code: https://github.com/Rebzzel/kiero
 IDXGISwapChainVtbl* GetSwapChainVTable()
@@ -26,20 +28,20 @@ IDXGISwapChainVtbl* GetSwapChainVTable()
     windowClass.lpfnWndProc = DefWindowProc;
     windowClass.cbClsExtra = 0;
     windowClass.cbWndExtra = 0;
-    windowClass.hInstance = GetModuleHandle(NULL);
-    windowClass.hIcon = NULL;
-    windowClass.hCursor = NULL;
-    windowClass.hbrBackground = NULL;
-    windowClass.lpszMenuName = NULL;
+    windowClass.hInstance = GetModuleHandle(nullptr);
+    windowClass.hIcon = nullptr;
+    windowClass.hCursor = nullptr;
+    windowClass.hbrBackground = nullptr;
+    windowClass.lpszMenuName = nullptr;
     windowClass.lpszClassName = HRY_TEXT("D3D11Hook");
-    windowClass.hIconSm = NULL;
+    windowClass.hIconSm = nullptr;
 
     ::RegisterClassEx(&windowClass);
 
-    HWND window = CreateWindow(windowClass.lpszClassName, HRY_TEXT("D3D11 Hook"), WS_OVERLAPPEDWINDOW, 0, 0, 100, 100, NULL, NULL, windowClass.hInstance, NULL);
+    HWND window = CreateWindow(windowClass.lpszClassName, HRY_TEXT("D3D11 Hook"), WS_OVERLAPPEDWINDOW, 0, 0, 100, 100, nullptr, nullptr, windowClass.hInstance, nullptr);
 
     HMODULE libD3D11;
-    if ((libD3D11 = ::GetModuleHandle(HRY_TEXT("d3d11.dll"))) == NULL)
+    if ((libD3D11 = ::GetModuleHandle(HRY_TEXT("d3d11.dll"))) == nullptr)
     {
         ::DestroyWindow(window);
         ::UnregisterClass(windowClass.lpszClassName, windowClass.hInstance);
@@ -47,7 +49,7 @@ IDXGISwapChainVtbl* GetSwapChainVTable()
     }
 
     FARPROC D3D11CreateDeviceAndSwapChain;
-    if ((D3D11CreateDeviceAndSwapChain = ::GetProcAddress(libD3D11, "D3D11CreateDeviceAndSwapChain")) == NULL)
+    if ((D3D11CreateDeviceAndSwapChain = ::GetProcAddress(libD3D11, "D3D11CreateDeviceAndSwapChain")) == nullptr)
     {
         ::DestroyWindow(window);
         ::UnregisterClass(windowClass.lpszClassName, windowClass.hInstance);
@@ -99,7 +101,7 @@ IDXGISwapChainVtbl* GetSwapChainVTable()
         IDXGISwapChain**,
         ID3D11Device**,
         D3D_FEATURE_LEVEL*,
-        ID3D11DeviceContext**))(D3D11CreateDeviceAndSwapChain))(NULL, D3D_DRIVER_TYPE_HARDWARE, NULL, 0, featureLevels, 1, D3D11_SDK_VERSION, &swapChainDesc, &swapChain, &device, &featureLevel, &context) < 0)
+        ID3D11DeviceContext**))(D3D11CreateDeviceAndSwapChain))(nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, 0, featureLevels, 1, D3D11_SDK_VERSION, &swapChainDesc, &swapChain, &device, &featureLevel, &context) < 0)
     {
         ::DestroyWindow(window);
         ::UnregisterClass(windowClass.lpszClassName, windowClass.hInstance);
@@ -123,13 +125,13 @@ IDXGISwapChainVtbl* GetSwapChainVTable()
     return swapChainVTable;
 }
 
-HRESULT __stdcall IDXGISwapChain__Present(IDXGISwapChain* swapChain, UINT syncInterval, UINT flags)
+HRESULT __stdcall IDXGISwapChain_Present(IDXGISwapChain* swapChain, UINT syncInterval, UINT flags)
 {
     printf(".");
     return oSwapChainPresent(swapChain, syncInterval, flags);
 }
 
-HRESULT __stdcall IDXGISwapChain__ResizeBuffer(IDXGISwapChain* swapChain, UINT bufferCount, UINT width, UINT height, DXGI_FORMAT format, UINT flags)
+HRESULT __stdcall IDXGISwapChain_ResizeBuffer(IDXGISwapChain* swapChain, UINT bufferCount, UINT width, UINT height, DXGI_FORMAT format, UINT flags)
 {
     printf("Resize");
     return oSwapChainResizeBuffers(swapChain, bufferCount, width, height, format, flags);
@@ -137,9 +139,9 @@ HRESULT __stdcall IDXGISwapChain__ResizeBuffer(IDXGISwapChain* swapChain, UINT b
 
 void D3D11Hook::install() 
 {
-    IDXGISwapChainVtbl* scVTable = GetSwapChainVTable();
+    swapChainVTable = GetSwapChainVTable();
 
-    if (scVTable == nullptr)
+    if (swapChainVTable == nullptr)
     {
         printf("Cannot find swap chain's vtable\n");
         return;
@@ -147,10 +149,22 @@ void D3D11Hook::install()
     }
 
     printf("Hooking present...\n");
-    oSwapChainPresent = memory::HookVTableField(&scVTable->Present, &IDXGISwapChain__Present);
+    oSwapChainPresent = memory::HookVTableField(&swapChainVTable->Present, &IDXGISwapChain_Present);
 
     printf("Hooking resize buffers...\n");
-    oSwapChainResizeBuffers = memory::HookVTableField(&scVTable->ResizeBuffers, &IDXGISwapChain__ResizeBuffer);
+    oSwapChainResizeBuffers = memory::HookVTableField(&swapChainVTable->ResizeBuffers, &IDXGISwapChain_ResizeBuffer);
+}
+
+void D3D11Hook::uninstall()
+{
+    if (swapChainVTable != nullptr)
+    {
+        printf("Restoring present...\n");
+        memory::HookVTableField(&swapChainVTable->Present, oSwapChainPresent);
+
+        printf("Restoring resize buffers...\n");
+        memory::HookVTableField(&swapChainVTable->ResizeBuffers, oSwapChainResizeBuffers);
+    }
 }
 
 }

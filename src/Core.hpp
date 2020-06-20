@@ -13,16 +13,17 @@ public:
     static inline HINSTANCE hInstance;
 
 private:
-    scs_telemetry_init_params_v100_t* _scsTelemetry;
+    scs_telemetry_init_params_v100_t* _scsTelemetry = nullptr;
 
 public:
-    Core(HINSTANCE hInst);
+    explicit Core(HINSTANCE hInst);
     ~Core();
 
     bool init(scs_telemetry_init_params_v100_t* scsTelemetry);
 
 private:
-    void installHooks();
+    static void installHooks();
+    static void uninstallHooks();
 };
 
 }

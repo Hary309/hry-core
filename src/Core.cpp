@@ -16,6 +16,7 @@ Core::Core(HINSTANCE hInst)
 
 Core::~Core()
 {
+    Core::uninstallHooks();
 }
 
 bool Core::init(scs_telemetry_init_params_v100_t* scsTelemetry) 
@@ -26,7 +27,7 @@ bool Core::init(scs_telemetry_init_params_v100_t* scsTelemetry)
 	freopen("CONOUT$", "w", stdout);
 	freopen("CONOUT$", "w", stdin);
 
-    installHooks();
+    Core::installHooks();
 
     return true;
 }
@@ -34,6 +35,11 @@ bool Core::init(scs_telemetry_init_params_v100_t* scsTelemetry)
 void Core::installHooks() 
 {
     hooks::D3D11Hook::install();
+}
+
+void Core::uninstallHooks()
+{
+    hooks::D3D11Hook::uninstall();
 }
 
 }
