@@ -127,17 +127,17 @@ IDXGISwapChainVtbl* GetSwapChainVTable()
 
 HRESULT __stdcall IDXGISwapChain_Present(IDXGISwapChain* swapChain, UINT syncInterval, UINT flags)
 {
-    printf(".");
+    D3D11Hook::OnPresent.call(swapChain);
     return oSwapChainPresent(swapChain, syncInterval, flags);
 }
 
 HRESULT __stdcall IDXGISwapChain_ResizeBuffer(IDXGISwapChain* swapChain, UINT bufferCount, UINT width, UINT height, DXGI_FORMAT format, UINT flags)
 {
-    printf("Resize");
+    D3D11Hook::OnResize.call(swapChain, width, height);
     return oSwapChainResizeBuffers(swapChain, bufferCount, width, height, format, flags);
 }
 
-void D3D11Hook::install() 
+void D3D11Hook::install()
 {
     swapChainVTable = GetSwapChainVTable();
 

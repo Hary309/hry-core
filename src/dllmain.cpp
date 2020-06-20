@@ -2,7 +2,6 @@
 #include <memory>
 
 #include <MinHook.h>
-
 #include <scssdk_telemetry.h>
 
 #include "Core.hpp"
