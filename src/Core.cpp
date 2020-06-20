@@ -24,17 +24,23 @@ bool Core::init(scs_telemetry_init_params_v100_t* scsTelemetry)
     _scsTelemetry = scsTelemetry;
 
     AllocConsole();
-	freopen("CONOUT$", "w", stdout);
+    freopen("CONOUT$", "w", stdout);
 	freopen("CONOUT$", "w", stdin);
 
-    Core::installHooks();
+	bool success = true;
 
-    return true;
+	success &= Core::installHooks();
+
+    return success;
 }
 
-void Core::installHooks() 
+bool Core::installHooks()
 {
-    hooks::D3D11Hook::install();
+    bool success = true;
+
+    success &= hooks::D3D11Hook::install();
+
+    return success;
 }
 
 void Core::uninstallHooks()

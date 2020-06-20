@@ -14,7 +14,7 @@ struct D3D11Hook
     inline static Delegate<void(IDXGISwapChain*)> OnPresent;
     inline static Delegate<void(IDXGISwapChain*, uint32_t width, uint32_t height)> OnResize;
 
-    static void install();
+    static bool install();
     static void uninstall();
 };
 

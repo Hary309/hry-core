@@ -1,7 +1,8 @@
 #include "D3D11Hook.hpp"
 
-#include <cstdio>
 #define CINTERFACE
+
+#include <cstdio>
 #include <d3d11.h>
 #include <windows.h>
 
@@ -137,15 +138,14 @@ HRESULT __stdcall IDXGISwapChain_ResizeBuffer(IDXGISwapChain* swapChain, UINT bu
     return oSwapChainResizeBuffers(swapChain, bufferCount, width, height, format, flags);
 }
 
-void D3D11Hook::install()
+bool D3D11Hook::install()
 {
     swapChainVTable = GetSwapChainVTable();
 
     if (swapChainVTable == nullptr)
     {
         printf("Cannot find swap chain's vtable\n");
-        return;
-        // TODO: handle it
+        return false;
     }
 
     printf("Hooking present...\n");
@@ -153,6 +153,8 @@ void D3D11Hook::install()
 
     printf("Hooking resize buffers...\n");
     oSwapChainResizeBuffers = memory::HookVTableField(&swapChainVTable->ResizeBuffers, &IDXGISwapChain_ResizeBuffer);
+
+    return true;
 }
 
 void D3D11Hook::uninstall()
