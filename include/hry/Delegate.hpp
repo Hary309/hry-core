@@ -53,15 +53,15 @@ public:
         >
     Retn call(Args... args) const
     {
-        if (_function == nullptr)
+        if (_function)
         {
-            if constexpr (!std::is_void_v<Return>)
-            {
-                return {};
-            }
+            return _function(_content, std::forward<Args>(args)...);
         }
 
-        return _function(_content, std::forward<Args>(args)...);
+        if constexpr (!std::is_void_v<Return>)
+        {
+            return {};
+        }
     }
 };
 
