@@ -22,7 +22,7 @@ static DirectInput8_GetDeviceData_t oDirectInputGetDeviceData;
 static IDirectInput8AVtbl* DIVTable;
 static IDirectInputDevice8AVtbl* DIDeviceVTable;
 
-HRESULT __stdcall DirectInputDevice_GetDeviceData(IDirectInputDevice8* self, DWORD cbObjectData, LPDIDEVICEOBJECTDATA rgdod, LPDWORD pdwInOut, DWORD dwFlags)
+HRESULT __stdcall DirectInputDevice_GetDeviceData(IDirectInputDevice8* self, DWORD cbObjectData, DIDEVICEOBJECTDATA* rgdod, DWORD* pdwInOut, DWORD dwFlags)
 {
     return oDirectInputGetDeviceData(self, cbObjectData, rgdod, pdwInOut, dwFlags);
 }
