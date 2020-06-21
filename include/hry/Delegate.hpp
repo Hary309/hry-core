@@ -15,11 +15,11 @@ class Delegate<Return(Args...)>
 {
 private:
     using Delegate_t = Return(Args...);
-    using Function_t = Return(const void*, Args...);
+    using Function_t = Return(void*, Args...);
 
 private:
     Function_t* _function = nullptr;
-    const void* _content = nullptr;
+    void* _content = nullptr;
 
 public:
     Delegate() = default;
@@ -27,7 +27,7 @@ public:
     template<Delegate_t* FuncAddr>
     void connect()
     {
-        _function = [](const void*, Args... args) -> Return {
+        _function = [](void*, Args... args) -> Return {
             return static_cast<Return>(std::invoke(FuncAddr, std::forward<Args>(args)...));
         };
 
@@ -35,10 +35,10 @@ public:
     }
 
     template<auto MethodAddr, typename T>
-    void connect(const T* content)
+    void connect(T* content)
     {
-        _function = [](const void* content, Args... args) -> Return {
-            return static_cast<Return>(std::invoke(MethodAddr, static_cast<const T*>(content), std::forward<Args>(args)...));
+        _function = [](void* content, Args... args) -> Return {
+            return static_cast<Return>(std::invoke(MethodAddr, static_cast<T*>(content), std::forward<Args>(args)...));
         };
 
         _content = content;
