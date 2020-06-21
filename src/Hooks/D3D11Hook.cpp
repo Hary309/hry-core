@@ -41,16 +41,16 @@ IDXGISwapChainVtbl* GetSwapChainVTable()
 
     HWND window = CreateWindow(windowClass.lpszClassName, HRY_TEXT("D3D11 Hook"), WS_OVERLAPPEDWINDOW, 0, 0, 100, 100, nullptr, nullptr, windowClass.hInstance, nullptr);
 
-    HMODULE libD3D11;
-    if ((libD3D11 = ::GetModuleHandle(HRY_TEXT("d3d11.dll"))) == nullptr)
+    HMODULE libD3D11 = ::GetModuleHandle(HRY_TEXT("d3d11.dll"));
+    if (libD3D11 == nullptr)
     {
         ::DestroyWindow(window);
         ::UnregisterClass(windowClass.lpszClassName, windowClass.hInstance);
         return nullptr;
     }
 
-    FARPROC D3D11CreateDeviceAndSwapChain;
-    if ((D3D11CreateDeviceAndSwapChain = ::GetProcAddress(libD3D11, "D3D11CreateDeviceAndSwapChain")) == nullptr)
+    FARPROC D3D11CreateDeviceAndSwapChain = ::GetProcAddress(libD3D11, "D3D11CreateDeviceAndSwapChain");
+    if (D3D11CreateDeviceAndSwapChain == nullptr)
     {
         ::DestroyWindow(window);
         ::UnregisterClass(windowClass.lpszClassName, windowClass.hInstance);
@@ -161,11 +161,17 @@ void D3D11Hook::uninstall()
 {
     if (swapChainVTable != nullptr)
     {
-        printf("Restoring present...\n");
-        memory::HookVTableField(&swapChainVTable->Present, oSwapChainPresent);
+        if (oSwapChainPresent != nullptr)
+        {
+            printf("Restoring present...\n");
+            memory::HookVTableField(&swapChainVTable->Present, oSwapChainPresent);
+        }
 
-        printf("Restoring resize buffers...\n");
-        memory::HookVTableField(&swapChainVTable->ResizeBuffers, oSwapChainResizeBuffers);
+        if (oSwapChainResizeBuffers != nullptr)
+        {
+            printf("Restoring resize buffers...\n");
+            memory::HookVTableField(&swapChainVTable->ResizeBuffers, oSwapChainResizeBuffers);
+        }
     }
 }
 
