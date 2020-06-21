@@ -18,10 +18,17 @@ add_library(hry-core SHARED ${hry-core-src})
 target_include_directories(hry-core PRIVATE include/hry vendor/scs_sdk_1_10/include)
 target_include_directories(hry-core PRIVATE src)
 
-target_link_libraries(hry-core PUBLIC imgui minhook)
+target_link_libraries(hry-core PUBLIC imgui minhook dxguid)
 
 # example
 project(hry-example VERSION 0.1.0)
 add_library(hry-example SHARED example/example.cpp)
 target_include_directories(hry-example PRIVATE include)
 target_link_libraries(hry-example PRIVATE hry-core)
+
+# Testing
+project(hry-test VERSION 1.0.0)
+add_executable(hry-test test.cpp)
+target_include_directories(hry-test PRIVATE include)
+target_link_libraries(hry-test PRIVATE hry-core)
+

@@ -5,6 +5,7 @@
 #include <scssdk_telemetry.h>
 
 #include <Hooks/D3D11Hook.hpp>
+#include <Hooks/DInput8Hook.hpp>
 
 namespace hry
 {
@@ -39,6 +40,7 @@ bool Core::installHooks()
     bool success = true;
 
     success &= hooks::D3D11Hook::install();
+    success &= hooks::DInput8Hook::install();
 
     return success;
 }
@@ -46,6 +48,7 @@ bool Core::installHooks()
 void Core::uninstallHooks()
 {
     hooks::D3D11Hook::uninstall();
+    hooks::DInput8Hook::uninstall();
 }
 
 }
