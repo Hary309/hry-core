@@ -1,10 +1,11 @@
 #pragma once
 
+#include <vector>
 #include <cstdint>
 
 #include "Delegate.hpp"
 
-struct IDirectInputDevice8;
+struct IDirectInputDevice8A;
 struct DIDEVICEOBJECTDATA;
 
 namespace hry::hooks
@@ -12,7 +13,7 @@ namespace hry::hooks
 
 struct DInput8Hook
 {
-    inline static Delegate<void(IDirectInputDevice8*, DIDEVICEOBJECTDATA*, uint32_t*)> OnGetDeviceData;
+    inline static Delegate<void(IDirectInputDevice8A*, const std::vector<DIDEVICEOBJECTDATA>&&)> OnGetDeviceData;
 
     static bool install();
     static void uninstall();
