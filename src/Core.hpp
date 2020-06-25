@@ -7,6 +7,8 @@ struct scs_telemetry_init_params_v100_t;
 namespace hry
 {
 
+class Event;
+
 class Core
 {
 public:
@@ -20,6 +22,7 @@ public:
     ~Core();
 
     bool init(scs_telemetry_init_params_v100_t* scsTelemetry);
+    void event(const Event& event);
 
 private:
     static bool installHooks();

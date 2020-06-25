@@ -35,6 +35,11 @@ bool Core::init(scs_telemetry_init_params_v100_t* scsTelemetry)
     return success;
 }
 
+void Core::event(const Event& event) 
+{
+
+}
+
 bool Core::installHooks()
 {
     bool success = true;
