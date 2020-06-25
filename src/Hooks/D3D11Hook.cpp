@@ -144,7 +144,7 @@ HRESULT __stdcall IDXGISwapChain_Present(IDXGISwapChain* swapChain, UINT syncInt
     {
         ID3D11Device* d3dDevice;
 
-        if (SUCCEEDED(swapChain->lpVtbl->GetDevice(swapChain, __uuidof(ID3D11Device), (void**)&d3dDevice)))
+        if (SUCCEEDED(swapChain->lpVtbl->GetDevice(swapChain, IID_ID3D11Device, (void**)&d3dDevice)))
         {
             DXGI_SWAP_CHAIN_DESC sd;
             swapChain->lpVtbl->GetDesc(swapChain, &sd);
