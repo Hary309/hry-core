@@ -17,8 +17,12 @@ using IDXGISwapChain_ResizeBuffers_t = typeof(IDXGISwapChainVtbl::ResizeBuffers)
 
 static IDXGISwapChain_Present_t oSwapChainPresent;
 static IDXGISwapChain_ResizeBuffers_t oSwapChainResizeBuffers;
+static WNDPROC oWndProc;
 
 static IDXGISwapChainVtbl* swapChainVTable;
+
+static HWND hWnd;
+static bool inited = false;
 
 // original code: https://github.com/Rebzzel/kiero
 IDXGISwapChainVtbl* GetSwapChainVTable()
@@ -126,15 +130,47 @@ IDXGISwapChainVtbl* GetSwapChainVTable()
     return swapChainVTable;
 }
 
+LRESULT __stdcall WndProc(const HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+{
+    D3D11Hook::OnWndProc.call(hWnd, uMsg, wParam, lParam);
+
+	return CallWindowProc(oWndProc, hWnd, uMsg, wParam, lParam);
+}
+
+
 HRESULT __stdcall IDXGISwapChain_Present(IDXGISwapChain* swapChain, UINT syncInterval, UINT flags)
 {
+    if (!inited)
+    {
+        ID3D11Device* d3dDevice;
+
+        if (SUCCEEDED(swapChain->lpVtbl->GetDevice(swapChain, __uuidof(ID3D11Device), (void**)&d3dDevice)))
+        {
+            DXGI_SWAP_CHAIN_DESC sd;
+            swapChain->lpVtbl->GetDesc(swapChain, &sd);
+            D3D11Hook::hWnd = sd.OutputWindow;
+
+            if (oWndProc == nullptr)
+            {
+                D3D11Hook::OnInit.call(swapChain, d3dDevice);
+                oWndProc = reinterpret_cast<WNDPROC>(SetWindowLongPtr(D3D11Hook::hWnd, GWLP_WNDPROC, (LONG_PTR)WndProc));
+            }
+            else
+            {
+                D3D11Hook::OnResize.call(swapChain);
+            }
+        }
+    }
+
     D3D11Hook::OnPresent.call(swapChain);
     return oSwapChainPresent(swapChain, syncInterval, flags);
 }
 
 HRESULT __stdcall IDXGISwapChain_ResizeBuffer(IDXGISwapChain* swapChain, UINT bufferCount, UINT width, UINT height, DXGI_FORMAT format, UINT flags)
 {
-    D3D11Hook::OnResize.call(swapChain, width, height);
+    inited = false;
+
+    D3D11Hook::OnBeforeResize.call(swapChain, width, height);
     return oSwapChainResizeBuffers(swapChain, bufferCount, width, height, format, flags);
 }
 
