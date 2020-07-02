@@ -18,7 +18,7 @@ add_library(hry-core SHARED ${hry-core-src})
 target_include_directories(hry-core PRIVATE include/hry vendor/scs_sdk_1_10/include)
 target_include_directories(hry-core PRIVATE src)
 
-target_link_libraries(hry-core PUBLIC imgui minhook dxguid)
+target_link_libraries(hry-core PUBLIC imgui minhook dxguid D3DCompiler Xinput)
 
 # example
 project(hry-example VERSION 0.1.0)

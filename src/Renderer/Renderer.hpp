@@ -31,8 +31,7 @@ protected:
     void onRendererInit();
     void onRendererUpdate();
     void onRendererRenderImGui();
-
-    // void onRendererResize(uint32_t width, uint32_t height);
+    void onRendererResize(uint32_t width, uint32_t height);
 };
 
 }

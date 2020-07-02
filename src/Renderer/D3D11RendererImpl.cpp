@@ -1,8 +1,13 @@
 #include "D3D11RendererImpl.hpp"
 
-#include "Renderer.hpp"
+#include <cstdio>
 
+#include "Renderer.hpp"
 #include "Hooks/D3D11Hook.hpp"
+
+#include <imgui.h>
+#include <imgui_impl_win32.h>
+#include <imgui_impl_dx11.h>
 
 namespace hry::renderer
 {
@@ -21,6 +26,35 @@ D3D11RendererImpl::~D3D11RendererImpl()
 void D3D11RendererImpl::init() 
 {
     hooks::D3D11Hook::OnInit.connect<&D3D11RendererImpl::onInit>(this);
+    hooks::D3D11Hook::OnPresent.connect<&D3D11RendererImpl::onPresent>(this);
+    hooks::D3D11Hook::OnBeforeResize.connect<&D3D11RendererImpl::onBeforeResize>(this);
+    hooks::D3D11Hook::OnResize.connect<&D3D11RendererImpl::onResize>(this);
+}
+
+void D3D11RendererImpl::resize() 
+{
+	if (_device == nullptr || _swapChain == nullptr)
+	{
+		return;
+	}
+
+	RECT rect;
+	if (GetClientRect(_hWnd, &rect))
+	{
+		_windowWidth = rect.right - rect.left;
+		_windowHeight = rect.bottom - rect.top;
+		printf("Size: %d %d\n", _windowWidth, _windowHeight);
+	}
+	else
+	{
+		printf("Unable to get window's size\n");
+	}
+
+    Microsoft::WRL::ComPtr<ID3D11Texture2D> backBuffer;
+	_swapChain->GetBuffer(0, IID_PPV_ARGS(backBuffer.GetAddressOf()));
+	_device->CreateRenderTargetView(backBuffer.Get(), nullptr, _mainRenderTargetView.ReleaseAndGetAddressOf());
+
+    _renderer.onRendererResize(_windowWidth, _windowHeight);
 }
 
 void D3D11RendererImpl::onInit(IDXGISwapChain* swapChain, ID3D11Device* device)
@@ -28,9 +62,52 @@ void D3D11RendererImpl::onInit(IDXGISwapChain* swapChain, ID3D11Device* device)
     _swapChain = swapChain;
     _device = device;
 
+	DXGI_SWAP_CHAIN_DESC sd;
+	swapChain->GetDesc(&sd);
+	_hWnd = sd.OutputWindow;
+
+    resize();
+
+    ImGui::CreateContext();
+
+    ImGui_ImplWin32_Init(_hWnd);
+    ImGui_ImplDX11_Init(_device, _context);
+
     _renderer.onRendererInit();
 }
 
+void D3D11RendererImpl::onPresent(IDXGISwapChain*) 
+{
+	ImGui_ImplDX11_NewFrame();
+	ImGui_ImplWin32_NewFrame();
+	ImGui::NewFrame();
 
+	_renderer.onRendererUpdate();
+
+	_context->OMSetRenderTargets(1, _mainRenderTargetView.GetAddressOf(), nullptr);
+
+    _renderer.onRendererRenderImGui();
+
+	ImGui::Render();
+	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
+}
+
+void D3D11RendererImpl::onBeforeResize(IDXGISwapChain*, uint32_t width, uint32_t height) 
+{
+    if (_mainRenderTargetView != nullptr)
+	{
+		ID3D11RenderTargetView* nullViews[] = { nullptr };
+		_context->OMSetRenderTargets(_countof(nullViews), nullViews, nullptr);
+
+		_mainRenderTargetView.Reset();
+		_context->Flush();
+		_mainRenderTargetView = nullptr;
+	}
+}
+
+void D3D11RendererImpl::onResize(IDXGISwapChain*) 
+{
+    resize();
+}
 
 }
