@@ -11,6 +11,7 @@ namespace hry
 {
 
 Core::Core(HINSTANCE hInst)
+    : _renderer(*this)
 {
     hInstance = hInst;
 }

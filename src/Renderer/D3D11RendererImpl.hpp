@@ -8,6 +8,8 @@ struct ID3D11Device;
 namespace hry::renderer
 {
 
+class Renderer;
+
 class D3D11RendererImpl : public RendererBase
 {
 private:

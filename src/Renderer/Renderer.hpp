@@ -2,21 +2,20 @@
 
 #include <memory>
 
-#include "RendererBase.hpp"
-
 namespace hry
 {
-
 class Core;
-
 }
 
 namespace hry::renderer
 {
 
+class RendererBase;
+class D3D11RendererImpl;
+
 class Renderer
 {
-    friend RendererBase;
+    friend D3D11RendererImpl;
 
 private:
     Core& _core;

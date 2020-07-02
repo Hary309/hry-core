@@ -1,4 +1,6 @@
-#include "D3D11Renderer.hpp"
+#include "D3D11RendererImpl.hpp"
+
+#include "Renderer.hpp"
 
 #include "Hooks/D3D11Hook.hpp"
 
@@ -18,7 +20,7 @@ D3D11RendererImpl::~D3D11RendererImpl()
 
 void D3D11RendererImpl::init() 
 {
-    hooks::D3D11Hook::OnInit.connect<&D3D11RendererImpl::init>(this);
+    hooks::D3D11Hook::OnInit.connect<&D3D11RendererImpl::onInit>(this);
 }
 
 void D3D11RendererImpl::onInit(IDXGISwapChain* swapChain, ID3D11Device* device)
