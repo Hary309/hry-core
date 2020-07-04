@@ -209,6 +209,11 @@ void D3D11Hook::uninstall()
             memory::HookVTableField(&swapChainVTable->ResizeBuffers, oSwapChainResizeBuffers);
         }
     }
+
+    if (oWndProc)
+	{
+		SetWindowLongPtr(hWnd, GWLP_WNDPROC, (LONG_PTR)oWndProc);
+	}
 }
 
 }
