@@ -20,7 +20,10 @@ D3D11RendererImpl::D3D11RendererImpl(Renderer& renderer)
 
 D3D11RendererImpl::~D3D11RendererImpl()
 {
-
+	ImGui_ImplDX11_Shutdown();
+	ImGui_ImplWin32_Shutdown();
+	
+	ImGui::DestroyContext();
 }
 
 void D3D11RendererImpl::init() 
@@ -61,6 +64,7 @@ void D3D11RendererImpl::onInit(IDXGISwapChain* swapChain, ID3D11Device* device)
 {
     _swapChain = swapChain;
     _device = device;
+	device->GetImmediateContext(&_context);
 
 	DXGI_SWAP_CHAIN_DESC sd;
 	swapChain->GetDesc(&sd);

@@ -33,6 +33,8 @@ bool Core::init(scs_telemetry_init_params_v100_t* scsTelemetry)
 
 	success &= Core::installHooks();
 
+    _renderer.init();
+
     return success;
 }
 
@@ -57,6 +59,15 @@ bool Core::installHooks()
 
     success &= hooks::D3D11Hook::install();
     success &= hooks::DInput8Hook::install();
+
+    if (success)
+    {
+        printf("Hooks installed!\n");
+    }
+    else
+    {
+        printf("Cannot install hooks!\n");
+    }
 
     return success;
 }

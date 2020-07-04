@@ -22,7 +22,8 @@ static WNDPROC oWndProc;
 static IDXGISwapChainVtbl* swapChainVTable;
 
 static HWND hWnd;
-static bool inited = false;
+static bool needUpdateInfo = true;
+static bool isInited = false;
 
 // original code: https://github.com/Rebzzel/kiero
 IDXGISwapChainVtbl* GetSwapChainVTable()
@@ -132,7 +133,7 @@ IDXGISwapChainVtbl* GetSwapChainVTable()
 
 LRESULT __stdcall WndProc(const HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-    D3D11Hook::OnWndProc.call(hWnd, uMsg, wParam, lParam);
+    // D3D11Hook::OnWndProc.call(hWnd, uMsg, wParam, lParam);
 
 	return CallWindowProc(oWndProc, hWnd, uMsg, wParam, lParam);
 }
@@ -140,8 +141,9 @@ LRESULT __stdcall WndProc(const HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 
 HRESULT __stdcall IDXGISwapChain_Present(IDXGISwapChain* swapChain, UINT syncInterval, UINT flags)
 {
-    if (!inited)
+    if (needUpdateInfo)
     {
+        needUpdateInfo = false;
         ID3D11Device* d3dDevice;
 
         if (SUCCEEDED(swapChain->lpVtbl->GetDevice(swapChain, IID_ID3D11Device, (void**)&d3dDevice)))
@@ -150,16 +152,18 @@ HRESULT __stdcall IDXGISwapChain_Present(IDXGISwapChain* swapChain, UINT syncInt
             swapChain->lpVtbl->GetDesc(swapChain, &sd);
             D3D11Hook::hWnd = sd.OutputWindow;
 
-            if (oWndProc == nullptr)
+            if (isInited == false)
             {
                 D3D11Hook::OnInit.call(swapChain, d3dDevice);
                 oWndProc = reinterpret_cast<WNDPROC>(SetWindowLongPtr(D3D11Hook::hWnd, GWLP_WNDPROC, (LONG_PTR)WndProc));
+                isInited = true;
             }
             else
             {
                 D3D11Hook::OnResize.call(swapChain);
             }
         }
+
     }
 
     D3D11Hook::OnPresent.call(swapChain);
@@ -168,7 +172,7 @@ HRESULT __stdcall IDXGISwapChain_Present(IDXGISwapChain* swapChain, UINT syncInt
 
 HRESULT __stdcall IDXGISwapChain_ResizeBuffer(IDXGISwapChain* swapChain, UINT bufferCount, UINT width, UINT height, DXGI_FORMAT format, UINT flags)
 {
-    inited = false;
+    needUpdateInfo = true;
 
     D3D11Hook::OnBeforeResize.call(swapChain, width, height);
     return oSwapChainResizeBuffers(swapChain, bufferCount, width, height, format, flags);

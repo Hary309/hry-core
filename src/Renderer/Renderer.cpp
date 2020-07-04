@@ -5,6 +5,8 @@
 #include "Core.hpp"
 #include "D3D11RendererImpl.hpp"
 
+#include <imgui.h>
+
 namespace hry::renderer
 {
 
@@ -37,7 +39,9 @@ void Renderer::onRendererUpdate()
 
 void Renderer::onRendererRenderImGui() 
 {
-    
+    ImGui::Begin("Test window");
+    ImGui::Text("Test");
+    ImGui::End();
 }
 
 
