@@ -50,7 +50,7 @@ void D3D11RendererImpl::resize()
 	}
 	else
 	{
-		printf("Unable to get window's size\n");
+		printf("Unable to get window's size [%lu]\n", GetLastError());
 	}
 
     Microsoft::WRL::ComPtr<ID3D11Texture2D> backBuffer;
