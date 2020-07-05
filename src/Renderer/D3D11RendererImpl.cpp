@@ -86,8 +86,6 @@ void D3D11RendererImpl::onPresent(IDXGISwapChain*)
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
 
-	_renderer.onRendererUpdate();
-
 	_context->OMSetRenderTargets(1, _mainRenderTargetView.GetAddressOf(), nullptr);
 
     _renderer.onRendererRenderImGui();

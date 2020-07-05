@@ -11,7 +11,7 @@ class Event
 public:
     enum class Type
     {
-        Keyboard
+        Keyboard = 0
     };
 
 private:

@@ -36,7 +36,6 @@ private:
     void onPresent(IDXGISwapChain*);
     void onBeforeResize(IDXGISwapChain*, uint32_t width, uint32_t height);
     void onResize(IDXGISwapChain*);
-    // void 
 
     void resize();
 };

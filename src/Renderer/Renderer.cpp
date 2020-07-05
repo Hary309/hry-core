@@ -32,11 +32,6 @@ void Renderer::onRendererInit()
     printf("Renderer inited!\n");
 }
 
-void Renderer::onRendererUpdate() 
-{
-    
-}
-
 void Renderer::onRendererRenderImGui() 
 {
     ImGui::Begin("Test window");
