@@ -3,6 +3,7 @@
 #include <windows.h>
 
 #include "Renderer/Renderer.hpp"
+#include "Events/EventManager.hpp"
 
 struct scs_telemetry_init_params_v100_t;
 
@@ -20,6 +21,7 @@ private:
     scs_telemetry_init_params_v100_t* _scsTelemetry = nullptr;
 
     renderer::Renderer _renderer;
+    events::EventManager _eventMgr;
 
 public:
     explicit Core(HINSTANCE hInst);

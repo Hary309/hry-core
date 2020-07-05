@@ -25,7 +25,7 @@ public:
 
     }
 
-    virtual void event(const hry::Event& e)
+    virtual void event(const hry::events::Event& e)
     {
 
     }
