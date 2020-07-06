@@ -19,7 +19,7 @@ class Renderer
 
 private:
     Core& _core;
-    std::unique_ptr<RendererBase> _base;
+    std::unique_ptr<RendererBase> _impl;
 
 public:
     Renderer(Core& core);
