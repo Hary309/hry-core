@@ -1,5 +1,7 @@
 #pragma once
 
+#include <Windows.h>
+
 #include "EventBridgeBase.hpp"
 
 namespace hry::events
@@ -8,10 +10,10 @@ namespace hry::events
 class WndProcEventBridge : public EventBridgeBase
 {
 public:
-    WndProcEventBridge(EventManager eventMgr);
+    WndProcEventBridge(EventManager& eventMgr);
 
 private:
-    
+    void onWndProc(const HWND, UINT, WPARAM, LPARAM);
 };
 
 }

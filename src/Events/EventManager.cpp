@@ -1,17 +1,24 @@
 #include "EventManager.hpp"
 
+#include "WndProcEventBridge.hpp"
+
 namespace hry::events
 {
 
 
 EventManager::EventManager() 
 {
-
+    
 }
 
 EventManager::~EventManager() 
 {
 
+}
+
+void EventManager::init() 
+{
+    _eventBridges.emplace_back<WndProcEventBridge>(*this);
 }
 
 Event* EventManager::front() 
