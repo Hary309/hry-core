@@ -1,5 +1,6 @@
 #include "D3D11Hook.hpp"
 
+#define D3D11_NO_HELPERS
 #define CINTERFACE
 #define COBJMACROS
 
