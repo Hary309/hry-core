@@ -12,8 +12,8 @@
 namespace hry::hooks
 {
 
-using IDXGISwapChain_Present_t = typeof(IDXGISwapChainVtbl::Present);
-using IDXGISwapChain_ResizeBuffers_t = typeof(IDXGISwapChainVtbl::ResizeBuffers);
+using IDXGISwapChain_Present_t = decltype(IDXGISwapChainVtbl::Present);
+using IDXGISwapChain_ResizeBuffers_t = decltype(IDXGISwapChainVtbl::ResizeBuffers);
 
 static IDXGISwapChain_Present_t oSwapChainPresent;
 static IDXGISwapChain_ResizeBuffers_t oSwapChainResizeBuffers;
