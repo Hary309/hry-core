@@ -14,8 +14,8 @@
 namespace hry::hooks
 {
 
-using DirectInput8Create_t = typeof(DirectInput8Create);
-using DirectInput8_GetDeviceData_t = typeof(IDirectInputDevice8AVtbl::GetDeviceData);
+using DirectInput8Create_t = decltype(DirectInput8Create);
+using DirectInput8_GetDeviceData_t = decltype(IDirectInputDevice8AVtbl::GetDeviceData);
 
 static DirectInput8_GetDeviceData_t oDirectInputGetDeviceData;
 
