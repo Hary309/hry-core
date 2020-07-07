@@ -1,5 +1,6 @@
 #include "DInput8Hook.hpp"
 
+#define COBJMACROS
 #define CINTERFACE
 
 #include <memory>
@@ -22,7 +23,7 @@ static DirectInput8_GetDeviceData_t oDirectInputGetDeviceData;
 static IDirectInput8AVtbl* DIVTable;
 static IDirectInputDevice8AVtbl* DIDeviceVTable;
 
-HRESULT __stdcall DirectInputDevice_GetDeviceData(IDirectInputDevice8A* self, DWORD cbObjectData, DIDEVICEOBJECTDATA* rgdod, DWORD* pdwInOut, DWORD dwFlags)
+HRESULT __stdcall new_DirectInputDevice_GetDeviceData(IDirectInputDevice8A* self, DWORD cbObjectData, DIDEVICEOBJECTDATA* rgdod, DWORD* pdwInOut, DWORD dwFlags)
 {
     DInput8Hook::OnGetDeviceData.call(self, { rgdod, rgdod + (*pdwInOut) });
 
@@ -57,21 +58,21 @@ bool DInput8Hook::install()
     }
 
     DIVTable = DI->lpVtbl;
-    hr = DI->lpVtbl->CreateDevice(DI, GUID_SysMouse, &DIMouse, nullptr);
+    hr = IDirectInput8_CreateDevice(DI, GUID_SysMouse, &DIMouse, nullptr);
 
     if (FAILED(hr))
     {
-        DI->lpVtbl->Release(DI);
+        IDirectInput8_Release(DI);
         return false;
     }
 
     DIDeviceVTable = DIMouse->lpVtbl;
 
     printf("Hooking GetDeviceData...\n");
-    oDirectInputGetDeviceData = memory::HookVTableField(&DIDeviceVTable->GetDeviceData, &DirectInputDevice_GetDeviceData);
+    oDirectInputGetDeviceData = memory::HookVTableField(&DIDeviceVTable->GetDeviceData, &new_DirectInputDevice_GetDeviceData);
 
-    DIMouse->lpVtbl->Release(DIMouse);
-    DI->lpVtbl->Release(DI);
+    IDirectInputDevice8_Release(DIMouse);
+    IDirectInput8_Release(DI);
 
     return true;
 }
