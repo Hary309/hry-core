@@ -1,6 +1,7 @@
 #include "D3D11Hook.hpp"
 
 #define CINTERFACE
+#define COBJMACROS
 
 #include <cstdio>
 #include <d3d11.h>
@@ -116,13 +117,13 @@ IDXGISwapChainVtbl* GetSwapChainVTable()
 
     IDXGISwapChainVtbl* swapChainVTable = swapChain->lpVtbl;
 
-    swapChain->lpVtbl->Release(swapChain);
+    IDXGISwapChain_Release(swapChain);
     swapChain = nullptr;
 
-    device->lpVtbl->Release(device);
+    ID3D11Device_Release(device);
     device = nullptr;
 
-    context->lpVtbl->Release(context);
+    ID3D11DeviceContext_Release(context);
     context = nullptr;
 
     ::DestroyWindow(window);
@@ -133,23 +134,23 @@ IDXGISwapChainVtbl* GetSwapChainVTable()
 
 LRESULT __stdcall WndProc(const HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-    // D3D11Hook::OnWndProc.call(hWnd, uMsg, wParam, lParam);
+    D3D11Hook::OnWndProc.call(hWnd, uMsg, wParam, lParam);
 
 	return CallWindowProc(oWndProc, hWnd, uMsg, wParam, lParam);
 }
 
 
-HRESULT __stdcall IDXGISwapChain_Present(IDXGISwapChain* swapChain, UINT syncInterval, UINT flags)
+HRESULT __stdcall new_IDXGISwapChain_Present(IDXGISwapChain* swapChain, UINT syncInterval, UINT flags)
 {
     if (needUpdateInfo)
     {
         needUpdateInfo = false;
         ID3D11Device* d3dDevice;
 
-        if (SUCCEEDED(swapChain->lpVtbl->GetDevice(swapChain, IID_ID3D11Device, (void**)&d3dDevice)))
+        if (SUCCEEDED(IDXGISwapChain_GetDevice(swapChain, IID_ID3D11Device,(void**)&d3dDevice)))
         {
             DXGI_SWAP_CHAIN_DESC sd;
-            swapChain->lpVtbl->GetDesc(swapChain, &sd);
+            IDXGISwapChain_GetDesc(swapChain, &sd);
             D3D11Hook::hWnd = sd.OutputWindow;
 
             if (isInited == false)
@@ -170,7 +171,7 @@ HRESULT __stdcall IDXGISwapChain_Present(IDXGISwapChain* swapChain, UINT syncInt
     return oSwapChainPresent(swapChain, syncInterval, flags);
 }
 
-HRESULT __stdcall IDXGISwapChain_ResizeBuffer(IDXGISwapChain* swapChain, UINT bufferCount, UINT width, UINT height, DXGI_FORMAT format, UINT flags)
+HRESULT __stdcall new_IDXGISwapChain_ResizeBuffers(IDXGISwapChain* swapChain, UINT bufferCount, UINT width, UINT height, DXGI_FORMAT format, UINT flags)
 {
     needUpdateInfo = true;
 
@@ -189,10 +190,10 @@ bool D3D11Hook::install()
     }
 
     printf("Hooking present...\n");
-    oSwapChainPresent = memory::HookVTableField(&swapChainVTable->Present, &IDXGISwapChain_Present);
+    oSwapChainPresent = memory::HookVTableField(&swapChainVTable->Present, &new_IDXGISwapChain_Present);
 
     printf("Hooking resize buffers...\n");
-    oSwapChainResizeBuffers = memory::HookVTableField(&swapChainVTable->ResizeBuffers, &IDXGISwapChain_ResizeBuffer);
+    oSwapChainResizeBuffers = memory::HookVTableField(&swapChainVTable->ResizeBuffers, &new_IDXGISwapChain_ResizeBuffers);
 
     return true;
 }
