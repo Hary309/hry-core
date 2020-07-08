@@ -1,8 +1,8 @@
 #pragma once
 
 #include <queue>
-#include <optional>
 #include <vector>
+#include <memory>
 
 #include "Events/Event.hpp"
 #include "Events/EventBridgeBase.hpp"
@@ -17,7 +17,7 @@ class EventManager
 private:
     std::queue<Event> _events;
 
-    std::vector<EventBridgeBase> _eventBridges;
+    std::vector<std::unique_ptr<EventBridgeBase>> _eventBridges;
 
 public:
     EventManager();

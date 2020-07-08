@@ -6,9 +6,9 @@
 
 #include <scssdk_telemetry.h>
 
-#include <Hooks/D3D11Hook.hpp>
-#include <Hooks/DInput8Hook.hpp>
-#include <stdio.h>
+#include "Hooks/D3D11Hook.hpp"
+#include "Hooks/DInput8Hook.hpp"
+#include "Events/Event.hpp"
 
 namespace hry
 {
@@ -46,26 +46,35 @@ bool Core::init(scs_telemetry_init_params_v100_t* scsTelemetry)
 	success &= Core::installHooks();
 
     _renderer.init();
+    _eventMgr.init();
 
     return success;
 }
 
-void Core::update() 
+void Core::update()
 {
     float deltaTime = _deltaTime.asSeconds();
     _deltaTime.reset();
 
-    printf("delta: %f\n", deltaTime);
+    hry::events::Event* event = _eventMgr.front();
+
+    while (event != nullptr)
+    {
+        if (event->type == events::Event::Type::KeyPressed)
+        {
+            events::KeyboardEvent keyboardEvent = event->get<events::KeyboardEvent>();
+            
+            printf("%d\n", static_cast<int>(keyboardEvent.key));
+        }
+
+        _eventMgr.pop();
+        event = _eventMgr.front();
+    }
 }
 
 void Core::imguiRender() 
 {
     
-}
-
-void Core::event(const Event& event) 
-{
-
 }
 
 bool Core::installHooks()

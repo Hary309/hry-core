@@ -37,8 +37,6 @@ public:
     void update();
     void imguiRender();
 
-    void event(const Event& event);
-
 private:
     static bool installHooks();
     static void uninstallHooks();

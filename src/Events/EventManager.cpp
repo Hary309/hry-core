@@ -8,7 +8,7 @@ namespace hry::events
 
 EventManager::EventManager() 
 {
-    
+
 }
 
 EventManager::~EventManager() 
@@ -18,7 +18,7 @@ EventManager::~EventManager()
 
 void EventManager::init() 
 {
-    _eventBridges.emplace_back<WndProcEventBridge>(*this);
+    _eventBridges.push_back(std::make_unique<WndProcEventBridge>(*this));
 }
 
 Event* EventManager::front() 
@@ -33,7 +33,7 @@ Event* EventManager::front()
 
 void EventManager::pop() 
 {
-    if (_events.empty())
+    if (!_events.empty())
     {
         _events.pop();
     }
