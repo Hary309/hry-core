@@ -25,9 +25,14 @@ static IDirectInputDevice8AVtbl* DIDeviceVTable;
 
 HRESULT __stdcall new_DirectInputDevice_GetDeviceData(IDirectInputDevice8A* self, DWORD cbObjectData, DIDEVICEOBJECTDATA* rgdod, DWORD* pdwInOut, DWORD dwFlags)
 {
-    DInput8Hook::OnGetDeviceData.call(self, { rgdod, rgdod + (*pdwInOut) });
+    auto result = oDirectInputGetDeviceData(self, cbObjectData, rgdod, pdwInOut, dwFlags);
 
-    return oDirectInputGetDeviceData(self, cbObjectData, rgdod, pdwInOut, dwFlags);
+    if (self && rgdod && pdwInOut)
+    {
+        DInput8Hook::OnGetDeviceData.call(self, { rgdod, rgdod + (*pdwInOut) });
+    }
+
+    return result;
 }
 
 bool DInput8Hook::install()

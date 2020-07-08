@@ -1,6 +1,7 @@
 #include "EventManager.hpp"
 
 #include "WndProcEventBridge.hpp"
+#include "DInput8EventBridge.hpp"
 
 namespace hry::events
 {
@@ -19,6 +20,7 @@ EventManager::~EventManager()
 void EventManager::init() 
 {
     _eventBridges.push_back(std::make_unique<WndProcEventBridge>(*this));
+    _eventBridges.push_back(std::make_unique<DInput8EventBridge>(*this));
 }
 
 Event* EventManager::front() 

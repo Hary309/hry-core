@@ -1,12 +1,13 @@
 #include "WndProcEventBridge.hpp"
 
-#include <limits.h>
 #include <windowsx.h>
+
+#include "Hooks/D3D11Hook.hpp"
 
 #include "EventManager.hpp"
 #include "Events/Event.hpp"
+
 #include "System/Keyboard.hpp"
-#include "Hooks/D3D11Hook.hpp"
 #include "System/Mouse.hpp"
 #include "System/System.hpp"
 

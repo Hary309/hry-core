@@ -1,4 +1,5 @@
 #include "Core.hpp"
+#include "imgui.h"
 #include "scssdk.h"
 #include "scssdk_telemetry_event.h"
 
@@ -60,11 +61,14 @@ void Core::update()
 
     while (event != nullptr)
     {
-        if (event->type == events::Event::Type::KeyPressed)
+        // add missing mouse button support for imgui
+        if (event->type == events::Event::Type::MouseButtonPressed ||
+            event->type == events::Event::Type::MouseButtonReleased)
         {
-            events::KeyboardEvent keyboardEvent = event->get<events::KeyboardEvent>();
-            
-            printf("%d\n", static_cast<int>(keyboardEvent.key));
+            auto& mouseButtonEvent = event->get<events::MouseButtonEvent>();
+
+            auto& imguiIO = ImGui::GetIO();
+            imguiIO.MouseDown[static_cast<int>(mouseButtonEvent.button)] = event->type == events::Event::Type::MouseButtonPressed;
         }
 
         _eventMgr.pop();
