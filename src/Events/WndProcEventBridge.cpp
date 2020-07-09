@@ -2,6 +2,8 @@
 
 #include <windowsx.h>
 
+#include <imgui.h>
+
 #include "Hooks/D3D11Hook.hpp"
 
 #include "EventManager.hpp"
@@ -10,6 +12,8 @@
 #include "System/Keyboard.hpp"
 #include "System/Mouse.hpp"
 #include "System/System.hpp"
+
+IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 namespace hry::events
 {
@@ -148,6 +152,8 @@ WndProcEventBridge::WndProcEventBridge(EventManager& eventMgr)
 void WndProcEventBridge::onWndProc(const HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) 
 {
     using namespace hry::system;
+
+    ImGui_ImplWin32_WndProcHandler(hWnd, msg, wParam, lParam);
 
     switch (msg)
     {
