@@ -14,14 +14,15 @@
 namespace hry::events
 {
 
-DInput8EventBridge::DInput8EventBridge(EventManager& eventMgr) 
-    : EventBridgeBase(eventMgr)
+DInput8EventBridge::DInput8EventBridge(EventManager& eventMgr)
+        : EventBridgeBase(eventMgr)
 {
     hooks::DInput8Hook::OnGetDeviceData.connect<&DInput8EventBridge::onGetDeviceData>(this);
 }
 
 void DInput8EventBridge::onGetDeviceData(IDirectInputDevice8A* device, const std::vector<DIDEVICEOBJECTDATA>&& datas)
 {
+    using namespace system;
 
     for (auto& data : datas)
     {
@@ -29,51 +30,75 @@ void DInput8EventBridge::onGetDeviceData(IDirectInputDevice8A* device, const std
         {
             // mouse move x
             case DIMOFS_X:
-                // TODO: send mouse pos
-            break;
-            // mouse move y
+            {
+                _mouseOffsetX = data.dwData;
+
+                MouseMoveEvent moveEvent;
+                moveEvent.offsetX = _mouseOffsetX;
+                moveEvent.offsetY = _mouseOffsetY;
+
+                Event event;
+                event.type = Event::Type::MouseMoved;
+                event.event = moveEvent;
+                _eventMgr.pushEvent(std::move(event));
+            } break;
             case DIMOFS_Y:
-                // TODO: send mouse pos
-            break;
+            {
+                _mouseOffsetY = data.dwData;
+
+                MouseMoveEvent moveEvent;
+                moveEvent.offsetX = _mouseOffsetX;
+                moveEvent.offsetY = _mouseOffsetY;
+
+                Event event;
+                event.type = Event::Type::MouseMoved;
+                event.event = moveEvent;
+                _eventMgr.pushEvent(std::move(event));
+            } break;
+
             // mouse move wheel
             case DIMOFS_Z:
-                // TODO: send mouse wheel
-            break;
-            
+            {
+                MouseWheelEvent wheelEvent;
+                wheelEvent.wheel = Mouse::Wheel::Horizontal;
+                wheelEvent.delta = static_cast<short>(data.dwData / WHEEL_DELTA);
+
+                Event event;
+                event.type = Event::Type::MouseWheelScrolled;
+                event.event = wheelEvent;
+                _eventMgr.pushEvent(std::move(event));
+            } break;
+
             // mouse buttons
             case DIMOFS_BUTTON0:
             {
-                sendButtonEvent(data.dwData, system::Mouse::Button::Left);
+                sendButtonEvent(data.dwData, Mouse::Button::Left);
             } break;
             case DIMOFS_BUTTON1:
             {
-                sendButtonEvent(data.dwData, system::Mouse::Button::Right);
+                sendButtonEvent(data.dwData, Mouse::Button::Right);
             } break;
             case DIMOFS_BUTTON2:
             {
-                sendButtonEvent(data.dwData, system::Mouse::Button::Middle);
+                sendButtonEvent(data.dwData, Mouse::Button::Middle);
             } break;
             case DIMOFS_BUTTON3:
             {
-                sendButtonEvent(data.dwData, system::Mouse::Button::XButton1);
+                sendButtonEvent(data.dwData, Mouse::Button::XButton1);
             } break;
             case DIMOFS_BUTTON4:
             {
-                sendButtonEvent(data.dwData, system::Mouse::Button::XButton2);
+                sendButtonEvent(data.dwData, Mouse::Button::XButton2);
             } break;
         }
     }
 }
 
 
-void DInput8EventBridge::sendButtonEvent(int pressData, system::Mouse::Button button) 
+void DInput8EventBridge::sendButtonEvent(int pressData, system::Mouse::Button button)
 {
     events::MouseButtonEvent mouseButtonEvent;
     mouseButtonEvent.button = button;
-
-    // TODO: fill with correct value
-    mouseButtonEvent.x = 0;
-    mouseButtonEvent.y = 0;
 
     events::Event event;
     event.event = mouseButtonEvent;

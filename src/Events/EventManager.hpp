@@ -20,8 +20,8 @@ private:
     std::vector<std::unique_ptr<EventBridgeBase>> _eventBridges;
 
 public:
-    EventManager();
-    ~EventManager();
+    EventManager() = default;
+    ~EventManager() = default;
 
     void init();
 

@@ -13,6 +13,10 @@ namespace hry::events
 
 class DInput8EventBridge : public EventBridgeBase
 {
+private:
+    int _mouseOffsetX;
+    int _mouseOffsetY;
+
 public:
     DInput8EventBridge(EventManager& eventMgr);
 

@@ -26,16 +26,18 @@ struct KeyboardEvent
 struct MouseButtonEvent
 {
     system::Mouse::Button button;
-    int x;
-    int y;
+};
+
+struct MouseMoveEvent
+{
+    int offsetX;
+    int offsetY;
 };
 
 struct MouseWheelEvent
 {
     system::Mouse::Wheel wheel;
     short delta;
-    int x;
-    int y;
 };
 
 struct Event
@@ -43,16 +45,19 @@ struct Event
     enum class Type
     {
         WindowResized = 0, // struct: ResizeEvent
+        WindowGainedFocus, // no struct
+        WindowLostFocus, // no struct
 
         KeyPressed, // struct: KeyboardEvent
         KeyReleased, // struct: KeyboardEvent
 
         MouseButtonPressed, // struct: MouseButtonEvent
         MouseButtonReleased, // struct: MouseButtonEvent
-        MouseWheel, // struct: MouseWheelEvent
+        MouseMoved, // struct: MouseMoveEvent
+        MouseWheelScrolled, // struct: MouseWheelEvent
     };
 
-    std::variant<ResizeEvent, KeyboardEvent, MouseButtonEvent, MouseWheelEvent> event;
+    std::variant<ResizeEvent, KeyboardEvent, MouseButtonEvent, MouseMoveEvent, MouseWheelEvent> event;
     Type type;
  
     template<typename T>

@@ -136,8 +136,6 @@ MouseButtonEvent getMouseButtonEvent(system::Mouse::Button button, LPARAM lParam
 {
     MouseButtonEvent buttonEvent;
     buttonEvent.button = button;
-    buttonEvent.x = GET_X_LPARAM(lParam);
-    buttonEvent.y = GET_Y_LPARAM(lParam);
     return buttonEvent;
 }
 
@@ -157,9 +155,9 @@ void WndProcEventBridge::onWndProc(const HWND hWnd, UINT msg, WPARAM wParam, LPA
         case WM_SIZE:
         {
             bool shouldSkip = true;
-            shouldSkip &= !(wParam == SIZE_MAXIMIZED);
-            shouldSkip &= !(wParam == SIZE_MINIMIZED);
-            shouldSkip &= !(wParam == SIZE_RESTORED);
+            shouldSkip &= wParam != SIZE_MAXIMIZED;
+            shouldSkip &= wParam != SIZE_MINIMIZED;
+            shouldSkip &= wParam != SIZE_RESTORED;
 
             if (shouldSkip)
                 break;
@@ -207,20 +205,12 @@ void WndProcEventBridge::onWndProc(const HWND hWnd, UINT msg, WPARAM wParam, LPA
 
         case WM_MOUSEWHEEL:
         {
-            POINT pos;
-            pos.x = GET_X_LPARAM(lParam);
-            pos.x = GET_Y_LPARAM(lParam);
-        
-            ScreenToClient(hWnd, &pos);
-
             MouseWheelEvent wheelEvent;
             wheelEvent.wheel = Mouse::Wheel::Vertical;
             wheelEvent.delta = GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA;
-            wheelEvent.x = pos.x;
-            wheelEvent.y = pos.y;
 
             Event event;
-            event.type = Event::Type::MouseWheel;
+            event.type = Event::Type::MouseWheelScrolled;
             event.event = wheelEvent;
             _eventMgr.pushEvent(std::move(event));
         } break;
@@ -229,19 +219,13 @@ void WndProcEventBridge::onWndProc(const HWND hWnd, UINT msg, WPARAM wParam, LPA
         case WM_MOUSEHWHEEL:
         {
             POINT pos;
-            pos.x = GET_X_LPARAM(lParam);
-            pos.x = GET_Y_LPARAM(lParam);
-        
-            ScreenToClient(hWnd, &pos);
 
             MouseWheelEvent wheelEvent;
             wheelEvent.wheel = Mouse::Wheel::Horizontal;
             wheelEvent.delta = GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA;
-            wheelEvent.x = pos.x;
-            wheelEvent.y = pos.y;
 
             Event event;
-            event.type = Event::Type::MouseWheel;
+            event.type = Event::Type::MouseWheelScrolled;
             event.event = wheelEvent;
             _eventMgr.pushEvent(std::move(event));
         } break;
