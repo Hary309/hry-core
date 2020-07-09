@@ -60,8 +60,10 @@ void DInput8EventBridge::onGetDeviceData(IDirectInputDevice8A* device, const std
             case DIMOFS_Z:
             {
                 MouseWheelEvent wheelEvent;
-                wheelEvent.wheel = Mouse::Wheel::Horizontal;
-                wheelEvent.delta = static_cast<short>(data.dwData / WHEEL_DELTA);
+                wheelEvent.wheel = Mouse::Wheel::Vertical;
+                wheelEvent.delta = static_cast<short>(data.dwData) / WHEEL_DELTA;
+
+                printf("Wheel: %d\n", wheelEvent.delta);
 
                 Event event;
                 event.type = Event::Type::MouseWheelScrolled;

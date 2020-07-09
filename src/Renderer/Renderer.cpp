@@ -34,9 +34,7 @@ void Renderer::onRendererInit()
 
 void Renderer::onRendererRenderImGui() 
 {
-    ImGui::Begin("Test window");
-    ImGui::Text("Test");
-    ImGui::End();
+    _core.imguiRender();
 }
 
 

@@ -2,6 +2,7 @@
 
 #include <windows.h>
 
+#include "Events/Event.hpp"
 #include "Renderer/Renderer.hpp"
 #include "Events/EventManager.hpp"
 #include "Utils/Timer.hpp"
@@ -38,8 +39,10 @@ public:
     void imguiRender();
 
 private:
-    static bool installHooks();
-    static void uninstallHooks();
+    static bool InstallHooks();
+    static void UninstallHooks();
+
+    static void ProcessImGuiEvents(hry::events::Event* event);
 
     static void TelemetryFrameEnd(const scs_event_t event, const void* const, const scs_context_t self);
 };
