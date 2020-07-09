@@ -230,6 +230,19 @@ void WndProcEventBridge::onWndProc(const HWND hWnd, UINT msg, WPARAM wParam, LPA
             _eventMgr.pushEvent(std::move(event));
         } break;
 
+        case WM_MOUSEMOVE:
+        {
+            int x = GET_X_LPARAM(lParam);
+            int y = GET_Y_LPARAM(lParam);
+
+            MouseMoveEvent moveEvent;
+            moveEvent.offsetX = x - _lastMousePosX;
+            moveEvent.offsetY = y - _lastMousePosX;
+
+            _lastMousePosX = x;
+            _lastMousePosY = y;
+        } break;
+
         // Left mouse button
         case WM_LBUTTONDOWN:
         {
