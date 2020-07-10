@@ -180,7 +180,7 @@ HRESULT __stdcall new_IDXGISwapChain_ResizeBuffers(IDXGISwapChain* swapChain, UI
     return oSwapChainResizeBuffers(swapChain, bufferCount, width, height, format, flags);
 }
 
-bool D3D11Hook::install()
+bool D3D11Hook::Install()
 {
     swapChainVTable = GetSwapChainVTable();
 
@@ -199,7 +199,7 @@ bool D3D11Hook::install()
     return true;
 }
 
-void D3D11Hook::uninstall()
+void D3D11Hook::Uninstall()
 {
     if (swapChainVTable != nullptr)
     {

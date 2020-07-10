@@ -35,7 +35,7 @@ HRESULT __stdcall new_DirectInputDevice_GetDeviceData(IDirectInputDevice8A* self
     return result;
 }
 
-bool DInput8Hook::install()
+bool DInput8Hook::Install()
 {
     HMODULE libDInput = ::GetModuleHandle(HRY_TEXT("dinput8.dll"));
 
@@ -82,7 +82,7 @@ bool DInput8Hook::install()
     return true;
 }
 
-void DInput8Hook::uninstall()
+void DInput8Hook::Uninstall()
 {
     if (DIDeviceVTable != nullptr)
     {

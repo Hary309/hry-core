@@ -15,8 +15,8 @@ struct DInput8Hook
 {
     inline static Delegate<void(IDirectInputDevice8A*, const std::vector<DIDEVICEOBJECTDATA>&&)> OnGetDeviceData;
 
-    static bool install();
-    static void uninstall();
+    static bool Install();
+    static void Uninstall();
 };
 
 }

@@ -88,8 +88,8 @@ bool Core::InstallHooks()
 {
     bool success = true;
 
-    success &= hooks::D3D11Hook::install();
-    success &= hooks::DInput8Hook::install();
+    success &= hooks::D3D11Hook::Install();
+    success &= hooks::DInput8Hook::Install();
 
     if (success)
     {
@@ -105,8 +105,8 @@ bool Core::InstallHooks()
 
 void Core::UninstallHooks()
 {
-    hooks::D3D11Hook::uninstall();
-    hooks::DInput8Hook::uninstall();
+    hooks::D3D11Hook::Uninstall();
+    hooks::DInput8Hook::Uninstall();
 }
 
 void Core::ProcessImGuiEvents(hry::events::Event* event) 
