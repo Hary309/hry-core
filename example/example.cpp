@@ -10,6 +10,8 @@ class ExamplePlugin : public hry::Plugin
 private:
     hry::PluginInfo _pluginInfo = {
             "Example plugin",
+            "hry-example",
+            "This is a example of plugin based on hry-core.",
             "Example implementation of plugin",
             1000,
     };
