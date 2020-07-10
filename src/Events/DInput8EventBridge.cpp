@@ -11,6 +11,14 @@
 #include "Events/EventBridgeBase.hpp"
 #include "Hooks/DInput8Hook.hpp"
 
+constexpr int DINPUT_X = offsetof(DIMOUSESTATE, lX);
+constexpr int DINPUT_Y = offsetof(DIMOUSESTATE, lY);
+constexpr int DINPUT_Z = offsetof(DIMOUSESTATE, lZ);
+constexpr int DINPUT_BUTTON0 = (offsetof(DIMOUSESTATE, rgbButtons) + 0);
+constexpr int DINPUT_BUTTON1 = (offsetof(DIMOUSESTATE, rgbButtons) + 1);
+constexpr int DINPUT_BUTTON2 = (offsetof(DIMOUSESTATE, rgbButtons) + 2);
+constexpr int DINPUT_BUTTON3 = (offsetof(DIMOUSESTATE, rgbButtons) + 3);
+constexpr int DINPUT_BUTTON4 = (offsetof(DIMOUSESTATE, rgbButtons) + 4);
 
 namespace hry::events
 {
@@ -30,7 +38,7 @@ void DInput8EventBridge::onGetDeviceData(IDirectInputDevice8A* device, const std
         switch (data.dwOfs)
         {
             // mouse move x
-            case DIMOFS_X:
+            case DINPUT_X:
             {
                 _mouseOffsetX = data.dwData;
 
@@ -43,7 +51,7 @@ void DInput8EventBridge::onGetDeviceData(IDirectInputDevice8A* device, const std
                 event.event = moveEvent;
                 _eventMgr.pushEvent(std::move(event));
             } break;
-            case DIMOFS_Y:
+            case DINPUT_Y:
             {
                 _mouseOffsetY = data.dwData;
 
@@ -58,7 +66,7 @@ void DInput8EventBridge::onGetDeviceData(IDirectInputDevice8A* device, const std
             } break;
 
             // mouse move wheel
-            case DIMOFS_Z:
+            case DINPUT_Z:
             {
                 MouseWheelEvent wheelEvent;
                 wheelEvent.wheel = Mouse::Wheel::Vertical;
@@ -73,23 +81,23 @@ void DInput8EventBridge::onGetDeviceData(IDirectInputDevice8A* device, const std
             } break;
 
             // mouse buttons
-            case DIMOFS_BUTTON0:
+            case DINPUT_BUTTON0:
             {
                 sendButtonEvent(data.dwData, Mouse::Button::Left);
             } break;
-            case DIMOFS_BUTTON1:
+            case DINPUT_BUTTON1:
             {
                 sendButtonEvent(data.dwData, Mouse::Button::Right);
             } break;
-            case DIMOFS_BUTTON2:
+            case DINPUT_BUTTON2:
             {
                 sendButtonEvent(data.dwData, Mouse::Button::Middle);
             } break;
-            case DIMOFS_BUTTON3:
+            case DINPUT_BUTTON3:
             {
                 sendButtonEvent(data.dwData, Mouse::Button::XButton1);
             } break;
-            case DIMOFS_BUTTON4:
+            case DINPUT_BUTTON4:
             {
                 sendButtonEvent(data.dwData, Mouse::Button::XButton2);
             } break;
