@@ -11,6 +11,7 @@
 #include "Hry/System/Mouse.hpp"
 #include "Hry/System/System.hpp"
 
+#include "Core.hpp"
 #include "EventManager.hpp"
 
 
@@ -225,8 +226,6 @@ void WndProcEventBridge::onWndProc(const HWND hWnd, UINT msg, WPARAM wParam, LPA
         // mouse wheel
         case WM_MOUSEHWHEEL:
         {
-            POINT pos;
-
             MouseWheelEvent wheelEvent;
             wheelEvent.wheel = Mouse::Wheel::Horizontal;
             wheelEvent.delta = GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA;

@@ -3,7 +3,10 @@
 #include <windows.h>
 
 #include "Hry/Events/Event.hpp"
+#include "Hry/Logger/LoggerCore.hpp"
 #include "Hry/Utils/Timer.hpp"
+#include "Hry/Logger/LoggerCore.hpp"
+#include "Hry/Logger/ModuleLogger.hpp"
 
 #include "Renderer/Renderer.hpp"
 #include "Events/EventManager.hpp"
@@ -29,7 +32,12 @@ private:
     renderer::Renderer _renderer;
     events::EventManager _eventMgr;
 
+    logger::LoggerCore _loggerCore;
+
     utils::Timer _deltaTime;
+
+public:
+    inline static std::unique_ptr<logger::ModuleLogger> Logger;
 
 public:
     explicit Core(HINSTANCE hInst);

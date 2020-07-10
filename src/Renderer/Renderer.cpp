@@ -29,7 +29,7 @@ void Renderer::init()
 
 void Renderer::onRendererInit() 
 {
-    printf("Renderer inited!\n");
+    Core::Logger->info("Renderer initialized!");
 }
 
 void Renderer::onRendererRenderImGui() 

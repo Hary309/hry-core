@@ -12,6 +12,7 @@
 #include "Hry/Utils.hpp"
 #include "Hry/Memory/Hooking.hpp"
 
+#include "Core.hpp"
 
 namespace hry::hooks
 {
@@ -38,16 +39,20 @@ HRESULT __stdcall new_DirectInputDevice_GetDeviceData(IDirectInputDevice8A* self
 
 bool DInput8Hook::Install()
 {
+    Core::Logger->info("Initializing DInput8 hooks...");
+
     HMODULE libDInput = ::GetModuleHandle(HRY_TEXT("dinput8.dll"));
 
     if (libDInput == nullptr)
     {
+        Core::Logger->error("Cannot find dinput8.dll");
         return false;
     }
 
     auto dInput8Create = (DirectInput8Create_t*)::GetProcAddress(libDInput, "DirectInput8Create");
     if (dInput8Create == nullptr)
     {
+        Core::Logger->error("Cannot find DirectInput8Create inside dinput8.dll");
         return false;
     }
 
@@ -60,6 +65,7 @@ bool DInput8Hook::Install()
 
     if (FAILED(hr))
     {
+        Core::Logger->error("Cannot create DInput instance");
         return false;
     }
 
@@ -68,13 +74,14 @@ bool DInput8Hook::Install()
 
     if (FAILED(hr))
     {
+        Core::Logger->error("Cannot create DInput device");
         IDirectInput8_Release(DI);
         return false;
     }
 
     DIDeviceVTable = DIMouse->lpVtbl;
 
-    printf("Hooking GetDeviceData...\n");
+    Core::Logger->info("Hooking DirectInputDevice::GetDeviceData...");
     oDirectInputGetDeviceData = memory::HookVTableField(&DIDeviceVTable->GetDeviceData, &new_DirectInputDevice_GetDeviceData);
 
     IDirectInputDevice8_Release(DIMouse);
@@ -89,7 +96,7 @@ void DInput8Hook::Uninstall()
     {
         if (oDirectInputGetDeviceData != nullptr)
         {
-            printf("Restoring GetDeviceData...\n");
+            Core::Logger->info("Restoring DirectInputDevice::GetDeviceData...");
             memory::HookVTableField(&DIDeviceVTable->GetDeviceData, oDirectInputGetDeviceData);
         }
     }

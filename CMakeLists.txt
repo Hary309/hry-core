@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0.0)
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
@@ -14,6 +14,11 @@ file(GLOB_RECURSE hry-core-src
     src/*.hpp
     src/*.cpp)
 add_library(hry-core SHARED ${hry-core-src})
+
+
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    target_compile_definitions(hry-core PUBLIC DEBUG)
+endif()
 
 target_include_directories(hry-core PUBLIC include vendor/scs_sdk_1_10/include)
 target_include_directories(hry-core PRIVATE src)

@@ -22,6 +22,7 @@ Core::Core(HINSTANCE hInst)
 
 Core::~Core()
 {
+    Logger->info("Deinitializing...");
     Core::UninstallHooks();
 }
 
@@ -29,9 +30,16 @@ bool Core::init(scs_telemetry_init_params_v100_t* scsTelemetry)
 {
     _scsTelemetry = scsTelemetry;
 
+#ifdef DEBUG
     AllocConsole();
     freopen("CONOUT$", "w", stdout);
 	freopen("CONOUT$", "w", stdin);
+#endif
+
+    _loggerCore.init("hry_core.log");
+    Logger = _loggerCore.createModuleLogger("core");
+
+    Logger->info("Initializing core...");
 
 	bool success = true;
 
@@ -40,7 +48,7 @@ bool Core::init(scs_telemetry_init_params_v100_t* scsTelemetry)
 
     if (success == false)
 	{
-		printf("Unable to register event callbacks");
+		Logger->error("Unable to register event callbacks");
 		return false;
 	}
 
@@ -48,6 +56,8 @@ bool Core::init(scs_telemetry_init_params_v100_t* scsTelemetry)
 
     _renderer.init();
     _eventMgr.init();
+
+    Logger->info("Core successfully initialized!");
 
     return success;
 }
@@ -86,6 +96,8 @@ void Core::imguiRender()
 
 bool Core::InstallHooks()
 {
+    Logger->info("Installing hooks...");
+
     bool success = true;
 
     success &= hooks::D3D11Hook::Install();
@@ -93,11 +105,11 @@ bool Core::InstallHooks()
 
     if (success)
     {
-        printf("Hooks installed!\n");
+        Logger->info("Hooks installed");
     }
     else
     {
-        printf("Cannot install hooks!\n");
+        Logger->error("Cannot install hooks");
     }
 
     return success;
@@ -105,8 +117,12 @@ bool Core::InstallHooks()
 
 void Core::UninstallHooks()
 {
+    Logger->info("Uninstalling hooks...");
+
     hooks::D3D11Hook::Uninstall();
     hooks::DInput8Hook::Uninstall();
+
+    Logger->info("Hooks uninstalled");
 }
 
 void Core::ProcessImGuiEvents(hry::events::Event* event) 

@@ -1,4 +1,5 @@
 #include "D3D11Hook.hpp"
+#include "Renderer/Renderer.hpp"
 
 #define D3D11_NO_HELPERS
 #define CINTERFACE
@@ -11,6 +12,7 @@
 #include "Hry/Memory/Hooking.hpp"
 #include "Hry/Utils.hpp"
 
+#include "Core.hpp"
 
 namespace hry::hooks
 {
@@ -24,7 +26,6 @@ static WNDPROC oWndProc;
 
 static IDXGISwapChainVtbl* swapChainVTable;
 
-static HWND hWnd;
 static bool needUpdateInfo = true;
 static bool isInited = false;
 
@@ -158,6 +159,7 @@ HRESULT __stdcall new_IDXGISwapChain_Present(IDXGISwapChain* swapChain, UINT syn
             if (isInited == false)
             {
                 D3D11Hook::OnInit.call(swapChain, d3dDevice);
+                Core::Logger->info("Hooking WndProc...");
                 oWndProc = reinterpret_cast<WNDPROC>(SetWindowLongPtr(D3D11Hook::hWnd, GWLP_WNDPROC, (LONG_PTR)WndProc));
                 isInited = true;
             }
@@ -183,18 +185,20 @@ HRESULT __stdcall new_IDXGISwapChain_ResizeBuffers(IDXGISwapChain* swapChain, UI
 
 bool D3D11Hook::Install()
 {
+    Core::Logger->info("Initializing D3D11 hooks...");
+
     swapChainVTable = GetSwapChainVTable();
 
     if (swapChainVTable == nullptr)
     {
-        printf("Cannot find swap chain's vtable\n");
+        Core::Logger->error("Cannot find swap chain's vtable");
         return false;
     }
 
-    printf("Hooking present...\n");
+    Core::Logger->info("Hooking IDXGISwapChain::Present...");
     oSwapChainPresent = memory::HookVTableField(&swapChainVTable->Present, &new_IDXGISwapChain_Present);
 
-    printf("Hooking resize buffers...\n");
+    Core::Logger->info("Hooking IDXGISwapChain::ResizeBuffers...");
     oSwapChainResizeBuffers = memory::HookVTableField(&swapChainVTable->ResizeBuffers, &new_IDXGISwapChain_ResizeBuffers);
 
     return true;
@@ -206,19 +210,20 @@ void D3D11Hook::Uninstall()
     {
         if (oSwapChainPresent != nullptr)
         {
-            printf("Restoring present...\n");
+            Core::Logger->info("Restoring IDXGISwapChain::Present...");
             memory::HookVTableField(&swapChainVTable->Present, oSwapChainPresent);
         }
 
         if (oSwapChainResizeBuffers != nullptr)
         {
-            printf("Restoring resize buffers...\n");
+            Core::Logger->info("Restoring IDXGISwapChain::ResizeBuffers...");
             memory::HookVTableField(&swapChainVTable->ResizeBuffers, oSwapChainResizeBuffers);
         }
     }
 
     if (oWndProc)
 	{
+        Core::Logger->info("Restoring WndProc...");
 		SetWindowLongPtr(hWnd, GWLP_WNDPROC, (LONG_PTR)oWndProc);
 	}
 }

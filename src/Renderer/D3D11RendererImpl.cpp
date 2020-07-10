@@ -2,6 +2,7 @@
 
 #include <cstdio>
 
+#include "Core.hpp"
 #include "Renderer.hpp"
 #include "Hooks/D3D11Hook.hpp"
 
@@ -46,11 +47,11 @@ void D3D11RendererImpl::resize()
 	{
 		_windowWidth = rect.right - rect.left;
 		_windowHeight = rect.bottom - rect.top;
-		printf("Size: %d %d\n", _windowWidth, _windowHeight);
+		Core::Logger->info("Window resized to: ", _windowWidth, " ", _windowHeight);
 	}
 	else
 	{
-		printf("Unable to get window's size [%lu]\n", GetLastError());
+		Core::Logger->warning("Unable to get window's size ", "[", GetLastError(), "]");
 	}
 
     Microsoft::WRL::ComPtr<ID3D11Texture2D> backBuffer;
@@ -62,6 +63,8 @@ void D3D11RendererImpl::resize()
 
 void D3D11RendererImpl::onInit(IDXGISwapChain* swapChain, ID3D11Device* device)
 {
+	Core::Logger->info("Initializing D3D11 renderer...");
+
     _swapChain = swapChain;
     _device = device;
 	device->GetImmediateContext(&_context);
