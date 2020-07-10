@@ -1,6 +1,10 @@
 #pragma once
+
+#include <memory>
+
 #include "PluginInfo.hpp"
 #include "Events/Event.hpp"
+#include "Logger/ModuleLogger.hpp"
 
 namespace hry 
 {
@@ -12,6 +16,7 @@ public:
     virtual void imguiRender() = 0;
     virtual void event(const events::Event& e) = 0;
     virtual const PluginInfo& getPluginInfo() = 0;
+    virtual void initLogger(std::unique_ptr<logger::ModuleLogger>&& logger) = 0;
 };
 
 }
