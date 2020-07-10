@@ -9,8 +9,9 @@
 
 #include <dinput.h>
 
-#include "Utils.hpp"
-#include "Memory/Hooking.hpp"
+#include "Hry/Utils.hpp"
+#include "Hry/Memory/Hooking.hpp"
+
 
 namespace hry::hooks
 {

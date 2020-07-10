@@ -3,7 +3,8 @@
 #include <cstdint>
 #include <windows.h>
 
-#include "Delegate.hpp"
+#include "Hry/Utils/Delegate.hpp"
+
 
 struct IDXGISwapChain;
 struct ID3D11Device;

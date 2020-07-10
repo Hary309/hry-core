@@ -1,4 +1,4 @@
-#include "Memory/Detour.hpp"
+#include "Hry/Memory/Detour.hpp"
 
 #include <MinHook.h>
 

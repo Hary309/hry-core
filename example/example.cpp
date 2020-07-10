@@ -3,7 +3,7 @@
 
 #include <imgui.h>
 
-#include <hry/Plugin.hpp>
+#include <Hry/Plugin.hpp>
 
 class ExamplePlugin : public hry::Plugin
 {
@@ -24,7 +24,7 @@ public:
 
     virtual void imguiRender()
     {
-
+        
     }
 
     virtual void event(const hry::events::Event& e)

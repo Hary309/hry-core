@@ -3,7 +3,9 @@
 #include <vector>
 
 #include "EventBridgeBase.hpp"
-#include "System/Mouse.hpp"
+
+#include "Hry/System/Mouse.hpp"
+
 
 struct IDirectInputDevice8A;
 struct DIDEVICEOBJECTDATA;

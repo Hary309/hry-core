@@ -3,7 +3,7 @@
 #include <vector>
 #include <cstdint>
 
-#include "Delegate.hpp"
+#include "Hry/Utils/Delegate.hpp"
 
 struct IDirectInputDevice8A;
 struct DIDEVICEOBJECTDATA;

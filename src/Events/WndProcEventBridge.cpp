@@ -6,12 +6,13 @@
 
 #include "Hooks/D3D11Hook.hpp"
 
-#include "EventManager.hpp"
-#include "Events/Event.hpp"
+#include "Hry/Events/Event.hpp"
+#include "Hry/System/Keyboard.hpp"
+#include "Hry/System/Mouse.hpp"
+#include "Hry/System/System.hpp"
 
-#include "System/Keyboard.hpp"
-#include "System/Mouse.hpp"
-#include "System/System.hpp"
+#include "EventManager.hpp"
+
 
 IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 

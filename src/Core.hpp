@@ -2,12 +2,14 @@
 
 #include <windows.h>
 
-#include "Events/Event.hpp"
+#include "Hry/Events/Event.hpp"
+#include "Hry/Utils/Timer.hpp"
+
 #include "Renderer/Renderer.hpp"
 #include "Events/EventManager.hpp"
-#include "Utils/Timer.hpp"
 
 #include <scssdk_telemetry.h>
+
 
 struct scs_telemetry_init_params_v100_t;
 

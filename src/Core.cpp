@@ -1,15 +1,15 @@
 #include "Core.hpp"
-#include "imgui.h"
-#include "scssdk.h"
-#include "scssdk_telemetry_event.h"
 
 #include <cstdio>
 
+#include <imgui.h>
 #include <scssdk_telemetry.h>
+
+#include "Hry/Events/Event.hpp"
 
 #include "Hooks/D3D11Hook.hpp"
 #include "Hooks/DInput8Hook.hpp"
-#include "Events/Event.hpp"
+
 
 namespace hry
 {

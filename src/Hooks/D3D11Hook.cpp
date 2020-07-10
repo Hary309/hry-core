@@ -8,8 +8,9 @@
 #include <d3d11.h>
 #include <windows.h>
 
-#include "Memory/Hooking.hpp"
-#include "Utils.hpp"
+#include "Hry/Memory/Hooking.hpp"
+#include "Hry/Utils.hpp"
+
 
 namespace hry::hooks
 {

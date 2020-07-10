@@ -1,15 +1,16 @@
 #include "DInput8EventBridge.hpp"
-#include "Events/EventBridgeBase.hpp"
 
 #include <cstdio>
 
 #include <dinput.h>
 
-#include "Hooks/DInput8Hook.hpp"
+#include "Hry/Events/Event.hpp"
+#include "Hry/System/Mouse.hpp"
 
 #include "EventManager.hpp"
-#include "Events/Event.hpp"
-#include "System/Mouse.hpp"
+#include "Events/EventBridgeBase.hpp"
+#include "Hooks/DInput8Hook.hpp"
+
 
 namespace hry::events
 {

@@ -4,8 +4,10 @@
 #include <vector>
 #include <memory>
 
-#include "Events/Event.hpp"
+#include "Hry/Events/Event.hpp"
+
 #include "Events/EventBridgeBase.hpp"
+
 
 namespace hry::events
 {
