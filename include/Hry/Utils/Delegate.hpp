@@ -1,3 +1,5 @@
+// original code: https://github.com/skypjack/entt
+
 #pragma once
 
 #include <functional>
@@ -44,24 +46,20 @@ public:
         _content = content;
     }
 
-    template<
-        typename Retn = std::conditional_t<
-            std::is_void_v<Return>,
-            void,
-            std::optional<Return>
-            >
-        >
-    Retn call(Args... args) const
+    Return call(Args... args) const
     {
         if (_function)
         {
-            return _function(_content, std::forward<Args>(args)...);
+            if constexpr (!std::is_void_v<Return>)
+            {
+                _function(_content, std::forward<Args>(args)...);
+            }
+            else
+            {
+                return _function(_content, std::forward<Args>(args)...);
+            }
         }
 
-        if constexpr (!std::is_void_v<Return>)
-        {
-            return {};
-        }
     }
 };
 
