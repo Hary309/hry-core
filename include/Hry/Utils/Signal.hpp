@@ -1,0 +1,106 @@
+// original code: https://github.com/skypjack/entt
+
+#pragma once
+
+#include <vector>
+
+#include "Delegate.hpp"
+
+namespace hry
+{
+
+template<typename>
+class Signal;
+
+template<typename>
+class Sink;
+
+template <typename Return, typename... Args>
+class Signal<Return(Args...)>
+{
+    friend Sink<Return(Args...)>;
+
+private:
+    using Delegate_t = Delegate<Return(Args...)>;
+
+private:
+    std::vector<Delegate_t> _calls;
+
+public:
+    Return call(Args... args)
+    {
+        for (Delegate_t& delegate : _calls)
+        {
+            delegate.call(args...);
+        }
+    }
+
+private:
+    void add(Delegate_t delegate)
+    {
+        _calls.push_back(delegate);
+    }
+
+    void remove(Delegate_t delegate)
+    {
+        auto it = std::find_if(_calls.begin(), _calls.end(), 
+            [&delegate](const Delegate_t& a) { 
+                return a == delegate;
+            });
+
+        if (it != _calls.end())
+        {
+            _calls.erase(it);
+        }
+    }
+};
+
+template <typename Return, typename... Args>
+class Sink<Return(Args...)>
+{
+private:
+    using Signal_t = Signal<Return(Args...)>;
+
+private:
+    Signal_t& _signal;
+    std::vector<typename Signal_t::Delegate_t> _internalCalls;
+
+public:
+    Sink(Signal_t& signal)
+        : _signal(signal)
+    {
+    }
+
+    ~Sink()
+    {
+        for (auto& delegate : _internalCalls)
+        {
+            _signal.remove(delegate);
+        }
+    }
+
+    template<auto FuncAddr>
+    void connect()
+    {
+        typename Signal_t::Delegate_t delegate;
+        delegate.template connect<FuncAddr>();
+
+        _signal.add(delegate);
+        _internalCalls.push_back(delegate);
+    }
+
+    template<auto MethodAddr, typename T>
+    void connect(T* content)
+    {
+        typename Signal_t::Delegate_t delegate;
+        delegate.template connect<MethodAddr>(content);
+
+        _signal.add(delegate);
+        _internalCalls.push_back(delegate);
+    }
+};
+
+template<typename Return, typename... Args>
+Sink(Signal<Return(Args...)>&) -> Sink<Return(Args...)>;
+
+}
