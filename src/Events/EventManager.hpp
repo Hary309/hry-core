@@ -41,7 +41,7 @@ public:
 
     void init();
 
-    EventHandler createEventHandler();
+    [[nodiscard]] EventHandler createEventHandler();
 };
 
 }

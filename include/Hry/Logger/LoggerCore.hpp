@@ -26,7 +26,7 @@ public:
     void init(const char* logFilePath);
     void writeLine(Level level, const char* msg, const char* module);
 
-    std::unique_ptr<ModuleLogger> createModuleLogger(const char* moduleName);
+    [[nodiscard]] std::unique_ptr<ModuleLogger> createModuleLogger(const char* moduleName);
 
 private:
     void formatTime();
