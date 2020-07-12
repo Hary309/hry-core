@@ -9,13 +9,14 @@
 
 #include "Hooks/D3D11Hook.hpp"
 #include "Hooks/DInput8Hook.hpp"
+#include "Hry/Utils/Signal.hpp"
 
 
 namespace hry
 {
 
 Core::Core(HINSTANCE hInst)
-    : _renderer(*this)
+    : _renderer(*this), _imguiImplEvents(_eventMgr)
 {
     hInstance = hInst;
 }
@@ -67,15 +68,6 @@ void Core::update()
     float deltaTime = _deltaTime.asSeconds();
     _deltaTime.reset();
 
-    hry::events::Event* event = _eventMgr.front();
-
-    while (event != nullptr)
-    {
-        Core::ProcessImGuiEvents(event);
-
-        _eventMgr.pop();
-        event = _eventMgr.front();
-    }
 }
 
 void Core::imguiRender() 
@@ -123,34 +115,6 @@ void Core::UninstallHooks()
     hooks::DInput8Hook::Uninstall();
 
     Logger->info("Hooks uninstalled");
-}
-
-void Core::ProcessImGuiEvents(hry::events::Event* event) 
-{
-    auto& imguiIO = ImGui::GetIO();
-
-    // add missing mouse events
-
-    if (event->type == events::Event::Type::MouseButtonPressed ||
-        event->type == events::Event::Type::MouseButtonReleased)
-    {
-        auto& buttonEvent = event->get<events::MouseButtonEvent>();
-        imguiIO.MouseDown[static_cast<int>(buttonEvent.button)] = event->type == events::Event::Type::MouseButtonPressed;
-    }
-
-    if (event->type == events::Event::Type::MouseWheelScrolled)
-    {
-        auto& wheelEvent = event->get<events::MouseWheelEvent>();
-
-        if (wheelEvent.wheel == system::Mouse::Wheel::Vertical)
-        {
-            imguiIO.MouseWheel = static_cast<float>(wheelEvent.delta);
-        }
-        else
-        {
-            imguiIO.MouseWheelH = static_cast<float>(wheelEvent.delta);
-        }
-    }
 }
 
 void Core::TelemetryFrameEnd(const scs_event_t event, const void* const, const scs_context_t self) 

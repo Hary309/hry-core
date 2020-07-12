@@ -46,10 +46,7 @@ void DInput8EventBridge::onGetDeviceData(IDirectInputDevice8A* device, const std
                 moveEvent.offsetX = _mouseOffsetX;
                 moveEvent.offsetY = _mouseOffsetY;
 
-                Event event;
-                event.type = Event::Type::MouseMoved;
-                event.event = moveEvent;
-                _eventMgr.pushEvent(std::move(event));
+                _eventMgr.mouseMoveSignal.call(std::move(moveEvent));
             } break;
             case DINPUT_Y:
             {
@@ -59,10 +56,7 @@ void DInput8EventBridge::onGetDeviceData(IDirectInputDevice8A* device, const std
                 moveEvent.offsetX = _mouseOffsetX;
                 moveEvent.offsetY = _mouseOffsetY;
 
-                Event event;
-                event.type = Event::Type::MouseMoved;
-                event.event = moveEvent;
-                _eventMgr.pushEvent(std::move(event));
+                _eventMgr.mouseMoveSignal.call(std::move(moveEvent));
             } break;
 
             // mouse move wheel
@@ -72,10 +66,7 @@ void DInput8EventBridge::onGetDeviceData(IDirectInputDevice8A* device, const std
                 wheelEvent.wheel = Mouse::Wheel::Vertical;
                 wheelEvent.delta = static_cast<short>(data.dwData) / WHEEL_DELTA;
 
-                Event event;
-                event.type = Event::Type::MouseWheelScrolled;
-                event.event = wheelEvent;
-                _eventMgr.pushEvent(std::move(event));
+                _eventMgr.mouseWheelScrollSignal.call(std::move(wheelEvent));
             } break;
 
             // mouse buttons
@@ -109,11 +100,15 @@ void DInput8EventBridge::sendButtonEvent(int pressData, system::Mouse::Button bu
     events::MouseButtonEvent mouseButtonEvent;
     mouseButtonEvent.button = button;
 
-    events::Event event;
-    event.event = mouseButtonEvent;
-    event.type = pressData == 0x80 ? Event::Type::MouseButtonPressed : Event::Type::MouseButtonReleased;
-
-    _eventMgr.pushEvent(std::move(event));
+    // if pressed
+    if (pressData == 0x80)
+    {
+        _eventMgr.mouseButtonPressSignal.call(std::move(mouseButtonEvent));
+    }
+    else
+    {
+        _eventMgr.mouseButtonReleaseSignal.call(std::move(mouseButtonEvent));
+    }
 }
 
 }

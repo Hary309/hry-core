@@ -184,10 +184,7 @@ void WndProcEventBridge::onWndProc(const HWND hWnd, UINT msg, WPARAM wParam, LPA
             resizeEvent.height = HIWORD(lParam);
             resizeEvent.type = resizeType;
             
-            Event event;
-            event.type = Event::Type::WindowResized;
-            event.event = resizeEvent;
-            _eventMgr.pushEvent(std::move(event));
+            _eventMgr.windowResizeSignal.call(std::move(resizeEvent));
         } break;
         
         case WM_KEYDOWN:
@@ -195,20 +192,15 @@ void WndProcEventBridge::onWndProc(const HWND hWnd, UINT msg, WPARAM wParam, LPA
         {
             if ((HIWORD(lParam) & KF_REPEAT) == 0)
             {
-                Event event;
-                event.type = Event::Type::KeyPressed;
-                event.event = KeyboardEvent { vkKeyCodeToEnum(wParam, lParam) };
-                _eventMgr.pushEvent(std::move(event));
+                _eventMgr.keyPressSignal.call(KeyboardEvent { vkKeyCodeToEnum(wParam, lParam) });
             }
         } break;
 
         case WM_KEYUP:
         case WM_SYSKEYUP:
         {
-            Event event;
-            event.type = Event::Type::KeyReleased;
-            event.event = KeyboardEvent { vkKeyCodeToEnum(wParam, lParam) };
-            _eventMgr.pushEvent(std::move(event));
+            _eventMgr.keyReleaseSignal.call(KeyboardEvent { vkKeyCodeToEnum(wParam, lParam) });
+
         } break;
 
         case WM_MOUSEWHEEL:
@@ -217,10 +209,7 @@ void WndProcEventBridge::onWndProc(const HWND hWnd, UINT msg, WPARAM wParam, LPA
             wheelEvent.wheel = Mouse::Wheel::Vertical;
             wheelEvent.delta = GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA;
 
-            Event event;
-            event.type = Event::Type::MouseWheelScrolled;
-            event.event = wheelEvent;
-            _eventMgr.pushEvent(std::move(event));
+            _eventMgr.mouseWheelScrollSignal.call(std::move(wheelEvent));
         } break;
 
         // mouse wheel
@@ -230,10 +219,7 @@ void WndProcEventBridge::onWndProc(const HWND hWnd, UINT msg, WPARAM wParam, LPA
             wheelEvent.wheel = Mouse::Wheel::Horizontal;
             wheelEvent.delta = GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA;
 
-            Event event;
-            event.type = Event::Type::MouseWheelScrolled;
-            event.event = wheelEvent;
-            _eventMgr.pushEvent(std::move(event));
+            _eventMgr.mouseWheelScrollSignal.call(std::move(wheelEvent));
         } break;
 
         case WM_MOUSEMOVE:
@@ -247,54 +233,50 @@ void WndProcEventBridge::onWndProc(const HWND hWnd, UINT msg, WPARAM wParam, LPA
 
             _lastMousePosX = x;
             _lastMousePosY = y;
+
+            _eventMgr.mouseMoveSignal.call(std::move(moveEvent));
         } break;
 
         // Left mouse button
         case WM_LBUTTONDOWN:
         {
-            Event event;
-            event.type = Event::Type::MouseButtonPressed;
-            event.event = getMouseButtonEvent(Mouse::Button::Left, lParam);
-            _eventMgr.pushEvent(std::move(event));
+            _eventMgr.mouseButtonPressSignal.call(
+                getMouseButtonEvent(Mouse::Button::Left, lParam)
+                );
         } break;
         case WM_LBUTTONUP:
         {
-            Event event;
-            event.type = Event::Type::MouseButtonReleased;
-            event.event = getMouseButtonEvent(Mouse::Button::Left, lParam);
-            _eventMgr.pushEvent(std::move(event));
+            _eventMgr.mouseButtonReleaseSignal.call(
+                getMouseButtonEvent(Mouse::Button::Left, lParam)
+                );
         } break;
     
         // Right mouse button
         case WM_RBUTTONDOWN:
         {
-            Event event;
-            event.type = Event::Type::MouseButtonPressed;
-            event.event = getMouseButtonEvent(Mouse::Button::Right, lParam);
-            _eventMgr.pushEvent(std::move(event));
+            _eventMgr.mouseButtonPressSignal.call(
+                getMouseButtonEvent(Mouse::Button::Right, lParam)
+                );
         } break;
         case WM_RBUTTONUP:
         {
-            Event event;
-            event.type = Event::Type::MouseButtonReleased;
-            event.event = getMouseButtonEvent(Mouse::Button::Right, lParam);
-            _eventMgr.pushEvent(std::move(event));
+            _eventMgr.mouseButtonReleaseSignal.call(
+                getMouseButtonEvent(Mouse::Button::Right, lParam)
+                );
         } break;
 
         // Middle mouse button
         case WM_MBUTTONDOWN:
         {
-            Event event;
-            event.type = Event::Type::MouseButtonPressed;
-            event.event = getMouseButtonEvent(Mouse::Button::Middle, lParam);
-            _eventMgr.pushEvent(std::move(event));
+            _eventMgr.mouseButtonPressSignal.call(
+                getMouseButtonEvent(Mouse::Button::Middle, lParam)
+                );
         } break;
         case WM_MBUTTONUP:
         {
-            Event event;
-            event.type = Event::Type::MouseButtonReleased;
-            event.event = getMouseButtonEvent(Mouse::Button::Middle, lParam);
-            _eventMgr.pushEvent(std::move(event));
+            _eventMgr.mouseButtonReleaseSignal.call(
+                getMouseButtonEvent(Mouse::Button::Middle, lParam)
+                );
         } break;
 
         // xbutton
@@ -302,19 +284,17 @@ void WndProcEventBridge::onWndProc(const HWND hWnd, UINT msg, WPARAM wParam, LPA
         {
             Mouse::Button button = GET_XBUTTON_WPARAM(wParam) == XBUTTON1 ? Mouse::Button::XButton1 : Mouse::Button::XButton2; 
 
-            Event event;
-            event.type = Event::Type::MouseButtonPressed;
-            event.event = getMouseButtonEvent(button, lParam);
-            _eventMgr.pushEvent(std::move(event));
+            _eventMgr.mouseButtonPressSignal.call(
+                getMouseButtonEvent(button, lParam)
+                );
         } break;
         case WM_XBUTTONUP:
         {
             Mouse::Button button = GET_XBUTTON_WPARAM(wParam) == XBUTTON1 ? Mouse::Button::XButton1 : Mouse::Button::XButton2; 
 
-            Event event;
-            event.type = Event::Type::MouseButtonPressed;
-            event.event = getMouseButtonEvent(button, lParam);
-            _eventMgr.pushEvent(std::move(event));
+            _eventMgr.mouseButtonReleaseSignal.call(
+                getMouseButtonEvent(button, lParam)
+                );
         } break;
         
     }

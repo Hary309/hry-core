@@ -17,22 +17,21 @@ void EventManager::init()
     _eventBridges.push_back(std::make_unique<DInput8EventBridge>(*this));
 }
 
-Event* EventManager::front() 
+EventHandler EventManager::createEventHandler() 
 {
-    if (!_events.empty())
-    {  
-        return &_events.front();
-    }
+    return {
+        windowResizeSignal,
+        windowGainFocusSignal,
+        windowLoseFocusSignal,
 
-    return nullptr;
-}
+        keyPressSignal,
+        keyReleaseSignal,
 
-void EventManager::pop() 
-{
-    if (!_events.empty())
-    {
-        _events.pop();
-    }
+        mouseButtonPressSignal,
+        mouseButtonReleaseSignal,
+        mouseMoveSignal,
+        mouseWheelScrollSignal
+    };
 }
 
 }

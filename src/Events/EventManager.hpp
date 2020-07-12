@@ -1,13 +1,13 @@
 #pragma once
 
-#include <queue>
 #include <vector>
 #include <memory>
 
 #include "Hry/Events/Event.hpp"
+#include "Hry/Events/EventHandler.hpp"
+#include "Hry/Utils/Signal.hpp"
 
 #include "Events/EventBridgeBase.hpp"
-
 
 namespace hry::events
 {
@@ -16,10 +16,24 @@ class EventBridgeBase;
 
 class EventManager
 {
-private:
-    std::queue<Event> _events;
+public:
+    using EventType_t = Event::Type;
 
+private:
     std::vector<std::unique_ptr<EventBridgeBase>> _eventBridges;
+
+public:
+    utils::Signal<void(const ResizeEvent&&)> windowResizeSignal;
+    utils::Signal<void()> windowGainFocusSignal;
+    utils::Signal<void()> windowLoseFocusSignal;
+    
+    utils::Signal<void(const KeyboardEvent&&)> keyPressSignal;
+    utils::Signal<void(const KeyboardEvent&&)> keyReleaseSignal;
+
+    utils::Signal<void(const MouseButtonEvent&&)> mouseButtonPressSignal;
+    utils::Signal<void(const MouseButtonEvent&&)> mouseButtonReleaseSignal;
+    utils::Signal<void(const MouseMoveEvent&&)> mouseMoveSignal;
+    utils::Signal<void(const MouseWheelEvent&&)> mouseWheelScrollSignal;
 
 public:
     EventManager() = default;
@@ -27,13 +41,7 @@ public:
 
     void init();
 
-    void pushEvent(Event&& event)
-    {
-        _events.push(std::move(event));
-    }
-
-    Event* front();
-    void pop();
+    EventHandler createEventHandler();
 };
 
 }
