@@ -50,16 +50,13 @@ public:
     {
         if (_function)
         {
-            if constexpr (!std::is_void_v<Return>)
-            {
-                _function(_content, std::forward<Args>(args)...);
-            }
-            else
-            {
-                return _function(_content, std::forward<Args>(args)...);
-            }
+            return _function(_content, std::forward<Args>(args)...);
         }
+    }
 
+    bool operator==(const Delegate<Return(Args...)>& b) const
+    {
+        return (_function == b._function && _content == b._content);
     }
 };
 
