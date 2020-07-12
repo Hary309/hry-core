@@ -6,7 +6,7 @@
 
 #include "Delegate.hpp"
 
-namespace hry
+namespace hry::utils
 {
 
 template<typename>
@@ -31,7 +31,7 @@ public:
     {
         for (Delegate_t& delegate : _calls)
         {
-            delegate.call(args...);
+            delegate.call(std::forward<Args...>(args...));
         }
     }
 
