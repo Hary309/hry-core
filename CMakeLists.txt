@@ -20,6 +20,9 @@ if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     target_compile_definitions(hry-core PUBLIC DEBUG)
 endif()
 
+target_compile_definitions(hry-core PRIVATE HRY_EXPORT)
+
+
 target_include_directories(hry-core PUBLIC include vendor/scs_sdk_1_10/include)
 target_include_directories(hry-core PRIVATE src)
 
