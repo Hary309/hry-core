@@ -12,6 +12,7 @@ namespace hry
 class Plugin
 {
 public:
+    virtual ~Plugin() {}
     virtual void update(float deltaTime) = 0;
     virtual void imguiRender() = 0;
     virtual void event(const events::Event& e) = 0;

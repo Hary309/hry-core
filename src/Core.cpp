@@ -16,7 +16,7 @@ namespace hry
 {
 
 Core::Core(HINSTANCE hInst)
-    : _renderer(*this), _imguiImplEvents(_eventMgr)
+    : _renderer(*this), _moduleMgr("plugins\\hry_plugins"), _imguiImplEvents(_eventMgr)
 {
     hInstance = hInst;
 }
@@ -24,6 +24,7 @@ Core::Core(HINSTANCE hInst)
 Core::~Core()
 {
     Logger->info("Deinitializing...");
+    _moduleMgr.unloadAll();
     Core::UninstallHooks();
 }
 
@@ -57,6 +58,7 @@ bool Core::init(scs_telemetry_init_params_v100_t* scsTelemetry)
 
     _renderer.init();
     _eventMgr.init();
+    _moduleMgr.init();
 
     Logger->info("Core successfully initialized!");
 

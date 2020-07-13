@@ -23,6 +23,11 @@ public:
     inline static std::unique_ptr<logger::ModuleLogger> Logger;
 
 public:
+    virtual ~ExamplePlugin()
+    {
+
+    }
+
     virtual void update(float deltaTime)
     {
 
@@ -49,7 +54,11 @@ public:
     }
 };
 
-Plugin* CreatePlugin()
+extern "C"
 {
-    return new ExamplePlugin();
+    // TODO: add dllexport macro
+    __declspec(dllexport) Plugin* CreatePlugin()
+    {
+        return new ExamplePlugin();
+    }
 }
