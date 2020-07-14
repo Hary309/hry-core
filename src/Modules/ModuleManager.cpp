@@ -1,6 +1,7 @@
 #include "ModuleManager.hpp"
 
 #include <Windows.h>
+#include <algorithm>
 #include <filesystem>
 #include <memory>
 
@@ -34,12 +35,38 @@ void ModuleManager::scan()
 {
     Core::Logger->info("Scanning '", _pluginDirectory, "'...");
 
+    if (!fs::exists(_pluginDirectory))
+    {
+        fs::create_directory(_pluginDirectory);
+    }
+
+    // remove missing modules
+    auto toRemove = std::remove_if(_modules.begin(), _modules.end(), [this](const std::unique_ptr<Module>& mod) {
+        if (!fs::exists(mod->dllPath))
+        {
+            Core::Logger->info(mod->dllPath, " not found, removing from list");
+
+            // it is possible if file is symbolic link
+            if (mod->isLoaded)
+            {
+                unload(mod.get());
+            }
+
+            return true;
+        }
+
+        return false;
+    });
+
+    _modules.erase(toRemove, _modules.end());
+
+    // add new modules
     for (auto& item : fs::directory_iterator(_pluginDirectory))
     {
         if (!item.is_directory())
         {
             auto& path = item.path();
-            Core::Logger->info("Found '", path.filename(), "'");
+            Core::Logger->info("Found ", path.filename());
             
             if (tryAdd(path))
             {
@@ -47,7 +74,7 @@ void ModuleManager::scan()
             }
             else
             {
-                Core::Logger->info("'", path.filename(), "' already indexed");
+                Core::Logger->info(path.filename(), " already indexed");
             }
         }
     }

@@ -48,6 +48,11 @@ void MainWindow::renderImGui()
 
 void MainWindow::renderPluginsTab() 
 {
+    if (ImGui::Button("Rescan"))
+    {
+        _moduleMgr.scan();
+    }
+
     auto& modules = _moduleMgr.getModules();
 
     if (modules.empty())
