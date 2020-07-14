@@ -77,18 +77,8 @@ void Core::update()
 
 void Core::imguiRender() 
 {
-    static float f;
-
-    ImGui::Begin("Test");
-    ImGui::Text("Adsf");
-    ImGui::InputFloat("float", &f);
-    ImGui::Text("Adsf");
-    ImGui::Text("Adsf");
-    ImGui::Text("Adsf");
-    ImGui::Text("Adsf");
-    ImGui::Text("Adsf");
-    ImGui::Text("Adsf");
-    ImGui::End();
+    ImGui::ShowDemoWindow();
+    _mainWindow.renderImGui();
 }
 
 bool Core::InstallHooks()

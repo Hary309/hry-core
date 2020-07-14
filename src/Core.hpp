@@ -14,6 +14,7 @@
 #include "Renderer/Renderer.hpp"
 #include "Events/EventManager.hpp"
 #include "Modules/ModuleManager.hpp"
+#include "UI/MainWindow.hpp"
 
 
 struct scs_telemetry_init_params_v100_t;
@@ -36,7 +37,8 @@ private:
     renderer::Renderer _renderer;
     events::EventManager _eventMgr;
     modules::ModuleManager _moduleMgr;
-    
+    ui::MainWindow _mainWindow;
+
     utils::Timer _deltaTime;
 
     ImGuiImplEvents _imguiImplEvents;

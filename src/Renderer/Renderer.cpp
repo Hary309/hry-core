@@ -24,12 +24,15 @@ Renderer::~Renderer()
 
 void Renderer::init() 
 {
-    _impl->init();    
+    _impl->init(); 
 }
 
 void Renderer::onRendererInit() 
 {
     Core::Logger->info("Renderer initialized!");
+
+    // TODO: make some switch
+    ImGui::GetIO().MouseDrawCursor = true;
 }
 
 void Renderer::onRendererRenderImGui() 
