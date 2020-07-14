@@ -21,6 +21,7 @@ namespace hry::events
 {
 
 // source: https://github.com/SFML/SFML
+// This is a part of SFML under https://github.com/SFML/SFML/blob/master/license.md
 system::Keyboard::Key vkKeyCodeToEnum(WPARAM key, LPARAM flags)
 {
     using namespace hry::system;
@@ -180,8 +181,8 @@ void WndProcEventBridge::onWndProc(const HWND hWnd, UINT msg, WPARAM wParam, LPA
             }
 
             ResizeEvent resizeEvent;
-            resizeEvent.width = LOWORD(lParam);
-            resizeEvent.height = HIWORD(lParam);
+            resizeEvent.size.x = LOWORD(lParam);
+            resizeEvent.size.y = HIWORD(lParam);
             resizeEvent.type = resizeType;
             
             _eventMgr.windowResizeSignal.call(std::move(resizeEvent));
@@ -228,11 +229,10 @@ void WndProcEventBridge::onWndProc(const HWND hWnd, UINT msg, WPARAM wParam, LPA
             int y = GET_Y_LPARAM(lParam);
 
             MouseMoveEvent moveEvent;
-            moveEvent.offsetX = x - _lastMousePosX;
-            moveEvent.offsetY = y - _lastMousePosX;
+            moveEvent.offset.x = x - _lastMousePos.x;
+            moveEvent.offset.y = y - _lastMousePos.y;
 
-            _lastMousePosX = x;
-            _lastMousePosY = y;
+            _lastMousePos = { x, y };
 
             _eventMgr.mouseMoveSignal.call(std::move(moveEvent));
         } break;

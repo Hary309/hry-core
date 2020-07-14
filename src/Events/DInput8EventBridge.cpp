@@ -40,21 +40,19 @@ void DInput8EventBridge::onGetDeviceData(IDirectInputDevice8A* device, const std
             // mouse move x
             case DINPUT_X:
             {
-                _mouseOffsetX = data.dwData;
+                _mouseOffset.x = data.dwData;
 
                 MouseMoveEvent moveEvent;
-                moveEvent.offsetX = _mouseOffsetX;
-                moveEvent.offsetY = _mouseOffsetY;
+                moveEvent.offset = _mouseOffset;
 
                 _eventMgr.mouseMoveSignal.call(std::move(moveEvent));
             } break;
             case DINPUT_Y:
             {
-                _mouseOffsetY = data.dwData;
+                _mouseOffset.y = data.dwData;
 
                 MouseMoveEvent moveEvent;
-                moveEvent.offsetX = _mouseOffsetX;
-                moveEvent.offsetY = _mouseOffsetY;
+                moveEvent.offset = _mouseOffset;
 
                 _eventMgr.mouseMoveSignal.call(std::move(moveEvent));
             } break;

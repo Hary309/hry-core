@@ -1,4 +1,5 @@
 // original code: https://github.com/skypjack/entt
+// This is a part of ENTT under MIT License
 
 #pragma once
 

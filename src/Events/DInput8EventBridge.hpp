@@ -4,6 +4,7 @@
 
 #include "EventBridgeBase.hpp"
 
+#include "Hry/Math/Vec2.hpp"
 #include "Hry/System/Mouse.hpp"
 
 
@@ -16,8 +17,7 @@ namespace hry::events
 class DInput8EventBridge : public EventBridgeBase
 {
 private:
-    int _mouseOffsetX;
-    int _mouseOffsetY;
+    math::Vec2i _mouseOffset;
 
 public:
     DInput8EventBridge(EventManager& eventMgr);

@@ -4,9 +4,10 @@
 #include <variant>
 #include <cstdint>
 
-#include "../System/System.hpp"
-#include "../System/Keyboard.hpp"
-#include "../System/Mouse.hpp"
+#include "Hry/Math/Vec2.hpp"
+#include "Hry/System/System.hpp"
+#include "Hry/System/Keyboard.hpp"
+#include "Hry/System/Mouse.hpp"
 
 namespace hry::events
 {
@@ -14,8 +15,7 @@ namespace hry::events
 struct ResizeEvent
 {
     system::ResizeType type;
-    uint32_t width;
-    uint32_t height;
+    math::Vec2u size;
 };
 
 struct KeyboardEvent
@@ -30,8 +30,7 @@ struct MouseButtonEvent
 
 struct MouseMoveEvent
 {
-    int offsetX;
-    int offsetY;
+    math::Vec2i offset;
 };
 
 struct MouseWheelEvent
