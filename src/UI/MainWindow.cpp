@@ -58,6 +58,8 @@ void MainWindow::renderPluginsTab()
 
     for (auto& module : modules)
     {
+        ImGui::PushID(module.get());
+        
         if (module->isLoaded)
         {
             auto& pluginInfo = module->plugin->getPluginInfo();
@@ -83,6 +85,8 @@ void MainWindow::renderPluginsTab()
                 ImGui::BulletText("%s", module->dllName.c_str());
             }
         }
+
+        ImGui::PopID();
     }
 }
 
