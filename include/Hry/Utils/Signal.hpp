@@ -30,9 +30,19 @@ private:
 public:
     Return call(Args... args)
     {
-        for (Delegate_t& delegate : _calls)
+        if constexpr (sizeof...(args) > 0)
         {
-            delegate.call(std::forward<Args...>(args...));
+            for (Delegate_t& delegate : _calls)
+            {
+                delegate.call(std::forward<Args...>(args...));
+            }
+        }
+        else
+        {
+            for (Delegate_t& delegate : _calls)
+            {
+                delegate.call();
+            }
         }
     }
 
