@@ -32,6 +32,8 @@ public:
     utils::Signal<void(const MouseMoveEvent&&)> mouseMoveSignal;
     utils::Signal<void(const MouseWheelEvent&&)> mouseWheelScrollSignal;
 
+    utils::Signal<void()> imguiRender;
+
 public:
     EventManager() = default;
     ~EventManager() = default;

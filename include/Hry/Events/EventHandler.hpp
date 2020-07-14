@@ -18,6 +18,8 @@ struct EventHandler
     utils::Sink<void(const MouseButtonEvent&&)> onMouseButtonRelease;
     utils::Sink<void(const MouseMoveEvent&&)> onMouseMove;
     utils::Sink<void(const MouseWheelEvent&&)> onMouseWheelScroll;
+
+    utils::Sink<void()> onImGuiRender;
 };
 
 }

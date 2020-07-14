@@ -37,6 +37,7 @@ public:
         Logger->info("Created!");
 
         eventHandler->onKeyPress.connect<&ExamplePlugin::onKeyPressed>(this);
+        eventHandler->onImGuiRender.connect<&ExamplePlugin::imguiRender>(this);
     }
 
     virtual void update(float deltaTime)
@@ -46,9 +47,19 @@ public:
 
     virtual void imguiRender()
     {
+        if (ImGui::Begin("hry-example"))
+        {
+            ImGui::Text("asdf");
+        }
 
+        ImGui::End();
     }
-    
+
+    virtual void imguiSettingsTab()
+    {
+        ImGui::Text("Test asdf");
+    }
+
     virtual const PluginInfo& getPluginInfo() const
     {
         return _pluginInfo;

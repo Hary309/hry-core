@@ -51,6 +51,8 @@ public:
     ~Core();
 
     bool init(scs_telemetry_init_params_v100_t* scsTelemetry);
+    // after renderer and imgui is initalized
+    void lateInit();
 
     void update();
     void imguiRender();

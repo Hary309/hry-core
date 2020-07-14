@@ -33,13 +33,14 @@ void Renderer::onRendererInit()
 
     // TODO: make some switch
     ImGui::GetIO().MouseDrawCursor = true;
+
+    _core.lateInit();
 }
 
 void Renderer::onRendererRenderImGui() 
 {
     _core.imguiRender();
 }
-
 
 void Renderer::onRendererResize(uint32_t width, uint32_t height) 
 {

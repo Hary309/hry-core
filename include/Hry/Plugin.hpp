@@ -13,6 +13,7 @@ namespace hry
 class Plugin
 {
 public:
+    // never nullptr
     std::unique_ptr<events::EventHandler> eventHandler;
 
 public:
@@ -21,7 +22,7 @@ public:
 
     virtual void update(float deltaTime) = 0;
 
-    virtual void imguiRender() = 0;
+    virtual void imguiSettingsTab() = 0;
     
     virtual const PluginInfo& getPluginInfo() const = 0;
 };

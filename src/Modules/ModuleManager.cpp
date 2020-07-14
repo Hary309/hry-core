@@ -4,6 +4,8 @@
 #include <filesystem>
 #include <memory>
 
+#include <imgui.h>
+
 #include "Core.hpp"
 #include "Hry/Events/EventHandler.hpp"
 #include "Hry/Logger/LoggerCore.hpp"
@@ -15,6 +17,7 @@ namespace hry::modules
 {
 
 using CreatePlugin_t = Plugin*();
+using InitImGui_t = void(ImGuiContext*);
 
 ModuleManager::ModuleManager(const std::string& pluginDirectory, events::EventManager& eventMgr, logger::LoggerCore& loggerCore)
     : _pluginDirectory(pluginDirectory), _eventMgr(eventMgr), _loggerCore(loggerCore)
@@ -97,6 +100,16 @@ bool ModuleManager::load(Module* mod)
     }
 
     mod->handle = handle;
+
+    InitImGui_t* InitImGui_func = reinterpret_cast<InitImGui_t*>(GetProcAddress(handle, "InitImGui"));
+
+    if (InitImGui_func == nullptr)
+    {
+        Core::Logger->warning("Cannot find InitImGui inside '", mod->dllPath, "' [", GetLastError(), "]");
+        FreeLibrary(handle);
+
+        return false;
+    }
     
     CreatePlugin_t* CreatePlugin_func = reinterpret_cast<CreatePlugin_t*>(GetProcAddress(handle, "CreatePlugin"));
 
@@ -108,6 +121,10 @@ bool ModuleManager::load(Module* mod)
         return false;
     }
 
+    // pass imgui's context to module
+    InitImGui_func(ImGui::GetCurrentContext());
+
+    // create plugin object
     mod->plugin = CreatePlugin_func();
 
     if (mod->plugin == nullptr)
@@ -123,7 +140,6 @@ bool ModuleManager::load(Module* mod)
     mod->isLoaded = true;
 
     Core::Logger->info("Successfully loaded '", mod->dllPath, "'");
-    
 
     mod->plugin->init(_loggerCore.createModuleLogger(mod->plugin->getPluginInfo().shortName.c_str()));
 

@@ -59,14 +59,17 @@ bool Core::init(scs_telemetry_init_params_v100_t* scsTelemetry)
 	}
 
 	success &= Core::InstallHooks();
-
     _renderer.init();
     _eventMgr.init();
+
+    return success;
+}
+
+void Core::lateInit() 
+{
     _moduleMgr.init();
 
     Logger->info("Core successfully initialized!");
-
-    return success;
 }
 
 void Core::update()
@@ -80,6 +83,8 @@ void Core::imguiRender()
 {
     ImGui::ShowDemoWindow();
     _mainWindow.renderImGui();
+
+    _eventMgr.imguiRender.call();
 }
 
 bool Core::InstallHooks()

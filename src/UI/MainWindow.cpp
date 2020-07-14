@@ -13,6 +13,7 @@ MainWindow::MainWindow(modules::ModuleManager& moduleMgr)
 void MainWindow::renderImGui() 
 {
     ImGui::SetNextWindowSize({400.f, 300.f}, ImGuiCond_FirstUseEver);
+    
     if (ImGui::Begin("Plugin Manager"))
     {
         if (ImGui::BeginTabBar("MainWindow::Tab"))
@@ -39,9 +40,9 @@ void MainWindow::renderImGui()
             }
             ImGui::EndTabBar();
         }
-
-        ImGui::End();
     }
+
+    ImGui::End();
 }
 
 

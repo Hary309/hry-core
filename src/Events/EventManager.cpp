@@ -30,7 +30,9 @@ EventHandler EventManager::createEventHandler()
         mouseButtonPressSignal,
         mouseButtonReleaseSignal,
         mouseMoveSignal,
-        mouseWheelScrollSignal
+        mouseWheelScrollSignal,
+
+        imguiRender
     };
 }
 
