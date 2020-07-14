@@ -56,21 +56,23 @@ void MainWindow::renderPluginsTab()
         return;
     }
 
+    ImGui::Columns(3);
+
+    ImGui::Separator();
+    ImGui::Text("Action"); ImGui::NextColumn();
+    ImGui::Text("Name"); ImGui::NextColumn();
+    ImGui::Text("Description"); ImGui::NextColumn();
+    ImGui::Separator();
+
     for (auto& module : modules)
     {
         ImGui::PushID(module.get());
-        
+
         if (module->isLoaded)
         {
-            auto& pluginInfo = module->plugin->getPluginInfo();
             if (ImGui::SmallButton("Unload"))
             {
                 _moduleMgr.unload(module.get());
-            }
-            else
-            {
-                ImGui::SameLine();
-                ImGui::BulletText("%s - %s", pluginInfo.shortName.c_str(), pluginInfo.shortDesc.c_str());
             }
         }
         else
@@ -79,15 +81,26 @@ void MainWindow::renderPluginsTab()
             {
                 _moduleMgr.load(module.get());
             }
-            else
-            {
-                ImGui::SameLine();
-                ImGui::BulletText("%s", module->dllName.c_str());
-            }
+        }
+
+        ImGui::NextColumn();
+
+        if (module->isLoaded)
+        {
+            auto& pluginInfo = module->plugin->getPluginInfo();
+            ImGui::Text("%s", pluginInfo.shortName.c_str()); ImGui::NextColumn();
+            ImGui::Text("%s", pluginInfo.shortDesc.c_str()); ImGui::NextColumn();
+        }
+        else
+        {
+            ImGui::Text("%s", module->dllName.c_str()); ImGui::NextColumn();
+            ImGui::Text("N/A"); ImGui::NextColumn();
         }
 
         ImGui::PopID();
     }
+
+    ImGui::Columns(1);
 }
 
 
