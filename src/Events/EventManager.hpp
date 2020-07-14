@@ -16,9 +16,6 @@ class EventBridgeBase;
 
 class EventManager
 {
-public:
-    using EventType_t = Event::Type;
-
 private:
     std::vector<std::unique_ptr<EventBridgeBase>> _eventBridges;
 

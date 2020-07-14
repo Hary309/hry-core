@@ -40,37 +40,4 @@ struct MouseWheelEvent
     short delta;
 };
 
-struct Event
-{
-    enum class Type
-    {
-        WindowResized = 0, // struct: ResizeEvent
-        WindowGainedFocus, // no struct
-        WindowLostFocus, // no struct
-
-        KeyPressed, // struct: KeyboardEvent
-        KeyReleased, // struct: KeyboardEvent
-
-        MouseButtonPressed, // struct: MouseButtonEvent
-        MouseButtonReleased, // struct: MouseButtonEvent
-        MouseMoved, // struct: MouseMoveEvent
-        MouseWheelScrolled, // struct: MouseWheelEvent
-    };
-
-    std::variant<ResizeEvent, KeyboardEvent, MouseButtonEvent, MouseMoveEvent, MouseWheelEvent> event;
-    Type type;
- 
-    template<typename T>
-    bool has()
-    {
-        return std::holds_alternative<T>(event);
-    }
-
-    template<typename T>
-    T& get()
-    {
-        return std::get<T>(event);
-    }
-};
-
 }
