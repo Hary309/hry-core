@@ -3,11 +3,14 @@
 #include <string>
 #include <memory>
 
+#include "Hry/Export.hpp"
+
 namespace hry::logger
 {
 
 class ModuleLogger;
 
+// TODO: Hide init and createModuleLogger from visibility to api, use virtual class
 class LoggerCore
 {
 public:
@@ -24,7 +27,7 @@ private:
 
 public:
     void init(const char* logFilePath);
-    void writeLine(Level level, const char* msg, const char* module);
+    HRY_API void writeLine(Level level, const char* msg, const char* module);
 
     [[nodiscard]] std::unique_ptr<ModuleLogger> createModuleLogger(const char* moduleName);
 

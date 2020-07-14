@@ -3,10 +3,12 @@
 #include <cstdint>
 #include <MinHook.h>
 
+#include "Hry/Export.hpp"
+
 namespace hry::memory
 {
 
-class Detour
+class HRY_API Detour
 {
 public:
     enum class Status
