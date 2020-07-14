@@ -33,3 +33,8 @@ target_link_libraries(hry-core PRIVATE minhook dxguid D3DCompiler Xinput)
 project(hry-example VERSION 0.1.0)
 add_library(hry-example SHARED example/example.cpp)
 target_link_libraries(hry-example PRIVATE hry-core)
+
+# sample
+project(hry-sample VERSION 0.1.0)
+add_library(hry-sample SHARED example/sample.cpp)
+target_link_libraries(hry-sample PRIVATE hry-core)

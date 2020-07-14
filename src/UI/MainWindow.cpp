@@ -13,7 +13,7 @@ MainWindow::MainWindow(modules::ModuleManager& moduleMgr)
 void MainWindow::renderImGui() 
 {
     ImGui::SetNextWindowSize({400.f, 300.f}, ImGuiCond_FirstUseEver);
-    
+
     if (ImGui::Begin("Plugin Manager"))
     {
         if (ImGui::BeginTabBar("MainWindow::Tab"))
@@ -48,7 +48,15 @@ void MainWindow::renderImGui()
 
 void MainWindow::renderPluginsTab() 
 {
-    for (auto& module : _moduleMgr.getModules())
+    auto& modules = _moduleMgr.getModules();
+
+    if (modules.empty())
+    {
+        ImGui::Text("No plugins");
+        return;
+    }
+
+    for (auto& module : modules)
     {
         if (module->isLoaded)
         {
@@ -84,10 +92,58 @@ void MainWindow::renderSettingsTab()
     ImGui::Text("Settings related to this plugin, also some developer options");
 }
 
-
 void MainWindow::renderPluginsSettingsTab() 
 {
-    ImGui::Text("Settings related to loaded plugins");
+    auto& modules = _moduleMgr.getModules();
+    auto size = modules.size();
+
+    if (size == 0)
+    {
+        ImGui::Text("No plugins");
+        return;
+    }
+
+    if (_selectedPluginIndex >= size)
+    {
+        _selectedPluginIndex = 0;
+    }
+
+    auto& selectedModule = modules[_selectedPluginIndex];
+
+    ImGui::PushItemWidth(-1.f);
+    if (ImGui::BeginCombo("##Select Plugin", selectedModule->dllName.c_str()))
+    {
+        for (size_t i = 0; i < size; i++)
+        {
+            auto& module = modules[i];
+            const bool isSelected = (_selectedPluginIndex == i);
+
+            const auto flag = module->isLoaded ? ImGuiSelectableFlags_None : ImGuiSelectableFlags_Disabled;
+
+            if (ImGui::Selectable(module->dllName.c_str(), isSelected, flag))
+            {
+                _selectedPluginIndex = i;
+            }
+
+            if (isSelected)
+            {
+                ImGui::SetItemDefaultFocus();
+            }
+        }
+
+        ImGui::EndCombo();
+    }
+
+    ImGui::Separator();
+
+    if (selectedModule->isLoaded)
+    {
+        selectedModule->plugin->imguiSettingsTab();
+    }
+    else
+    {
+        ImGui::Text("This plugin isn't loaded!");
+    }
 }
 
 

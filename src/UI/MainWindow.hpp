@@ -10,6 +10,8 @@ class MainWindow
 private:
     modules::ModuleManager& _moduleMgr;
 
+    int _selectedPluginIndex = 0;
+
 public:
     MainWindow(modules::ModuleManager& _moduleMgr);
 
