@@ -21,3 +21,22 @@ public:
 };
 
 }
+
+#define INIT_PLUGIN(PLUGIN_TYPE)                 \
+extern "C"                                       \
+{                                                \
+    __declspec(dllexport) Plugin* CreatePlugin() \
+    {                                            \
+        return new PLUGIN_TYPE();                \
+    }                                            \
+}
+
+
+#define INIT_IMGUI()                                        \
+extern "C"                                                  \
+{                                                           \
+    __declspec(dllexport) void InitImGui(ImGuiContext* ctx) \
+    {                                                       \
+        ImGui::SetCurrentContext(ctx);                      \
+    }                                                       \
+}

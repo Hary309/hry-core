@@ -54,11 +54,5 @@ public:
     }
 };
 
-extern "C"
-{
-    // TODO: add dllexport macro
-    __declspec(dllexport) Plugin* CreatePlugin()
-    {
-        return new ExamplePlugin();
-    }
-}
+INIT_PLUGIN(ExamplePlugin)
+INIT_IMGUI()
