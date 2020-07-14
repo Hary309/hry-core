@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Hry/Logger/LoggerCore.hpp"
 #include "Hry/Plugin.hpp"
 
 namespace hry::modules
@@ -13,10 +14,6 @@ struct Module
     bool isLoaded;
     void* handle;
     Plugin* plugin;
-
-    ~Module();
-    bool load();
-    void unload();
 };
 
 }

@@ -1,9 +1,10 @@
 #pragma once
 
+#include <algorithm>
 #include <memory>
 
 #include "PluginInfo.hpp"
-#include "Events/Event.hpp"
+#include "Events/EventHandler.hpp"
 #include "Logger/ModuleLogger.hpp"
 
 namespace hry 
@@ -12,12 +13,17 @@ namespace hry
 class Plugin
 {
 public:
+    std::unique_ptr<events::EventHandler> eventHandler;
+
+public:
     virtual ~Plugin() {}
+    virtual void init(std::unique_ptr<logger::ModuleLogger>&& logger) = 0;
+
     virtual void update(float deltaTime) = 0;
+
     virtual void imguiRender() = 0;
-    virtual void event(const events::Event& e) = 0;
+    
     virtual const PluginInfo& getPluginInfo() = 0;
-    virtual void initLogger(std::unique_ptr<logger::ModuleLogger>&& logger) = 0;
 };
 
 }
@@ -30,7 +36,6 @@ extern "C"                                       \
         return new PLUGIN_TYPE();                \
     }                                            \
 }
-
 
 #define INIT_IMGUI()                                        \
 extern "C"                                                  \

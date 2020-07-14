@@ -16,7 +16,10 @@ namespace hry
 {
 
 Core::Core(HINSTANCE hInst)
-    : _renderer(*this), _moduleMgr("plugins\\hry_plugins"), _imguiImplEvents(_eventMgr)
+    : 
+    _renderer(*this),
+    _moduleMgr("plugins\\hry_plugins", _eventMgr, _loggerCore),
+    _imguiImplEvents(_eventMgr)
 {
     hInstance = hInst;
 }

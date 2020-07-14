@@ -31,9 +31,10 @@ public:
 private:
     scs_telemetry_init_params_v100_t* _scsTelemetry = nullptr;
 
+    logger::LoggerCore _loggerCore;
+    
     renderer::Renderer _renderer;
     events::EventManager _eventMgr;
-    logger::LoggerCore _loggerCore;
     modules::ModuleManager _moduleMgr;
     
     utils::Timer _deltaTime;

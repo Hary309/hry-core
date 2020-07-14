@@ -5,6 +5,8 @@
 #include <memory>
 
 #include "Core.hpp"
+#include "Hry/Events/EventHandler.hpp"
+#include "Hry/Logger/LoggerCore.hpp"
 #include "Modules/Module.hpp"
 
 namespace fs = std::filesystem;
@@ -12,9 +14,10 @@ namespace fs = std::filesystem;
 namespace hry::modules
 {
 
+using CreatePlugin_t = Plugin*();
 
-ModuleManager::ModuleManager(const std::string& pluginDirectory)
-    : _pluginDirectory(pluginDirectory)
+ModuleManager::ModuleManager(const std::string& pluginDirectory, events::EventManager& eventMgr, logger::LoggerCore& loggerCore)
+    : _pluginDirectory(pluginDirectory), _eventMgr(eventMgr), _loggerCore(loggerCore)
 {
 }
 
@@ -59,7 +62,7 @@ void ModuleManager::loadAll()
 
         for (auto& mod : _modules)
         {
-            mod->load();
+            load(mod.get());
         }
     }
 }
@@ -70,8 +73,84 @@ void ModuleManager::unloadAll()
 
     for (auto& mod : _modules)
     {
-        mod->unload();
+        unload(mod.get());
     }
+}
+
+bool ModuleManager::load(Module* mod) 
+{
+    Core::Logger->info("Loading '", mod->dllPath, "'...");
+
+    if (mod->isLoaded)
+    {
+        Core::Logger->info("'", mod->dllPath, "' is already loaded");
+        return true; // TODO: enum is probably a better option
+    }
+
+    auto handle = LoadLibraryA(mod->dllPath.c_str());
+
+    if (handle == nullptr)
+    {
+        Core::Logger->warning("Cannot load '", mod->dllPath, " [", GetLastError(), "]");
+
+        return false;
+    }
+
+    mod->handle = handle;
+    
+    CreatePlugin_t* CreatePlugin_func = reinterpret_cast<CreatePlugin_t*>(GetProcAddress(handle, "CreatePlugin"));
+
+    if (CreatePlugin_func == nullptr)
+    {
+        Core::Logger->warning("Cannot find CreatePlugin inside '", mod->dllPath, "' [", GetLastError(), "]");
+        FreeLibrary(handle);
+
+        return false;
+    }
+
+    mod->plugin = CreatePlugin_func();
+
+    if (mod->plugin == nullptr)
+    {
+        Core::Logger->warning("CreatePlugin returned nullptr");
+        FreeLibrary(handle);
+
+        return false;
+    }
+    
+    mod->plugin->eventHandler = std::make_unique<events::EventHandler>(_eventMgr.createEventHandler());
+
+    mod->isLoaded = true;
+
+    Core::Logger->info("Successfully loaded '", mod->dllPath, "'");
+    
+
+    mod->plugin->init(_loggerCore.createModuleLogger(mod->plugin->getPluginInfo().shortName.c_str()));
+
+    return true;
+}
+
+void ModuleManager::unload(Module* mod) 
+{
+    Core::Logger->info("Unloading '", mod->dllPath, "'...");
+
+    if (!mod->isLoaded)
+    {
+        Core::Logger->info("'", mod->dllPath, "' is already unloaded");
+        return;
+    }
+
+    if (mod->plugin)
+    {
+        delete mod->plugin;
+    }
+
+    if (mod->handle)
+    {
+        FreeLibrary((HMODULE)mod->handle);
+    }
+
+    mod->isLoaded = false;
 }
 
 bool ModuleManager::tryAdd(const fs::path& path) 

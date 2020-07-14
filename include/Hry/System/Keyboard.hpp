@@ -5,7 +5,7 @@ namespace hry::system
 
 struct Keyboard
 {
-    enum Key
+    enum class Key
     {
         Unknown = -1,
         A = 1,

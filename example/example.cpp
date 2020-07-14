@@ -1,10 +1,13 @@
-#include "Hry/Logger/ModuleLogger.hpp"
+#include <memory>
 #include <windows.h>
 #include <iostream>
 
 #include <imgui.h>
 
 #include <Hry/Plugin.hpp>
+#include <Hry/Events/Event.hpp>
+#include <Hry/Logger/ModuleLogger.hpp>
+#include <Hry/System/Keyboard.hpp>
 
 using namespace hry;
 
@@ -25,7 +28,15 @@ public:
 public:
     virtual ~ExamplePlugin()
     {
+        Logger->info("Unloading...");
+    }
 
+    virtual void init(std::unique_ptr<logger::ModuleLogger>&& logger)
+    {
+        Logger = std::move(logger);
+        Logger->info("Created!");
+
+        eventHandler->onKeyPress.connect<&ExamplePlugin::onKeyPressed>(this);
     }
 
     virtual void update(float deltaTime)
@@ -35,22 +46,18 @@ public:
 
     virtual void imguiRender()
     {
-        
-    }
-
-    virtual void event(const events::Event& e)
-    {
 
     }
-
+    
     virtual const PluginInfo& getPluginInfo()
     {
         return _pluginInfo;
     }
 
-    virtual void initLogger(std::unique_ptr<logger::ModuleLogger>&& logger) 
+private:
+    void onKeyPressed(const events::KeyboardEvent& key)
     {
-        Logger = std::move(logger);
+        Logger->info("Key pressed!", static_cast<int>(key.key));
     }
 };
 
