@@ -67,7 +67,7 @@ bool Core::init(scs_telemetry_init_params_v100_t* scsTelemetry)
 
 void Core::update()
 {
-    float deltaTime = _deltaTime.asSeconds();
+    [[maybe_unused]] float deltaTime = _deltaTime.asSeconds();
     _deltaTime.reset();
 
 }
