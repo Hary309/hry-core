@@ -49,7 +49,7 @@ public:
 
     }
     
-    virtual const PluginInfo& getPluginInfo()
+    virtual const PluginInfo& getPluginInfo() const
     {
         return _pluginInfo;
     }

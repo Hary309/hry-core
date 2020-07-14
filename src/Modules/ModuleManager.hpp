@@ -35,6 +35,8 @@ public:
     bool load(Module* mod);
     void unload(Module* mod);
 
+    const auto& getModules() const { return _modules; }
+
 private:
     bool tryAdd(const std::filesystem::path& path);
 };

@@ -19,6 +19,7 @@ Core::Core(HINSTANCE hInst)
     : 
     _renderer(*this),
     _moduleMgr("plugins\\hry_plugins", _eventMgr, _loggerCore),
+    _mainWindow(_moduleMgr),
     _imguiImplEvents(_eventMgr)
 {
     hInstance = hInst;

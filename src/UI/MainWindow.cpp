@@ -4,6 +4,12 @@
 namespace hry::ui
 {
 
+MainWindow::MainWindow(modules::ModuleManager& moduleMgr)
+    : _moduleMgr(moduleMgr)
+{
+
+}
+
 void MainWindow::renderImGui() 
 {
     ImGui::SetNextWindowSize({400.f, 300.f}, ImGuiCond_FirstUseEver);
@@ -13,22 +19,22 @@ void MainWindow::renderImGui()
         {
             if (ImGui::BeginTabItem("Plugins"))
             {
-                ImGui::Text("TODO: Render list of plugins");
+                renderPluginsTab();
                 ImGui::EndTabItem();
             }
             if (ImGui::BeginTabItem("Settings"))
             {
-                ImGui::Text("Settings related to this plugin, also some developer options");
+                renderSettingsTab();
                 ImGui::EndTabItem();
             }
             if (ImGui::BeginTabItem("Plugins settings"))
             {
-                ImGui::Text("Settings related to loaded plugins");
+                renderPluginsSettingsTab();
                 ImGui::EndTabItem();
             }
             if (ImGui::BeginTabItem("About"))
             {
-                ImGui::Text("Credits etc");
+                renderAboutTab();
                 ImGui::EndTabItem();
             }
             ImGui::EndTabBar();
@@ -37,5 +43,57 @@ void MainWindow::renderImGui()
         ImGui::End();
     }
 }
+
+
+void MainWindow::renderPluginsTab() 
+{
+    for (auto& module : _moduleMgr.getModules())
+    {
+        if (module->isLoaded)
+        {
+            auto& pluginInfo = module->plugin->getPluginInfo();
+            if (ImGui::SmallButton("Unload"))
+            {
+                _moduleMgr.unload(module.get());
+            }
+            else
+            {
+                ImGui::SameLine();
+                ImGui::BulletText("%s - %s", pluginInfo.shortName.c_str(), pluginInfo.shortDesc.c_str());
+            }
+        }
+        else
+        {
+            if (ImGui::SmallButton("Load"))
+            {
+                _moduleMgr.load(module.get());
+            }
+            else
+            {
+                ImGui::SameLine();
+                ImGui::BulletText("%s", module->dllName.c_str());
+            }
+        }
+    }
+}
+
+
+void MainWindow::renderSettingsTab() 
+{
+    ImGui::Text("Settings related to this plugin, also some developer options");
+}
+
+
+void MainWindow::renderPluginsSettingsTab() 
+{
+    ImGui::Text("Settings related to loaded plugins");
+}
+
+
+void MainWindow::renderAboutTab() 
+{
+    ImGui::Text("Credits etc");
+}
+
 
 }

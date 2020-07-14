@@ -23,7 +23,7 @@ public:
 
     virtual void imguiRender() = 0;
     
-    virtual const PluginInfo& getPluginInfo() = 0;
+    virtual const PluginInfo& getPluginInfo() const = 0;
 };
 
 }
