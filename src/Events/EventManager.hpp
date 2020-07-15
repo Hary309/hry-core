@@ -20,6 +20,7 @@ private:
     std::vector<std::unique_ptr<EventBridgeBase>> _eventBridges;
 
 public:
+    // system events
     utils::Signal<void(const ResizeEvent&&)> windowResizeSignal;
     utils::Signal<void()> windowGainFocusSignal;
     utils::Signal<void()> windowLoseFocusSignal;
@@ -33,7 +34,7 @@ public:
     utils::Signal<void(const MouseWheelEvent&&)> mouseWheelScrollSignal;
 
     utils::Signal<void()> imguiRenderSignal;
-
+    
 public:
     EventManager() = default;
     ~EventManager() = default;

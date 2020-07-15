@@ -12,7 +12,7 @@
 #include "Hry/System/System.hpp"
 
 #include "Core.hpp"
-#include "EventManager.hpp"
+#include "Events/EventManager.hpp"
 
 
 IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);

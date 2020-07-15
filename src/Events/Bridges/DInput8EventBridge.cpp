@@ -7,8 +7,7 @@
 #include "Hry/Events/Event.hpp"
 #include "Hry/System/Mouse.hpp"
 
-#include "EventManager.hpp"
-#include "Events/EventBridgeBase.hpp"
+#include "Events/EventManager.hpp"
 #include "Hooks/DInput8Hook.hpp"
 
 constexpr int DINPUT_X = offsetof(DIMOUSESTATE, lX);

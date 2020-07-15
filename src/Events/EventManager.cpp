@@ -2,8 +2,8 @@
 
 #include "Core.hpp"
 
-#include "WndProcEventBridge.hpp"
-#include "DInput8EventBridge.hpp"
+#include "Bridges/WndProcEventBridge.hpp"
+#include "Bridges/DInput8EventBridge.hpp"
 
 namespace hry::events
 {

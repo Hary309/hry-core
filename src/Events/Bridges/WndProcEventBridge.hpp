@@ -2,7 +2,7 @@
 
 #include <Windows.h>
 
-#include "EventBridgeBase.hpp"
+#include "Events/EventBridgeBase.hpp"
 
 #include "Hry/Math/Vec2.hpp"
 

@@ -2,7 +2,7 @@
 
 #include <vector>
 
-#include "EventBridgeBase.hpp"
+#include "Events/EventBridgeBase.hpp"
 
 #include "Hry/Math/Vec2.hpp"
 #include "Hry/System/Mouse.hpp"
