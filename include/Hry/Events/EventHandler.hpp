@@ -7,6 +7,7 @@ namespace hry::events
 
 struct EventHandler
 {
+    // system events
     utils::Sink<void(const ResizeEvent&&)> onWindowResize;
     utils::Sink<void()> onWindowGainFocus;
     utils::Sink<void()> onWindowLoseFocus;
@@ -20,6 +21,11 @@ struct EventHandler
     utils::Sink<void(const MouseWheelEvent&&)> onMouseWheelScroll;
 
     utils::Sink<void()> onImGuiRender;
+
+    // game events
+    utils::Signal<void()> onFrameStart;
+    utils::Signal<void()> onFrameEnd;
+    utils::Signal<void(const GameStateEvent&&)> onStateChange;
 };
 
 }

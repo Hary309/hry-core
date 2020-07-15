@@ -60,8 +60,6 @@ public:
 private:
     static bool InstallHooks();
     static void UninstallHooks();
-
-    static void TelemetryFrameEnd(const scs_event_t event, const void* const, const scs_context_t self);
 };
 
 }

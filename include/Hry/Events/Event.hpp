@@ -39,4 +39,13 @@ struct MouseWheelEvent
     short delta;
 };
 
+struct GameStateEvent
+{
+    enum class Type
+    {
+        Paused,
+        Resumed
+    } type;
+};
+
 }

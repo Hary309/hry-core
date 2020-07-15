@@ -49,18 +49,10 @@ bool Core::init(scs_telemetry_init_params_v100_t* scsTelemetry)
 
 	bool success = true;
 
-    success &= scsTelemetry->register_for_event(SCS_TELEMETRY_EVENT_frame_start, Core::TelemetryFrameEnd, this) == SCS_RESULT_ok;
-    _deltaTime.reset();
-
-    if (success == false)
-	{
-		Logger->error("Unable to register event callbacks");
-		return false;
-	}
-
 	success &= Core::InstallHooks();
+    
     _renderer.init();
-    _eventMgr.init();
+    _eventMgr.init(scsTelemetry);
 
     return success;
 }
@@ -72,19 +64,12 @@ void Core::lateInit()
     Logger->info("Core successfully initialized!");
 }
 
-void Core::update()
-{
-    [[maybe_unused]] float deltaTime = _deltaTime.asSeconds();
-    _deltaTime.reset();
-
-}
-
 void Core::imguiRender() 
 {
     ImGui::ShowDemoWindow();
     _mainWindow.renderImGui();
 
-    _eventMgr.imguiRender.call();
+    _eventMgr.imguiRenderSignal.call();
 }
 
 bool Core::InstallHooks()
@@ -116,13 +101,6 @@ void Core::UninstallHooks()
     hooks::DInput8Hook::Uninstall();
 
     Logger->info("Hooks uninstalled");
-}
-
-void Core::TelemetryFrameEnd(const scs_event_t event, const void* const, const scs_context_t self) 
-{
-    Core* core = reinterpret_cast<Core*>(self);
-
-    core->update();
 }
 
 }

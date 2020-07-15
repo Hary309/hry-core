@@ -9,6 +9,8 @@
 
 #include "Events/EventBridgeBase.hpp"
 
+struct scs_telemetry_init_params_v100_t;
+
 namespace hry::events
 {
 
@@ -35,11 +37,13 @@ public:
 
     utils::Signal<void()> imguiRenderSignal;
     
-public:
-    EventManager() = default;
-    ~EventManager() = default;
+    // game events
+    utils::Signal<void()> frameStartSignal;
+    utils::Signal<void()> frameEndSignal;
+    utils::Signal<void(const GameStateEvent&&)> stateChangeSignal;
 
-    void init();
+public:
+    void init(scs_telemetry_init_params_v100_t* scsTelemetry);
 
     [[nodiscard]] EventHandler createEventHandler();
 };
