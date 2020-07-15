@@ -32,7 +32,7 @@ public:
     utils::Signal<void(const MouseMoveEvent&&)> mouseMoveSignal;
     utils::Signal<void(const MouseWheelEvent&&)> mouseWheelScrollSignal;
 
-    utils::Signal<void()> imguiRender;
+    utils::Signal<void()> imguiRenderSignal;
 
 public:
     EventManager() = default;

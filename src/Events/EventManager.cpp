@@ -32,7 +32,7 @@ EventHandler EventManager::createEventHandler()
         mouseMoveSignal,
         mouseWheelScrollSignal,
 
-        imguiRender
+        imguiRenderSignal,
     };
 }
 
