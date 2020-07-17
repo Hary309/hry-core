@@ -1,17 +1,21 @@
 #include "MainWindow.hpp"
+#include "Hry/System/Mouse.hpp"
 #include "imgui.h"
 
 namespace hry::ui
 {
 
-MainWindow::MainWindow(modules::ModuleManager& moduleMgr)
-    : _moduleMgr(moduleMgr)
+MainWindow::MainWindow(modules::ModuleManager& moduleMgr, events::EventManager& eventMgr)
+    : _moduleMgr(moduleMgr), _onKeyPress(eventMgr.keyPressSignal) 
 {
-
+    _onKeyPress.connect<&MainWindow::onKeyPress>(this);
 }
 
 void MainWindow::renderImGui() 
 {
+    if (!_isEnabled)
+        return;
+
     ImGui::SetNextWindowSize({400.f, 300.f}, ImGuiCond_FirstUseEver);
 
     if (ImGui::Begin("Plugin Manager"))
@@ -174,5 +178,14 @@ void MainWindow::renderAboutTab()
     ImGui::Text("Credits etc");
 }
 
+void MainWindow::onKeyPress(const events::KeyboardEvent&& keyboard) 
+{
+    // TODO: Replace with keybind/keymap
+    if (keyboard.key == system::Keyboard::Key::F9)
+    {
+        _isEnabled = !_isEnabled;
+        system::Mouse::DisableInGameMouse(_isEnabled);
+    }
+}
 
 }

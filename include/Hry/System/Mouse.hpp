@@ -19,6 +19,8 @@ struct Mouse
         Vertical,
         Horizontal
     };
+
+    static void DisableInGameMouse(bool disable);
 };
 
 }

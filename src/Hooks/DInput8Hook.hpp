@@ -15,6 +15,8 @@ struct DInput8Hook
 {
     inline static utils::Delegate<void(IDirectInputDevice8A*, const std::vector<DIDEVICEOBJECTDATA>&&)> OnGetDeviceData;
 
+    inline static bool disableInGameMouse;
+
     static bool Install();
     static void Uninstall();
 };

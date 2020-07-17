@@ -34,6 +34,11 @@ HRESULT __stdcall new_DirectInputDevice_GetDeviceData(IDirectInputDevice8A* self
         DInput8Hook::OnGetDeviceData.call(self, { rgdod, rgdod + (*pdwInOut) });
     }
 
+    if (DInput8Hook::disableInGameMouse)
+    {
+        *pdwInOut = 0;
+    }
+
     return result;
 }
 
