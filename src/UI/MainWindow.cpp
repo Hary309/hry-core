@@ -1,6 +1,10 @@
 #include "MainWindow.hpp"
+
+#include <imgui.h>
+
 #include "Hry/System/Mouse.hpp"
-#include "imgui.h"
+
+#include "Utils/ImGuiUtils.hpp"
 
 namespace hry::ui
 {
@@ -185,6 +189,8 @@ void MainWindow::onKeyPress(const events::KeyboardEvent&& keyboard)
     {
         _isEnabled = !_isEnabled;
         system::Mouse::DisableInGameMouse(_isEnabled);
+
+        utils::EnableImGui(_isEnabled);
     }
 }
 

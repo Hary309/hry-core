@@ -47,9 +47,11 @@ public:
 
     virtual void imguiRender()
     {
+        static float ads;
         if (ImGui::Begin("hry-example"))
         {
             ImGui::Text("asdf");
+            ImGui::InputFloat("float", &ads);
         }
 
         ImGui::End();

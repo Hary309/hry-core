@@ -1,5 +1,4 @@
 #include "D3D11Hook.hpp"
-#include "Renderer/Renderer.hpp"
 
 #define D3D11_NO_HELPERS
 #define CINTERFACE
@@ -13,6 +12,7 @@
 #include "Hry/Utils.hpp"
 
 #include "Core.hpp"
+#include "Renderer/Renderer.hpp"
 
 namespace hry::hooks
 {
@@ -158,9 +158,9 @@ HRESULT __stdcall new_IDXGISwapChain_Present(IDXGISwapChain* swapChain, UINT syn
 
             if (isInited == false)
             {
-                D3D11Hook::OnInit.call(swapChain, d3dDevice);
                 Core::Logger->info("Hooking WndProc...");
                 oWndProc = reinterpret_cast<WNDPROC>(SetWindowLongPtr(D3D11Hook::hWnd, GWLP_WNDPROC, (LONG_PTR)WndProc));
+                D3D11Hook::OnInit.call(swapChain, d3dDevice);
                 isInited = true;
             }
             else

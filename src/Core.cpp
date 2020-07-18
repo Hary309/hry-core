@@ -10,6 +10,7 @@
 #include "Hooks/D3D11Hook.hpp"
 #include "Hooks/DInput8Hook.hpp"
 #include "Hry/Utils/Signal.hpp"
+#include "UI/ImGuiTweaks.hpp"
 
 
 namespace hry
@@ -59,6 +60,8 @@ bool Core::init(scs_telemetry_init_params_v100_t* scsTelemetry)
 
 void Core::lateInit() 
 {
+    ui::EnableImGui(false);
+
     _moduleMgr.init();
 
     Logger->info("Core successfully initialized!");

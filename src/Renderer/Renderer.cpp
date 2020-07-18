@@ -31,9 +31,6 @@ void Renderer::onRendererInit()
 {
     Core::Logger->info("Renderer initialized!");
 
-    // TODO: make some switch
-    ImGui::GetIO().MouseDrawCursor = true;
-
     _core.lateInit();
 }
 
