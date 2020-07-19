@@ -39,8 +39,6 @@ private:
     modules::ModuleManager _moduleMgr;
     ui::MainWindow _mainWindow;
 
-    utils::Timer _deltaTime;
-
     ImGuiImplEvents _imguiImplEvents;
 
 public:
