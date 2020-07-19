@@ -20,12 +20,16 @@ namespace hry::modules
 using CreatePlugin_t = Plugin*();
 using InitImGui_t = void(ImGuiContext*);
 
-ModuleManager::ModuleManager(const std::string& pluginDirectory, events::EventManager& eventMgr, logger::LoggerCore& loggerCore)
-    : _pluginDirectory(pluginDirectory), _eventMgr(eventMgr), _loggerCore(loggerCore)
+ModuleManager::ModuleManager(
+    const std::string& pluginDirectory,
+    events::EventManager& eventMgr,
+    key_binding::KeyBindsManager& keyBindsMgr,
+    logger::LoggerCore& loggerCore)
+    : _pluginDirectory(pluginDirectory), _eventMgr(eventMgr), _keyBindsMgr(keyBindsMgr), _loggerCore(loggerCore)
 {
 }
 
-void ModuleManager::init() 
+void ModuleManager::init()
 {
     scan();
     loadAll();
@@ -161,14 +165,20 @@ bool ModuleManager::load(Module* mod)
 
         return false;
     }
-    
+
+    auto shortName = mod->plugin->getPluginInfo().shortName.c_str();
+
+    auto keyBinds = _keyBindsMgr.createKeyBinds(shortName);
+
+    mod->keyBinds = keyBinds;
+    mod->plugin->keyBinds = keyBinds;
     mod->plugin->eventHandler = std::make_unique<events::EventHandler>(_eventMgr.createEventHandler());
 
     mod->isLoaded = true;
 
     Core::Logger->info("Successfully loaded '", mod->dllPath, "'");
 
-    mod->plugin->init(_loggerCore.createModuleLogger(mod->plugin->getPluginInfo().shortName.c_str()));
+    mod->plugin->init(_loggerCore.createModuleLogger(shortName));
 
     return true;
 }
@@ -182,6 +192,8 @@ void ModuleManager::unload(Module* mod)
         Core::Logger->info("'", mod->dllPath, "' is already unloaded");
         return;
     }
+
+    _keyBindsMgr.remove(mod->keyBinds);
 
     if (mod->plugin)
     {

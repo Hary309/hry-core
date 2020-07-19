@@ -6,6 +6,7 @@
 #include "PluginInfo.hpp"
 #include "Events/EventHandler.hpp"
 #include "Logger/ModuleLogger.hpp"
+#include "KeyBinding/KeyBinds.hpp"
 
 namespace hry 
 {
@@ -15,6 +16,7 @@ class Plugin
 public:
     // never nullptr
     std::unique_ptr<events::EventHandler> eventHandler;
+    key_binding::KeyBinds* keyBinds;
 
 public:
     virtual ~Plugin() {}

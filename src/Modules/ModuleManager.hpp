@@ -9,6 +9,7 @@
 
 #include "Module.hpp"
 #include "Events/EventManager.hpp"
+#include "KeyBinding/KeyBindsManager.hpp"
 
 namespace hry::modules
 {
@@ -20,10 +21,15 @@ private:
     std::vector<std::unique_ptr<Module>> _modules;
 
     events::EventManager& _eventMgr;
+    key_binding::KeyBindsManager& _keyBindsMgr;
     logger::LoggerCore& _loggerCore;
 
 public:
-    ModuleManager(const std::string& pluginDirectory, events::EventManager& eventMgr, logger::LoggerCore& loggerCore);
+    ModuleManager(
+        const std::string& pluginDirectory,
+        events::EventManager& eventMgr,
+        key_binding::KeyBindsManager& keyBindsMgr,
+        logger::LoggerCore& loggerCore);
 
     void init();
 

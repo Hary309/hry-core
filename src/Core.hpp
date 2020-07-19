@@ -6,6 +6,7 @@
 
 #include "Hry/Events/Event.hpp"
 #include "Hry/Logger/LoggerCore.hpp"
+#include "Hry/KeyBinding/KeyBinds.hpp"
 #include "Hry/Utils/Timer.hpp"
 #include "Hry/Logger/LoggerCore.hpp"
 #include "Hry/Logger/ModuleLogger.hpp"
@@ -14,6 +15,7 @@
 #include "Renderer/Renderer.hpp"
 #include "Events/EventManager.hpp"
 #include "Modules/ModuleManager.hpp"
+#include "KeyBinding/KeyBindsManager.hpp"
 #include "UI/MainWindow.hpp"
 
 
@@ -36,10 +38,13 @@ private:
     
     renderer::Renderer _renderer;
     events::EventManager _eventMgr;
+    key_binding::KeyBindsManager _keyBindsMgr;
     modules::ModuleManager _moduleMgr;
     ui::MainWindow _mainWindow;
 
     ImGuiImplEvents _imguiImplEvents;
+
+    key_binding::KeyBinds* _coreKeyBinds;
 
 public:
     inline static std::unique_ptr<logger::ModuleLogger> Logger;
@@ -52,7 +57,8 @@ public:
     // after renderer and imgui is initalized
     void lateInit();
 
-    void update();
+    void setupKeyBinds();
+
     void imguiRender();
 
 private:

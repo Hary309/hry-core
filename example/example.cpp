@@ -1,3 +1,4 @@
+#include "Hry/KeyBinding/KeyBinds.hpp"
 #include <memory>
 #include <windows.h>
 #include <iostream>
@@ -38,6 +39,11 @@ public:
 
         eventHandler->onKeyPress.connect<&ExamplePlugin::onKeyPressed>(this);
         eventHandler->onImGuiRender.connect<&ExamplePlugin::imguiRender>(this);
+
+        key_binding::KeyBind::Delegate_t delegate;
+        delegate.connect<&ExamplePlugin::onKeyBind>(this);
+
+        keyBinds->addBind("Do something", system::Keyboard::Key::Q, delegate);
     }
 
     virtual void update(float deltaTime)
@@ -56,7 +62,7 @@ public:
 
         ImGui::End();
     }
-
+    
     virtual void imguiSettingsTab()
     {
         ImGui::Text("Test asdf");
@@ -71,6 +77,11 @@ private:
     void onKeyPressed(const events::KeyboardEvent& key)
     {
         Logger->info("Key pressed!", static_cast<int>(key.key));
+    }
+    
+    void onKeyBind()
+    {
+        Logger->info("Key bind works!");
     }
 };
 

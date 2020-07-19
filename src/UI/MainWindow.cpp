@@ -2,17 +2,31 @@
 
 #include <imgui.h>
 
+#include "Hry/KeyBinding/KeyBinds.hpp"
+#include "Hry/System/Keyboard.hpp"
 #include "Hry/System/Mouse.hpp"
 
+#include "Hry/Utils/Delegate.hpp"
 #include "Utils/ImGuiUtils.hpp"
 
 namespace hry::ui
 {
 
-MainWindow::MainWindow(modules::ModuleManager& moduleMgr, events::EventManager& eventMgr)
-    : _moduleMgr(moduleMgr), _onKeyPress(eventMgr.keyPressSignal) 
+MainWindow::MainWindow(
+    modules::ModuleManager& moduleMgr,
+    key_binding::KeyBindsManager& keyBindsMgr)
+    : 
+    _moduleMgr(moduleMgr),
+    _keyBindsMgr(keyBindsMgr)
 {
-    _onKeyPress.connect<&MainWindow::onKeyPress>(this);
+}
+
+void MainWindow::setupKeyBinds(key_binding::KeyBinds& keyBinds) 
+{
+    // TODO: Make it with lambda
+    utils::Delegate<void()> delegate;
+    delegate.connect<&MainWindow::showMainWindowKeyBind>(this);
+    keyBinds.addBind("Show main window", system::Keyboard::Key::F9, delegate);
 }
 
 void MainWindow::renderImGui() 
@@ -41,6 +55,11 @@ void MainWindow::renderImGui()
                 renderPluginsSettingsTab();
                 ImGui::EndTabItem();
             }
+            if (ImGui::BeginTabItem("Binds"))
+            {
+                renderBindsTab();
+                ImGui::EndTabItem();
+            }
             if (ImGui::BeginTabItem("About"))
             {
                 renderAboutTab();
@@ -52,7 +71,6 @@ void MainWindow::renderImGui()
 
     ImGui::End();
 }
-
 
 void MainWindow::renderPluginsTab() 
 {
@@ -116,7 +134,6 @@ void MainWindow::renderPluginsTab()
     ImGui::Columns(1);
 }
 
-
 void MainWindow::renderSettingsTab() 
 {
     ImGui::Text("Settings related to this plugin, also some developer options");
@@ -176,22 +193,39 @@ void MainWindow::renderPluginsSettingsTab()
     }
 }
 
+void MainWindow::renderBindsTab() 
+{
+    auto& keyBindsList = _keyBindsMgr.getKeyBinds();
+
+    for (auto& keyBindsSection : keyBindsList)
+    {
+        auto& keyBinds = keyBindsSection->getKeyBinds();
+
+        if (!keyBinds.empty())
+        {
+            if (ImGui::CollapsingHeader(keyBindsSection->getName().c_str()))
+            {
+                for (auto& keyBind : keyBinds)
+                {
+                    ImGui::Text("%s", keyBind.name.c_str());
+                }
+            }
+        }
+            
+    }
+}
 
 void MainWindow::renderAboutTab() 
 {
     ImGui::Text("Credits etc");
 }
 
-void MainWindow::onKeyPress(const events::KeyboardEvent&& keyboard) 
+void MainWindow::showMainWindowKeyBind() 
 {
-    // TODO: Replace with keybind/keymap
-    if (keyboard.key == system::Keyboard::Key::F9)
-    {
-        _isEnabled = !_isEnabled;
-        system::Mouse::DisableInGameMouse(_isEnabled);
+    _isEnabled = !_isEnabled;
+    system::Mouse::DisableInGameMouse(_isEnabled);
 
-        utils::EnableImGui(_isEnabled);
-    }
+    utils::EnableImGui(_isEnabled);
 }
 
 }
