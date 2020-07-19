@@ -23,9 +23,9 @@ struct EventHandler
     Sink<void()> onImGuiRender;
 
     // game events
-    Signal<void()> onFrameStart;
-    Signal<void()> onFrameEnd;
-    Signal<void(const GameStateEvent&&)> onStateChange;
+    Sink<void()> onFrameStart;
+    Sink<void()> onFrameEnd;
+    Sink<void(const GameStateEvent&&)> onStateChange;
 };
 
 }
