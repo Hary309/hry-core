@@ -4,7 +4,7 @@
 #include "Hry/Events/Event.hpp"
 #include "scssdk_telemetry_event.h"
 
-namespace hry::events
+namespace hry
 {
 
 TelemetryEventBridge::TelemetryEventBridge(EventManager& eventMgr, scs_telemetry_init_params_v100_t* scsTelemetry) 

@@ -11,7 +11,7 @@
 
 struct scs_telemetry_init_params_v100_t;
 
-namespace hry::events
+namespace hry
 {
 
 class EventBridgeBase;
@@ -23,24 +23,24 @@ private:
 
 public:
     // system events
-    utils::Signal<void(const ResizeEvent&&)> windowResizeSignal;
-    utils::Signal<void()> windowGainFocusSignal;
-    utils::Signal<void()> windowLoseFocusSignal;
+    Signal<void(const ResizeEvent&&)> windowResizeSignal;
+    Signal<void()> windowGainFocusSignal;
+    Signal<void()> windowLoseFocusSignal;
     
-    utils::Signal<void(const KeyboardEvent&&)> keyPressSignal;
-    utils::Signal<void(const KeyboardEvent&&)> keyReleaseSignal;
+    Signal<void(const KeyboardEvent&&)> keyPressSignal;
+    Signal<void(const KeyboardEvent&&)> keyReleaseSignal;
 
-    utils::Signal<void(const MouseButtonEvent&&)> mouseButtonPressSignal;
-    utils::Signal<void(const MouseButtonEvent&&)> mouseButtonReleaseSignal;
-    utils::Signal<void(const MouseMoveEvent&&)> mouseMoveSignal;
-    utils::Signal<void(const MouseWheelEvent&&)> mouseWheelScrollSignal;
+    Signal<void(const MouseButtonEvent&&)> mouseButtonPressSignal;
+    Signal<void(const MouseButtonEvent&&)> mouseButtonReleaseSignal;
+    Signal<void(const MouseMoveEvent&&)> mouseMoveSignal;
+    Signal<void(const MouseWheelEvent&&)> mouseWheelScrollSignal;
 
-    utils::Signal<void()> imguiRenderSignal;
+    Signal<void()> imguiRenderSignal;
     
     // game events
-    utils::Signal<void()> frameStartSignal;
-    utils::Signal<void()> frameEndSignal;
-    utils::Signal<void(const GameStateEvent&&)> stateChangeSignal;
+    Signal<void()> frameStartSignal;
+    Signal<void()> frameEndSignal;
+    Signal<void(const GameStateEvent&&)> stateChangeSignal;
 
 public:
     void init(scs_telemetry_init_params_v100_t* scsTelemetry);

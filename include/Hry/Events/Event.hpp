@@ -9,33 +9,33 @@
 #include "Hry/System/Keyboard.hpp"
 #include "Hry/System/Mouse.hpp"
 
-namespace hry::events
+namespace hry
 {
 
 struct ResizeEvent
 {
-    system::ResizeType type;
-    math::Vec2u size;
+    ResizeType type;
+    Vec2u size;
 };
 
 struct KeyboardEvent
 {
-    system::Keyboard::Key key;
+    Keyboard::Key key;
 };
 
 struct MouseButtonEvent
 {
-    system::Mouse::Button button;
+    Mouse::Button button;
 };
 
 struct MouseMoveEvent
 {
-    math::Vec2i offset;
+    Vec2i offset;
 };
 
 struct MouseWheelEvent
 {
-    system::Mouse::Wheel wheel;
+    Mouse::Wheel wheel;
     short delta;
 };
 

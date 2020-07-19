@@ -6,13 +6,13 @@
 
 #include "Hry/Math/Vec2.hpp"
 
-namespace hry::events
+namespace hry
 {
 
 class WndProcEventBridge : public EventBridgeBase
 {
 private:
-    math::Vec2i _lastMousePos = { 0 };
+    Vec2i _lastMousePos = { 0 };
 
 public:
     WndProcEventBridge(EventManager& eventMgr);

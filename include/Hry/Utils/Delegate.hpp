@@ -6,7 +6,7 @@
 #include <optional>
 #include <type_traits>
 
-namespace hry::utils
+namespace hry
 {
 
 template <typename>

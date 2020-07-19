@@ -2,10 +2,10 @@
 #include "Hry/KeyBinding/KeyBinds.hpp"
 #include <cstdio>
 
-namespace hry::key_binding
+namespace hry
 {
 
-KeyBindsManager::KeyBindsManager(events::EventManager& eventMgr)
+KeyBindsManager::KeyBindsManager(EventManager& eventMgr)
     : 
     _onKeyPress(eventMgr.keyPressSignal),
     _onMouseButtonPress(eventMgr.mouseButtonPressSignal)

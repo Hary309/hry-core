@@ -9,13 +9,13 @@
 #include "Hry/System//Mouse.hpp"
 #include "Hry/Utils/Delegate.hpp"
 
-namespace hry::key_binding
+namespace hry
 {
 
 struct KeyBind
 {
-    using Key_t = std::variant<system::Keyboard::Key, system::Mouse::Button>; // TODO: Add controller's keys
-    using Delegate_t = utils::Delegate<void()>;
+    using Key_t = std::variant<Keyboard::Key, Mouse::Button>; // TODO: Add controller's keys
+    using Delegate_t = Delegate<void()>;
 
     std::string name;
     Key_t key;

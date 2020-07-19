@@ -2,7 +2,7 @@
 
 #include <MinHook.h>
 
-namespace hry::memory
+namespace hry
 {
 
 Detour::Detour(uintptr_t* target, uintptr_t* detour)

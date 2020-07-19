@@ -19,19 +19,17 @@ constexpr int DINPUT_BUTTON2 = (offsetof(DIMOUSESTATE, rgbButtons) + 2);
 constexpr int DINPUT_BUTTON3 = (offsetof(DIMOUSESTATE, rgbButtons) + 3);
 constexpr int DINPUT_BUTTON4 = (offsetof(DIMOUSESTATE, rgbButtons) + 4);
 
-namespace hry::events
+namespace hry
 {
 
 DInput8EventBridge::DInput8EventBridge(EventManager& eventMgr)
         : EventBridgeBase(eventMgr)
 {
-    hooks::DInput8Hook::OnGetDeviceData.connect<&DInput8EventBridge::onGetDeviceData>(this);
+    DInput8Hook::OnGetDeviceData.connect<&DInput8EventBridge::onGetDeviceData>(this);
 }
 
 void DInput8EventBridge::onGetDeviceData(IDirectInputDevice8A* device, const std::vector<DIDEVICEOBJECTDATA>&& datas)
 {
-    using namespace system;
-
     for (auto& data : datas)
     {
         switch (data.dwOfs)
@@ -92,9 +90,9 @@ void DInput8EventBridge::onGetDeviceData(IDirectInputDevice8A* device, const std
 }
 
 
-void DInput8EventBridge::sendButtonEvent(int pressData, system::Mouse::Button button)
+void DInput8EventBridge::sendButtonEvent(int pressData, Mouse::Button button)
 {
-    events::MouseButtonEvent mouseButtonEvent;
+    MouseButtonEvent mouseButtonEvent;
     mouseButtonEvent.button = button;
 
     // if pressed

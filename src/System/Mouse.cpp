@@ -2,12 +2,12 @@
 
 #include "Hooks/DInput8Hook.hpp"
 
-namespace hry::system
+namespace hry
 {
 
 void Mouse::DisableInGameMouse(bool disable) 
 {
-    hooks::DInput8Hook::disableInGameMouse = disable;
+    DInput8Hook::disableInGameMouse = disable;
 }
 
 }

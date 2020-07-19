@@ -34,20 +34,20 @@ public:
 private:
     scs_telemetry_init_params_v100_t* _scsTelemetry = nullptr;
 
-    logger::LoggerCore _loggerCore;
+    LoggerCore _loggerCore;
     
-    renderer::Renderer _renderer;
-    events::EventManager _eventMgr;
-    key_binding::KeyBindsManager _keyBindsMgr;
-    modules::ModuleManager _moduleMgr;
-    ui::MainWindow _mainWindow;
+    Renderer _renderer;
+    EventManager _eventMgr;
+    KeyBindsManager _keyBindsMgr;
+    ModuleManager _moduleMgr;
+    MainWindow _mainWindow;
 
     ImGuiImplEvents _imguiImplEvents;
 
-    key_binding::KeyBinds* _coreKeyBinds;
+    KeyBinds* _coreKeyBinds;
 
 public:
-    inline static std::unique_ptr<logger::ModuleLogger> Logger;
+    inline static std::unique_ptr<ModuleLogger> Logger;
 
 public:
     explicit Core(HINSTANCE hInst);

@@ -7,8 +7,7 @@
 namespace hry
 {
 
-
-ImGuiImplEvents::ImGuiImplEvents(events::EventManager& eventMgr)
+ImGuiImplEvents::ImGuiImplEvents(EventManager& eventMgr)
     :
         _onMouseButtonPress(eventMgr.mouseButtonPressSignal),
         _onMouseButtonRelease(eventMgr.mouseButtonReleaseSignal),
@@ -19,23 +18,23 @@ ImGuiImplEvents::ImGuiImplEvents(events::EventManager& eventMgr)
     _onMouseWheelScroll.connect<OnMouseWheelScroll>();
 }
 
-void ImGuiImplEvents::OnMouseButtonPress(const events::MouseButtonEvent&& buttonEvent) 
+void ImGuiImplEvents::OnMouseButtonPress(const MouseButtonEvent&& buttonEvent) 
 {
     auto& imguiIO = ImGui::GetIO();
     imguiIO.MouseDown[static_cast<int>(buttonEvent.button)] = true;
 }
 
-void ImGuiImplEvents::OnMouseButtonRelease(const events::MouseButtonEvent&& buttonEvent) 
+void ImGuiImplEvents::OnMouseButtonRelease(const MouseButtonEvent&& buttonEvent) 
 {
     auto& imguiIO = ImGui::GetIO();
     imguiIO.MouseDown[static_cast<int>(buttonEvent.button)] = false;
 }
 
-void ImGuiImplEvents::OnMouseWheelScroll(const events::MouseWheelEvent&& wheelEvent) 
+void ImGuiImplEvents::OnMouseWheelScroll(const MouseWheelEvent&& wheelEvent) 
 {
     auto& imguiIO = ImGui::GetIO();
 
-    if (wheelEvent.wheel == system::Mouse::Wheel::Vertical)
+    if (wheelEvent.wheel == Mouse::Wheel::Vertical)
     {
         imguiIO.MouseWheel = static_cast<float>(wheelEvent.delta);
     }

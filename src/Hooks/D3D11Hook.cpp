@@ -14,7 +14,7 @@
 #include "Core.hpp"
 #include "Renderer/Renderer.hpp"
 
-namespace hry::hooks
+namespace hry
 {
 
 using IDXGISwapChain_Present_t = decltype(IDXGISwapChainVtbl::Present);
@@ -196,10 +196,10 @@ bool D3D11Hook::Install()
     }
 
     Core::Logger->info("Hooking IDXGISwapChain::Present...");
-    oSwapChainPresent = memory::HookVTableField(&swapChainVTable->Present, &new_IDXGISwapChain_Present);
+    oSwapChainPresent = HookVTableField(&swapChainVTable->Present, &new_IDXGISwapChain_Present);
 
     Core::Logger->info("Hooking IDXGISwapChain::ResizeBuffers...");
-    oSwapChainResizeBuffers = memory::HookVTableField(&swapChainVTable->ResizeBuffers, &new_IDXGISwapChain_ResizeBuffers);
+    oSwapChainResizeBuffers = HookVTableField(&swapChainVTable->ResizeBuffers, &new_IDXGISwapChain_ResizeBuffers);
 
     return true;
 }
@@ -211,13 +211,13 @@ void D3D11Hook::Uninstall()
         if (oSwapChainPresent != nullptr)
         {
             Core::Logger->info("Restoring IDXGISwapChain::Present...");
-            memory::HookVTableField(&swapChainVTable->Present, oSwapChainPresent);
+            HookVTableField(&swapChainVTable->Present, oSwapChainPresent);
         }
 
         if (oSwapChainResizeBuffers != nullptr)
         {
             Core::Logger->info("Restoring IDXGISwapChain::ResizeBuffers...");
-            memory::HookVTableField(&swapChainVTable->ResizeBuffers, oSwapChainResizeBuffers);
+            HookVTableField(&swapChainVTable->ResizeBuffers, oSwapChainResizeBuffers);
         }
     }
 

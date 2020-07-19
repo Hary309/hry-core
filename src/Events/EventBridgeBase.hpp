@@ -1,6 +1,6 @@
 #pragma once
 
-namespace hry::events
+namespace hry
 {
 
 class EventManager;

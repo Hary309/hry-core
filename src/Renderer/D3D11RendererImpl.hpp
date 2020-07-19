@@ -7,7 +7,7 @@
 
 #include "RendererBase.hpp"
 
-namespace hry::renderer
+namespace hry
 {
 
 class Renderer;

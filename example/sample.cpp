@@ -9,12 +9,10 @@
 #include <Hry/Logger/ModuleLogger.hpp>
 #include <Hry/System/Keyboard.hpp>
 
-using namespace hry;
-
-class SamplePlugin : public Plugin
+class SamplePlugin : public hry::Plugin
 {
 private:
-    PluginInfo _pluginInfo = {
+    hry::PluginInfo _pluginInfo = {
             "Sample plugin",
             "hry-sample",
             "This is a example of plugin based on hry-core.",
@@ -23,7 +21,7 @@ private:
     };
 
 public:
-    inline static std::unique_ptr<logger::ModuleLogger> Logger;
+    inline static std::unique_ptr<hry::ModuleLogger> Logger;
 
 public:
     virtual ~SamplePlugin()
@@ -31,7 +29,7 @@ public:
         Logger->info("Unloading...");
     }
 
-    virtual void init(std::unique_ptr<logger::ModuleLogger>&& logger)
+    virtual void init(std::unique_ptr<hry::ModuleLogger>&& logger)
     {
         Logger = std::move(logger);
         Logger->info("Created!");
@@ -59,13 +57,13 @@ public:
         ImGui::Text("Settings tab");
     }
 
-    virtual const PluginInfo& getPluginInfo() const
+    virtual const hry::PluginInfo& getPluginInfo() const
     {
         return _pluginInfo;
     }
 
 private:
-    void onKeyPressed(const events::MouseButtonEvent&& button)
+    void onKeyPressed(const hry::MouseButtonEvent&& button)
     {
         Logger->info("Button pressed!", static_cast<int>(button.button));
     }

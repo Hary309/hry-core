@@ -8,12 +8,12 @@
 struct IDirectInputDevice8A;
 struct DIDEVICEOBJECTDATA;
 
-namespace hry::hooks
+namespace hry
 {
 
 struct DInput8Hook
 {
-    inline static utils::Delegate<void(IDirectInputDevice8A*, const std::vector<DIDEVICEOBJECTDATA>&&)> OnGetDeviceData;
+    inline static Delegate<void(IDirectInputDevice8A*, const std::vector<DIDEVICEOBJECTDATA>&&)> OnGetDeviceData;
 
     inline static bool disableInGameMouse;
 

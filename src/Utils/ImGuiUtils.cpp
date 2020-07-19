@@ -2,7 +2,7 @@
 
 #include <imgui.h>
 
-namespace hry::utils
+namespace hry
 {
 
 void EnableImGui(bool enable) 

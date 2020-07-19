@@ -7,7 +7,7 @@
 
 #include <imgui.h>
 
-namespace hry::renderer
+namespace hry
 {
 
 Renderer::Renderer(Core& core) 

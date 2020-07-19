@@ -4,7 +4,7 @@
 #include <memory>
 #include <cstdint>
 
-namespace hry::memory
+namespace hry
 {
 
 template<typename T, typename U>

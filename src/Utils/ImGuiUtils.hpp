@@ -1,6 +1,6 @@
 #pragma once
 
-namespace hry::utils
+namespace hry
 {
 
 // @enable: if true enable mouse input and show cursor

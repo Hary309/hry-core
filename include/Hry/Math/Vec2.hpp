@@ -3,7 +3,7 @@
 
 #pragma once
 
-namespace hry::math
+namespace hry
 {
 
 template<typename T>

@@ -7,7 +7,7 @@ namespace hry
 class Core;
 }
 
-namespace hry::renderer
+namespace hry
 {
 
 class RendererBase;

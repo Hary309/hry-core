@@ -9,24 +9,24 @@
 #include "Hry/Utils/Delegate.hpp"
 #include "Utils/ImGuiUtils.hpp"
 
-namespace hry::ui
+namespace hry
 {
 
 MainWindow::MainWindow(
-    modules::ModuleManager& moduleMgr,
-    key_binding::KeyBindsManager& keyBindsMgr)
+    ModuleManager& moduleMgr,
+    KeyBindsManager& keyBindsMgr)
     : 
     _moduleMgr(moduleMgr),
     _keyBindsMgr(keyBindsMgr)
 {
 }
 
-void MainWindow::setupKeyBinds(key_binding::KeyBinds& keyBinds) 
+void MainWindow::setupKeyBinds(KeyBinds& keyBinds) 
 {
     // TODO: Make it with lambda
-    utils::Delegate<void()> delegate;
+    Delegate<void()> delegate;
     delegate.connect<&MainWindow::showMainWindowKeyBind>(this);
-    keyBinds.addBind("Show main window", system::Keyboard::Key::F9, delegate);
+    keyBinds.addBind("Show main window", Keyboard::Key::F9, delegate);
 }
 
 void MainWindow::renderImGui() 
@@ -223,9 +223,9 @@ void MainWindow::renderAboutTab()
 void MainWindow::showMainWindowKeyBind() 
 {
     _isEnabled = !_isEnabled;
-    system::Mouse::DisableInGameMouse(_isEnabled);
+    Mouse::DisableInGameMouse(_isEnabled);
 
-    utils::EnableImGui(_isEnabled);
+    EnableImGui(_isEnabled);
 }
 
 }

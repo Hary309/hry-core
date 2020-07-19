@@ -7,7 +7,7 @@
 
 #include "Delegate.hpp"
 
-namespace hry::utils
+namespace hry
 {
 
 template<typename>

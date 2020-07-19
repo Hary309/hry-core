@@ -5,7 +5,7 @@
 
 #include "Hry/Export.hpp"
 
-namespace hry::memory
+namespace hry
 {
 
 class HRY_API Detour
@@ -37,6 +37,12 @@ private:
 public:
     Detour(uintptr_t target, uintptr_t detour);
     Detour(uintptr_t* target, uintptr_t* detour);
+
+    template<typename FuncT>
+    Detour(uintptr_t target, FuncT& func)
+        : Detour((uintptr_t*)target, (uintptr_t*)func)
+    { }
+
     ~Detour();
 
     Status hook();
@@ -44,7 +50,7 @@ public:
     Status disable();
 
     template<typename T>
-    T* get() { return reinterpret_cast<T>(_original); } 
+    T* get() { return reinterpret_cast<T*>(_original); } 
 };
 
 }

@@ -1,7 +1,7 @@
 #pragma once
 #include "Memory.hpp"
 
-namespace hry::memory
+namespace hry
 {
 
 template<typename Func>

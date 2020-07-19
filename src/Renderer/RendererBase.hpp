@@ -1,6 +1,6 @@
 #pragma once
 
-namespace hry::renderer
+namespace hry
 {
 
 class Renderer;

@@ -2,7 +2,7 @@
 
 #include <chrono>
 
-namespace hry::utils
+namespace hry
 {
 
 class Timer

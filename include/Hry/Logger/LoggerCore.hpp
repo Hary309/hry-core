@@ -5,7 +5,7 @@
 
 #include "Hry/Export.hpp"
 
-namespace hry::logger
+namespace hry
 {
 
 class ModuleLogger;

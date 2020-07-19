@@ -1,6 +1,6 @@
 #include "Hry/KeyBinding/KeyBinds.hpp"
 
-namespace hry::key_binding
+namespace hry
 {
 
 KeyBinds::KeyBinds(const std::string& name)

@@ -14,7 +14,7 @@
 
 #include "Core.hpp"
 
-namespace hry::hooks
+namespace hry
 {
 
 using DirectInput8Create_t = decltype(DirectInput8Create);
@@ -87,7 +87,7 @@ bool DInput8Hook::Install()
     DIDeviceVTable = DIMouse->lpVtbl;
 
     Core::Logger->info("Hooking DirectInputDevice::GetDeviceData...");
-    oDirectInputGetDeviceData = memory::HookVTableField(&DIDeviceVTable->GetDeviceData, &new_DirectInputDevice_GetDeviceData);
+    oDirectInputGetDeviceData = HookVTableField(&DIDeviceVTable->GetDeviceData, &new_DirectInputDevice_GetDeviceData);
 
     IDirectInputDevice8_Release(DIMouse);
     IDirectInput8_Release(DI);
@@ -102,7 +102,7 @@ void DInput8Hook::Uninstall()
         if (oDirectInputGetDeviceData != nullptr)
         {
             Core::Logger->info("Restoring DirectInputDevice::GetDeviceData...");
-            memory::HookVTableField(&DIDeviceVTable->GetDeviceData, oDirectInputGetDeviceData);
+            HookVTableField(&DIDeviceVTable->GetDeviceData, oDirectInputGetDeviceData);
         }
     }
 }

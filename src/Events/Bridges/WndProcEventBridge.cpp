@@ -17,14 +17,13 @@
 
 IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
-namespace hry::events
+namespace hry
 {
 
 // source: https://github.com/SFML/SFML
 // This is a part of SFML under https://github.com/SFML/SFML/blob/master/license.md
-system::Keyboard::Key vkKeyCodeToEnum(WPARAM key, LPARAM flags)
+Keyboard::Key vkKeyCodeToEnum(WPARAM key, LPARAM flags)
 {
-    using namespace hry::system;
     using Key = Keyboard::Key;
 
     switch (key)
@@ -139,7 +138,7 @@ system::Keyboard::Key vkKeyCodeToEnum(WPARAM key, LPARAM flags)
     return Key::Unknown;
 }
 
-MouseButtonEvent getMouseButtonEvent(system::Mouse::Button button, LPARAM lParam)
+MouseButtonEvent getMouseButtonEvent(Mouse::Button button, LPARAM lParam)
 {
     MouseButtonEvent buttonEvent;
     buttonEvent.button = button;
@@ -149,13 +148,11 @@ MouseButtonEvent getMouseButtonEvent(system::Mouse::Button button, LPARAM lParam
 WndProcEventBridge::WndProcEventBridge(EventManager& eventMgr)
     : EventBridgeBase(eventMgr)
 {
-    hooks::D3D11Hook::OnWndProc.connect<&WndProcEventBridge::onWndProc>(this);
+    D3D11Hook::OnWndProc.connect<&WndProcEventBridge::onWndProc>(this);
 }
 
 void WndProcEventBridge::onWndProc(const HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) 
 {
-    using namespace hry::system;
-
     ImGui_ImplWin32_WndProcHandler(hWnd, msg, wParam, lParam);
 
     switch (msg)

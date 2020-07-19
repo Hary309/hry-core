@@ -9,14 +9,14 @@
 #include "KeyBinding/KeyBindsManager.hpp"
 
 
-namespace hry::ui
+namespace hry
 {
 
 class MainWindow
 {
 private:
-    modules::ModuleManager& _moduleMgr;
-    key_binding::KeyBindsManager& _keyBindsMgr;
+    ModuleManager& _moduleMgr;
+    KeyBindsManager& _keyBindsMgr;
     
     int _selectedPluginIndex = 0;
 
@@ -24,10 +24,10 @@ private:
 
 public:
     MainWindow(
-        modules::ModuleManager& moduleMgr,
-        key_binding::KeyBindsManager& KeyBindsMgr);
+        ModuleManager& moduleMgr,
+        KeyBindsManager& KeyBindsMgr);
 
-    void setupKeyBinds(key_binding::KeyBinds& keyBinds);
+    void setupKeyBinds(KeyBinds& keyBinds);
 
     void renderImGui();
 

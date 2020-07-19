@@ -11,20 +11,20 @@
 struct IDirectInputDevice8A;
 struct DIDEVICEOBJECTDATA;
 
-namespace hry::events
+namespace hry
 {
 
 class DInput8EventBridge : public EventBridgeBase
 {
 private:
-    math::Vec2i _mouseOffset;
+    Vec2i _mouseOffset;
 
 public:
     DInput8EventBridge(EventManager& eventMgr);
 
 private:
     void onGetDeviceData(IDirectInputDevice8A*, const std::vector<DIDEVICEOBJECTDATA>&&);
-    void sendButtonEvent(int pressData, system::Mouse::Button button);
+    void sendButtonEvent(int pressData, Mouse::Button button);
 };
 
 }

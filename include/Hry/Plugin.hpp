@@ -15,12 +15,12 @@ class Plugin
 {
 public:
     // never nullptr
-    std::unique_ptr<events::EventHandler> eventHandler;
-    key_binding::KeyBinds* keyBinds;
+    std::unique_ptr<EventHandler> eventHandler;
+    KeyBinds* keyBinds;
 
 public:
     virtual ~Plugin() {}
-    virtual void init(std::unique_ptr<logger::ModuleLogger>&& logger) = 0;
+    virtual void init(std::unique_ptr<ModuleLogger>&& logger) = 0;
 
     virtual void update(float deltaTime) = 0;
 
@@ -31,13 +31,13 @@ public:
 
 }
 
-#define INIT_PLUGIN(PLUGIN_TYPE)                 \
-extern "C"                                       \
-{                                                \
-    __declspec(dllexport) Plugin* CreatePlugin() \
-    {                                            \
-        return new PLUGIN_TYPE();                \
-    }                                            \
+#define INIT_PLUGIN(PLUGIN_TYPE)                      \
+extern "C"                                            \
+{                                                     \
+    __declspec(dllexport) hry::Plugin* CreatePlugin() \
+    {                                                 \
+        return new PLUGIN_TYPE();                     \
+    }                                                 \
 }
 
 #define INIT_IMGUI()                                        \
@@ -48,3 +48,4 @@ extern "C"                                                  \
         ImGui::SetCurrentContext(ctx);                      \
     }                                                       \
 }
+

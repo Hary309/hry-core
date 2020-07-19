@@ -88,8 +88,8 @@ bool Core::InstallHooks()
 
     bool success = true;
 
-    success &= hooks::D3D11Hook::Install();
-    success &= hooks::DInput8Hook::Install();
+    success &= D3D11Hook::Install();
+    success &= DInput8Hook::Install();
 
     if (success)
     {
@@ -107,8 +107,8 @@ void Core::UninstallHooks()
 {
     Logger->info("Uninstalling hooks...");
 
-    hooks::D3D11Hook::Uninstall();
-    hooks::DInput8Hook::Uninstall();
+    D3D11Hook::Uninstall();
+    DInput8Hook::Uninstall();
 
     Logger->info("Hooks uninstalled");
 }

@@ -10,7 +10,7 @@
 #include <imgui_impl_win32.h>
 #include <imgui_impl_dx11.h>
 
-namespace hry::renderer
+namespace hry
 {
 
 D3D11RendererImpl::D3D11RendererImpl(Renderer& renderer)
@@ -29,10 +29,10 @@ D3D11RendererImpl::~D3D11RendererImpl()
 
 void D3D11RendererImpl::init() 
 {
-    hooks::D3D11Hook::OnInit.connect<&D3D11RendererImpl::onInit>(this);
-    hooks::D3D11Hook::OnPresent.connect<&D3D11RendererImpl::onPresent>(this);
-    hooks::D3D11Hook::OnBeforeResize.connect<&D3D11RendererImpl::onBeforeResize>(this);
-    hooks::D3D11Hook::OnResize.connect<&D3D11RendererImpl::onResize>(this);
+    D3D11Hook::OnInit.connect<&D3D11RendererImpl::onInit>(this);
+    D3D11Hook::OnPresent.connect<&D3D11RendererImpl::onPresent>(this);
+    D3D11Hook::OnBeforeResize.connect<&D3D11RendererImpl::onBeforeResize>(this);
+    D3D11Hook::OnResize.connect<&D3D11RendererImpl::onResize>(this);
 }
 
 void D3D11RendererImpl::resize() 

@@ -5,7 +5,7 @@
 
 #include "LoggerCore.hpp"
 
-namespace hry::logger
+namespace hry
 {
 
 class ModuleLogger

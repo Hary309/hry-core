@@ -9,7 +9,7 @@
 
 #include "Hry/Logger/ModuleLogger.hpp"
 
-namespace hry::logger
+namespace hry
 {
 
 void LoggerCore::init(const char* logFilePath) 

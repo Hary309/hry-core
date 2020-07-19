@@ -8,7 +8,7 @@
 
 #include "Events/EventManager.hpp"
 
-namespace hry::key_binding
+namespace hry
 {
 
 class KeyBindsManager
@@ -16,11 +16,11 @@ class KeyBindsManager
 private:
     std::vector<std::unique_ptr<KeyBinds>> _keyBinds;
 
-    utils::Sink<void(const events::KeyboardEvent&&)> _onKeyPress;
-    utils::Sink<void(const events::MouseButtonEvent&&)> _onMouseButtonPress;
+    Sink<void(const KeyboardEvent&&)> _onKeyPress;
+    Sink<void(const MouseButtonEvent&&)> _onMouseButtonPress;
 
 public:
-    KeyBindsManager(events::EventManager& eventMgr);
+    KeyBindsManager(EventManager& eventMgr);
 
     KeyBinds* createKeyBinds(const std::string& name);
     void remove(const KeyBinds* keyBind);

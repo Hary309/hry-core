@@ -7,7 +7,7 @@
 #include "Bridges/TelemetryEventBridge.hpp"
 #include "Events/Bridges/TelemetryEventBridge.hpp"
 
-namespace hry::events
+namespace hry
 {
 
 

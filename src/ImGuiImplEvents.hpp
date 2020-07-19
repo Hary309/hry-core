@@ -12,17 +12,17 @@ namespace hry
 class ImGuiImplEvents
 {
 private:
-    utils::Sink<void(const events::MouseButtonEvent&&)> _onMouseButtonPress;
-    utils::Sink<void(const events::MouseButtonEvent&&)> _onMouseButtonRelease;
-    utils::Sink<void(const events::MouseWheelEvent&&)> _onMouseWheelScroll;
+    Sink<void(const MouseButtonEvent&&)> _onMouseButtonPress;
+    Sink<void(const MouseButtonEvent&&)> _onMouseButtonRelease;
+    Sink<void(const MouseWheelEvent&&)> _onMouseWheelScroll;
 
 public:
-    ImGuiImplEvents(events::EventManager& eventMgr);
+    ImGuiImplEvents(EventManager& eventMgr);
 
 private:
-    static void OnMouseButtonPress(const events::MouseButtonEvent&&);
-    static void OnMouseButtonRelease(const events::MouseButtonEvent&&);
-    static void OnMouseWheelScroll(const events::MouseWheelEvent&&);
+    static void OnMouseButtonPress(const MouseButtonEvent&&);
+    static void OnMouseButtonRelease(const MouseButtonEvent&&);
+    static void OnMouseWheelScroll(const MouseWheelEvent&&);
 };
 
 }

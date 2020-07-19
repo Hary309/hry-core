@@ -4,7 +4,7 @@
 
 #include <scssdk_telemetry.h>
 
-namespace hry::events
+namespace hry
 {
 
 class TelemetryEventBridge : public EventBridgeBase

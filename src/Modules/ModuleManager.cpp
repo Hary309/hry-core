@@ -14,7 +14,7 @@
 
 namespace fs = std::filesystem;
 
-namespace hry::modules
+namespace hry
 {
 
 using CreatePlugin_t = Plugin*();
@@ -22,9 +22,9 @@ using InitImGui_t = void(ImGuiContext*);
 
 ModuleManager::ModuleManager(
     const std::string& pluginDirectory,
-    events::EventManager& eventMgr,
-    key_binding::KeyBindsManager& keyBindsMgr,
-    logger::LoggerCore& loggerCore)
+    EventManager& eventMgr,
+    KeyBindsManager& keyBindsMgr,
+    LoggerCore& loggerCore)
     : _pluginDirectory(pluginDirectory), _eventMgr(eventMgr), _keyBindsMgr(keyBindsMgr), _loggerCore(loggerCore)
 {
 }
@@ -172,7 +172,7 @@ bool ModuleManager::load(Module* mod)
 
     mod->keyBinds = keyBinds;
     mod->plugin->keyBinds = keyBinds;
-    mod->plugin->eventHandler = std::make_unique<events::EventHandler>(_eventMgr.createEventHandler());
+    mod->plugin->eventHandler = std::make_unique<EventHandler>(_eventMgr.createEventHandler());
 
     mod->isLoaded = true;
 

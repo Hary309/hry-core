@@ -10,12 +10,10 @@
 #include <Hry/Logger/ModuleLogger.hpp>
 #include <Hry/System/Keyboard.hpp>
 
-using namespace hry;
-
-class ExamplePlugin : public Plugin
+class ExamplePlugin : public hry::Plugin
 {
 private:
-    PluginInfo _pluginInfo = {
+    hry::PluginInfo _pluginInfo = {
             "Example plugin",
             "hry-example",
             "This is a example of plugin based on hry-core.",
@@ -24,7 +22,7 @@ private:
     };
 
 public:
-    inline static std::unique_ptr<logger::ModuleLogger> Logger;
+    inline static std::unique_ptr<hry::ModuleLogger> Logger;
 
 public:
     virtual ~ExamplePlugin()
@@ -32,7 +30,7 @@ public:
         Logger->info("Unloading...");
     }
 
-    virtual void init(std::unique_ptr<logger::ModuleLogger>&& logger)
+    virtual void init(std::unique_ptr<hry::ModuleLogger>&& logger)
     {
         Logger = std::move(logger);
         Logger->info("Created!");
@@ -40,10 +38,10 @@ public:
         eventHandler->onKeyPress.connect<&ExamplePlugin::onKeyPressed>(this);
         eventHandler->onImGuiRender.connect<&ExamplePlugin::imguiRender>(this);
 
-        key_binding::KeyBind::Delegate_t delegate;
+        hry::KeyBind::Delegate_t delegate;
         delegate.connect<&ExamplePlugin::onKeyBind>(this);
 
-        keyBinds->addBind("Do something", system::Keyboard::Key::Q, delegate);
+        keyBinds->addBind("Do something", hry::Keyboard::Key::Q, delegate);
     }
 
     virtual void update(float deltaTime)
@@ -68,13 +66,13 @@ public:
         ImGui::Text("Test asdf");
     }
 
-    virtual const PluginInfo& getPluginInfo() const
+    virtual const hry::PluginInfo& getPluginInfo() const
     {
         return _pluginInfo;
     }
 
 private:
-    void onKeyPressed(const events::KeyboardEvent& key)
+    void onKeyPressed(const hry::KeyboardEvent& key)
     {
         Logger->info("Key pressed!", static_cast<int>(key.key));
     }
