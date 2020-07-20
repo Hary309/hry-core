@@ -1,12 +1,15 @@
 #pragma once
 
+#include <algorithm>
 #include <vector>
 #include <variant>
 #include <string>
 
+#include "BindableKeys.hpp"
+
 #include "Hry/Export.hpp"
-#include "Hry/System//Keyboard.hpp"
-#include "Hry/System//Mouse.hpp"
+#include "Hry/System/Keyboard.hpp"
+#include "Hry/System/Mouse.hpp"
 #include "Hry/Utils/Delegate.hpp"
 
 namespace hry
@@ -19,14 +22,13 @@ class KeyBind
     friend KeyBinds;
 
 public:
-    using Key_t = std::variant<Keyboard::Key, Mouse::Button>; // TODO: Add controller's keys
     using Delegate_t = Delegate<void()>;
 
 private:
     std::string _configFieldName;
     std::string _name;
-    Key_t _key;
-    Key_t _defaultKey;
+    const BindableKey* _key = nullptr; // if null no set
+    const BindableKey* _defaultKey = nullptr; // if null not set
     Delegate_t _pressAction;
     Delegate_t _releaseAction;
 
@@ -37,7 +39,19 @@ public:
     void setName(const char* name) { _name = name; }
     const auto& getName() const { return _name; }
 
-    void setDefaultKey(Key_t key) { _key = key; _defaultKey = key; }
+    void setDefaultKey(const BindableKey* key) { _key = key; _defaultKey = key; }
+    void setDefaultKey(const BindableKey::Key_t key)
+    {
+        auto it = std::find_if(BindableKeys.begin(), BindableKeys.end(),
+            [&key](const BindableKey& bindableKey)
+                { return key == bindableKey.key; }
+        );
+
+        if (it != BindableKeys.end())
+        {
+            setDefaultKey(&*it);
+        }
+    }
     const auto& getDefaultKey() const { return _key; }
     
     const auto& getKey() const { return _key; }
