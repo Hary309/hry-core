@@ -47,6 +47,8 @@ public:
     template<auto FuncAddr>
     void connect()
     {
+        static_assert(std::is_invocable_r_v<Return, decltype(FuncAddr), Args...>, "Passed function doesn't meet declared function template");
+
         _function = [](void*, Args... args) -> Return {
             return static_cast<Return>(std::invoke(FuncAddr, std::forward<Args>(args)...));
         };
@@ -57,6 +59,8 @@ public:
     template<auto CtxFuncAddr, typename T>
     void connect(T* content)
     {
+        static_assert(std::is_invocable_r_v<Return, decltype(CtxFuncAddr), T*, Args...>, "Passed method doesn't meet declared method template");
+
         _function = [](void* content, Args... args) -> Return {
             return static_cast<Return>(std::invoke(CtxFuncAddr, static_cast<T*>(content), std::forward<Args>(args)...));
         };
@@ -118,6 +122,6 @@ Delegate(ConnectArg<FuncAddr>)
 template<auto CtxFuncAddr, typename T>
 Delegate(ConnectArg<CtxFuncAddr>, T* context)
     -> Delegate<std::remove_pointer_t<FunctionPtr_t<decltype(CtxFuncAddr), T>>>;
-    
+
 }
 
