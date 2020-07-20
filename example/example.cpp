@@ -39,12 +39,11 @@ public:
         eventHandler->onKeyPress.connect<&ExamplePlugin::onKeyPressed>(this);
         eventHandler->onImGuiRender.connect<&ExamplePlugin::imguiRender>(this);
 
-        keyBinds->addBind(
-            "do_something",
-            "Do something",
-            hry::Keyboard::Key::Q,
-            { hry::ConnectArg_v<&ExamplePlugin::onKeyBind>, this }
-            );
+        hry::KeyBind doSomethingBind;
+        doSomethingBind.setConfigFieldName("do_something");
+        doSomethingBind.setName("Do something");
+        doSomethingBind.setDefaultKey(hry::Keyboard::Key::Q);
+        doSomethingBind.setPressAction<&ExamplePlugin::onKeyBind>(this);
     }
 
     virtual void update(float deltaTime)

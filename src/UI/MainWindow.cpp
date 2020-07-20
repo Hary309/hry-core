@@ -1,5 +1,6 @@
 #include "MainWindow.hpp"
 
+#include <functional>
 #include <imgui.h>
 
 #include "Hry/KeyBinding/KeyBinds.hpp"
@@ -21,14 +22,14 @@ MainWindow::MainWindow(
 {
 }
 
-void MainWindow::setupKeyBinds(KeyBinds& keyBinds) 
+void MainWindow::initKeyBinds(KeyBinds& keyBinds) 
 {
-    keyBinds.addBind(
-        "show_main_window",
-        "Show main window",
-        Keyboard::Key::F9,
-        {ConnectArg_v<&MainWindow::showMainWindowKeyBind>, this}
-        );
+    KeyBind showMainWindowBind;
+    showMainWindowBind.setConfigFieldName("show_main_window");
+    showMainWindowBind.setName("Show main window");
+    showMainWindowBind.setDefaultKey(Keyboard::Key::F9);
+    showMainWindowBind.setPressAction<&MainWindow::showMainWindowKeyBind>(this);
+    keyBinds.addKeyBind(std::move(showMainWindowBind));
 }
 
 void MainWindow::renderImGui() 
@@ -209,7 +210,7 @@ void MainWindow::renderBindsTab()
             {
                 for (auto& keyBind : keyBinds)
                 {
-                    ImGui::Text("%s", keyBind.name.c_str());
+                    ImGui::Text("%s", keyBind.getName().c_str());
                 }
             }
         }
