@@ -23,10 +23,12 @@ MainWindow::MainWindow(
 
 void MainWindow::setupKeyBinds(KeyBinds& keyBinds) 
 {
-    // TODO: Make it with lambda
-    Delegate<void()> delegate;
-    delegate.connect<&MainWindow::showMainWindowKeyBind>(this);
-    keyBinds.addBind("Show main window", Keyboard::Key::F9, delegate);
+    keyBinds.addBind(
+        "show_main_window",
+        "Show main window",
+        Keyboard::Key::F9,
+        {ConnectArg_v<&MainWindow::showMainWindowKeyBind>, this}
+        );
 }
 
 void MainWindow::renderImGui() 
@@ -220,7 +222,7 @@ void MainWindow::renderAboutTab()
     ImGui::Text("Credits etc");
 }
 
-void MainWindow::showMainWindowKeyBind() 
+void MainWindow::showMainWindowKeyBind()
 {
     _isEnabled = !_isEnabled;
     Mouse::DisableInGameMouse(_isEnabled);

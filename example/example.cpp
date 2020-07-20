@@ -1,4 +1,5 @@
 #include "Hry/KeyBinding/KeyBinds.hpp"
+#include "Hry/Utils/Delegate.hpp"
 #include <memory>
 #include <windows.h>
 #include <iostream>
@@ -38,10 +39,12 @@ public:
         eventHandler->onKeyPress.connect<&ExamplePlugin::onKeyPressed>(this);
         eventHandler->onImGuiRender.connect<&ExamplePlugin::imguiRender>(this);
 
-        hry::KeyBind::Delegate_t delegate;
-        delegate.connect<&ExamplePlugin::onKeyBind>(this);
-
-        keyBinds->addBind("Do something", hry::Keyboard::Key::Q, delegate);
+        keyBinds->addBind(
+            "do_something",
+            "Do something",
+            hry::Keyboard::Key::Q,
+            { hry::ConnectArg_v<&ExamplePlugin::onKeyBind>, this }
+            );
     }
 
     virtual void update(float deltaTime)
