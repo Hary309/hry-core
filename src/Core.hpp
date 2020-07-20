@@ -57,7 +57,7 @@ public:
     // after renderer and imgui is initalized
     void lateInit();
 
-    void setupKeyBinds();
+    void initKeyBinds();
 
     void imguiRender();
 

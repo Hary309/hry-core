@@ -27,7 +27,7 @@ public:
         ModuleManager& moduleMgr,
         KeyBindsManager& KeyBindsMgr);
 
-    void setupKeyBinds(KeyBinds& keyBinds);
+    void initKeyBinds(KeyBinds& keyBinds);
 
     void renderImGui();
 

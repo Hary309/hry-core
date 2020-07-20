@@ -61,17 +61,17 @@ bool Core::init(scs_telemetry_init_params_v100_t* scsTelemetry)
 
 void Core::lateInit() 
 {
-    setupKeyBinds();
+    initKeyBinds();
 
     _moduleMgr.init();
 
     Logger->info("Core successfully initialized!");
 }
 
-void Core::setupKeyBinds() 
+void Core::initKeyBinds() 
 {
     _coreKeyBinds = _keyBindsMgr.createKeyBinds("Core");
-    _mainWindow.setupKeyBinds(*_coreKeyBinds);
+    _mainWindow.initKeyBinds(*_coreKeyBinds);
 }
 
 void Core::imguiRender() 
