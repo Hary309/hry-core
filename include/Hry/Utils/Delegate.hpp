@@ -1,4 +1,5 @@
 // original code: https://github.com/skypjack/entt
+// This is a part of ENTT under MIT License
 
 #pragma once
 
@@ -12,11 +13,16 @@ namespace hry
 template <typename>
 class Delegate;
 
+template<auto>
+struct ConnectArg {};
+
+template<auto Addr>
+inline constexpr ConnectArg<Addr> ConnectArg_v;
+
 template <typename Return, typename... Args>
 class Delegate<Return(Args...)>
 {
-private:
-    using Delegate_t = Return(Args...);
+public:
     using Function_t = Return(void*, Args...);
 
 private:
@@ -26,7 +32,19 @@ private:
 public:
     Delegate() = default;
 
-    template<Delegate_t* FuncAddr>
+    template<auto FuncAddr>
+    Delegate(ConnectArg<FuncAddr>)
+    {
+        connect<FuncAddr>();
+    }
+
+    template<auto CtxFuncAddr, typename T>
+    Delegate(ConnectArg<CtxFuncAddr>, T* context)
+    {
+        connect<CtxFuncAddr>(context);
+    }
+
+    template<auto FuncAddr>
     void connect()
     {
         _function = [](void*, Args... args) -> Return {
@@ -36,14 +54,32 @@ public:
         _content = nullptr;
     }
 
-    template<auto MethodAddr, typename T>
+    template<auto CtxFuncAddr, typename T>
     void connect(T* content)
     {
         _function = [](void* content, Args... args) -> Return {
-            return static_cast<Return>(std::invoke(MethodAddr, static_cast<T*>(content), std::forward<Args>(args)...));
+            return static_cast<Return>(std::invoke(CtxFuncAddr, static_cast<T*>(content), std::forward<Args>(args)...));
         };
 
         _content = content;
+    }
+
+    template<auto FuncAddr>
+    void connect(ConnectArg<FuncAddr>)
+    {
+        connect<FuncAddr>();
+    }
+
+    template<auto CtxFuncAddr, typename T>
+    void connect(ConnectArg<CtxFuncAddr>, T* context)
+    {
+        connect<CtxFuncAddr>(context);
+    }
+
+    void connect(Function_t* func, void* context)
+    {
+        _function = func;
+        _content = context;
     }
 
     Return call(Args... args) const
@@ -60,5 +96,28 @@ public:
     }
 };
 
+template<typename Return, typename... Args>
+auto FunctionPtr(Return(*)(Args...))
+    -> Return(*)(Args...);
+
+template<typename Class, typename Return, typename... Args, typename... Other>
+auto FunctionPtr(Return(Class::*)(Args...), Other&&...)
+    -> Return(*)(Args...);
+
+template<typename Class, typename Return, typename... Args, typename... Other>
+auto FunctionPtr(Return(Class::*)(Args...) const, Other&&...)
+    -> Return(*)(Args...);
+
+template<typename... Types>
+using FunctionPtr_t = decltype(FunctionPtr(std::declval<Types>()...));
+
+template<auto FuncAddr>
+Delegate(ConnectArg<FuncAddr>)
+    -> Delegate<std::remove_pointer_t<FunctionPtr_t<decltype(FuncAddr)>>>;
+
+template<auto CtxFuncAddr, typename T>
+Delegate(ConnectArg<CtxFuncAddr>, T* context)
+    -> Delegate<std::remove_pointer_t<FunctionPtr_t<decltype(CtxFuncAddr), T>>>;
+    
 }
 
