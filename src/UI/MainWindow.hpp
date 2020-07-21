@@ -15,17 +15,23 @@ namespace hry
 class MainWindow
 {
 private:
+    bool _isWindowEnabled = false;
+
     ModuleManager& _moduleMgr;
     KeyBindsManager& _keyBindsMgr;
-    
+
+    Sink<void(const KeyboardEvent&&)> _onKeyPress;
+    Sink<void(const MouseButtonEvent&&)> _onMouseButtonPress;
+
     int _selectedPluginIndex = 0;
 
-    bool _isEnabled = false;
+    KeyBind* _keyToSetBind = nullptr;
 
 public:
     MainWindow(
         ModuleManager& moduleMgr,
-        KeyBindsManager& KeyBindsMgr);
+        KeyBindsManager& KeyBindsMgr,
+        EventManager& eventMgr);
 
     void initKeyBinds(KeyBinds& keyBinds);
 
@@ -35,10 +41,15 @@ private:
     void renderPluginsTab();
     void renderSettingsTab();
     void renderPluginsSettingsTab();
-    void renderBindsTab();
+    void renderKeyBindsTab();
     void renderAboutTab();
 
+    void renderModal();
+
     void showMainWindowKeyBind();
+
+    void handleKeyPress(const KeyboardEvent&&);
+    void handleMouseButtonPress(const MouseButtonEvent&&);
 };
 
 }

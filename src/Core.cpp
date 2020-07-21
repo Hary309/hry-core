@@ -21,7 +21,7 @@ Core::Core(HINSTANCE hInst)
     _renderer(*this),
     _keyBindsMgr(_eventMgr),
     _moduleMgr("plugins\\hry_plugins", _eventMgr, _keyBindsMgr, _loggerCore),
-    _mainWindow(_moduleMgr, _keyBindsMgr),
+    _mainWindow(_moduleMgr, _keyBindsMgr, _eventMgr),
     _imguiImplEvents(_eventMgr)
 {
     hInstance = hInst;
@@ -61,6 +61,7 @@ bool Core::init(scs_telemetry_init_params_v100_t* scsTelemetry)
 
 void Core::lateInit() 
 {
+    EnableImGui(false);
     initKeyBinds();
 
     _moduleMgr.init();

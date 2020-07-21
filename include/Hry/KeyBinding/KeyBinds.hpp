@@ -37,30 +37,26 @@ public:
     void setConfigFieldName(const char* name) { _configFieldName = name; }
     const auto& getConfigFieldName() const { return _configFieldName; }
 
+
     void setName(const char* name) { _name = name; }
     const auto& getName() const { return _name; }
 
     void setDefaultKey(const BindableKey* key) { _key = key; _defaultKey = key; }
-    void setDefaultKey(const BindableKey::Key_t key)
-    {
-        auto it = std::find_if(BindableKeys.begin(), BindableKeys.end(),
-            [&key](const BindableKey& bindableKey)
-                { return key == bindableKey.key; }
-        );
+    HRY_API void setDefaultKey(const BindableKey::Key_t key);
 
-        if (it != BindableKeys.end())
-        {
-            setDefaultKey(&*it);
-        }
-    }
     const auto& getDefaultKey() const { return _key; }
-    
+
+    void setKey(const BindableKey* key) { _key = key; }
+    HRY_API void setKey(const BindableKey::Key_t key);
     const auto getKey() const { return _key; }
 
     void setKeyState(ButtonState state) { _state = state; }
     ButtonState getKeyState() const { return _state; }
 
+
     void callPressAction() const { _pressAction.call(); }
+
+    void setPressAction(const Delegate_t& action) { _pressAction = action; }
 
     template<auto FuncAddr>
     void setPressAction() { _pressAction.connect<FuncAddr>(); }
@@ -68,7 +64,10 @@ public:
     template<auto CtxFuncAddr, typename T>
     void setPressAction(T* content) { _pressAction.connect<CtxFuncAddr>(content); }
 
+
     void callReleaseAction() const { _releaseAction.call(); }
+
+    void setReleaseAction(const Delegate_t& action) { _releaseAction = action; }
 
     template<auto FuncAddr>
     void setReleaseAction() { _releaseAction.connect<FuncAddr>(); }
