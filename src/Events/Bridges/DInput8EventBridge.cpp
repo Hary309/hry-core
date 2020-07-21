@@ -98,10 +98,12 @@ void DInput8EventBridge::sendButtonEvent(int pressData, Mouse::Button button)
     // if pressed
     if (pressData == 0x80)
     {
+        mouseButtonEvent.state = ButtonState::Pressed;
         _eventMgr.mouseButtonPressSignal.call(std::move(mouseButtonEvent));
     }
     else
     {
+        mouseButtonEvent.state = ButtonState::Released;
         _eventMgr.mouseButtonReleaseSignal.call(std::move(mouseButtonEvent));
     }
 }

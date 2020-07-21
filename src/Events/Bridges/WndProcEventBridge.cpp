@@ -138,10 +138,11 @@ Keyboard::Key vkKeyCodeToEnum(WPARAM key, LPARAM flags)
     return Key::Unknown;
 }
 
-MouseButtonEvent getMouseButtonEvent(Mouse::Button button, LPARAM lParam)
+MouseButtonEvent getMouseButtonEvent(Mouse::Button button, LPARAM lParam, ButtonState state)
 {
     MouseButtonEvent buttonEvent;
     buttonEvent.button = button;
+    buttonEvent.state = state;
     return buttonEvent;
 }
 
@@ -190,14 +191,18 @@ void WndProcEventBridge::onWndProc(const HWND hWnd, UINT msg, WPARAM wParam, LPA
         {
             if ((HIWORD(lParam) & KF_REPEAT) == 0)
             {
-                _eventMgr.keyPressSignal.call(KeyboardEvent { vkKeyCodeToEnum(wParam, lParam) });
+                _eventMgr.keyPressSignal.call(KeyboardEvent {
+                        vkKeyCodeToEnum(wParam, lParam), ButtonState::Pressed
+                    });
             }
         } break;
 
         case WM_KEYUP:
         case WM_SYSKEYUP:
         {
-            _eventMgr.keyReleaseSignal.call(KeyboardEvent { vkKeyCodeToEnum(wParam, lParam) });
+            _eventMgr.keyReleaseSignal.call(KeyboardEvent {
+                    vkKeyCodeToEnum(wParam, lParam), ButtonState::Released
+                });
 
         } break;
 
@@ -238,13 +243,13 @@ void WndProcEventBridge::onWndProc(const HWND hWnd, UINT msg, WPARAM wParam, LPA
         case WM_LBUTTONDOWN:
         {
             _eventMgr.mouseButtonPressSignal.call(
-                getMouseButtonEvent(Mouse::Button::Left, lParam)
+                getMouseButtonEvent(Mouse::Button::Left, lParam, ButtonState::Pressed)
                 );
         } break;
         case WM_LBUTTONUP:
         {
             _eventMgr.mouseButtonReleaseSignal.call(
-                getMouseButtonEvent(Mouse::Button::Left, lParam)
+                getMouseButtonEvent(Mouse::Button::Left, lParam, ButtonState::Released)
                 );
         } break;
     
@@ -252,13 +257,13 @@ void WndProcEventBridge::onWndProc(const HWND hWnd, UINT msg, WPARAM wParam, LPA
         case WM_RBUTTONDOWN:
         {
             _eventMgr.mouseButtonPressSignal.call(
-                getMouseButtonEvent(Mouse::Button::Right, lParam)
+                getMouseButtonEvent(Mouse::Button::Right, lParam, ButtonState::Pressed)
                 );
         } break;
         case WM_RBUTTONUP:
         {
             _eventMgr.mouseButtonReleaseSignal.call(
-                getMouseButtonEvent(Mouse::Button::Right, lParam)
+                getMouseButtonEvent(Mouse::Button::Right, lParam, ButtonState::Released)
                 );
         } break;
 
@@ -266,13 +271,13 @@ void WndProcEventBridge::onWndProc(const HWND hWnd, UINT msg, WPARAM wParam, LPA
         case WM_MBUTTONDOWN:
         {
             _eventMgr.mouseButtonPressSignal.call(
-                getMouseButtonEvent(Mouse::Button::Middle, lParam)
+                getMouseButtonEvent(Mouse::Button::Middle, lParam, ButtonState::Pressed)
                 );
         } break;
         case WM_MBUTTONUP:
         {
             _eventMgr.mouseButtonReleaseSignal.call(
-                getMouseButtonEvent(Mouse::Button::Middle, lParam)
+                getMouseButtonEvent(Mouse::Button::Middle, lParam, ButtonState::Released)
                 );
         } break;
 
@@ -282,7 +287,7 @@ void WndProcEventBridge::onWndProc(const HWND hWnd, UINT msg, WPARAM wParam, LPA
             Mouse::Button button = GET_XBUTTON_WPARAM(wParam) == XBUTTON1 ? Mouse::Button::XButton1 : Mouse::Button::XButton2; 
 
             _eventMgr.mouseButtonPressSignal.call(
-                getMouseButtonEvent(button, lParam)
+                getMouseButtonEvent(button, lParam, ButtonState::Pressed)
                 );
         } break;
         case WM_XBUTTONUP:
@@ -290,7 +295,7 @@ void WndProcEventBridge::onWndProc(const HWND hWnd, UINT msg, WPARAM wParam, LPA
             Mouse::Button button = GET_XBUTTON_WPARAM(wParam) == XBUTTON1 ? Mouse::Button::XButton1 : Mouse::Button::XButton2; 
 
             _eventMgr.mouseButtonReleaseSignal.call(
-                getMouseButtonEvent(button, lParam)
+                getMouseButtonEvent(button, lParam, ButtonState::Released)
                 );
         } break;
         

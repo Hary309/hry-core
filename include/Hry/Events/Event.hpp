@@ -12,6 +12,12 @@
 namespace hry
 {
 
+enum class ButtonState
+{
+    Pressed,
+    Released
+};
+
 struct ResizeEvent
 {
     ResizeType type;
@@ -21,11 +27,13 @@ struct ResizeEvent
 struct KeyboardEvent
 {
     Keyboard::Key key;
+    ButtonState state;
 };
 
 struct MouseButtonEvent
 {
     Mouse::Button button;
+    ButtonState state;
 };
 
 struct MouseMoveEvent
