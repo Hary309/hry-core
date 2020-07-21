@@ -10,4 +10,10 @@ enum ResizeType
     Restored
 };
 
+enum class ButtonState
+{
+    Pressed,
+    Released
+};
+
 }

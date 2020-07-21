@@ -44,6 +44,7 @@ public:
         doSomethingBind.setName("Do something");
         doSomethingBind.setDefaultKey(hry::Keyboard::Key::Q);
         doSomethingBind.setPressAction<&ExamplePlugin::onKeyBind>(this);
+        keyBinds->addKeyBind(std::move(doSomethingBind));
     }
 
     virtual void update(float deltaTime)

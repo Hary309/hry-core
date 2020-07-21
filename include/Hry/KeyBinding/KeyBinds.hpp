@@ -10,6 +10,7 @@
 #include "Hry/Export.hpp"
 #include "Hry/System/Keyboard.hpp"
 #include "Hry/System/Mouse.hpp"
+#include "Hry/System/System.hpp"
 #include "Hry/Utils/Delegate.hpp"
 
 namespace hry
@@ -30,7 +31,7 @@ private:
     Delegate_t _pressAction;
     Delegate_t _releaseAction;
 
-    bool _isKeyPressed = false;
+    ButtonState _state = ButtonState::Released;
 
 public:
     void setConfigFieldName(const char* name) { _configFieldName = name; }
@@ -54,10 +55,10 @@ public:
     }
     const auto& getDefaultKey() const { return _key; }
     
-    const auto& getKey() const { return _key; }
+    const auto getKey() const { return _key; }
 
-    void setKeyPressState(bool isPressed) { _isKeyPressed = isPressed; }
-    bool isKeyPressState() const { return _isKeyPressed; }
+    void setKeyState(ButtonState state) { _state = state; }
+    ButtonState getKeyState() const { return _state; }
 
     void callPressAction() const { _pressAction.call(); }
 

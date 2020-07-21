@@ -1,5 +1,6 @@
 #include "KeyBindsManager.hpp"
 #include "Hry/KeyBinding/KeyBinds.hpp"
+#include "Hry/System/System.hpp"
 #include <cstdio>
 
 namespace hry
@@ -8,11 +9,14 @@ namespace hry
 KeyBindsManager::KeyBindsManager(EventManager& eventMgr)
     : 
     _onKeyPress(eventMgr.keyPressSignal),
-    _onMouseButtonPress(eventMgr.mouseButtonPressSignal)
+    _onKeyRelease(eventMgr.keyReleaseSignal),
+    _onMouseButtonPress(eventMgr.mouseButtonPressSignal),
+    _onMouseButtonRelease(eventMgr.mouseButtonReleaseSignal)
 {
-    _onKeyPress.connect<&KeyBindsManager::handleKeyPress>(this);
-    _onMouseButtonPress.connect<&KeyBindsManager::handleMouseButtonPress>(this);
-    // TODO: add release key
+    _onKeyPress.connect<&KeyBindsManager::handleKeybaordEvent>(this);
+    _onKeyRelease.connect<&KeyBindsManager::handleKeybaordEvent>(this);
+    _onMouseButtonPress.connect<&KeyBindsManager::handleMouseButtonEvent>(this);
+    _onMouseButtonRelease.connect<&KeyBindsManager::handleMouseButtonEvent>(this);
 }
 
 KeyBinds* KeyBindsManager::createKeyBinds(const std::string& name) 
@@ -31,53 +35,39 @@ void KeyBindsManager::remove(const KeyBinds* keyBinds)
         ));
 }
 
-void KeyBindsManager::handleKeyPress(const KeyboardEvent&& keyboardEvent) 
+void KeyBindsManager::handleKeybaordEvent(const KeyboardEvent&& keyboardEvent) 
 {
-    iterateKeyBinds([&keyboardEvent](KeyBind& keyBind) {
-        auto& key = keyBind.getKey();
-
-        if (keyBind.isKeyPressState() &&
-            key->has<Keyboard::Key>() &&
-            std::get<Keyboard::Key>(key->key) == keyboardEvent.key)
-        {
-            keyBind.callPressAction();
-            keyBind.setKeyPressState(true);
-            return true;
-        }
-
-        return false;
-    });
+    processKey(keyboardEvent.key, keyboardEvent.state);
 }
 
-void KeyBindsManager::handleMouseButtonPress(const MouseButtonEvent&& buttonEvent) 
+void KeyBindsManager::handleMouseButtonEvent(const MouseButtonEvent&& buttonEvent) 
 {
-    iterateKeyBinds([&buttonEvent](KeyBind& keyBind) {
-        auto& key = keyBind.getKey();
-
-        if (keyBind.isKeyPressState() &&
-            key->has<Mouse::Button>() &&
-            std::get<Mouse::Button>(key->key) == buttonEvent.button)
-        {
-            keyBind.callPressAction();
-            keyBind.setKeyPressState(true);
-            return true;
-        }
-
-        return false;
-    });
+    processKey(buttonEvent.button, buttonEvent.state);
 }
 
-void KeyBindsManager::iterateKeyBinds(std::function<bool(KeyBind&)> callback) 
+void KeyBindsManager::processKey(const BindableKey::Key_t key, ButtonState buttonState)
 {
     for (auto& keyBindsSection : _keyBinds)
     {
         auto& keyBinds = keyBindsSection->getKeyBinds();
 
         for (auto& keyBind : keyBinds)
-        {
-            if (callback(keyBind))
+        {   
+            if (
+                keyBind.getKey() != nullptr &&
+                keyBind.getKeyState() != buttonState &&
+                keyBind.getKey()->key == key)
             {
-                return;
+                switch (buttonState)
+                {
+                    case ButtonState::Pressed:
+                        keyBind.callPressAction();
+                        break;
+                    case ButtonState::Released:
+                        keyBind.callReleaseAction();
+                        break;
+                }
+                keyBind.setKeyState(buttonState);
             }
         }
     }

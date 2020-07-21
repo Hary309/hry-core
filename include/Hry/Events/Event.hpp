@@ -12,12 +12,6 @@
 namespace hry
 {
 
-enum class ButtonState
-{
-    Pressed,
-    Released
-};
-
 struct ResizeEvent
 {
     ResizeType type;
