@@ -16,6 +16,12 @@ struct BindableKey
 
     Key_t key;
     std::string name;
+
+    template<typename T>
+    bool has() const
+    {
+        return std::holds_alternative<T>(key);
+    }
 };
 
 static inline const auto BindableKeys = std::array {

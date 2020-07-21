@@ -19,8 +19,6 @@ class KeyBinds;
 
 class KeyBind
 {
-    friend KeyBinds;
-
 public:
     using Delegate_t = Delegate<void()>;
 
@@ -31,6 +29,8 @@ private:
     const BindableKey* _defaultKey = nullptr; // if null not set
     Delegate_t _pressAction;
     Delegate_t _releaseAction;
+
+    bool _isKeyPressed = false;
 
 public:
     void setConfigFieldName(const char* name) { _configFieldName = name; }
@@ -56,11 +56,18 @@ public:
     
     const auto& getKey() const { return _key; }
 
+    void setKeyPressState(bool isPressed) { _isKeyPressed = isPressed; }
+    bool isKeyPressState() const { return _isKeyPressed; }
+
+    void callPressAction() const { _pressAction.call(); }
+
     template<auto FuncAddr>
     void setPressAction() { _pressAction.connect<FuncAddr>(); }
 
     template<auto CtxFuncAddr, typename T>
     void setPressAction(T* content) { _pressAction.connect<CtxFuncAddr>(content); }
+
+    void callReleaseAction() const { _releaseAction.call(); }
 
     template<auto FuncAddr>
     void setReleaseAction() { _releaseAction.connect<FuncAddr>(); }
@@ -82,6 +89,7 @@ public:
 
     const std::string& getName() const { return _name; }
 
+    auto& getKeyBinds() { return _keyBinds; }
     const auto& getKeyBinds() const { return _keyBinds; }
 }; 
 

@@ -10,7 +10,9 @@ KeyBindsManager::KeyBindsManager(EventManager& eventMgr)
     _onKeyPress(eventMgr.keyPressSignal),
     _onMouseButtonPress(eventMgr.mouseButtonPressSignal)
 {
-    
+    _onKeyPress.connect<&KeyBindsManager::handleKeyPress>(this);
+    _onMouseButtonPress.connect<&KeyBindsManager::handleMouseButtonPress>(this);
+    // TODO: add release key
 }
 
 KeyBinds* KeyBindsManager::createKeyBinds(const std::string& name) 
@@ -28,5 +30,58 @@ void KeyBindsManager::remove(const KeyBinds* keyBinds)
             }
         ));
 }
+
+void KeyBindsManager::handleKeyPress(const KeyboardEvent&& keyboardEvent) 
+{
+    iterateKeyBinds([&keyboardEvent](KeyBind& keyBind) {
+        auto& key = keyBind.getKey();
+
+        if (keyBind.isKeyPressState() &&
+            key->has<Keyboard::Key>() &&
+            std::get<Keyboard::Key>(key->key) == keyboardEvent.key)
+        {
+            keyBind.callPressAction();
+            keyBind.setKeyPressState(true);
+            return true;
+        }
+
+        return false;
+    });
+}
+
+void KeyBindsManager::handleMouseButtonPress(const MouseButtonEvent&& buttonEvent) 
+{
+    iterateKeyBinds([&buttonEvent](KeyBind& keyBind) {
+        auto& key = keyBind.getKey();
+
+        if (keyBind.isKeyPressState() &&
+            key->has<Mouse::Button>() &&
+            std::get<Mouse::Button>(key->key) == buttonEvent.button)
+        {
+            keyBind.callPressAction();
+            keyBind.setKeyPressState(true);
+            return true;
+        }
+
+        return false;
+    });
+}
+
+void KeyBindsManager::iterateKeyBinds(std::function<bool(KeyBind&)> callback) 
+{
+    for (auto& keyBindsSection : _keyBinds)
+    {
+        auto& keyBinds = keyBindsSection->getKeyBinds();
+
+        for (auto& keyBind : keyBinds)
+        {
+            if (callback(keyBind))
+            {
+                return;
+            }
+        }
+    }
+}
+
 
 }
