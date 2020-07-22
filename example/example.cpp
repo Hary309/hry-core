@@ -47,11 +47,6 @@ public:
         keyBinds->addKeyBind(std::move(doSomethingBind));
     }
 
-    virtual void update(float deltaTime)
-    {
-
-    }
-
     virtual void imguiRender()
     {
         static float ads;
@@ -64,7 +59,7 @@ public:
         ImGui::End();
     }
     
-    virtual void imguiSettingsTab()
+    virtual void imguiPage()
     {
         ImGui::Text("Test asdf");
     }

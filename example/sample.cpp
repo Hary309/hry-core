@@ -37,11 +37,6 @@ public:
         eventHandler->onMouseButtonPress.connect<&SamplePlugin::onKeyPressed>(this);
     }
 
-    virtual void update(float deltaTime)
-    {
-
-    }
-
     virtual void imguiRender()
     {
         if (ImGui::Begin("hry-example"))
@@ -52,7 +47,7 @@ public:
         ImGui::End();
     }
 
-    virtual void imguiSettingsTab()
+    virtual void imguiPage()
     {
         ImGui::Text("Settings tab");
     }

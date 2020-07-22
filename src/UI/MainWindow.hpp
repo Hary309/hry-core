@@ -40,7 +40,7 @@ public:
 private:
     void renderPluginsTab();
     void renderSettingsTab();
-    void renderPluginsSettingsTab();
+    void renderPluginsPageTab();
     void renderKeyBindsTab();
     void renderAboutTab();
 

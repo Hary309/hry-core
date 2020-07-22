@@ -48,7 +48,7 @@ void MainWindow::renderImGui()
     {
         if (ImGui::BeginTabBar("MainWindow::TabBar"))
         {
-            if (ImGui::BeginTabItem("Plugins"))
+            if (ImGui::BeginTabItem("Manager"))
             {
                 renderPluginsTab();
                 ImGui::EndTabItem();
@@ -58,9 +58,9 @@ void MainWindow::renderImGui()
                 renderSettingsTab();
                 ImGui::EndTabItem();
             }
-            if (ImGui::BeginTabItem("Plugins settings"))
+            if (ImGui::BeginTabItem("Plugins page"))
             {
-                renderPluginsSettingsTab();
+                renderPluginsPageTab();
                 ImGui::EndTabItem();
             }
             if (ImGui::BeginTabItem("Key binds"))
@@ -147,7 +147,7 @@ void MainWindow::renderSettingsTab()
     ImGui::Text("Settings related to this plugin, also some developer options");
 }
 
-void MainWindow::renderPluginsSettingsTab() 
+void MainWindow::renderPluginsPageTab() 
 {
     auto& modules = _moduleMgr.getModules();
     auto size = modules.size();
@@ -193,7 +193,7 @@ void MainWindow::renderPluginsSettingsTab()
 
     if (selectedModule->isLoaded)
     {
-        selectedModule->plugin->imguiSettingsTab();
+        selectedModule->plugin->imguiPage();
     }
     else
     {

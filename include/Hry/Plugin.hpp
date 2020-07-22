@@ -23,9 +23,7 @@ public:
     virtual ~Plugin() {}
     virtual void init() = 0;
 
-    virtual void update(float deltaTime) = 0;
-
-    virtual void imguiSettingsTab() = 0;
+    virtual void imguiPage() = 0;
     
     virtual const PluginInfo& getPluginInfo() const = 0;
 };
