@@ -41,7 +41,7 @@ private:
 
     ImGuiImplEvents _imguiImplEvents;
 
-    KeyBinds* _coreKeyBinds;
+    KeyBindsUniquePtr_t _coreKeyBinds;
 
 public:
     inline static std::unique_ptr<Logger> Logger;

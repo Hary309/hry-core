@@ -10,6 +10,7 @@
 
 #include "Events/EventManager.hpp"
 #include "Hry/System/System.hpp"
+#include "Hry/Utils/Delegate.hpp"
 
 namespace hry
 {
@@ -17,7 +18,7 @@ namespace hry
 class KeyBindsManager
 {
 private:
-    std::vector<std::unique_ptr<KeyBinds>> _keyBinds;
+    std::vector<KeyBinds*> _keyBinds;
 
     Sink<void(const KeyboardEvent&&)> _onKeyPress;
     Sink<void(const KeyboardEvent&&)> _onKeyRelease;
@@ -27,12 +28,14 @@ private:
 public:
     KeyBindsManager(EventManager& eventMgr);
 
-    KeyBinds* createKeyBinds(const std::string& name);
+    KeyBindsUniquePtr_t createKeyBinds(const std::string& name);
     void remove(const KeyBinds* keyBind);
 
     const auto& getKeyBinds() const { return _keyBinds; }
 
 private:
+    void keyBindsDeleter(KeyBinds* ptr);
+
     void handleKeybaordEvent(const KeyboardEvent&& keyboardEvent);
     void handleMouseButtonEvent(const MouseButtonEvent&& buttonEvent);
 

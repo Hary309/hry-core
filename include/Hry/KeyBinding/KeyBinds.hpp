@@ -1,6 +1,7 @@
 #pragma once
 
 #include <algorithm>
+#include <memory>
 #include <vector>
 #include <variant>
 #include <string>
@@ -92,5 +93,7 @@ public:
     auto& getKeyBinds() { return _keyBinds; }
     const auto& getKeyBinds() const { return _keyBinds; }
 }; 
+
+using KeyBindsUniquePtr_t = std::unique_ptr<KeyBinds, Delegate<void(KeyBinds*)>>;
 
 }

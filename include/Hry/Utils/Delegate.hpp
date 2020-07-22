@@ -94,6 +94,11 @@ public:
         }
     }
 
+    Return operator()(Args... args) const
+    {
+        return call(std::forward<Args>(args)...);
+    }
+
     bool operator==(const Delegate<Return(Args...)>& b) const
     {
         return (_function == b._function && _content == b._content);

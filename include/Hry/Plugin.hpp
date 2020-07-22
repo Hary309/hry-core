@@ -4,6 +4,7 @@
 #include <memory>
 
 #include "Hry/Logger/Logger.hpp"
+#include "Hry/Utils/Delegate.hpp"
 #include "PluginInfo.hpp"
 #include "Events/EventHandler.hpp"
 #include "KeyBinding/KeyBinds.hpp"
@@ -14,10 +15,10 @@ namespace hry
 class Plugin
 {
 public:
-    // never nullptr
+    // these variables are set before calling init()
     std::unique_ptr<Logger> logger;
     std::unique_ptr<EventHandler> eventHandler;
-    KeyBinds* keyBinds;
+    KeyBindsUniquePtr_t keyBinds;
 
 public:
     virtual ~Plugin() {}

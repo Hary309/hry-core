@@ -11,8 +11,6 @@ struct Module
     std::string dllName;
     std::string dllPath;
 
-    KeyBinds* keyBinds = nullptr; // can be null
-
     bool isLoaded = false;
     void* handle = nullptr;
     Plugin* plugin = nullptr; // can be null

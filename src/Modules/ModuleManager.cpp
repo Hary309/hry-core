@@ -171,11 +171,8 @@ bool ModuleManager::load(Module* mod)
 
     auto shortName = mod->plugin->getPluginInfo().shortName.c_str();
 
-    auto keyBinds = _keyBindsMgr.createKeyBinds(shortName);
-
-    mod->keyBinds = keyBinds;
     mod->plugin->logger = LoggerFactory::GetLogger(shortName);
-    mod->plugin->keyBinds = keyBinds;
+    mod->plugin->keyBinds = _keyBindsMgr.createKeyBinds(shortName);
     mod->plugin->eventHandler = std::make_unique<EventHandler>(_eventMgr.createEventHandler());
 
     mod->isLoaded = true;
@@ -196,8 +193,6 @@ void ModuleManager::unload(Module* mod)
         Core::Logger->info("'", mod->dllPath, "' is already unloaded");
         return;
     }
-
-    _keyBindsMgr.remove(mod->keyBinds);
 
     if (mod->plugin)
     {

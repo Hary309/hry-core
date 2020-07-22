@@ -36,8 +36,8 @@ public:
 
         eventHandler->onMouseButtonPress.connect<&SamplePlugin::onKeyPressed>(this);
     }
-
-    virtual void imguiRender()
+    
+    void imguiRender()
     {
         if (ImGui::Begin("hry-example"))
         {

@@ -1,7 +1,11 @@
 #include "KeyBindsManager.hpp"
-#include "Hry/KeyBinding/KeyBinds.hpp"
-#include "Hry/System/System.hpp"
 #include <cstdio>
+
+#include "Hry/Utils/Delegate.hpp"
+#include "Hry/System/System.hpp"
+#include "Hry/KeyBinding/KeyBinds.hpp"
+
+#include "Core.hpp"
 
 namespace hry
 {
@@ -19,20 +23,24 @@ KeyBindsManager::KeyBindsManager(EventManager& eventMgr)
     _onMouseButtonRelease.connect<&KeyBindsManager::handleMouseButtonEvent>(this);
 }
 
-KeyBinds* KeyBindsManager::createKeyBinds(const std::string& name) 
+KeyBindsUniquePtr_t KeyBindsManager::createKeyBinds(const std::string& name) 
 {
     auto keyBinds = new KeyBinds(name);
-    _keyBinds.push_back(std::unique_ptr<KeyBinds>(keyBinds));
-    return keyBinds;
+    _keyBinds.push_back(keyBinds);
+    
+    // use custom deleter to remove from list when KeyBinds is removing
+    return { keyBinds, { ConnectArg_v<&KeyBindsManager::keyBindsDeleter>, this } };
 }
 
 void KeyBindsManager::remove(const KeyBinds* keyBinds) 
 {
-    _keyBinds.erase(std::remove_if(_keyBinds.begin(), _keyBinds.end(), 
-            [keyBinds](const std::unique_ptr<KeyBinds>& a) { 
-                return a.get() == keyBinds;
-            }
-        ));
+    _keyBinds.erase(std::remove(_keyBinds.begin(), _keyBinds.end(), keyBinds));
+}
+
+void KeyBindsManager::keyBindsDeleter(KeyBinds* ptr) 
+{
+    remove(ptr);
+    delete ptr;
 }
 
 void KeyBindsManager::handleKeybaordEvent(const KeyboardEvent&& keyboardEvent) 
@@ -72,6 +80,5 @@ void KeyBindsManager::processKey(const BindableKey::Key_t key, ButtonState butto
         }
     }
 }
-
 
 }

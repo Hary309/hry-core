@@ -47,7 +47,7 @@ public:
         keyBinds->addKeyBind(std::move(doSomethingBind));
     }
 
-    virtual void imguiRender()
+    void imguiRender()
     {
         static float ads;
         if (ImGui::Begin("hry-example"))
