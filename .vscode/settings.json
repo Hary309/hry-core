@@ -1,6 +1,5 @@
 {
-    "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
     "clangd.arguments": [
         "--compile-commands-dir=${workspaceFolder}\\build"
-    ],
+    ]
 }
