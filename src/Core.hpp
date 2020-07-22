@@ -5,11 +5,10 @@
 #include <scssdk_telemetry.h>
 
 #include "Hry/Events/Event.hpp"
-#include "Hry/Logger/LoggerCore.hpp"
+#include "Hry/Logger/Logger.hpp"
 #include "Hry/KeyBinding/KeyBinds.hpp"
+#include "Hry/Logger/Logger.hpp"
 #include "Hry/Utils/Timer.hpp"
-#include "Hry/Logger/LoggerCore.hpp"
-#include "Hry/Logger/ModuleLogger.hpp"
 
 #include "ImGuiImplEvents.hpp"
 #include "Renderer/Renderer.hpp"
@@ -34,8 +33,6 @@ public:
 private:
     scs_telemetry_init_params_v100_t* _scsTelemetry = nullptr;
 
-    LoggerCore _loggerCore;
-    
     Renderer _renderer;
     EventManager _eventMgr;
     KeyBindsManager _keyBindsMgr;
@@ -47,7 +44,7 @@ private:
     KeyBinds* _coreKeyBinds;
 
 public:
-    inline static std::unique_ptr<ModuleLogger> Logger;
+    inline static std::unique_ptr<Logger> Logger;
 
 public:
     explicit Core(HINSTANCE hInst);

@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Hry/Plugin.hpp"
-#include "Hry/Logger/LoggerCore.hpp"
 #include "Hry/KeyBinding/KeyBinds.hpp"
 
 namespace hry

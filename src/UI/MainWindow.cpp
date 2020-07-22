@@ -46,7 +46,7 @@ void MainWindow::renderImGui()
 
     if (ImGui::Begin("Plugin Manager"))
     {
-        if (ImGui::BeginTabBar("MainWindow::Tab"))
+        if (ImGui::BeginTabBar("MainWindow::TabBar"))
         {
             if (ImGui::BeginTabItem("Plugins"))
             {

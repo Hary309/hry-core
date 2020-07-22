@@ -1,4 +1,4 @@
-#include "Hry/Logger/LoggerCore.hpp"
+#include "LoggerFactory.hpp"
 
 #include <iostream>
 #include <fstream>
@@ -7,12 +7,12 @@
 #include <ctime>
 #include <memory>
 
-#include "Hry/Logger/ModuleLogger.hpp"
+#include "Hry/Logger/Logger.hpp"
 
 namespace hry
 {
 
-void LoggerCore::init(const char* logFilePath) 
+void LoggerFactory::Init(const char* logFilePath) 
 {
     _logFilePath = logFilePath;
 
@@ -21,10 +21,10 @@ void LoggerCore::init(const char* logFilePath)
         std::filesystem::remove(_logFilePath);
     }
 
-    writeLine(Level::Info, (std::string("Started logging to ") + _logFilePath).c_str(), "core");
+    WriteLine(Logger::Level::Info, (std::string("Started logging to ") + _logFilePath).c_str(), "core");
 }
 
-void LoggerCore::writeLine(Level level, const char* msg, const char* module) 
+void LoggerFactory::WriteLine(Logger::Level level, const char* msg, const char* module) 
 {
     std::ofstream logFile(_logFilePath, std::ios::app);
 
@@ -42,9 +42,9 @@ void LoggerCore::writeLine(Level level, const char* msg, const char* module)
 
     switch (level)
     {
-        case Level::Info: levelName = "info"; break;
-        case Level::Warning: levelName = "warn"; break;
-        case Level::Error: levelName = "erro"; break;
+        case Logger::Level::Info: levelName = "info"; break;
+        case Logger::Level::Warning: levelName = "warn"; break;
+        case Logger::Level::Error: levelName = "erro"; break;
     }
 
     char buffer[128];
@@ -59,9 +59,9 @@ void LoggerCore::writeLine(Level level, const char* msg, const char* module)
 #endif
 }
 
-std::unique_ptr<ModuleLogger> LoggerCore::createModuleLogger(const char* moduleName) 
+std::unique_ptr<Logger> LoggerFactory::GetLogger(const char* moduleName) 
 {
-    return std::unique_ptr<ModuleLogger>(new ModuleLogger(*this, moduleName));
+    return std::unique_ptr<Logger>(new Logger(moduleName));
 }
 
 }

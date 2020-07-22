@@ -7,9 +7,10 @@
 
 #include <imgui.h>
 
-#include "Core.hpp"
 #include "Hry/Events/EventHandler.hpp"
-#include "Hry/Logger/LoggerCore.hpp"
+
+#include "Core.hpp"
+#include "Logger/LoggerFactory.hpp"
 #include "Modules/Module.hpp"
 
 namespace fs = std::filesystem;
@@ -23,9 +24,11 @@ using InitImGui_t = void(ImGuiContext*);
 ModuleManager::ModuleManager(
     const std::string& pluginDirectory,
     EventManager& eventMgr,
-    KeyBindsManager& keyBindsMgr,
-    LoggerCore& loggerCore)
-    : _pluginDirectory(pluginDirectory), _eventMgr(eventMgr), _keyBindsMgr(keyBindsMgr), _loggerCore(loggerCore)
+    KeyBindsManager& keyBindsMgr)
+    :
+    _pluginDirectory(pluginDirectory),
+    _eventMgr(eventMgr),
+    _keyBindsMgr(keyBindsMgr)
 {
 }
 
@@ -171,6 +174,7 @@ bool ModuleManager::load(Module* mod)
     auto keyBinds = _keyBindsMgr.createKeyBinds(shortName);
 
     mod->keyBinds = keyBinds;
+    mod->plugin->logger = LoggerFactory::GetLogger(shortName);
     mod->plugin->keyBinds = keyBinds;
     mod->plugin->eventHandler = std::make_unique<EventHandler>(_eventMgr.createEventHandler());
 
@@ -178,7 +182,7 @@ bool ModuleManager::load(Module* mod)
 
     Core::Logger->info("Successfully loaded '", mod->dllPath, "'");
 
-    mod->plugin->init(_loggerCore.createModuleLogger(shortName));
+    mod->plugin->init();
 
     return true;
 }

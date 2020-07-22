@@ -6,7 +6,7 @@
 
 #include <Hry/Plugin.hpp>
 #include <Hry/Events/Event.hpp>
-#include <Hry/Logger/ModuleLogger.hpp>
+#include <Hry/Logger/Logger.hpp>
 #include <Hry/System/Keyboard.hpp>
 
 class SamplePlugin : public hry::Plugin
@@ -21,7 +21,7 @@ private:
     };
 
 public:
-    inline static std::unique_ptr<hry::ModuleLogger> Logger;
+    inline static std::unique_ptr<hry::Logger> Logger;
 
 public:
     virtual ~SamplePlugin()
@@ -29,7 +29,7 @@ public:
         Logger->info("Unloading...");
     }
 
-    virtual void init(std::unique_ptr<hry::ModuleLogger>&& logger)
+    virtual void init()
     {
         Logger = std::move(logger);
         Logger->info("Created!");

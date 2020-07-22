@@ -5,8 +5,6 @@
 #include <memory>
 #include <vector>
 
-#include "Hry/Logger/LoggerCore.hpp"
-
 #include "Module.hpp"
 #include "Events/EventManager.hpp"
 #include "KeyBinding/KeyBindsManager.hpp"
@@ -22,14 +20,12 @@ private:
 
     EventManager& _eventMgr;
     KeyBindsManager& _keyBindsMgr;
-    LoggerCore& _loggerCore;
 
 public:
     ModuleManager(
         const std::string& pluginDirectory,
         EventManager& eventMgr,
-        KeyBindsManager& keyBindsMgr,
-        LoggerCore& loggerCore);
+        KeyBindsManager& keyBindsMgr);
 
     void init();
 

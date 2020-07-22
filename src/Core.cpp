@@ -10,6 +10,7 @@
 
 #include "Hooks/D3D11Hook.hpp"
 #include "Hooks/DInput8Hook.hpp"
+#include "Logger/LoggerFactory.hpp"
 #include "Utils/ImGuiUtils.hpp"
 
 
@@ -20,7 +21,7 @@ Core::Core(HINSTANCE hInst)
     : 
     _renderer(*this),
     _keyBindsMgr(_eventMgr),
-    _moduleMgr("plugins\\hry_plugins", _eventMgr, _keyBindsMgr, _loggerCore),
+    _moduleMgr("plugins\\hry_plugins", _eventMgr, _keyBindsMgr),
     _mainWindow(_moduleMgr, _keyBindsMgr, _eventMgr),
     _imguiImplEvents(_eventMgr)
 {
@@ -44,8 +45,8 @@ bool Core::init(scs_telemetry_init_params_v100_t* scsTelemetry)
 	freopen("CONOUT$", "w", stdin);
 #endif
 
-    _loggerCore.init("hry_core.log");
-    Logger = _loggerCore.createModuleLogger("core");
+    LoggerFactory::Init("hry_core.log");
+    Logger = LoggerFactory::GetLogger("core");
 
     Logger->info("Initializing core...");
 

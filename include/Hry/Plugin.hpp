@@ -3,9 +3,9 @@
 #include <algorithm>
 #include <memory>
 
+#include "Hry/Logger/Logger.hpp"
 #include "PluginInfo.hpp"
 #include "Events/EventHandler.hpp"
-#include "Logger/ModuleLogger.hpp"
 #include "KeyBinding/KeyBinds.hpp"
 
 namespace hry 
@@ -15,12 +15,13 @@ class Plugin
 {
 public:
     // never nullptr
+    std::unique_ptr<Logger> logger;
     std::unique_ptr<EventHandler> eventHandler;
     KeyBinds* keyBinds;
 
 public:
     virtual ~Plugin() {}
-    virtual void init(std::unique_ptr<ModuleLogger>&& logger) = 0;
+    virtual void init() = 0;
 
     virtual void update(float deltaTime) = 0;
 
