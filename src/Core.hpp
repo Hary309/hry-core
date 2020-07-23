@@ -1,8 +1,7 @@
 #pragma once
 
-#include <windows.h>
-
 #include <scssdk_telemetry.h>
+#include <windows.h>
 
 #include "Hry/Events/Event.hpp"
 #include "Hry/KeyBinding/KeyBinds.hpp"
@@ -10,11 +9,12 @@
 #include "Hry/Utils/Timer.hpp"
 
 #include "Events/EventManager.hpp"
-#include "ImGuiImplEvents.hpp"
 #include "KeyBinding/KeyBindsManager.hpp"
 #include "Modules/ModuleManager.hpp"
 #include "Renderer/Renderer.hpp"
 #include "UI/MainWindow.hpp"
+
+#include "ImGuiImplEvents.hpp"
 
 struct scs_telemetry_init_params_v100_t;
 

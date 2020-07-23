@@ -1,7 +1,7 @@
-#include <Windows.h>
 #include <memory>
 
 #include <MinHook.h>
+#include <Windows.h>
 #include <scssdk_telemetry.h>
 
 #include "Core.hpp"

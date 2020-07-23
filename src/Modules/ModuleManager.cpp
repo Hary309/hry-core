@@ -1,17 +1,18 @@
 #include "ModuleManager.hpp"
 
-#include <Windows.h>
 #include <algorithm>
 #include <filesystem>
 #include <memory>
 
+#include <Windows.h>
 #include <imgui.h>
 
 #include "Hry/Events/EventHandler.hpp"
 
-#include "Core.hpp"
 #include "Logger/LoggerFactory.hpp"
 #include "Modules/Module.hpp"
+
+#include "Core.hpp"
 
 namespace fs = std::filesystem;
 

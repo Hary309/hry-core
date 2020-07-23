@@ -50,7 +50,6 @@ BreakStringLiterals: true
 ConstructorInitializerAllOnOneLineOrOnePerLine: false
 Cpp11BracedListStyle: false
 FixNamespaceComments: true
-IncludeBlocks: Preserve
 IndentCaseBlocks: false
 IndentCaseLabels: true
 IndentExternBlock: AfterExternBlock
@@ -82,3 +81,20 @@ SpacesInSquareBrackets: false
 UseTab: Never
 ColumnLimit: 100
 AccessModifierOffset: -4
+IncludeBlocks: Regroup
+IncludeCategories:
+  # Headers in <> without extension
+  - Regex:           '<([A-Za-z0-9\/-_])+>'
+    Priority:        1
+  # Headers in <> with .h extension
+  - Regex:           '<.*\.h>'
+    Priority:        2
+  # Headers with Hry/
+  - Regex:           'Hry/.*'
+    Priority:        4
+  # Headers with /
+  - Regex:           '.*/.*'
+    Priority:        5
+  # Anything else
+  - Regex:           '.*'
+    Priority:        6

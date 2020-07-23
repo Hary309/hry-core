@@ -1,18 +1,17 @@
 #include "WndProcEventBridge.hpp"
 
-#include <windowsx.h>
-
 #include <imgui.h>
-
-#include "Hooks/D3D11Hook.hpp"
+#include <windowsx.h>
 
 #include "Hry/Events/Event.hpp"
 #include "Hry/System/Keyboard.hpp"
 #include "Hry/System/Mouse.hpp"
 #include "Hry/System/System.hpp"
 
-#include "Core.hpp"
 #include "Events/EventManager.hpp"
+#include "Hooks/D3D11Hook.hpp"
+
+#include "Core.hpp"
 
 IMGUI_IMPL_API LRESULT
     ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);

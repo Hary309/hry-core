@@ -1,8 +1,9 @@
 #pragma once
 
-#include <Windows.h>
 #include <cstdint>
 #include <memory>
+
+#include <Windows.h>
 
 namespace hry
 {

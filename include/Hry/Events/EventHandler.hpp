@@ -1,6 +1,7 @@
 #pragma once
-#include "Event.hpp"
 #include "Hry/Utils/Signal.hpp"
+
+#include "Event.hpp"
 
 namespace hry
 {

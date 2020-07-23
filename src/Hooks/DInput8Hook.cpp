@@ -5,9 +5,9 @@
 
 #include <cstdio>
 #include <memory>
-#include <windows.h>
 
 #include <dinput.h>
+#include <windows.h>
 
 #include "Hry/Memory/Hooking.hpp"
 #include "Hry/Utils.hpp"

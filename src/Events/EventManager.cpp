@@ -1,12 +1,11 @@
 #include "EventManager.hpp"
 
-#include "Core.hpp"
-
 #include "Bridges/DInput8EventBridge.hpp"
 #include "Bridges/TelemetryEventBridge.hpp"
 #include "Bridges/WndProcEventBridge.hpp"
 #include "Events/Bridges/TelemetryEventBridge.hpp"
 
+#include "Core.hpp"
 
 namespace hry
 {

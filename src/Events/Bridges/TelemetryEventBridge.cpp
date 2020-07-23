@@ -1,8 +1,10 @@
 #include "TelemetryEventBridge.hpp"
 
-#include "Events/EventManager.hpp"
+#include <scssdk_telemetry.h>
+
 #include "Hry/Events/Event.hpp"
-#include "scssdk_telemetry_event.h"
+
+#include "Events/EventManager.hpp"
 
 namespace hry
 {

@@ -5,14 +5,16 @@
 #define COBJMACROS
 
 #include <cstdio>
+
 #include <d3d11.h>
 #include <windows.h>
 
 #include "Hry/Memory/Hooking.hpp"
 #include "Hry/Utils.hpp"
 
-#include "Core.hpp"
 #include "Renderer/Renderer.hpp"
+
+#include "Core.hpp"
 
 namespace hry
 {

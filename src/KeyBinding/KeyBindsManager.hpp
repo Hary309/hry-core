@@ -7,10 +7,10 @@
 #include "Hry/Events/Event.hpp"
 #include "Hry/KeyBinding/BindableKeys.hpp"
 #include "Hry/KeyBinding/KeyBinds.hpp"
-
-#include "Events/EventManager.hpp"
 #include "Hry/System/System.hpp"
 #include "Hry/Utils/Delegate.hpp"
+
+#include "Events/EventManager.hpp"
 
 namespace hry
 {

@@ -2,10 +2,11 @@
 
 #include <cstdio>
 
-#include "Core.hpp"
 #include "Hry/KeyBinding/KeyBinds.hpp"
 #include "Hry/System/System.hpp"
 #include "Hry/Utils/Delegate.hpp"
+
+#include "Core.hpp"
 
 namespace hry
 {

@@ -2,10 +2,10 @@
 
 #include <cstdio>
 
+#include <imgui.h>
+
 #include "Core.hpp"
 #include "D3D11RendererImpl.hpp"
-
-#include <imgui.h>
 
 namespace hry
 {

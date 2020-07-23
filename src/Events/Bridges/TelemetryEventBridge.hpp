@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Events/EventBridgeBase.hpp"
-
 #include <scssdk_telemetry.h>
+
+#include "Events/EventBridgeBase.hpp"
 
 namespace hry
 {

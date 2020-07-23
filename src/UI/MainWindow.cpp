@@ -1,13 +1,14 @@
 #include "MainWindow.hpp"
 
 #include <functional>
+
 #include <imgui.h>
 
 #include "Hry/KeyBinding/KeyBinds.hpp"
 #include "Hry/System/Keyboard.hpp"
 #include "Hry/System/Mouse.hpp"
-
 #include "Hry/Utils/Delegate.hpp"
+
 #include "Utils/ImGuiUtils.hpp"
 
 namespace hry

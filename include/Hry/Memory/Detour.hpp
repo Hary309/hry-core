@@ -1,6 +1,5 @@
 #pragma once
 
-#include <MinHook.h>
 #include <cstdint>
 
 #include "Hry/Export.hpp"

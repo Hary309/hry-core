@@ -2,10 +2,10 @@
 
 #include <vector>
 
-#include "Events/EventBridgeBase.hpp"
-
 #include "Hry/Math/Vec2.hpp"
 #include "Hry/System/Mouse.hpp"
+
+#include "Events/EventBridgeBase.hpp"
 
 struct IDirectInputDevice8A;
 struct DIDEVICEOBJECTDATA;

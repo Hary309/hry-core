@@ -2,9 +2,9 @@
 
 #include <Windows.h>
 
-#include "Events/EventBridgeBase.hpp"
-
 #include "Hry/Math/Vec2.hpp"
+
+#include "Events/EventBridgeBase.hpp"
 
 namespace hry
 {

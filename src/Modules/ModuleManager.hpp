@@ -7,6 +7,7 @@
 
 #include "Events/EventManager.hpp"
 #include "KeyBinding/KeyBindsManager.hpp"
+
 #include "Module.hpp"
 
 namespace hry

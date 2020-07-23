@@ -6,13 +6,13 @@
 #include <variant>
 #include <vector>
 
-#include "BindableKeys.hpp"
-
 #include "Hry/Export.hpp"
 #include "Hry/System/Keyboard.hpp"
 #include "Hry/System/Mouse.hpp"
 #include "Hry/System/System.hpp"
 #include "Hry/Utils/Delegate.hpp"
+
+#include "BindableKeys.hpp"
 
 namespace hry
 {

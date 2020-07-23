@@ -3,10 +3,12 @@
 #include <algorithm>
 #include <memory>
 
-#include "Events/EventHandler.hpp"
 #include "Hry/Logger/Logger.hpp"
 #include "Hry/Utils/Delegate.hpp"
+
+#include "Events/EventHandler.hpp"
 #include "KeyBinding/KeyBinds.hpp"
+
 #include "PluginInfo.hpp"
 
 namespace hry
