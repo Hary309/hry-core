@@ -22,6 +22,10 @@ endif()
 
 target_compile_definitions(hry-core PRIVATE HRY_EXPORT _CRT_SECURE_NO_WARNINGS)
 
+# vscode doesn't like relative paths in errors :/
+if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+    target_compile_options(hry-core PUBLIC -fdiagnostics-absolute-paths)
+endif()
 
 target_include_directories(hry-core PUBLIC include vendor/scs_sdk_1_10/include)
 target_include_directories(hry-core PRIVATE src)
