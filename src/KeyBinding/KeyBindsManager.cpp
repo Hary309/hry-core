@@ -64,8 +64,8 @@ void KeyBindsManager::processKey(const BindableKey::Key_t key, ButtonState butto
             {
                 switch (buttonState)
                 {
-                    case ButtonState::Pressed: keyBind.callPressAction(); break;
-                    case ButtonState::Released: keyBind.callReleaseAction(); break;
+                    case ButtonState::Pressed: keyBind.pressAction.call(); break;
+                    case ButtonState::Released: keyBind.releaseAction.call(); break;
                 }
                 keyBind.setKeyState(buttonState);
             }

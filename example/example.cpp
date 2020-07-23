@@ -40,7 +40,7 @@ public:
         doSomethingBind.setConfigFieldName("do_something");
         doSomethingBind.setName("Do something");
         doSomethingBind.setDefaultKey(hry::Keyboard::Key::Q);
-        doSomethingBind.setPressAction<&ExamplePlugin::onKeyBind>(this);
+        doSomethingBind.pressAction.connect<&ExamplePlugin::onKeyBind>(this);
         keyBinds->addKeyBind(std::move(doSomethingBind));
     }
 

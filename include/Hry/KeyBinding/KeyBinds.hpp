@@ -26,67 +26,32 @@ public:
 private:
     std::string _configFieldName;
     std::string _name;
-    const BindableKey* _key = nullptr;        // if null no set
     const BindableKey* _defaultKey = nullptr; // if null not set
-    Delegate_t _pressAction;
-    Delegate_t _releaseAction;
+    const BindableKey* _key = nullptr;        // if null no set
 
     ButtonState _state = ButtonState::Released;
 
 public:
-    void setConfigFieldName(const char* name) { _configFieldName = name; }
-    const auto& getConfigFieldName() const { return _configFieldName; }
+    Delegate_t pressAction;
+    Delegate_t releaseAction;
 
-    void setName(const char* name) { _name = name; }
-    const auto& getName() const { return _name; }
+public:
+    auto setConfigFieldName(const char* name) -> void;
+    auto getConfigFieldName() const -> const std::string&;
 
-    void setDefaultKey(const BindableKey* key)
-    {
-        _key = key;
-        _defaultKey = key;
-    }
-    HRY_API void setDefaultKey(const BindableKey::Key_t key);
+    auto setName(const char* name) -> void;
+    auto getName() const -> const std::string&;
 
-    const auto& getDefaultKey() const { return _key; }
+    auto setDefaultKey(const BindableKey* key) -> void;
+    auto setDefaultKey(const BindableKey::Key_t key) -> void;
+    auto getDefaultKey() const -> const BindableKey*;
 
-    void setKey(const BindableKey* key) { _key = key; }
-    HRY_API void setKey(const BindableKey::Key_t key);
-    const auto getKey() const { return _key; }
+    auto setKey(const BindableKey* key) -> void;
+    auto setKey(const BindableKey::Key_t key) -> void;
+    auto getKey() const -> const BindableKey*;
 
-    void setKeyState(ButtonState state) { _state = state; }
-    ButtonState getKeyState() const { return _state; }
-
-    void callPressAction() const { _pressAction.call(); }
-
-    void setPressAction(const Delegate_t& action) { _pressAction = action; }
-
-    template<auto FuncAddr>
-    void setPressAction()
-    {
-        _pressAction.connect<FuncAddr>();
-    }
-
-    template<auto CtxFuncAddr, typename T>
-    void setPressAction(T* content)
-    {
-        _pressAction.connect<CtxFuncAddr>(content);
-    }
-
-    void callReleaseAction() const { _releaseAction.call(); }
-
-    void setReleaseAction(const Delegate_t& action) { _releaseAction = action; }
-
-    template<auto FuncAddr>
-    void setReleaseAction()
-    {
-        _releaseAction.connect<FuncAddr>();
-    }
-
-    template<auto CtxFuncAddr, typename T>
-    void setReleaseAction(T* content)
-    {
-        _releaseAction.connect<CtxFuncAddr>(content);
-    }
+    auto setKeyState(ButtonState state) -> void;
+    auto getKeyState() const -> ButtonState;
 };
 
 class KeyBinds
@@ -96,7 +61,7 @@ private:
     std::vector<KeyBind> _keyBinds;
 
 public:
-    KeyBinds(const std::string& name);
+    KeyBinds(const std::string& name) : _name(name) {}
 
     void addKeyBind(KeyBind&& keyBind) { _keyBinds.push_back(std::move(keyBind)); }
 
@@ -107,5 +72,80 @@ public:
 };
 
 using KeyBindsUniquePtr_t = std::unique_ptr<KeyBinds, Delegate<void(KeyBinds*)>>;
+
+inline auto KeyBind::setConfigFieldName(const char* name) -> void
+{
+    _configFieldName = name;
+}
+
+inline auto KeyBind::getConfigFieldName() const -> const std::string&
+{
+    return _configFieldName;
+}
+
+inline auto KeyBind::setName(const char* name) -> void
+{
+    _name = name;
+}
+
+inline auto KeyBind::getName() const -> const std::string&
+{
+    return _name;
+}
+
+inline void KeyBind::setDefaultKey(const BindableKey* key)
+{
+    _key = key;
+    _defaultKey = key;
+}
+
+inline auto KeyBind::getDefaultKey() const -> const BindableKey*
+{
+    return _defaultKey;
+}
+
+inline void KeyBind::setDefaultKey(const BindableKey::Key_t key)
+{
+    auto it = std::find_if(
+        BindableKeys.begin(), BindableKeys.end(),
+        [&key](const BindableKey& bindableKey) { return key == bindableKey.key; });
+
+    if (it != BindableKeys.end())
+    {
+        setDefaultKey(&*it);
+    }
+}
+
+inline auto KeyBind::getKey() const -> const BindableKey*
+{
+    return _key;
+}
+
+inline auto KeyBind::setKey(const BindableKey* key) -> void
+{
+    _key = key;
+}
+
+inline void KeyBind::setKey(const BindableKey::Key_t key)
+{
+    auto it = std::find_if(
+        BindableKeys.begin(), BindableKeys.end(),
+        [&key](const BindableKey& bindableKey) { return key == bindableKey.key; });
+
+    if (it != BindableKeys.end())
+    {
+        setKey(&*it);
+    }
+}
+
+inline auto KeyBind::setKeyState(ButtonState state) -> void
+{
+    _state = state;
+}
+
+inline auto KeyBind::getKeyState() const -> ButtonState
+{
+    return _state;
+}
 
 } // namespace hry
