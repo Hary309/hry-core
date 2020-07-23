@@ -2,7 +2,6 @@
 
 namespace hry
 {
-
 struct Mouse
 {
     enum class Button
@@ -23,4 +22,4 @@ struct Mouse
     static void DisableInGameMouse(bool disable);
 };
 
-}
+} // namespace hry

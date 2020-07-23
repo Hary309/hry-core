@@ -1,13 +1,12 @@
 #pragma once
 
-#include <string>
 #include <sstream>
+#include <string>
 
 #include "Hry/Export.hpp"
 
 namespace hry
 {
-
 class Logger
 {
 public:
@@ -22,10 +21,7 @@ private:
     std::string _moduleName;
 
 public:
-    Logger(const char* moduleName)
-        : _moduleName(std::string(moduleName))
-    {
-    }
+    Logger(const char* moduleName) : _moduleName(std::string(moduleName)) {}
 
     HRY_API void log(Level level, const char* msg);
 
@@ -44,7 +40,7 @@ public:
     {
         log(Level::Info, args...);
     }
-    
+
     template<typename... Args>
     void warning(Args&&... args)
     {
@@ -57,4 +53,4 @@ public:
     }
 };
 
-}
+} // namespace hry

@@ -3,20 +3,19 @@
 #define COBJMACROS
 #define CINTERFACE
 
+#include <cstdio>
 #include <memory>
 #include <windows.h>
-#include <cstdio>
 
 #include <dinput.h>
 
-#include "Hry/Utils.hpp"
 #include "Hry/Memory/Hooking.hpp"
+#include "Hry/Utils.hpp"
 
 #include "Core.hpp"
 
 namespace hry
 {
-
 using DirectInput8Create_t = decltype(DirectInput8Create);
 using DirectInput8_GetDeviceData_t = decltype(IDirectInputDevice8AVtbl::GetDeviceData);
 
@@ -25,7 +24,12 @@ static DirectInput8_GetDeviceData_t oDirectInputGetDeviceData;
 static IDirectInput8AVtbl* DIVTable;
 static IDirectInputDevice8AVtbl* DIDeviceVTable;
 
-HRESULT __stdcall new_DirectInputDevice_GetDeviceData(IDirectInputDevice8A* self, DWORD cbObjectData, DIDEVICEOBJECTDATA* rgdod, DWORD* pdwInOut, DWORD dwFlags)
+HRESULT __stdcall new_DirectInputDevice_GetDeviceData(
+    IDirectInputDevice8A* self,
+    DWORD cbObjectData,
+    DIDEVICEOBJECTDATA* rgdod,
+    DWORD* pdwInOut,
+    DWORD dwFlags)
 {
     auto result = oDirectInputGetDeviceData(self, cbObjectData, rgdod, pdwInOut, dwFlags);
 
@@ -66,7 +70,8 @@ bool DInput8Hook::Install()
 
     HRESULT hr;
 
-    hr = dInput8Create(::GetModuleHandle(nullptr), DIRECTINPUT_VERSION, IID_IDirectInput8, (void**)&DI, nullptr);
+    hr = dInput8Create(
+        ::GetModuleHandle(nullptr), DIRECTINPUT_VERSION, IID_IDirectInput8, (void**)&DI, nullptr);
 
     if (FAILED(hr))
     {
@@ -87,7 +92,8 @@ bool DInput8Hook::Install()
     DIDeviceVTable = DIMouse->lpVtbl;
 
     Core::Logger->info("Hooking DirectInputDevice::GetDeviceData...");
-    oDirectInputGetDeviceData = HookVTableField(&DIDeviceVTable->GetDeviceData, &new_DirectInputDevice_GetDeviceData);
+    oDirectInputGetDeviceData =
+        HookVTableField(&DIDeviceVTable->GetDeviceData, &new_DirectInputDevice_GetDeviceData);
 
     IDirectInputDevice8_Release(DIMouse);
     IDirectInput8_Release(DI);
@@ -107,4 +113,4 @@ void DInput8Hook::Uninstall()
     }
 }
 
-}
+} // namespace hry

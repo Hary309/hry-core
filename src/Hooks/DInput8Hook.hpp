@@ -1,7 +1,7 @@
 #pragma once
 
-#include <vector>
 #include <cstdint>
+#include <vector>
 
 #include "Hry/Utils/Delegate.hpp"
 
@@ -10,10 +10,12 @@ struct DIDEVICEOBJECTDATA;
 
 namespace hry
 {
-
 struct DInput8Hook
 {
-    inline static Delegate<void(IDirectInputDevice8A*, const std::vector<DIDEVICEOBJECTDATA>&&)> OnGetDeviceData;
+    using OnGetDeviceData_t =
+        Delegate<void(IDirectInputDevice8A*, const std::vector<DIDEVICEOBJECTDATA>&&)>;
+
+    inline static OnGetDeviceData_t OnGetDeviceData;
 
     inline static bool disableInGameMouse;
 
@@ -21,5 +23,4 @@ struct DInput8Hook
     static void Uninstall();
 };
 
-}
-
+} // namespace hry

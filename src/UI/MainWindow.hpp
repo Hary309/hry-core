@@ -5,13 +5,11 @@
 #include "Hry/Utils/Signal.hpp"
 
 #include "Events/EventManager.hpp"
-#include "Modules/ModuleManager.hpp"
 #include "KeyBinding/KeyBindsManager.hpp"
-
+#include "Modules/ModuleManager.hpp"
 
 namespace hry
 {
-
 class MainWindow
 {
 private:
@@ -28,10 +26,7 @@ private:
     KeyBind* _keyToSetBind = nullptr;
 
 public:
-    MainWindow(
-        ModuleManager& moduleMgr,
-        KeyBindsManager& KeyBindsMgr,
-        EventManager& eventMgr);
+    MainWindow(ModuleManager& moduleMgr, KeyBindsManager& KeyBindsMgr, EventManager& eventMgr);
 
     void initKeyBinds(KeyBinds& keyBinds);
 
@@ -52,4 +47,4 @@ private:
     void handleMouseButtonPress(const MouseButtonEvent&&);
 };
 
-}
+} // namespace hry

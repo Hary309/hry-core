@@ -5,88 +5,87 @@
 
 namespace hry
 {
-
 template<typename T>
 struct Vec2
 {
-	T x;
-	T y;
+    T x;
+    T y;
 };
 
-template <typename T>
-constexpr Vec2<T> operator -(const Vec2<T>& right)
+template<typename T>
+constexpr Vec2<T> operator-(const Vec2<T>& right)
 {
-	return Vec2<T>(-right.x, -right.y);
+    return Vec2<T>(-right.x, -right.y);
 }
 
-template <typename T>
-constexpr Vec2<T>& operator +=(Vec2<T>& left, const Vec2<T>& right)
+template<typename T>
+constexpr Vec2<T>& operator+=(Vec2<T>& left, const Vec2<T>& right)
 {
-	left.x += right.x;
-	left.y += right.y;
+    left.x += right.x;
+    left.y += right.y;
 
-	return left;
+    return left;
 }
 
-template <typename T>
-constexpr Vec2<T>& operator -=(Vec2<T>& left, const Vec2<T>& right)
+template<typename T>
+constexpr Vec2<T>& operator-=(Vec2<T>& left, const Vec2<T>& right)
 {
-	left.x -= right.x;
-	left.y -= right.y;
+    left.x -= right.x;
+    left.y -= right.y;
 
-	return left;
+    return left;
 }
 
-template <typename T>
-constexpr Vec2<T> operator +(const Vec2<T>& left, const Vec2<T>& right)
+template<typename T>
+constexpr Vec2<T> operator+(const Vec2<T>& left, const Vec2<T>& right)
 {
-	return Vec2<T>(left.x + right.x, left.y + right.y);
+    return Vec2<T>(left.x + right.x, left.y + right.y);
 }
 
-template <typename T>
-constexpr Vec2<T> operator -(const Vec2<T>& left, const Vec2<T>& right)
+template<typename T>
+constexpr Vec2<T> operator-(const Vec2<T>& left, const Vec2<T>& right)
 {
-	return Vec2<T>(left.x - right.x, left.y - right.y);
+    return Vec2<T>(left.x - right.x, left.y - right.y);
 }
 
-template <typename T>
-constexpr Vec2<T> operator *(const Vec2<T>& left, T right)
+template<typename T>
+constexpr Vec2<T> operator*(const Vec2<T>& left, T right)
 {
-	return Vec2<T>(left.x * right, left.y * right);
+    return Vec2<T>(left.x * right, left.y * right);
 }
 
-template <typename T>
-constexpr Vec2<T> operator *(T left, const Vec2<T>& right)
+template<typename T>
+constexpr Vec2<T> operator*(T left, const Vec2<T>& right)
 {
-	return Vec2<T>(left.x * right, left.y * right);
+    return Vec2<T>(left.x * right, left.y * right);
 }
 
-template <typename T>
-constexpr Vec2<T>& operator *=(Vec2<T>& left, T right)
+template<typename T>
+constexpr Vec2<T>& operator*=(Vec2<T>& left, T right)
 {
-	left.x *= right;
-	left.y *= right;
+    left.x *= right;
+    left.y *= right;
 
-	return left;
+    return left;
 }
 
-template <typename T>
-constexpr Vec2<T> operator /(const Vec2<T>& left, T right)
+template<typename T>
+constexpr Vec2<T> operator/(const Vec2<T>& left, T right)
 {
-	return Vec2<T>(left.x / right, left.y / right);
+    return Vec2<T>(left.x / right, left.y / right);
 }
 
-template <typename T>
-constexpr Vec2<T>& operator /=(Vec2<T>& left, T right)
+template<typename T>
+constexpr Vec2<T>& operator/=(Vec2<T>& left, T right)
 {
-	left.x /= right;
-	left.y /= right;
+    left.x /= right;
+    left.y /= right;
 
-	return left;
+    return left;
 }
 
 using Vec2f = Vec2<float>;
 using Vec2i = Vec2<int>;
 using Vec2u = Vec2<unsigned int>;
 
-}
+} // namespace hry

@@ -4,14 +4,13 @@
 
 namespace hry
 {
-
 struct EventHandler
 {
     // system events
     Sink<void(const ResizeEvent&&)> onWindowResize;
     Sink<void()> onWindowGainFocus;
     Sink<void()> onWindowLoseFocus;
-    
+
     Sink<void(const KeyboardEvent&&)> onKeyPress;
     Sink<void(const KeyboardEvent&&)> onKeyRelease;
 
@@ -28,4 +27,4 @@ struct EventHandler
     Sink<void(const GameStateEvent&&)> onStateChange;
 };
 
-}
+} // namespace hry

@@ -4,10 +4,9 @@
 
 namespace hry
 {
-
-void Logger::log(Level level, const char* msg) 
+void Logger::log(Level level, const char* msg)
 {
     LoggerFactory::WriteLine(level, msg, _moduleName.c_str());
 }
 
-}
+} // namespace hry

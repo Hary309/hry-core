@@ -9,14 +9,13 @@
 
 namespace hry
 {
-
 template<typename>
 class Signal;
 
 template<typename>
 class Sink;
 
-template <typename Return, typename... Args>
+template<typename Return, typename... Args>
 class Signal<Return(Args...)>
 {
     friend Sink<Return(Args...)>;
@@ -47,17 +46,13 @@ public:
     }
 
 private:
-    void add(Delegate_t delegate)
-    {
-        _calls.push_back(delegate);
-    }
+    void add(Delegate_t delegate) { _calls.push_back(delegate); }
 
     void remove(Delegate_t delegate)
     {
-        auto it = std::find_if(_calls.begin(), _calls.end(), 
-            [&delegate](const Delegate_t& a) { 
-                return a == delegate;
-            });
+        auto it = std::find_if(_calls.begin(), _calls.end(), [&delegate](const Delegate_t& a) {
+            return a == delegate;
+        });
 
         if (it != _calls.end())
         {
@@ -66,7 +61,7 @@ private:
     }
 };
 
-template <typename Return, typename... Args>
+template<typename Return, typename... Args>
 class Sink<Return(Args...)>
 {
 private:
@@ -77,10 +72,7 @@ private:
     std::vector<typename Signal_t::Delegate_t> _internalCalls;
 
 public:
-    Sink(Signal_t& signal)
-        : _signal(signal)
-    {
-    }
+    Sink(Signal_t& signal) : _signal(signal) {}
 
     ~Sink()
     {
@@ -114,4 +106,4 @@ public:
 template<typename Return, typename... Args>
 Sink(Signal<Return(Args...)>&) -> Sink<Return(Args...)>;
 
-}
+} // namespace hry

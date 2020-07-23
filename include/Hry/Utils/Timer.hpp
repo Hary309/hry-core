@@ -4,7 +4,6 @@
 
 namespace hry
 {
-
 class Timer
 {
 public:
@@ -18,32 +17,23 @@ private:
     TimePoint_t _start;
 
 public:
-    Timer() : _start(Clock_t::now()) { }
+    Timer() : _start(Clock_t::now()) {}
 
-    void reset()
-    {
-        _start = Clock_t::now();
-    }
+    void reset() { _start = Clock_t::now(); }
 
-    auto elapsed() const
-    {
-        return Clock_t::now() - _start;
-    }
+    auto elapsed() const { return Clock_t::now() - _start; }
 
-    float asSeconds() const 
-    {
-        return std::chrono::duration_cast<Seconds_t>(elapsed()).count();
-    }
+    float asSeconds() const { return std::chrono::duration_cast<Seconds_t>(elapsed()).count(); }
 
-    int64_t asMiliseconds() const 
+    int64_t asMiliseconds() const
     {
         return std::chrono::duration_cast<Milliseconds_t>(elapsed()).count();
     }
 
-    int64_t asMicrosecond() const 
+    int64_t asMicrosecond() const
     {
         return std::chrono::duration_cast<Microseconds_t>(elapsed()).count();
     }
 };
 
-}
+} // namespace hry

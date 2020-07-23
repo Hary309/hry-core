@@ -4,8 +4,7 @@
 
 namespace hry
 {
-
-void EnableImGui(bool enable) 
+void EnableImGui(bool enable)
 {
     auto& io = ImGui::GetIO();
 
@@ -13,4 +12,4 @@ void EnableImGui(bool enable)
     io.MouseDrawCursor = enable;
 }
 
-}
+} // namespace hry

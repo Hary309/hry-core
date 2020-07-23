@@ -1,17 +1,16 @@
 #pragma once
 
+#include <cstdint>
 #include <optional>
 #include <variant>
-#include <cstdint>
 
 #include "Hry/Math/Vec2.hpp"
-#include "Hry/System/System.hpp"
 #include "Hry/System/Keyboard.hpp"
 #include "Hry/System/Mouse.hpp"
+#include "Hry/System/System.hpp"
 
 namespace hry
 {
-
 struct ResizeEvent
 {
     ResizeType type;
@@ -50,4 +49,4 @@ struct GameStateEvent
     } type;
 };
 
-}
+} // namespace hry

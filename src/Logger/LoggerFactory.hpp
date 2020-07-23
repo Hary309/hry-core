@@ -1,13 +1,12 @@
 #pragma once
 
-#include <string>
 #include <memory>
+#include <string>
 
 #include "Hry/Logger/Logger.hpp"
 
 namespace hry
 {
-
 class LoggerFactory
 {
 private:
@@ -20,4 +19,4 @@ public:
     static std::unique_ptr<Logger> GetLogger(const char* moduleName);
 };
 
-}
+} // namespace hry

@@ -1,7 +1,7 @@
 #pragma once
 
-#include <vector>
 #include <memory>
+#include <vector>
 
 #include "Hry/Events/Event.hpp"
 #include "Hry/Events/EventHandler.hpp"
@@ -13,7 +13,6 @@ struct scs_telemetry_init_params_v100_t;
 
 namespace hry
 {
-
 class EventBridgeBase;
 
 class EventManager
@@ -23,10 +22,12 @@ private:
 
 public:
     // system events
+    Signal<void(const char*)> logSignal;
+
     Signal<void(const ResizeEvent&&)> windowResizeSignal;
     Signal<void()> windowGainFocusSignal;
     Signal<void()> windowLoseFocusSignal;
-    
+
     Signal<void(const KeyboardEvent&&)> keyPressSignal;
     Signal<void(const KeyboardEvent&&)> keyReleaseSignal;
 
@@ -36,7 +37,7 @@ public:
     Signal<void(const MouseWheelEvent&&)> mouseWheelScrollSignal;
 
     Signal<void()> imguiRenderSignal;
-    
+
     // game events
     Signal<void()> frameStartSignal;
     Signal<void()> frameEndSignal;
@@ -48,4 +49,4 @@ public:
     [[nodiscard]] EventHandler createEventHandler();
 };
 
-}
+} // namespace hry

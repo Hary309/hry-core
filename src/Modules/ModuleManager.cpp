@@ -17,20 +17,13 @@ namespace fs = std::filesystem;
 
 namespace hry
 {
-
 using CreatePlugin_t = Plugin*();
 using InitImGui_t = void(ImGuiContext*);
 
 ModuleManager::ModuleManager(
-    const std::string& pluginDirectory,
-    EventManager& eventMgr,
-    KeyBindsManager& keyBindsMgr)
-    :
-    _pluginDirectory(pluginDirectory),
-    _eventMgr(eventMgr),
-    _keyBindsMgr(keyBindsMgr)
-{
-}
+    const std::string& pluginDirectory, EventManager& eventMgr, KeyBindsManager& keyBindsMgr)
+    : _pluginDirectory(pluginDirectory), _eventMgr(eventMgr), _keyBindsMgr(keyBindsMgr)
+{}
 
 void ModuleManager::init()
 {
@@ -38,7 +31,7 @@ void ModuleManager::init()
     loadAll();
 }
 
-void ModuleManager::scan() 
+void ModuleManager::scan()
 {
     Core::Logger->info("Scanning '", _pluginDirectory, "'...");
 
@@ -48,22 +41,23 @@ void ModuleManager::scan()
     }
 
     // remove missing modules
-    auto toRemove = std::remove_if(_modules.begin(), _modules.end(), [this](const std::unique_ptr<Module>& mod) {
-        if (!fs::exists(mod->dllPath))
-        {
-            Core::Logger->info(mod->dllPath, " not found, removing from list");
-
-            // it is possible if file is symbolic link
-            if (mod->isLoaded)
+    auto toRemove = std::remove_if(
+        _modules.begin(), _modules.end(), [this](const std::unique_ptr<Module>& mod) {
+            if (!fs::exists(mod->dllPath))
             {
-                unload(mod.get());
+                Core::Logger->info(mod->dllPath, " not found, removing from list");
+
+                // it is possible if file is symbolic link
+                if (mod->isLoaded)
+                {
+                    unload(mod.get());
+                }
+
+                return true;
             }
 
-            return true;
-        }
-
-        return false;
-    });
+            return false;
+        });
 
     _modules.erase(toRemove, _modules.end());
 
@@ -74,7 +68,7 @@ void ModuleManager::scan()
         {
             auto& path = item.path();
             Core::Logger->info("Found ", path.filename());
-            
+
             if (tryAdd(path))
             {
                 Core::Logger->info("Added ", path.filename(), " to list");
@@ -87,7 +81,7 @@ void ModuleManager::scan()
     }
 }
 
-void ModuleManager::loadAll() 
+void ModuleManager::loadAll()
 {
     if (_modules.empty())
     {
@@ -104,7 +98,7 @@ void ModuleManager::loadAll()
     }
 }
 
-void ModuleManager::unloadAll() 
+void ModuleManager::unloadAll()
 {
     Core::Logger->info("Unloading all modules...");
 
@@ -114,7 +108,7 @@ void ModuleManager::unloadAll()
     }
 }
 
-bool ModuleManager::load(Module* mod) 
+bool ModuleManager::load(Module* mod)
 {
     Core::Logger->info("Loading '", mod->dllPath, "'...");
 
@@ -135,21 +129,25 @@ bool ModuleManager::load(Module* mod)
 
     mod->handle = handle;
 
-    InitImGui_t* InitImGui_func = reinterpret_cast<InitImGui_t*>(GetProcAddress(handle, "InitImGui"));
+    InitImGui_t* InitImGui_func =
+        reinterpret_cast<InitImGui_t*>(GetProcAddress(handle, "InitImGui"));
 
     if (InitImGui_func == nullptr)
     {
-        Core::Logger->warning("Cannot find InitImGui inside '", mod->dllPath, "' [", GetLastError(), "]");
+        Core::Logger->warning(
+            "Cannot find InitImGui inside '", mod->dllPath, "' [", GetLastError(), "]");
         FreeLibrary(handle);
 
         return false;
     }
-    
-    CreatePlugin_t* CreatePlugin_func = reinterpret_cast<CreatePlugin_t*>(GetProcAddress(handle, "CreatePlugin"));
+
+    CreatePlugin_t* CreatePlugin_func =
+        reinterpret_cast<CreatePlugin_t*>(GetProcAddress(handle, "CreatePlugin"));
 
     if (CreatePlugin_func == nullptr)
     {
-        Core::Logger->warning("Cannot find CreatePlugin inside '", mod->dllPath, "' [", GetLastError(), "]");
+        Core::Logger->warning(
+            "Cannot find CreatePlugin inside '", mod->dllPath, "' [", GetLastError(), "]");
         FreeLibrary(handle);
 
         return false;
@@ -184,7 +182,7 @@ bool ModuleManager::load(Module* mod)
     return true;
 }
 
-void ModuleManager::unload(Module* mod) 
+void ModuleManager::unload(Module* mod)
 {
     Core::Logger->info("Unloading '", mod->dllPath, "'...");
 
@@ -207,13 +205,13 @@ void ModuleManager::unload(Module* mod)
     mod->isLoaded = false;
 }
 
-bool ModuleManager::tryAdd(const fs::path& path) 
+bool ModuleManager::tryAdd(const fs::path& path)
 {
     std::string filepath = path.string();
 
-    auto it = std::find_if(_modules.begin(), _modules.end(), [&filepath] (const std::unique_ptr<Module>& module) {
-        return module->dllPath == filepath;
-    });
+    auto it = std::find_if(
+        _modules.begin(), _modules.end(),
+        [&filepath](const std::unique_ptr<Module>& module) { return module->dllPath == filepath; });
 
     if (it == _modules.end())
     {
@@ -227,4 +225,4 @@ bool ModuleManager::tryAdd(const fs::path& path)
     return false;
 }
 
-}
+} // namespace hry

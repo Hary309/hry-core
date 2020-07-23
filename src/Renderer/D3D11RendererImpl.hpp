@@ -9,7 +9,6 @@
 
 namespace hry
 {
-
 class Renderer;
 
 class D3D11RendererImpl : public RendererBase
@@ -40,4 +39,4 @@ private:
     void resize();
 };
 
-}
+} // namespace hry

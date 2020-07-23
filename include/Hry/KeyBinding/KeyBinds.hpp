@@ -2,9 +2,9 @@
 
 #include <algorithm>
 #include <memory>
-#include <vector>
-#include <variant>
 #include <string>
+#include <variant>
+#include <vector>
 
 #include "BindableKeys.hpp"
 
@@ -16,7 +16,6 @@
 
 namespace hry
 {
-
 class KeyBinds;
 
 class KeyBind
@@ -27,7 +26,7 @@ public:
 private:
     std::string _configFieldName;
     std::string _name;
-    const BindableKey* _key = nullptr; // if null no set
+    const BindableKey* _key = nullptr;        // if null no set
     const BindableKey* _defaultKey = nullptr; // if null not set
     Delegate_t _pressAction;
     Delegate_t _releaseAction;
@@ -38,11 +37,14 @@ public:
     void setConfigFieldName(const char* name) { _configFieldName = name; }
     const auto& getConfigFieldName() const { return _configFieldName; }
 
-
     void setName(const char* name) { _name = name; }
     const auto& getName() const { return _name; }
 
-    void setDefaultKey(const BindableKey* key) { _key = key; _defaultKey = key; }
+    void setDefaultKey(const BindableKey* key)
+    {
+        _key = key;
+        _defaultKey = key;
+    }
     HRY_API void setDefaultKey(const BindableKey::Key_t key);
 
     const auto& getDefaultKey() const { return _key; }
@@ -54,27 +56,37 @@ public:
     void setKeyState(ButtonState state) { _state = state; }
     ButtonState getKeyState() const { return _state; }
 
-
     void callPressAction() const { _pressAction.call(); }
 
     void setPressAction(const Delegate_t& action) { _pressAction = action; }
 
     template<auto FuncAddr>
-    void setPressAction() { _pressAction.connect<FuncAddr>(); }
+    void setPressAction()
+    {
+        _pressAction.connect<FuncAddr>();
+    }
 
     template<auto CtxFuncAddr, typename T>
-    void setPressAction(T* content) { _pressAction.connect<CtxFuncAddr>(content); }
-
+    void setPressAction(T* content)
+    {
+        _pressAction.connect<CtxFuncAddr>(content);
+    }
 
     void callReleaseAction() const { _releaseAction.call(); }
 
     void setReleaseAction(const Delegate_t& action) { _releaseAction = action; }
 
     template<auto FuncAddr>
-    void setReleaseAction() { _releaseAction.connect<FuncAddr>(); }
+    void setReleaseAction()
+    {
+        _releaseAction.connect<FuncAddr>();
+    }
 
     template<auto CtxFuncAddr, typename T>
-    void setReleaseAction(T* content) { _releaseAction.connect<CtxFuncAddr>(content); }
+    void setReleaseAction(T* content)
+    {
+        _releaseAction.connect<CtxFuncAddr>(content);
+    }
 };
 
 class KeyBinds
@@ -92,8 +104,8 @@ public:
 
     auto& getKeyBinds() { return _keyBinds; }
     const auto& getKeyBinds() const { return _keyBinds; }
-}; 
+};
 
 using KeyBindsUniquePtr_t = std::unique_ptr<KeyBinds, Delegate<void(KeyBinds*)>>;
 
-}
+} // namespace hry

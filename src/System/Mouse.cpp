@@ -4,10 +4,9 @@
 
 namespace hry
 {
-
-void Mouse::DisableInGameMouse(bool disable) 
+void Mouse::DisableInGameMouse(bool disable)
 {
     DInput8Hook::disableInGameMouse = disable;
 }
 
-}
+} // namespace hry

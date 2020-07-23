@@ -13,17 +13,12 @@
 #include "Logger/LoggerFactory.hpp"
 #include "Utils/ImGuiUtils.hpp"
 
-
 namespace hry
 {
-
 Core::Core(HINSTANCE hInst)
-    : 
-    _renderer(*this),
-    _keyBindsMgr(_eventMgr),
-    _moduleMgr("plugins\\hry_plugins", _eventMgr, _keyBindsMgr),
-    _mainWindow(_moduleMgr, _keyBindsMgr, _eventMgr),
-    _imguiImplEvents(_eventMgr)
+    : _renderer(*this), _keyBindsMgr(_eventMgr),
+      _moduleMgr("plugins\\hry_plugins", _eventMgr, _keyBindsMgr),
+      _mainWindow(_moduleMgr, _keyBindsMgr, _eventMgr), _imguiImplEvents(_eventMgr)
 {
     hInstance = hInst;
 }
@@ -35,14 +30,14 @@ Core::~Core()
     Core::UninstallHooks();
 }
 
-bool Core::init(scs_telemetry_init_params_v100_t* scsTelemetry) 
+bool Core::init(scs_telemetry_init_params_v100_t* scsTelemetry)
 {
     _scsTelemetry = scsTelemetry;
 
 #ifdef DEBUG
     AllocConsole();
     freopen("CONOUT$", "w", stdout);
-	freopen("CONOUT$", "w", stdin);
+    freopen("CONOUT$", "w", stdin);
 #endif
 
     LoggerFactory::Init("hry_core.log");
@@ -50,17 +45,17 @@ bool Core::init(scs_telemetry_init_params_v100_t* scsTelemetry)
 
     Logger->info("Initializing core...");
 
-	bool success = true;
+    bool success = true;
 
-	success &= Core::InstallHooks();
-    
+    success &= Core::InstallHooks();
+
     _renderer.init();
     _eventMgr.init(scsTelemetry);
 
     return success;
 }
 
-void Core::lateInit() 
+void Core::lateInit()
 {
     EnableImGui(false);
     initKeyBinds();
@@ -70,13 +65,13 @@ void Core::lateInit()
     Logger->info("Core successfully initialized!");
 }
 
-void Core::initKeyBinds() 
+void Core::initKeyBinds()
 {
     _coreKeyBinds = _keyBindsMgr.createKeyBinds("Core");
     _mainWindow.initKeyBinds(*_coreKeyBinds);
 }
 
-void Core::imguiRender() 
+void Core::imguiRender()
 {
     ImGui::ShowDemoWindow();
     _mainWindow.renderImGui();
@@ -115,4 +110,4 @@ void Core::UninstallHooks()
     Logger->info("Hooks uninstalled");
 }
 
-}
+} // namespace hry

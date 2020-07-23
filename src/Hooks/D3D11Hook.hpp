@@ -5,19 +5,17 @@
 
 #include "Hry/Utils/Delegate.hpp"
 
-
 struct IDXGISwapChain;
 struct ID3D11Device;
 
 namespace hry
 {
-
 struct D3D11Hook
 {
     inline static HWND hWnd;
 
     inline static Delegate<void(const HWND, UINT, WPARAM, LPARAM)> OnWndProc;
-    
+
     inline static Delegate<void(IDXGISwapChain*, ID3D11Device*)> OnInit;
     inline static Delegate<void(IDXGISwapChain*)> OnPresent;
     inline static Delegate<void(IDXGISwapChain*, uint32_t width, uint32_t height)> OnBeforeResize;
@@ -27,4 +25,4 @@ struct D3D11Hook
     static void Uninstall();
 };
 
-}
+} // namespace hry

@@ -2,7 +2,6 @@
 
 namespace hry
 {
-
 enum ResizeType
 {
     Maximized = 0,
@@ -16,4 +15,4 @@ enum class ButtonState
     Released
 };
 
-}
+} // namespace hry

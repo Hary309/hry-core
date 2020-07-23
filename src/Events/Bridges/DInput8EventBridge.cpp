@@ -21,14 +21,13 @@ constexpr int DINPUT_BUTTON4 = (offsetof(DIMOUSESTATE, rgbButtons) + 4);
 
 namespace hry
 {
-
-DInput8EventBridge::DInput8EventBridge(EventManager& eventMgr)
-        : EventBridgeBase(eventMgr)
+DInput8EventBridge::DInput8EventBridge(EventManager& eventMgr) : EventBridgeBase(eventMgr)
 {
     DInput8Hook::OnGetDeviceData.connect<&DInput8EventBridge::onGetDeviceData>(this);
 }
 
-void DInput8EventBridge::onGetDeviceData(IDirectInputDevice8A* device, const std::vector<DIDEVICEOBJECTDATA>&& datas)
+void DInput8EventBridge::onGetDeviceData(
+    IDirectInputDevice8A* device, const std::vector<DIDEVICEOBJECTDATA>&& datas)
 {
     for (auto& data : datas)
     {
@@ -43,7 +42,8 @@ void DInput8EventBridge::onGetDeviceData(IDirectInputDevice8A* device, const std
                 moveEvent.offset = _mouseOffset;
 
                 _eventMgr.mouseMoveSignal.call(std::move(moveEvent));
-            } break;
+            }
+            break;
             case DINPUT_Y:
             {
                 _mouseOffset.y = data.dwData;
@@ -52,7 +52,8 @@ void DInput8EventBridge::onGetDeviceData(IDirectInputDevice8A* device, const std
                 moveEvent.offset = _mouseOffset;
 
                 _eventMgr.mouseMoveSignal.call(std::move(moveEvent));
-            } break;
+            }
+            break;
 
             // mouse move wheel
             case DINPUT_Z:
@@ -62,33 +63,38 @@ void DInput8EventBridge::onGetDeviceData(IDirectInputDevice8A* device, const std
                 wheelEvent.delta = static_cast<short>(data.dwData) / WHEEL_DELTA;
 
                 _eventMgr.mouseWheelScrollSignal.call(std::move(wheelEvent));
-            } break;
+            }
+            break;
 
             // mouse buttons
             case DINPUT_BUTTON0:
             {
                 sendButtonEvent(data.dwData, Mouse::Button::Left);
-            } break;
+            }
+            break;
             case DINPUT_BUTTON1:
             {
                 sendButtonEvent(data.dwData, Mouse::Button::Right);
-            } break;
+            }
+            break;
             case DINPUT_BUTTON2:
             {
                 sendButtonEvent(data.dwData, Mouse::Button::Middle);
-            } break;
+            }
+            break;
             case DINPUT_BUTTON3:
             {
                 sendButtonEvent(data.dwData, Mouse::Button::XButton1);
-            } break;
+            }
+            break;
             case DINPUT_BUTTON4:
             {
                 sendButtonEvent(data.dwData, Mouse::Button::XButton2);
-            } break;
+            }
+            break;
         }
     }
 }
-
 
 void DInput8EventBridge::sendButtonEvent(int pressData, Mouse::Button button)
 {
@@ -108,4 +114,4 @@ void DInput8EventBridge::sendButtonEvent(int pressData, Mouse::Button button)
     }
 }
 
-}
+} // namespace hry

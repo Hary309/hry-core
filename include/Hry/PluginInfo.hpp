@@ -4,7 +4,6 @@
 
 namespace hry
 {
-
 struct PluginInfo
 {
     std::string name;
@@ -12,8 +11,8 @@ struct PluginInfo
 
     std::string desc;
     std::string shortDesc;
-    
+
     int version;
 };
 
-}
+} // namespace hry

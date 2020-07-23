@@ -2,16 +2,15 @@
 
 #include "Core.hpp"
 
-#include "Bridges/WndProcEventBridge.hpp"
 #include "Bridges/DInput8EventBridge.hpp"
 #include "Bridges/TelemetryEventBridge.hpp"
+#include "Bridges/WndProcEventBridge.hpp"
 #include "Events/Bridges/TelemetryEventBridge.hpp"
+
 
 namespace hry
 {
-
-
-void EventManager::init(scs_telemetry_init_params_v100_t* scsTelemetry) 
+void EventManager::init(scs_telemetry_init_params_v100_t* scsTelemetry)
 {
     Core::Logger->info("Initializing EventManager...");
 
@@ -20,8 +19,9 @@ void EventManager::init(scs_telemetry_init_params_v100_t* scsTelemetry)
     _eventBridges.push_back(std::make_unique<TelemetryEventBridge>(*this, scsTelemetry));
 }
 
-EventHandler EventManager::createEventHandler() 
+EventHandler EventManager::createEventHandler()
 {
+    // clang-format off
     return {
         windowResizeSignal,
         windowGainFocusSignal,
@@ -41,6 +41,7 @@ EventHandler EventManager::createEventHandler()
         frameEndSignal,
         stateChangeSignal
     };
+    // clang-format on
 }
 
-}
+} // namespace hry

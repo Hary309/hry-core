@@ -1,13 +1,12 @@
 #pragma once
 
-#include <cstdint>
 #include <MinHook.h>
+#include <cstdint>
 
 #include "Hry/Export.hpp"
 
 namespace hry
 {
-
 class HRY_API Detour
 {
 public:
@@ -39,9 +38,8 @@ public:
     Detour(uintptr_t* target, uintptr_t* detour);
 
     template<typename FuncT>
-    Detour(uintptr_t target, FuncT& func)
-        : Detour((uintptr_t*)target, (uintptr_t*)func)
-    { }
+    Detour(uintptr_t target, FuncT& func) : Detour((uintptr_t*)target, (uintptr_t*)func)
+    {}
 
     ~Detour();
 
@@ -50,7 +48,10 @@ public:
     Status disable();
 
     template<typename T>
-    T* get() { return reinterpret_cast<T*>(_original); } 
+    T* get()
+    {
+        return reinterpret_cast<T*>(_original);
+    }
 };
 
-}
+} // namespace hry

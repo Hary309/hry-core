@@ -7,7 +7,6 @@
 
 namespace hry
 {
-
 // implement missing mouse events for ImGui (thx dinput8)
 class ImGuiImplEvents
 {
@@ -25,4 +24,4 @@ private:
     static void OnMouseWheelScroll(const MouseWheelEvent&&);
 };
 
-}
+} // namespace hry

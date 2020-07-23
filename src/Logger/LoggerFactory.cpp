@@ -1,18 +1,17 @@
 #include "LoggerFactory.hpp"
 
-#include <iostream>
-#include <fstream>
-#include <filesystem>
-#include <iomanip>
 #include <ctime>
+#include <filesystem>
+#include <fstream>
+#include <iomanip>
+#include <iostream>
 #include <memory>
 
 #include "Hry/Logger/Logger.hpp"
 
 namespace hry
 {
-
-void LoggerFactory::Init(const char* logFilePath) 
+void LoggerFactory::Init(const char* logFilePath)
 {
     _logFilePath = logFilePath;
 
@@ -21,10 +20,11 @@ void LoggerFactory::Init(const char* logFilePath)
         std::filesystem::remove(_logFilePath);
     }
 
-    WriteLine(Logger::Level::Info, (std::string("Started logging to ") + _logFilePath).c_str(), "core");
+    WriteLine(
+        Logger::Level::Info, (std::string("Started logging to ") + _logFilePath).c_str(), "core");
 }
 
-void LoggerFactory::WriteLine(Logger::Level level, const char* msg, const char* module) 
+void LoggerFactory::WriteLine(Logger::Level level, const char* msg, const char* module)
 {
     std::ofstream logFile(_logFilePath, std::ios::app);
 
@@ -59,9 +59,9 @@ void LoggerFactory::WriteLine(Logger::Level level, const char* msg, const char* 
 #endif
 }
 
-std::unique_ptr<Logger> LoggerFactory::GetLogger(const char* moduleName) 
+std::unique_ptr<Logger> LoggerFactory::GetLogger(const char* moduleName)
 {
     return std::unique_ptr<Logger>(new Logger(moduleName));
 }
 
-}
+} // namespace hry

@@ -5,24 +5,21 @@
 #include <scssdk_telemetry.h>
 
 #include "Hry/Events/Event.hpp"
-#include "Hry/Logger/Logger.hpp"
 #include "Hry/KeyBinding/KeyBinds.hpp"
 #include "Hry/Logger/Logger.hpp"
 #include "Hry/Utils/Timer.hpp"
 
-#include "ImGuiImplEvents.hpp"
-#include "Renderer/Renderer.hpp"
 #include "Events/EventManager.hpp"
-#include "Modules/ModuleManager.hpp"
+#include "ImGuiImplEvents.hpp"
 #include "KeyBinding/KeyBindsManager.hpp"
+#include "Modules/ModuleManager.hpp"
+#include "Renderer/Renderer.hpp"
 #include "UI/MainWindow.hpp"
-
 
 struct scs_telemetry_init_params_v100_t;
 
 namespace hry
 {
-
 class Event;
 
 class Core
@@ -63,4 +60,4 @@ private:
     static void UninstallHooks();
 };
 
-}
+} // namespace hry

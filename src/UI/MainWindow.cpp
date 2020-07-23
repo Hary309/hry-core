@@ -12,22 +12,16 @@
 
 namespace hry
 {
-
 MainWindow::MainWindow(
-    ModuleManager& moduleMgr,
-    KeyBindsManager& keyBindsMgr,
-    EventManager& eventMgr)
-    : 
-    _moduleMgr(moduleMgr),
-    _keyBindsMgr(keyBindsMgr),
-    _onKeyPress(eventMgr.keyPressSignal),
-    _onMouseButtonPress(eventMgr.mouseButtonPressSignal)
+    ModuleManager& moduleMgr, KeyBindsManager& keyBindsMgr, EventManager& eventMgr)
+    : _moduleMgr(moduleMgr), _keyBindsMgr(keyBindsMgr), _onKeyPress(eventMgr.keyPressSignal),
+      _onMouseButtonPress(eventMgr.mouseButtonPressSignal)
 {
     _onKeyPress.connect<&MainWindow::handleKeyPress>(this);
     _onMouseButtonPress.connect<&MainWindow::handleMouseButtonPress>(this);
 }
 
-void MainWindow::initKeyBinds(KeyBinds& keyBinds) 
+void MainWindow::initKeyBinds(KeyBinds& keyBinds)
 {
     KeyBind showMainWindowBind;
     showMainWindowBind.setConfigFieldName("show_main_window");
@@ -37,12 +31,12 @@ void MainWindow::initKeyBinds(KeyBinds& keyBinds)
     keyBinds.addKeyBind(std::move(showMainWindowBind));
 }
 
-void MainWindow::renderImGui() 
+void MainWindow::renderImGui()
 {
     if (!_isWindowEnabled)
         return;
 
-    ImGui::SetNextWindowSize({400.f, 300.f}, ImGuiCond_FirstUseEver);
+    ImGui::SetNextWindowSize({ 400.f, 300.f }, ImGuiCond_FirstUseEver);
 
     if (ImGui::Begin("Plugin Manager"))
     {
@@ -80,7 +74,7 @@ void MainWindow::renderImGui()
     ImGui::End();
 }
 
-void MainWindow::renderPluginsTab() 
+void MainWindow::renderPluginsTab()
 {
     if (ImGui::Button("Rescan"))
     {
@@ -98,9 +92,12 @@ void MainWindow::renderPluginsTab()
     ImGui::Columns(3);
 
     ImGui::Separator();
-    ImGui::Text("Action"); ImGui::NextColumn();
-    ImGui::Text("Name"); ImGui::NextColumn();
-    ImGui::Text("Description"); ImGui::NextColumn();
+    ImGui::Text("Action");
+    ImGui::NextColumn();
+    ImGui::Text("Name");
+    ImGui::NextColumn();
+    ImGui::Text("Description");
+    ImGui::NextColumn();
     ImGui::Separator();
 
     for (auto& module : modules)
@@ -127,13 +124,17 @@ void MainWindow::renderPluginsTab()
         if (module->isLoaded)
         {
             auto& pluginInfo = module->plugin->getPluginInfo();
-            ImGui::Text("%s", pluginInfo.shortName.c_str()); ImGui::NextColumn();
-            ImGui::Text("%s", pluginInfo.shortDesc.c_str()); ImGui::NextColumn();
+            ImGui::Text("%s", pluginInfo.shortName.c_str());
+            ImGui::NextColumn();
+            ImGui::Text("%s", pluginInfo.shortDesc.c_str());
+            ImGui::NextColumn();
         }
         else
         {
-            ImGui::Text("%s", module->dllName.c_str()); ImGui::NextColumn();
-            ImGui::Text("N/A"); ImGui::NextColumn();
+            ImGui::Text("%s", module->dllName.c_str());
+            ImGui::NextColumn();
+            ImGui::Text("N/A");
+            ImGui::NextColumn();
         }
 
         ImGui::PopID();
@@ -142,12 +143,12 @@ void MainWindow::renderPluginsTab()
     ImGui::Columns(1);
 }
 
-void MainWindow::renderSettingsTab() 
+void MainWindow::renderSettingsTab()
 {
     ImGui::Text("Settings related to this plugin, also some developer options");
 }
 
-void MainWindow::renderPluginsPageTab() 
+void MainWindow::renderPluginsPageTab()
 {
     auto& modules = _moduleMgr.getModules();
     auto size = modules.size();
@@ -173,7 +174,8 @@ void MainWindow::renderPluginsPageTab()
             auto& module = modules[i];
             const bool isSelected = (_selectedPluginIndex == i);
 
-            const auto flag = module->isLoaded ? ImGuiSelectableFlags_None : ImGuiSelectableFlags_Disabled;
+            const auto flag =
+                module->isLoaded ? ImGuiSelectableFlags_None : ImGuiSelectableFlags_Disabled;
 
             if (ImGui::Selectable(module->dllName.c_str(), isSelected, flag))
             {
@@ -201,7 +203,7 @@ void MainWindow::renderPluginsPageTab()
     }
 }
 
-void MainWindow::renderKeyBindsTab() 
+void MainWindow::renderKeyBindsTab()
 {
     auto& keyBindsList = _keyBindsMgr.getKeyBinds();
 
@@ -255,7 +257,7 @@ void MainWindow::renderKeyBindsTab()
     }
 }
 
-void MainWindow::renderAboutTab() 
+void MainWindow::renderAboutTab()
 {
     ImGui::Text("Credits etc");
 }
@@ -268,7 +270,7 @@ void MainWindow::showMainWindowKeyBind()
     EnableImGui(_isWindowEnabled);
 }
 
-void MainWindow::handleKeyPress(const KeyboardEvent&& keyboardEvent) 
+void MainWindow::handleKeyPress(const KeyboardEvent&& keyboardEvent)
 {
     if (_keyToSetBind)
     {
@@ -292,4 +294,4 @@ void MainWindow::handleMouseButtonPress(const MouseButtonEvent&& buttonEvent)
     }
 }
 
-}
+} // namespace hry

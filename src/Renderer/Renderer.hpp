@@ -9,7 +9,6 @@ class Core;
 
 namespace hry
 {
-
 class RendererBase;
 class D3D11RendererImpl;
 
@@ -33,4 +32,4 @@ protected:
     void onRendererResize(uint32_t width, uint32_t height);
 };
 
-}
+} // namespace hry

@@ -7,13 +7,11 @@
 #include "Hry/Math/Vec2.hpp"
 #include "Hry/System/Mouse.hpp"
 
-
 struct IDirectInputDevice8A;
 struct DIDEVICEOBJECTDATA;
 
 namespace hry
 {
-
 class DInput8EventBridge : public EventBridgeBase
 {
 private:
@@ -27,4 +25,4 @@ private:
     void sendButtonEvent(int pressData, Mouse::Button button);
 };
 
-}
+} // namespace hry

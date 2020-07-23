@@ -2,7 +2,6 @@
 
 namespace hry
 {
-
 class EventManager;
 
 class EventBridgeBase
@@ -14,4 +13,4 @@ public:
     EventBridgeBase(EventManager& eventMgr) : _eventMgr(eventMgr) {}
 };
 
-}
+} // namespace hry

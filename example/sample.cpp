@@ -1,33 +1,30 @@
+#include <iostream>
 #include <memory>
 #include <windows.h>
-#include <iostream>
 
 #include <imgui.h>
 
-#include <Hry/Plugin.hpp>
 #include <Hry/Events/Event.hpp>
 #include <Hry/Logger/Logger.hpp>
+#include <Hry/Plugin.hpp>
 #include <Hry/System/Keyboard.hpp>
 
 class SamplePlugin : public hry::Plugin
 {
 private:
     hry::PluginInfo _pluginInfo = {
-            "Sample plugin",
-            "hry-sample",
-            "This is a example of plugin based on hry-core.",
-            "Example implementation of plugin",
-            1000,
+        "Sample plugin",
+        "hry-sample",
+        "This is a example of plugin based on hry-core.",
+        "Example implementation of plugin",
+        1000,
     };
 
 public:
     inline static std::unique_ptr<hry::Logger> Logger;
 
 public:
-    virtual ~SamplePlugin()
-    {
-        Logger->info("Unloading...");
-    }
+    virtual ~SamplePlugin() { Logger->info("Unloading..."); }
 
     virtual void init()
     {
@@ -36,7 +33,7 @@ public:
 
         eventHandler->onMouseButtonPress.connect<&SamplePlugin::onKeyPressed>(this);
     }
-    
+
     void imguiRender()
     {
         if (ImGui::Begin("hry-example"))
@@ -47,15 +44,9 @@ public:
         ImGui::End();
     }
 
-    virtual void imguiPage()
-    {
-        ImGui::Text("Settings tab");
-    }
+    virtual void imguiPage() { ImGui::Text("Settings tab"); }
 
-    virtual const hry::PluginInfo& getPluginInfo() const
-    {
-        return _pluginInfo;
-    }
+    virtual const hry::PluginInfo& getPluginInfo() const { return _pluginInfo; }
 
 private:
     void onKeyPressed(const hry::MouseButtonEvent&& button)

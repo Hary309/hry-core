@@ -1,8 +1,8 @@
 #pragma once
 
-#include <vector>
-#include <memory>
 #include <functional>
+#include <memory>
+#include <vector>
 
 #include "Hry/Events/Event.hpp"
 #include "Hry/KeyBinding/BindableKeys.hpp"
@@ -14,7 +14,6 @@
 
 namespace hry
 {
-
 class KeyBindsManager
 {
 private:
@@ -42,4 +41,4 @@ private:
     void processKey(const BindableKey::Key_t key, ButtonState buttonState);
 };
 
-}
+} // namespace hry

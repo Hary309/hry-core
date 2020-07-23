@@ -1,17 +1,16 @@
 #pragma once
 
 #include <filesystem>
-#include <string>
 #include <memory>
+#include <string>
 #include <vector>
 
-#include "Module.hpp"
 #include "Events/EventManager.hpp"
 #include "KeyBinding/KeyBindsManager.hpp"
+#include "Module.hpp"
 
 namespace hry
 {
-
 class ModuleManager
 {
 private:
@@ -23,9 +22,7 @@ private:
 
 public:
     ModuleManager(
-        const std::string& pluginDirectory,
-        EventManager& eventMgr,
-        KeyBindsManager& keyBindsMgr);
+        const std::string& pluginDirectory, EventManager& eventMgr, KeyBindsManager& keyBindsMgr);
 
     void init();
 
@@ -43,4 +40,4 @@ private:
     bool tryAdd(const std::filesystem::path& path);
 };
 
-}
+} // namespace hry

@@ -8,7 +8,6 @@
 
 namespace hry
 {
-
 class WndProcEventBridge : public EventBridgeBase
 {
 private:
@@ -21,4 +20,4 @@ private:
     void onWndProc(const HWND, UINT, WPARAM, LPARAM);
 };
 
-}
+} // namespace hry

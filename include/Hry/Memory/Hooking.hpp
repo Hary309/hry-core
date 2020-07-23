@@ -3,7 +3,6 @@
 
 namespace hry
 {
-
 template<typename Func>
 Func HookVTableField(Func* vtableMethod, Func function)
 {
@@ -19,4 +18,4 @@ Func HookVTableField(Func* vtableMethod, Func function)
     return original;
 }
 
-}
+} // namespace hry

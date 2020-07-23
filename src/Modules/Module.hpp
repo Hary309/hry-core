@@ -1,11 +1,10 @@
 #pragma once
 
-#include "Hry/Plugin.hpp"
 #include "Hry/KeyBinding/KeyBinds.hpp"
+#include "Hry/Plugin.hpp"
 
 namespace hry
 {
-
 struct Module
 {
     std::string dllName;
@@ -16,4 +15,4 @@ struct Module
     Plugin* plugin = nullptr; // can be null
 };
 
-}
+} // namespace hry

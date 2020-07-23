@@ -1,35 +1,32 @@
-#include "Hry/KeyBinding/KeyBinds.hpp"
-#include "Hry/Utils/Delegate.hpp"
+#include <iostream>
 #include <memory>
 #include <windows.h>
-#include <iostream>
 
 #include <imgui.h>
 
-#include <Hry/Plugin.hpp>
 #include <Hry/Events/Event.hpp>
+#include <Hry/KeyBinding/KeyBinds.hpp>
 #include <Hry/Logger/Logger.hpp>
+#include <Hry/Plugin.hpp>
 #include <Hry/System/Keyboard.hpp>
+#include <Hry/Utils/Delegate.hpp>
 
 class ExamplePlugin : public hry::Plugin
 {
 private:
     hry::PluginInfo _pluginInfo = {
-            "Example plugin",
-            "hry-example",
-            "This is a example of plugin based on hry-core.",
-            "Example implementation of plugin",
-            1000,
+        "Example plugin",
+        "hry-example",
+        "This is a example of plugin based on hry-core.",
+        "Example implementation of plugin",
+        1000,
     };
 
 public:
     inline static std::unique_ptr<hry::Logger> Logger;
 
 public:
-    virtual ~ExamplePlugin()
-    {
-        Logger->info("Unloading...");
-    }
+    virtual ~ExamplePlugin() { Logger->info("Unloading..."); }
 
     virtual void init()
     {
@@ -58,27 +55,18 @@ public:
 
         ImGui::End();
     }
-    
-    virtual void imguiPage()
-    {
-        ImGui::Text("Test asdf");
-    }
 
-    virtual const hry::PluginInfo& getPluginInfo() const
-    {
-        return _pluginInfo;
-    }
+    virtual void imguiPage() { ImGui::Text("Test asdf"); }
+
+    virtual const hry::PluginInfo& getPluginInfo() const { return _pluginInfo; }
 
 private:
     void onKeyPressed(const hry::KeyboardEvent& key)
     {
         Logger->info("Key pressed!", static_cast<int>(key.key));
     }
-    
-    void onKeyBind()
-    {
-        Logger->info("Key bind works!");
-    }
+
+    void onKeyBind() { Logger->info("Key bind works!"); }
 };
 
 INIT_PLUGIN(ExamplePlugin)

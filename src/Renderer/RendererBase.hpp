@@ -2,7 +2,6 @@
 
 namespace hry
 {
-
 class Renderer;
 
 class RendererBase
@@ -17,4 +16,4 @@ public:
     virtual void init() = 0;
 };
 
-}
+} // namespace hry

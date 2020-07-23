@@ -16,7 +16,6 @@
 
 namespace hry
 {
-
 using IDXGISwapChain_Present_t = decltype(IDXGISwapChainVtbl::Present);
 using IDXGISwapChain_ResizeBuffers_t = decltype(IDXGISwapChainVtbl::ResizeBuffers);
 
@@ -48,7 +47,9 @@ IDXGISwapChainVtbl* GetSwapChainVTable()
 
     ::RegisterClassEx(&windowClass);
 
-    HWND window = CreateWindow(windowClass.lpszClassName, HRY_TEXT("D3D11 Hook"), WS_OVERLAPPEDWINDOW, 0, 0, 100, 100, nullptr, nullptr, windowClass.hInstance, nullptr);
+    HWND window = CreateWindow(
+        windowClass.lpszClassName, HRY_TEXT("D3D11 Hook"), WS_OVERLAPPEDWINDOW, 0, 0, 100, 100,
+        nullptr, nullptr, windowClass.hInstance, nullptr);
 
     HMODULE libD3D11 = ::GetModuleHandle(HRY_TEXT("d3d11.dll"));
     if (libD3D11 == nullptr)
@@ -58,7 +59,8 @@ IDXGISwapChainVtbl* GetSwapChainVTable()
         return nullptr;
     }
 
-    FARPROC D3D11CreateDeviceAndSwapChain = ::GetProcAddress(libD3D11, "D3D11CreateDeviceAndSwapChain");
+    FARPROC D3D11CreateDeviceAndSwapChain =
+        ::GetProcAddress(libD3D11, "D3D11CreateDeviceAndSwapChain");
     if (D3D11CreateDeviceAndSwapChain == nullptr)
     {
         ::DestroyWindow(window);
@@ -100,18 +102,11 @@ IDXGISwapChainVtbl* GetSwapChainVTable()
     ID3D11DeviceContext* context;
 
     if (((long(__stdcall*)(
-        IDXGIAdapter*,
-        D3D_DRIVER_TYPE,
-        HMODULE,
-        UINT,
-        const D3D_FEATURE_LEVEL*,
-        UINT,
-        UINT,
-        const DXGI_SWAP_CHAIN_DESC*,
-        IDXGISwapChain**,
-        ID3D11Device**,
-        D3D_FEATURE_LEVEL*,
-        ID3D11DeviceContext**))(D3D11CreateDeviceAndSwapChain))(nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, 0, featureLevels, 1, D3D11_SDK_VERSION, &swapChainDesc, &swapChain, &device, &featureLevel, &context) < 0)
+            IDXGIAdapter*, D3D_DRIVER_TYPE, HMODULE, UINT, const D3D_FEATURE_LEVEL*, UINT, UINT,
+            const DXGI_SWAP_CHAIN_DESC*, IDXGISwapChain**, ID3D11Device**, D3D_FEATURE_LEVEL*,
+            ID3D11DeviceContext**))(D3D11CreateDeviceAndSwapChain))(
+            nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, 0, featureLevels, 1, D3D11_SDK_VERSION,
+            &swapChainDesc, &swapChain, &device, &featureLevel, &context) < 0)
     {
         ::DestroyWindow(window);
         ::UnregisterClass(windowClass.lpszClassName, windowClass.hInstance);
@@ -139,18 +134,18 @@ LRESULT __stdcall WndProc(const HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 {
     D3D11Hook::OnWndProc.call(hWnd, uMsg, wParam, lParam);
 
-	return CallWindowProc(oWndProc, hWnd, uMsg, wParam, lParam);
+    return CallWindowProc(oWndProc, hWnd, uMsg, wParam, lParam);
 }
 
-
-HRESULT __stdcall new_IDXGISwapChain_Present(IDXGISwapChain* swapChain, UINT syncInterval, UINT flags)
+HRESULT __stdcall new_IDXGISwapChain_Present(
+    IDXGISwapChain* swapChain, UINT syncInterval, UINT flags)
 {
     if (needUpdateInfo)
     {
         needUpdateInfo = false;
         ID3D11Device* d3dDevice;
 
-        if (SUCCEEDED(IDXGISwapChain_GetDevice(swapChain, IID_ID3D11Device,(void**)&d3dDevice)))
+        if (SUCCEEDED(IDXGISwapChain_GetDevice(swapChain, IID_ID3D11Device, (void**)&d3dDevice)))
         {
             DXGI_SWAP_CHAIN_DESC sd;
             IDXGISwapChain_GetDesc(swapChain, &sd);
@@ -159,7 +154,8 @@ HRESULT __stdcall new_IDXGISwapChain_Present(IDXGISwapChain* swapChain, UINT syn
             if (isInited == false)
             {
                 Core::Logger->info("Hooking WndProc...");
-                oWndProc = reinterpret_cast<WNDPROC>(SetWindowLongPtr(D3D11Hook::hWnd, GWLP_WNDPROC, (LONG_PTR)WndProc));
+                oWndProc = reinterpret_cast<WNDPROC>(
+                    SetWindowLongPtr(D3D11Hook::hWnd, GWLP_WNDPROC, (LONG_PTR)WndProc));
                 D3D11Hook::OnInit.call(swapChain, d3dDevice);
                 isInited = true;
             }
@@ -168,14 +164,19 @@ HRESULT __stdcall new_IDXGISwapChain_Present(IDXGISwapChain* swapChain, UINT syn
                 D3D11Hook::OnResize.call(swapChain);
             }
         }
-
     }
 
     D3D11Hook::OnPresent.call(swapChain);
     return oSwapChainPresent(swapChain, syncInterval, flags);
 }
 
-HRESULT __stdcall new_IDXGISwapChain_ResizeBuffers(IDXGISwapChain* swapChain, UINT bufferCount, UINT width, UINT height, DXGI_FORMAT format, UINT flags)
+HRESULT __stdcall new_IDXGISwapChain_ResizeBuffers(
+    IDXGISwapChain* swapChain,
+    UINT bufferCount,
+    UINT width,
+    UINT height,
+    DXGI_FORMAT format,
+    UINT flags)
 {
     needUpdateInfo = true;
 
@@ -199,7 +200,8 @@ bool D3D11Hook::Install()
     oSwapChainPresent = HookVTableField(&swapChainVTable->Present, &new_IDXGISwapChain_Present);
 
     Core::Logger->info("Hooking IDXGISwapChain::ResizeBuffers...");
-    oSwapChainResizeBuffers = HookVTableField(&swapChainVTable->ResizeBuffers, &new_IDXGISwapChain_ResizeBuffers);
+    oSwapChainResizeBuffers =
+        HookVTableField(&swapChainVTable->ResizeBuffers, &new_IDXGISwapChain_ResizeBuffers);
 
     return true;
 }
@@ -222,10 +224,10 @@ void D3D11Hook::Uninstall()
     }
 
     if (oWndProc)
-	{
+    {
         Core::Logger->info("Restoring WndProc...");
-		SetWindowLongPtr(hWnd, GWLP_WNDPROC, (LONG_PTR)oWndProc);
-	}
+        SetWindowLongPtr(hWnd, GWLP_WNDPROC, (LONG_PTR)oWndProc);
+    }
 }
 
-}
+} // namespace hry
