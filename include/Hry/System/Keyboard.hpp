@@ -110,6 +110,13 @@ struct Keyboard
         F14,
         F15,
         Pause,
+        BrowserBack,
+        BrowserForward,
+        BrowserRefresh,
+        BrowserStop,
+        BrowserSearch,
+        BrowserFavourites,
+        BrowserHome,
 
         KeyCount
     };

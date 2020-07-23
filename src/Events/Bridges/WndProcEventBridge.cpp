@@ -133,6 +133,13 @@ Keyboard::Key vkKeyCodeToEnum(WPARAM key, LPARAM flags)
         case VK_F14: return Key::F14;
         case VK_F15: return Key::F15;
         case VK_PAUSE: return Key::Pause;
+        case VK_BROWSER_BACK: return Key::BrowserBack;
+        case VK_BROWSER_FORWARD: return Key::BrowserForward;
+        case VK_BROWSER_REFRESH: return Key::BrowserRefresh;
+        case VK_BROWSER_STOP: return Key::BrowserStop;
+        case VK_BROWSER_SEARCH: return Key::BrowserSearch;
+        case VK_BROWSER_FAVORITES: return Key::BrowserFavourites;
+        case VK_BROWSER_HOME: return Key::BrowserHome;
     }
 
     return Key::Unknown;
@@ -191,6 +198,7 @@ void WndProcEventBridge::onWndProc(const HWND hWnd, UINT msg, WPARAM wParam, LPA
         {
             if ((HIWORD(lParam) & KF_REPEAT) == 0)
             {
+                Core::Logger->info("Key pressed ", wParam, " ", lParam);
                 _eventMgr.keyPressSignal.call(
                     KeyboardEvent{ vkKeyCodeToEnum(wParam, lParam), ButtonState::Pressed });
             }

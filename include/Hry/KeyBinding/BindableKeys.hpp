@@ -127,6 +127,13 @@ static inline const auto BindableKeys = std::array{
     BindableKey{ Keyboard::Key::F14, "F14" },
     BindableKey{ Keyboard::Key::F15, "F15" },
     BindableKey{ Keyboard::Key::Pause, "Pause" },
+    BindableKey{ Keyboard::Key::BrowserBack, "Back" },
+    BindableKey{ Keyboard::Key::BrowserForward, "Forward" },
+    BindableKey{ Keyboard::Key::BrowserRefresh, "Refresh" },
+    BindableKey{ Keyboard::Key::BrowserStop, "Stop" },
+    BindableKey{ Keyboard::Key::BrowserSearch, "Search" },
+    BindableKey{ Keyboard::Key::BrowserFavourites, "Favourites" },
+    BindableKey{ Keyboard::Key::BrowserHome, "Home" },
 
     // Mouse
     BindableKey{ Mouse::Button::Left, "Left Mouse Button" },
