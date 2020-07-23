@@ -10,14 +10,15 @@
 #include <windows.h>
 
 #include "Hry/Memory/Hooking.hpp"
+#include "Hry/Namespace.hpp"
 #include "Hry/Utils.hpp"
 
 #include "Renderer/Renderer.hpp"
 
 #include "Core.hpp"
 
-namespace hry
-{
+HRY_NS_BEGIN
+
 using IDXGISwapChain_Present_t = decltype(IDXGISwapChainVtbl::Present);
 using IDXGISwapChain_ResizeBuffers_t = decltype(IDXGISwapChainVtbl::ResizeBuffers);
 
@@ -232,4 +233,4 @@ void D3D11Hook::Uninstall()
     }
 }
 
-} // namespace hry
+HRY_NS_END

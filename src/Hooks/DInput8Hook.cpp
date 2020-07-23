@@ -10,12 +10,13 @@
 #include <windows.h>
 
 #include "Hry/Memory/Hooking.hpp"
+#include "Hry/Namespace.hpp"
 #include "Hry/Utils.hpp"
 
 #include "Core.hpp"
 
-namespace hry
-{
+HRY_NS_BEGIN
+
 using DirectInput8Create_t = decltype(DirectInput8Create);
 using DirectInput8_GetDeviceData_t = decltype(IDirectInputDevice8AVtbl::GetDeviceData);
 
@@ -113,4 +114,4 @@ void DInput8Hook::Uninstall()
     }
 }
 
-} // namespace hry
+HRY_NS_END

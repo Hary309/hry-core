@@ -11,8 +11,10 @@
 
 struct scs_telemetry_init_params_v100_t;
 
-namespace hry
-{
+#include "Hry/Namespace.hpp"
+
+HRY_NS_BEGIN
+
 class EventBridgeBase;
 
 class EventManager
@@ -49,4 +51,4 @@ public:
     [[nodiscard]] EventHandler createEventHandler();
 };
 
-} // namespace hry
+HRY_NS_END

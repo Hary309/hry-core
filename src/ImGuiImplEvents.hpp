@@ -1,12 +1,13 @@
 #pragma once
 
 #include "Hry/Events/Event.hpp"
+#include "Hry/Namespace.hpp"
 #include "Hry/Utils/Signal.hpp"
 
 #include "Events/EventManager.hpp"
 
-namespace hry
-{
+HRY_NS_BEGIN
+
 // implement missing mouse events for ImGui (thx dinput8)
 class ImGuiImplEvents
 {
@@ -24,4 +25,4 @@ private:
     static void OnMouseWheelScroll(const MouseWheelEvent&&);
 };
 
-} // namespace hry
+HRY_NS_END

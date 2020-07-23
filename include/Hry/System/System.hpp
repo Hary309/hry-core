@@ -1,7 +1,9 @@
 #pragma once
 
-namespace hry
-{
+#include "Hry/Namespace.hpp"
+
+HRY_NS_BEGIN
+
 enum ResizeType
 {
     Maximized = 0,
@@ -15,4 +17,4 @@ enum class ButtonState
     Released
 };
 
-} // namespace hry
+HRY_NS_END

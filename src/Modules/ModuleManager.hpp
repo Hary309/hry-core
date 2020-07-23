@@ -5,13 +5,15 @@
 #include <string>
 #include <vector>
 
+#include "Hry/Namespace.hpp"
+
 #include "Events/EventManager.hpp"
 #include "KeyBinding/KeyBindsManager.hpp"
 
 #include "Module.hpp"
 
-namespace hry
-{
+HRY_NS_BEGIN
+
 class ModuleManager
 {
 private:
@@ -41,4 +43,4 @@ private:
     bool tryAdd(const std::filesystem::path& path);
 };
 
-} // namespace hry
+HRY_NS_END

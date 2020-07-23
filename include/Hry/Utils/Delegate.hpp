@@ -7,8 +7,10 @@
 #include <optional>
 #include <type_traits>
 
-namespace hry
-{
+#include "Hry/Namespace.hpp"
+
+HRY_NS_BEGIN
+
 template<typename>
 class Delegate;
 
@@ -127,4 +129,4 @@ template<auto CtxFuncAddr, typename T>
 Delegate(ConnectArg<CtxFuncAddr>, T* context)
     -> Delegate<std::remove_pointer_t<FunctionPtr_t<decltype(CtxFuncAddr), T>>>;
 
-} // namespace hry
+HRY_NS_END

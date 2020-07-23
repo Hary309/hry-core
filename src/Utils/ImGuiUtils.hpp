@@ -1,8 +1,10 @@
 #pragma once
 
-namespace hry
-{
+#include "Hry/Namespace.hpp"
+
+HRY_NS_BEGIN
+
 // @enable: if true enable mouse input and show cursor
 void EnableImGui(bool enable);
 
-} // namespace hry
+HRY_NS_END

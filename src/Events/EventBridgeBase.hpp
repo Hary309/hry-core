@@ -1,7 +1,9 @@
 #pragma once
 
-namespace hry
-{
+#include "Hry/Namespace.hpp"
+
+HRY_NS_BEGIN
+
 class EventManager;
 
 class EventBridgeBase
@@ -13,4 +15,4 @@ public:
     EventBridgeBase(EventManager& eventMgr) : _eventMgr(eventMgr) {}
 };
 
-} // namespace hry
+HRY_NS_END

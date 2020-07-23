@@ -2,10 +2,12 @@
 
 #include <scssdk_telemetry.h>
 
+#include "Hry/Namespace.hpp"
+
 #include "Events/EventBridgeBase.hpp"
 
-namespace hry
-{
+HRY_NS_BEGIN
+
 class TelemetryEventBridge : public EventBridgeBase
 {
 private:
@@ -23,4 +25,4 @@ private:
         const scs_event_t event, const void* const event_info, const scs_context_t context);
 };
 
-} // namespace hry
+HRY_NS_END

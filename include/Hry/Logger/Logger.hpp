@@ -4,9 +4,10 @@
 #include <string>
 
 #include "Hry/Export.hpp"
+#include "Hry/Namespace.hpp"
 
-namespace hry
-{
+HRY_NS_BEGIN
+
 class Logger
 {
 public:
@@ -53,4 +54,4 @@ public:
     }
 };
 
-} // namespace hry
+HRY_NS_END

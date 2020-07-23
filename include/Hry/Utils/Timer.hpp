@@ -2,8 +2,10 @@
 
 #include <chrono>
 
-namespace hry
-{
+#include "Hry/Namespace.hpp"
+
+HRY_NS_BEGIN
+
 class Timer
 {
 public:
@@ -36,4 +38,4 @@ public:
     }
 };
 
-} // namespace hry
+HRY_NS_END

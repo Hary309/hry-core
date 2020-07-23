@@ -4,11 +4,12 @@
 #include <string>
 #include <variant>
 
+#include "Hry/Namespace.hpp"
 #include "Hry/System/Keyboard.hpp"
 #include "Hry/System/Mouse.hpp"
 
-namespace hry
-{
+HRY_NS_BEGIN
+
 struct BindableKey
 {
     using Key_t = std::variant<Keyboard::Key, Mouse::Button>; // TODO: Add controller's keys
@@ -135,4 +136,4 @@ static inline const auto BindableKeys = std::array{
     BindableKey{ Mouse::Button::Left, "X2 Mouse Button" },
 };
 
-} // namespace hry
+HRY_NS_END

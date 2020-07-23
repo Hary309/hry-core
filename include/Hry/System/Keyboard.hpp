@@ -1,7 +1,9 @@
 #pragma once
 
-namespace hry
-{
+#include "Hry/Namespace.hpp"
+
+HRY_NS_BEGIN
+
 struct Keyboard
 {
     enum class Key
@@ -113,4 +115,4 @@ struct Keyboard
     };
 };
 
-} // namespace hry
+HRY_NS_END

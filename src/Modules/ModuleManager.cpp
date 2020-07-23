@@ -16,8 +16,10 @@
 
 namespace fs = std::filesystem;
 
-namespace hry
-{
+#include "Hry/Namespace.hpp"
+
+HRY_NS_BEGIN
+
 using CreatePlugin_t = Plugin*();
 using InitImGui_t = void(ImGuiContext*);
 
@@ -226,4 +228,4 @@ bool ModuleManager::tryAdd(const fs::path& path)
     return false;
 }
 
-} // namespace hry
+HRY_NS_END

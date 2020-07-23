@@ -5,10 +5,12 @@
 
 #include <vector>
 
+#include "Hry/Namespace.hpp"
+
 #include "Delegate.hpp"
 
-namespace hry
-{
+HRY_NS_BEGIN
+
 template<typename>
 class Signal;
 
@@ -106,4 +108,4 @@ public:
 template<typename Return, typename... Args>
 Sink(Signal<Return(Args...)>&) -> Sink<Return(Args...)>;
 
-} // namespace hry
+HRY_NS_END

@@ -4,9 +4,10 @@
 #include <string>
 
 #include "Hry/Logger/Logger.hpp"
+#include "Hry/Namespace.hpp"
 
-namespace hry
-{
+HRY_NS_BEGIN
+
 class LoggerFactory
 {
 private:
@@ -19,4 +20,4 @@ public:
     static std::unique_ptr<Logger> GetLogger(const char* moduleName);
 };
 
-} // namespace hry
+HRY_NS_END

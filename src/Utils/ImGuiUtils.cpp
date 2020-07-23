@@ -2,8 +2,10 @@
 
 #include <imgui.h>
 
-namespace hry
-{
+#include "Hry/Namespace.hpp"
+
+HRY_NS_BEGIN
+
 void EnableImGui(bool enable)
 {
     auto& io = ImGui::GetIO();
@@ -12,4 +14,4 @@ void EnableImGui(bool enable)
     io.MouseDrawCursor = enable;
 }
 
-} // namespace hry
+HRY_NS_END

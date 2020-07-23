@@ -3,9 +3,10 @@
 #include <cstdint>
 
 #include "Hry/Export.hpp"
+#include "Hry/Namespace.hpp"
 
-namespace hry
-{
+HRY_NS_BEGIN
+
 class HRY_API Detour
 {
 public:
@@ -53,4 +54,4 @@ public:
     }
 };
 
-} // namespace hry
+HRY_NS_END

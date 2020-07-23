@@ -8,9 +8,10 @@
 #include <memory>
 
 #include "Hry/Logger/Logger.hpp"
+#include "Hry/Namespace.hpp"
 
-namespace hry
-{
+HRY_NS_BEGIN
+
 void LoggerFactory::Init(const char* logFilePath)
 {
     _logFilePath = logFilePath;
@@ -64,4 +65,4 @@ std::unique_ptr<Logger> LoggerFactory::GetLogger(const char* moduleName)
     return std::unique_ptr<Logger>(new Logger(moduleName));
 }
 
-} // namespace hry
+HRY_NS_END

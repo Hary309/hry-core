@@ -6,6 +6,7 @@
 #include <scssdk_telemetry.h>
 
 #include "Hry/Events/Event.hpp"
+#include "Hry/Namespace.hpp"
 #include "Hry/Utils/Signal.hpp"
 
 #include "Hooks/D3D11Hook.hpp"
@@ -13,8 +14,8 @@
 #include "Logger/LoggerFactory.hpp"
 #include "Utils/ImGuiUtils.hpp"
 
-namespace hry
-{
+HRY_NS_BEGIN
+
 Core::Core(HINSTANCE hInst)
     : _renderer(*this), _keyBindsMgr(_eventMgr),
       _moduleMgr("plugins\\hry_plugins", _eventMgr, _keyBindsMgr),
@@ -110,4 +111,4 @@ void Core::UninstallHooks()
     Logger->info("Hooks uninstalled");
 }
 
-} // namespace hry
+HRY_NS_END

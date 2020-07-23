@@ -3,11 +3,12 @@
 #include <scssdk_telemetry.h>
 
 #include "Hry/Events/Event.hpp"
+#include "Hry/Namespace.hpp"
 
 #include "Events/EventManager.hpp"
 
-namespace hry
-{
+HRY_NS_BEGIN
+
 TelemetryEventBridge::TelemetryEventBridge(
     EventManager& eventMgr, scs_telemetry_init_params_v100_t* scsTelemetry)
     : EventBridgeBase(eventMgr), _scsTelemetry(scsTelemetry)
@@ -56,4 +57,4 @@ void TelemetryEventBridge::ChangedState(
     eventMgr->stateChangeSignal.call(GameStateEvent{ type });
 }
 
-} // namespace hry
+HRY_NS_END

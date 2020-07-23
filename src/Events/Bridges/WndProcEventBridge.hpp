@@ -3,11 +3,12 @@
 #include <Windows.h>
 
 #include "Hry/Math/Vec2.hpp"
+#include "Hry/Namespace.hpp"
 
 #include "Events/EventBridgeBase.hpp"
 
-namespace hry
-{
+HRY_NS_BEGIN
+
 class WndProcEventBridge : public EventBridgeBase
 {
 private:
@@ -20,4 +21,4 @@ private:
     void onWndProc(const HWND, UINT, WPARAM, LPARAM);
 };
 
-} // namespace hry
+HRY_NS_END

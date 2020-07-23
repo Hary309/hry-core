@@ -5,8 +5,10 @@
 
 #include <Windows.h>
 
-namespace hry
-{
+#include "Hry/Namespace.hpp"
+
+HRY_NS_BEGIN
+
 template<typename T, typename U>
 void WriteMemory(T* target, U data, const size_t size)
 {
@@ -25,4 +27,4 @@ void WriteMemory(T* target, U data)
     WriteMemory(target, data, sizeof(U));
 }
 
-} // namespace hry
+HRY_NS_END

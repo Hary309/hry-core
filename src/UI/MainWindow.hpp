@@ -2,14 +2,15 @@
 
 #include "Hry/Events/Event.hpp"
 #include "Hry/KeyBinding/KeyBinds.hpp"
+#include "Hry/Namespace.hpp"
 #include "Hry/Utils/Signal.hpp"
 
 #include "Events/EventManager.hpp"
 #include "KeyBinding/KeyBindsManager.hpp"
 #include "Modules/ModuleManager.hpp"
 
-namespace hry
-{
+HRY_NS_BEGIN
+
 class MainWindow
 {
 private:
@@ -47,4 +48,4 @@ private:
     void handleMouseButtonPress(const MouseButtonEvent&&);
 };
 
-} // namespace hry
+HRY_NS_END

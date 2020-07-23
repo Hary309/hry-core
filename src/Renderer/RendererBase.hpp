@@ -1,7 +1,9 @@
 #pragma once
 
-namespace hry
-{
+#include "Hry/Namespace.hpp"
+
+HRY_NS_BEGIN
+
 class Renderer;
 
 class RendererBase
@@ -16,4 +18,4 @@ public:
     virtual void init() = 0;
 };
 
-} // namespace hry
+HRY_NS_END

@@ -8,8 +8,10 @@
 struct IDirectInputDevice8A;
 struct DIDEVICEOBJECTDATA;
 
-namespace hry
-{
+#include "Hry/Namespace.hpp"
+
+HRY_NS_BEGIN
+
 struct DInput8Hook
 {
     using OnGetDeviceData_t =
@@ -23,4 +25,4 @@ struct DInput8Hook
     static void Uninstall();
 };
 
-} // namespace hry
+HRY_NS_END

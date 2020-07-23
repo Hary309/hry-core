@@ -1,10 +1,11 @@
 #pragma once
+#include "Hry/Namespace.hpp"
 #include "Hry/Utils/Signal.hpp"
 
 #include "Event.hpp"
 
-namespace hry
-{
+HRY_NS_BEGIN
+
 struct EventHandler
 {
     // system events
@@ -28,4 +29,4 @@ struct EventHandler
     Sink<void(const GameStateEvent&&)> onStateChange;
 };
 
-} // namespace hry
+HRY_NS_END

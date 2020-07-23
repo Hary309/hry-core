@@ -2,8 +2,10 @@
 
 #include <string>
 
-namespace hry
-{
+#include "Hry/Namespace.hpp"
+
+HRY_NS_BEGIN
+
 struct PluginInfo
 {
     std::string name;
@@ -15,4 +17,4 @@ struct PluginInfo
     int version;
 };
 
-} // namespace hry
+HRY_NS_END

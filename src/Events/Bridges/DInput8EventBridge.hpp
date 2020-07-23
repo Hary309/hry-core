@@ -10,8 +10,10 @@
 struct IDirectInputDevice8A;
 struct DIDEVICEOBJECTDATA;
 
-namespace hry
-{
+#include "Hry/Namespace.hpp"
+
+HRY_NS_BEGIN
+
 class DInput8EventBridge : public EventBridgeBase
 {
 private:
@@ -25,4 +27,4 @@ private:
     void sendButtonEvent(int pressData, Mouse::Button button);
 };
 
-} // namespace hry
+HRY_NS_END

@@ -7,13 +7,14 @@
 #include "Hry/Events/Event.hpp"
 #include "Hry/KeyBinding/BindableKeys.hpp"
 #include "Hry/KeyBinding/KeyBinds.hpp"
+#include "Hry/Namespace.hpp"
 #include "Hry/System/System.hpp"
 #include "Hry/Utils/Delegate.hpp"
 
 #include "Events/EventManager.hpp"
 
-namespace hry
-{
+HRY_NS_BEGIN
+
 class KeyBindsManager
 {
 private:
@@ -41,4 +42,4 @@ private:
     void processKey(const BindableKey::Key_t key, ButtonState buttonState);
 };
 
-} // namespace hry
+HRY_NS_END

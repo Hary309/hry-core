@@ -3,13 +3,14 @@
 #include <cstdio>
 
 #include "Hry/KeyBinding/KeyBinds.hpp"
+#include "Hry/Namespace.hpp"
 #include "Hry/System/System.hpp"
 #include "Hry/Utils/Delegate.hpp"
 
 #include "Core.hpp"
 
-namespace hry
-{
+HRY_NS_BEGIN
+
 KeyBindsManager::KeyBindsManager(EventManager& eventMgr)
     : _onKeyPress(eventMgr.keyPressSignal), _onKeyRelease(eventMgr.keyReleaseSignal),
       _onMouseButtonPress(eventMgr.mouseButtonPressSignal),
@@ -73,4 +74,4 @@ void KeyBindsManager::processKey(const BindableKey::Key_t key, ButtonState butto
     }
 }
 
-} // namespace hry
+HRY_NS_END

@@ -9,8 +9,10 @@
 struct IDXGISwapChain;
 struct ID3D11Device;
 
-namespace hry
-{
+#include "Hry/Namespace.hpp"
+
+HRY_NS_BEGIN
+
 struct D3D11Hook
 {
     inline static HWND hWnd;
@@ -26,4 +28,4 @@ struct D3D11Hook
     static void Uninstall();
 };
 
-} // namespace hry
+HRY_NS_END

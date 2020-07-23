@@ -5,14 +5,15 @@
 #include <imgui.h>
 
 #include "Hry/KeyBinding/KeyBinds.hpp"
+#include "Hry/Namespace.hpp"
 #include "Hry/System/Keyboard.hpp"
 #include "Hry/System/Mouse.hpp"
 #include "Hry/Utils/Delegate.hpp"
 
 #include "Utils/ImGuiUtils.hpp"
 
-namespace hry
-{
+HRY_NS_BEGIN
+
 MainWindow::MainWindow(
     ModuleManager& moduleMgr, KeyBindsManager& keyBindsMgr, EventManager& eventMgr)
     : _moduleMgr(moduleMgr), _keyBindsMgr(keyBindsMgr), _onKeyPress(eventMgr.keyPressSignal),
@@ -295,4 +296,4 @@ void MainWindow::handleMouseButtonPress(const MouseButtonEvent&& buttonEvent)
     }
 }
 
-} // namespace hry
+HRY_NS_END

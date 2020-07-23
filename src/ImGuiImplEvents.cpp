@@ -3,9 +3,10 @@
 #include <imgui.h>
 
 #include "Hry/Events/Event.hpp"
+#include "Hry/Namespace.hpp"
 
-namespace hry
-{
+HRY_NS_BEGIN
+
 ImGuiImplEvents::ImGuiImplEvents(EventManager& eventMgr)
     : _onMouseButtonPress(eventMgr.mouseButtonPressSignal),
       _onMouseButtonRelease(eventMgr.mouseButtonReleaseSignal),
@@ -42,4 +43,4 @@ void ImGuiImplEvents::OnMouseWheelScroll(const MouseWheelEvent&& wheelEvent)
     }
 }
 
-} // namespace hry
+HRY_NS_END

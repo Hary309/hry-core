@@ -1,8 +1,10 @@
 #pragma once
+#include "Hry/Namespace.hpp"
+
 #include "Memory.hpp"
 
-namespace hry
-{
+HRY_NS_BEGIN
+
 template<typename Func>
 Func HookVTableField(Func* vtableMethod, Func function)
 {
@@ -18,4 +20,4 @@ Func HookVTableField(Func* vtableMethod, Func function)
     return original;
 }
 
-} // namespace hry
+HRY_NS_END

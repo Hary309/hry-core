@@ -1,5 +1,7 @@
 #include "EventManager.hpp"
 
+#include "Hry/Namespace.hpp"
+
 #include "Bridges/DInput8EventBridge.hpp"
 #include "Bridges/TelemetryEventBridge.hpp"
 #include "Bridges/WndProcEventBridge.hpp"
@@ -7,8 +9,8 @@
 
 #include "Core.hpp"
 
-namespace hry
-{
+HRY_NS_BEGIN
+
 void EventManager::init(scs_telemetry_init_params_v100_t* scsTelemetry)
 {
     Core::Logger->info("Initializing EventManager...");
@@ -43,4 +45,4 @@ EventHandler EventManager::createEventHandler()
     // clang-format on
 }
 
-} // namespace hry
+HRY_NS_END

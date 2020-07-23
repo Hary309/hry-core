@@ -16,8 +16,10 @@
 IMGUI_IMPL_API LRESULT
     ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
-namespace hry
-{
+#include "Hry/Namespace.hpp"
+
+HRY_NS_BEGIN
+
 // source: https://github.com/SFML/SFML
 // This is a part of SFML under https://github.com/SFML/SFML/blob/master/license.md
 Keyboard::Key vkKeyCodeToEnum(WPARAM key, LPARAM flags)
@@ -305,4 +307,4 @@ void WndProcEventBridge::onWndProc(const HWND hWnd, UINT msg, WPARAM wParam, LPA
     }
 }
 
-} // namespace hry
+HRY_NS_END

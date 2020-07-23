@@ -1,7 +1,9 @@
 #pragma once
 
-namespace hry
-{
+#include "Hry/Namespace.hpp"
+
+HRY_NS_BEGIN
+
 struct Mouse
 {
     enum class Button
@@ -22,4 +24,4 @@ struct Mouse
     static void DisableInGameMouse(bool disable);
 };
 
-} // namespace hry
+HRY_NS_END

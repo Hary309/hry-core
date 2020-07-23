@@ -2,8 +2,10 @@
 
 #include <MinHook.h>
 
-namespace hry
-{
+#include "Hry/Namespace.hpp"
+
+HRY_NS_BEGIN
+
 Detour::Detour(uintptr_t* target, uintptr_t* detour) : _target(target), _detour(detour) {}
 
 Detour::Detour(uintptr_t target, uintptr_t detour) : Detour((uintptr_t*)target, (uintptr_t*)detour)
@@ -30,4 +32,4 @@ Detour::Status Detour::disable()
     return static_cast<Detour::Status>(MH_DisableHook(_target));
 }
 
-} // namespace hry
+HRY_NS_END

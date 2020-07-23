@@ -4,11 +4,13 @@
 
 #include <imgui.h>
 
+#include "Hry/Namespace.hpp"
+
 #include "Core.hpp"
 #include "D3D11RendererImpl.hpp"
 
-namespace hry
-{
+HRY_NS_BEGIN
+
 Renderer::Renderer(Core& core) : _core(core)
 {
     // TODO: Detect renderer and init d3d11 or opengl
@@ -36,4 +38,4 @@ void Renderer::onRendererRenderImGui()
 
 void Renderer::onRendererResize(uint32_t width, uint32_t height) {}
 
-} // namespace hry
+HRY_NS_END

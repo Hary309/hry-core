@@ -4,6 +4,7 @@
 #include <memory>
 
 #include "Hry/Logger/Logger.hpp"
+#include "Hry/Namespace.hpp"
 #include "Hry/Utils/Delegate.hpp"
 
 #include "Events/EventHandler.hpp"
@@ -11,8 +12,8 @@
 
 #include "PluginInfo.hpp"
 
-namespace hry
-{
+HRY_NS_BEGIN
+
 class Plugin
 {
 public:
@@ -30,7 +31,7 @@ public:
     virtual const PluginInfo& getPluginInfo() const = 0;
 };
 
-} // namespace hry
+HRY_NS_END
 
 #define INIT_PLUGIN(PLUGIN_TYPE)                                                                   \
     extern "C"                                                                                     \

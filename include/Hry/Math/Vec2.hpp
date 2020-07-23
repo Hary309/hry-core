@@ -3,8 +3,10 @@
 
 #pragma once
 
-namespace hry
-{
+#include "Hry/Namespace.hpp"
+
+HRY_NS_BEGIN
+
 template<typename T>
 struct Vec2
 {
@@ -88,4 +90,4 @@ using Vec2f = Vec2<float>;
 using Vec2i = Vec2<int>;
 using Vec2u = Vec2<unsigned int>;
 
-} // namespace hry
+HRY_NS_END

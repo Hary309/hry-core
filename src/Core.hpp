@@ -18,8 +18,10 @@
 
 struct scs_telemetry_init_params_v100_t;
 
-namespace hry
-{
+#include "Hry/Namespace.hpp"
+
+HRY_NS_BEGIN
+
 class Event;
 
 class Core
@@ -60,4 +62,4 @@ private:
     static void UninstallHooks();
 };
 
-} // namespace hry
+HRY_NS_END

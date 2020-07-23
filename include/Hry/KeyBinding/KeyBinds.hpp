@@ -7,6 +7,7 @@
 #include <vector>
 
 #include "Hry/Export.hpp"
+#include "Hry/Namespace.hpp"
 #include "Hry/System/Keyboard.hpp"
 #include "Hry/System/Mouse.hpp"
 #include "Hry/System/System.hpp"
@@ -14,8 +15,8 @@
 
 #include "BindableKeys.hpp"
 
-namespace hry
-{
+HRY_NS_BEGIN
+
 class KeyBinds;
 
 class KeyBind
@@ -148,4 +149,4 @@ inline auto KeyBind::getKeyState() const -> ButtonState
     return _state;
 }
 
-} // namespace hry
+HRY_NS_END

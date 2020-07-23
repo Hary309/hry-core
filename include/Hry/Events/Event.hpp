@@ -5,12 +5,13 @@
 #include <variant>
 
 #include "Hry/Math/Vec2.hpp"
+#include "Hry/Namespace.hpp"
 #include "Hry/System/Keyboard.hpp"
 #include "Hry/System/Mouse.hpp"
 #include "Hry/System/System.hpp"
 
-namespace hry
-{
+HRY_NS_BEGIN
+
 struct ResizeEvent
 {
     ResizeType type;
@@ -49,4 +50,4 @@ struct GameStateEvent
     } type;
 };
 
-} // namespace hry
+HRY_NS_END

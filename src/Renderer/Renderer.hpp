@@ -2,13 +2,17 @@
 
 #include <memory>
 
-namespace hry
-{
+#include "Hry/Namespace.hpp"
+
+HRY_NS_BEGIN
+
 class Core;
 }
 
-namespace hry
-{
+#include "Hry/Namespace.hpp"
+
+HRY_NS_BEGIN
+
 class RendererBase;
 class D3D11RendererImpl;
 
@@ -32,4 +36,4 @@ protected:
     void onRendererResize(uint32_t width, uint32_t height);
 };
 
-} // namespace hry
+HRY_NS_END
