@@ -7,7 +7,7 @@ AlignConsecutiveBitFields: false
 AlignConsecutiveDeclarations: false
 AlignConsecutiveMacros: false
 AlignEscapedNewlines: Right
-AlignOperands: Align 
+AlignOperands: Align
 AllowAllArgumentsOnNextLine: true
 AllowAllConstructorInitializersOnNextLine: false
 AllowAllParametersOfDeclarationOnNextLine: true
@@ -25,23 +25,23 @@ BinPackArguments: true
 BinPackParameters: false
 BreakBeforeBraces: Custom
 BraceWrapping:
-    AfterCaseLabel: true
-    AfterClass: true
-    AfterControlStatement: Always
-    AfterEnum: true
-    AfterFunction: true
-    AfterNamespace: true
-    AfterStruct: true
-    AfterUnion: true
-    AfterExternBlock: true
-    BeforeCatch: true
-    BeforeElse: true
-    BeforeLambdaBody: false
-    BeforeWhile: false
-    IndentBraces: false
-    SplitEmptyFunction: true
-    SplitEmptyRecord: false
-    SplitEmptyNamespace: true
+  AfterCaseLabel: true
+  AfterClass: true
+  AfterControlStatement: Always
+  AfterEnum: true
+  AfterFunction: true
+  AfterNamespace: true
+  AfterStruct: true
+  AfterUnion: true
+  AfterExternBlock: true
+  BeforeCatch: true
+  BeforeElse: true
+  BeforeLambdaBody: false
+  BeforeWhile: false
+  IndentBraces: false
+  SplitEmptyFunction: true
+  SplitEmptyRecord: true
+  SplitEmptyNamespace: true
 BreakBeforeBinaryOperators: None
 BreakBeforeTernaryOperators: false
 BreakConstructorInitializers: BeforeColon
@@ -84,17 +84,17 @@ AccessModifierOffset: -4
 IncludeBlocks: Regroup
 IncludeCategories:
   # Headers in <> without extension
-  - Regex:           '<([A-Za-z0-9\/-_])+>'
-    Priority:        1
+  - Regex: '<([A-Za-z0-9\/-_])+>'
+    Priority: 1
   # Headers in <> with extension
-  - Regex:           '<.*\..+>'
-    Priority:        2
+  - Regex: '<.*\..+>'
+    Priority: 2
   # Headers with Hry/
-  - Regex:           'Hry/.*'
-    Priority:        4
+  - Regex: "Hry/.*"
+    Priority: 4
   # Headers with /
-  - Regex:           '.*/.*'
-    Priority:        5
+  - Regex: ".*/.*"
+    Priority: 5
   # Anything else
-  - Regex:           '.*'
-    Priority:        6
+  - Regex: ".*"
+    Priority: 6
