@@ -2,6 +2,7 @@
 
 #include <sstream>
 #include <string>
+#include <utility>
 
 #include "Hry/Export.hpp"
 #include "Hry/Namespace.hpp"
@@ -39,18 +40,18 @@ public:
     template<typename... Args>
     void info(Args&&... args)
     {
-        log(Level::Info, args...);
+        log(Level::Info, std::forward<Args>(args)...);
     }
 
     template<typename... Args>
     void warning(Args&&... args)
     {
-        log(Level::Warning, args...);
+        log(Level::Warning, std::forward<Args>(args)...);
     }
     template<typename... Args>
     void error(Args&&... args)
     {
-        log(Level::Error, args...);
+        log(Level::Error, std::forward<Args>(args)...);
     }
 };
 
