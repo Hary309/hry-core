@@ -86,8 +86,8 @@ IncludeCategories:
   # Headers in <> without extension
   - Regex:           '<([A-Za-z0-9\/-_])+>'
     Priority:        1
-  # Headers in <> with .h extension
-  - Regex:           '<.*\.h>'
+  # Headers in <> with extension
+  - Regex:           '<.*\..+>'
     Priority:        2
   # Headers with Hry/
   - Regex:           'Hry/.*'
