@@ -27,7 +27,7 @@ public:
 
     virtual void applyChanges() = 0;
     virtual void restoreChanges() = 0;
-    virtual void setDefault() = 0;
+    virtual void resetToDefault() = 0;
 
     virtual bool isDirty() = 0;
 

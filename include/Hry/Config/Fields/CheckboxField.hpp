@@ -26,7 +26,7 @@ public:
 
     virtual void applyChanges() { _value = _dirtyValue; }
     virtual void restoreChanges() { _dirtyValue = _value; }
-    virtual void setDefault() { setDefaultValue(_defaultValue); }
+    virtual void resetToDefault() { setDefaultValue(_defaultValue); }
 
     virtual bool isDirty() { return _value == _dirtyValue; }
 
