@@ -17,6 +17,11 @@ public:
     Delegate<void(bool)> onValueChange;
 
 public:
+    CheckboxField(const std::string& label, const std::string& configFieldName)
+        : ConfigFieldBase(label, configFieldName)
+    {
+    }
+
     void setDefaultValue(bool value)
     {
         _dirtyValue = value;

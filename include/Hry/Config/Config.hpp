@@ -21,13 +21,13 @@ public:
     Config(const std::string& name);
 
     template<typename T, typename = std::enable_if_t<std::is_base_of_v<ConfigFieldBase, T>>>
-    [[nodiscard]] T& createField()
+    [[nodiscard]] T* const createField(const std::string& label, const std::string& configFieldName)
     {
-        auto field = new T();
+        auto field = new T(label, configFieldName);
 
         _fields.push_back(std::unique_ptr<T>(field));
 
-        return *field;
+        return field;
     }
 
     void imguiRender();

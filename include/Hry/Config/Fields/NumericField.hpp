@@ -54,7 +54,10 @@ public:
     Delegate<void(const T&)> onValueChange;
 
 public:
-    virtual ~NumericField() {}
+    NumericField(const std::string& label, const std::string& configFieldName)
+        : ConfigFieldBase(label, configFieldName)
+    {
+    }
 
     void setDefaultValue(const T& value)
     {

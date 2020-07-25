@@ -19,10 +19,12 @@ protected:
     std::string _description;
 
 public:
+    ConfigFieldBase(const std::string& label, const std::string& configFieldName)
+        : _label(label), _configFieldName(configFieldName)
+    {
+    }
     virtual ~ConfigFieldBase() {}
 
-    void setLabel(const std::string& label) { _label = label; }
-    void setConfigFieldName(const std::string& name) { _configFieldName = name; }
     void setDescription(const std::string& desc) { _description = desc; }
 
     virtual void applyChanges() = 0;
