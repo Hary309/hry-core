@@ -6,7 +6,7 @@
 
 HRY_NS_BEGIN
 
-class CheckboxField : public ConfigFieldBase
+class CheckBoxField : public ConfigFieldBase
 {
 private:
     bool _value;
@@ -17,7 +17,7 @@ public:
     Delegate<void(bool)> onValueChange;
 
 public:
-    CheckboxField(const std::string& label, const std::string& configFieldName)
+    CheckBoxField(const std::string& label, const std::string& configFieldName)
         : ConfigFieldBase(label, configFieldName)
     {
     }

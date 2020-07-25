@@ -1,4 +1,4 @@
-#include "Hry/Config/Fields/CheckboxField.hpp"
+#include "Hry/Config/Fields/CheckBoxField.hpp"
 
 #include <imgui.h>
 #include <nlohmann/json.hpp>
@@ -8,7 +8,7 @@
 
 HRY_NS_BEGIN
 
-void CheckboxField::imguiRender()
+void CheckBoxField::imguiRender()
 {
     if (ImGui::Checkbox(_label.c_str(), &_dirtyValue))
     {
@@ -23,12 +23,12 @@ void CheckboxField::imguiRender()
     }
 }
 
-void CheckboxField::save(nlohmann::json& json)
+void CheckBoxField::save(nlohmann::json& json)
 {
     json[_configFieldName] = _value;
 }
 
-void CheckboxField::load(const nlohmann::json& json)
+void CheckBoxField::load(const nlohmann::json& json)
 {
     if (auto it = json.find(_configFieldName); it != json.end())
     {
