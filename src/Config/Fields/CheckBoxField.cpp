@@ -15,10 +15,9 @@ void CheckBoxField::imguiRender()
         onValueChange.call(_dirtyValue);
     }
 
-    ImGui::SameLine();
-
     if (!_description.empty())
     {
+        ImGui::SameLine();
         ImGuiHelpMarker(_description.c_str());
     }
 }

@@ -42,9 +42,9 @@ protected:
     };
 
 protected:
-    T _value;
-    T _defaultValue;
-    T _dirtyValue;
+    T _value{};
+    T _defaultValue{};
+    T _dirtyValue{};
 
     bool _isDirty = false;
 

@@ -33,7 +33,7 @@ public:
     virtual void restoreChanges() { _dirtyValue = _value; }
     virtual void resetToDefault() { setDefaultValue(_defaultValue); }
 
-    virtual bool isDirty() { return _value == _dirtyValue; }
+    virtual bool isDirty() { return _value != _dirtyValue; }
 
 private:
     virtual void imguiRender();
