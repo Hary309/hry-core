@@ -66,7 +66,7 @@ public:
         _defaultValue = value;
     }
 
-    void setInputType()
+    void useInput()
     {
         T step = 1;
         T stepFast = 100;
@@ -77,39 +77,33 @@ public:
             stepFast = 0.0;
         }
 
-        setInputType(step, stepFast);
+        useInput(step, stepFast);
     }
 
-    void setInputType(T step, T stepFast) { setInputType(step, stepFast, getFormat()); }
+    void useInput(T step, T stepFast) { useInput(step, stepFast, getFormat()); }
 
-    void setInputType(T step, T stepFast, const std::string& format)
+    void useInput(T step, T stepFast, const std::string& format)
     {
         _controlType = InputType{ step, stepFast, format };
     }
 
-    void setDragType(T speed = 1, T min = 0, T max = 0)
+    void useDrag(T speed = 1, T min = 0, T max = 0) { useDrag(speed, min, max, getFormat()); }
+
+    void useDrag(T speed, T min, T max, const std::string& format)
     {
-        setDragType(speed, min, max, getFormat());
+        useDrag(speed, min, max, format, 1.f);
     }
 
-    void setDragType(T speed, T min, T max, const std::string& format)
-    {
-        setDragType(speed, min, max, format, 1.f);
-    }
-
-    void setDragType(T speed, T min, T max, const std::string& format, float power)
+    void useDrag(T speed, T min, T max, const std::string& format, float power)
     {
         _controlType = DragType{ speed, min, max, format, power };
     }
 
-    void setSliderType(T min, T max) { setSliderType(min, max, getFormat()); }
+    void useSlider(T min, T max) { useSlider(min, max, getFormat()); }
 
-    void setSliderType(T min, T max, const std::string& format)
-    {
-        setSliderType(min, max, format, 1.f);
-    }
+    void useSlider(T min, T max, const std::string& format) { useSlider(min, max, format, 1.f); }
 
-    void setSliderType(T min, T max, const std::string& format, float power)
+    void useSlider(T min, T max, const std::string& format, float power)
     {
         _controlType = SliderType{ min, max, format, power };
     }
