@@ -145,7 +145,7 @@ Keyboard::Key vkKeyCodeToEnum(WPARAM key, LPARAM flags)
     return Key::Unknown;
 }
 
-MouseButtonEvent getMouseButtonEvent(Mouse::Button button, LPARAM lParam, ButtonState state)
+MouseButtonEvent getMouseButtonEvent(Mouse::Button button, ButtonState state)
 {
     MouseButtonEvent buttonEvent;
     buttonEvent.button = button;
@@ -253,13 +253,13 @@ void WndProcEventBridge::onWndProc(const HWND hWnd, UINT msg, WPARAM wParam, LPA
         case WM_LBUTTONDOWN:
         {
             _eventMgr.mouseButtonPressSignal.call(
-                getMouseButtonEvent(Mouse::Button::Left, lParam, ButtonState::Pressed));
+                getMouseButtonEvent(Mouse::Button::Left, ButtonState::Pressed));
         }
         break;
         case WM_LBUTTONUP:
         {
             _eventMgr.mouseButtonReleaseSignal.call(
-                getMouseButtonEvent(Mouse::Button::Left, lParam, ButtonState::Released));
+                getMouseButtonEvent(Mouse::Button::Left, ButtonState::Released));
         }
         break;
 
@@ -267,13 +267,13 @@ void WndProcEventBridge::onWndProc(const HWND hWnd, UINT msg, WPARAM wParam, LPA
         case WM_RBUTTONDOWN:
         {
             _eventMgr.mouseButtonPressSignal.call(
-                getMouseButtonEvent(Mouse::Button::Right, lParam, ButtonState::Pressed));
+                getMouseButtonEvent(Mouse::Button::Right, ButtonState::Pressed));
         }
         break;
         case WM_RBUTTONUP:
         {
             _eventMgr.mouseButtonReleaseSignal.call(
-                getMouseButtonEvent(Mouse::Button::Right, lParam, ButtonState::Released));
+                getMouseButtonEvent(Mouse::Button::Right, ButtonState::Released));
         }
         break;
 
@@ -281,13 +281,13 @@ void WndProcEventBridge::onWndProc(const HWND hWnd, UINT msg, WPARAM wParam, LPA
         case WM_MBUTTONDOWN:
         {
             _eventMgr.mouseButtonPressSignal.call(
-                getMouseButtonEvent(Mouse::Button::Middle, lParam, ButtonState::Pressed));
+                getMouseButtonEvent(Mouse::Button::Middle, ButtonState::Pressed));
         }
         break;
         case WM_MBUTTONUP:
         {
             _eventMgr.mouseButtonReleaseSignal.call(
-                getMouseButtonEvent(Mouse::Button::Middle, lParam, ButtonState::Released));
+                getMouseButtonEvent(Mouse::Button::Middle, ButtonState::Released));
         }
         break;
 
@@ -299,7 +299,7 @@ void WndProcEventBridge::onWndProc(const HWND hWnd, UINT msg, WPARAM wParam, LPA
                                        Mouse::Button::XButton2;
 
             _eventMgr.mouseButtonPressSignal.call(
-                getMouseButtonEvent(button, lParam, ButtonState::Pressed));
+                getMouseButtonEvent(button, ButtonState::Pressed));
         }
         break;
         case WM_XBUTTONUP:
@@ -309,7 +309,7 @@ void WndProcEventBridge::onWndProc(const HWND hWnd, UINT msg, WPARAM wParam, LPA
                                        Mouse::Button::XButton2;
 
             _eventMgr.mouseButtonReleaseSignal.call(
-                getMouseButtonEvent(button, lParam, ButtonState::Released));
+                getMouseButtonEvent(button, ButtonState::Released));
         }
         break;
     }

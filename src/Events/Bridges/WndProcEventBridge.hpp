@@ -12,7 +12,7 @@ HRY_NS_BEGIN
 class WndProcEventBridge : public EventBridgeBase
 {
 private:
-    Vec2i _lastMousePos = { 0 };
+    Vec2i _lastMousePos{};
 
 public:
     WndProcEventBridge(EventManager& eventMgr);

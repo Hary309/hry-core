@@ -15,7 +15,9 @@
 
 HRY_NS_BEGIN
 
-D3D11RendererImpl::D3D11RendererImpl(Renderer& renderer) : RendererBase(renderer) {}
+D3D11RendererImpl::D3D11RendererImpl(Renderer& renderer) : RendererBase(renderer)
+{
+}
 
 D3D11RendererImpl::~D3D11RendererImpl()
 {
@@ -56,8 +58,6 @@ void D3D11RendererImpl::resize()
     _swapChain->GetBuffer(0, IID_PPV_ARGS(backBuffer.GetAddressOf()));
     _device->CreateRenderTargetView(
         backBuffer.Get(), nullptr, _mainRenderTargetView.ReleaseAndGetAddressOf());
-
-    _renderer.onRendererResize(_windowWidth, _windowHeight);
 }
 
 void D3D11RendererImpl::onInit(IDXGISwapChain* swapChain, ID3D11Device* device)
@@ -96,7 +96,7 @@ void D3D11RendererImpl::onPresent(IDXGISwapChain*)
     ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 }
 
-void D3D11RendererImpl::onBeforeResize(IDXGISwapChain*, uint32_t width, uint32_t height)
+void D3D11RendererImpl::onBeforeResize(IDXGISwapChain*, uint32_t, uint32_t)
 {
     if (_mainRenderTargetView != nullptr)
     {

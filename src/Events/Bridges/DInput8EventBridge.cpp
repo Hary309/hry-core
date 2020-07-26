@@ -29,7 +29,7 @@ DInput8EventBridge::DInput8EventBridge(EventManager& eventMgr) : EventBridgeBase
 }
 
 void DInput8EventBridge::onGetDeviceData(
-    IDirectInputDevice8A* device, const std::vector<DIDEVICEOBJECTDATA>&& datas)
+    IDirectInputDevice8A*, const std::vector<DIDEVICEOBJECTDATA>&& datas)
 {
     for (auto& data : datas)
     {

@@ -12,7 +12,7 @@ HRY_NS_BEGIN
 
 void SelectionField::imguiRender()
 {
-    auto size = _options.size();
+    int size = _options.size();
 
     if (size > 0)
     {
@@ -63,11 +63,11 @@ void SelectionField::load(const nlohmann::json& json)
     }
 }
 
-void SelectionField::renderCombo(ComboType& combo, int size)
+void SelectionField::renderCombo(ComboType&, int size)
 {
     if (ImGui::BeginCombo(_label.c_str(), _options[_dirtySelectedIndex].c_str()))
     {
-        for (size_t i = 0; i < size; i++)
+        for (int i = 0; i < size; i++)
         {
             auto& option = _options[i];
 
@@ -91,7 +91,7 @@ void SelectionField::renderCombo(ComboType& combo, int size)
 
 void SelectionField::renderRadio(RadioType& radio, int size)
 {
-    for (size_t i = 0; i < size; i++)
+    for (int i = 0; i < size; i++)
     {
         auto& option = _options[i];
         if (ImGui::RadioButton(option.c_str(), i == _dirtySelectedIndex))

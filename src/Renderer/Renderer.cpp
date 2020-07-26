@@ -17,7 +17,9 @@ Renderer::Renderer(Core& core) : _core(core)
     _impl = std::make_unique<D3D11RendererImpl>(*this);
 }
 
-Renderer::~Renderer() {}
+Renderer::~Renderer()
+{
+}
 
 void Renderer::init()
 {
@@ -35,7 +37,5 @@ void Renderer::onRendererRenderImGui()
 {
     _core.imguiRender();
 }
-
-void Renderer::onRendererResize(uint32_t width, uint32_t height) {}
 
 HRY_NS_END

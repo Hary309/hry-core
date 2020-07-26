@@ -153,7 +153,7 @@ void MainWindow::renderSettingsTab()
 void MainWindow::renderPluginsPageTab()
 {
     auto& modules = _moduleMgr.getModules();
-    auto size = modules.size();
+    int size = modules.size();
 
     if (size == 0)
     {
@@ -171,7 +171,7 @@ void MainWindow::renderPluginsPageTab()
     ImGui::PushItemWidth(-1.f);
     if (ImGui::BeginCombo("##Select Plugin", selectedModule->dllName.c_str()))
     {
-        for (size_t i = 0; i < size; i++)
+        for (int i = 0; i < size; i++)
         {
             auto& module = modules[i];
             const bool isSelected = (_selectedPluginIndex == i);

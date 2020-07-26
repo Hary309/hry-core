@@ -6,6 +6,8 @@
 #ifndef SCSSDK_H
 #define SCSSDK_H
 
+#include <cstdint>
+
 #define SCSSDK_HEADER extern "C" {
 #define SCSSDK_FOOTER }
 
@@ -15,12 +17,12 @@ SCSSDK_HEADER
 
 #if defined(_MSC_VER)
 
-typedef unsigned __int8         scs_u8_t;
-typedef unsigned __int16        scs_u16_t;
-typedef signed __int32          scs_s32_t;
-typedef unsigned __int32        scs_u32_t;
-typedef unsigned __int64        scs_u64_t;
-typedef signed __int64          scs_s64_t;
+typedef uint8_t                 scs_u8_t;
+typedef uint16_t                scs_u16_t;
+typedef int32_t                 scs_s32_t;
+typedef uint32_t                scs_u32_t;
+typedef uint64_t                scs_u64_t;
+typedef int64_t                 scs_s64_t;
 typedef float                   scs_float_t;
 typedef double                  scs_double_t;
 typedef const char *            scs_string_t;
