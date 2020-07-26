@@ -86,15 +86,15 @@ IncludeCategories:
   # Headers in <> without extension
   - Regex: '<([A-Za-z0-9\/-_])+>'
     Priority: 1
-  # Headers in <> with extension
-  - Regex: '<.*\..+>'
-    Priority: 2
   # Headers with Hry/
   - Regex: "Hry/.*"
-    Priority: 4
+    Priority: 3
+  # Headers in <> with extension
+  - Regex: '\<.*\>'
+    Priority: 2
   # Headers with /
   - Regex: ".*/.*"
-    Priority: 5
+    Priority: 4
   # Anything else
   - Regex: ".*"
-    Priority: 6
+    Priority: 5
