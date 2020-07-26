@@ -1,6 +1,5 @@
 #include "Hry/Config/Fields/SelectionField.hpp"
 
-#include <tuple>
 #include <type_traits>
 
 #include <imgui.h>

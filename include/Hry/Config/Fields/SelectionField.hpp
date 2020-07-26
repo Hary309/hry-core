@@ -45,7 +45,7 @@ public:
     template<typename... Args>
     void addOptions(Args&&... args)
     {
-        (addOptions(args), ...);
+        (addOption(std::forward<Args>(args)), ...);
     }
 
     const auto& getOptions() const { return _options; }
