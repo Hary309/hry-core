@@ -2,14 +2,26 @@
 
 #include <iterator>
 #include <string>
+#include <variant>
 #include <vector>
 
 #include "Hry/Config/ConfigFieldBase.hpp"
 
 HRY_NS_BEGIN
 
-class ComboBoxField : public ConfigFieldBase
+class SelectionField : public ConfigFieldBase
 {
+private:
+    struct ComboType
+    {
+        // TODO
+    };
+
+    struct RadioType
+    {
+        bool sameLine;
+    };
+
 private:
     int _dirtySelectedIndex = 0;
     int _selectedIndex = 0;
@@ -17,24 +29,29 @@ private:
 
     int _defaultIndex = 0;
 
-    bool _isDirty = false;
+    std::variant<ComboType, RadioType> _type;
 
 public:
     Delegate<void(int)> onValueChange;
 
 public:
-    ComboBoxField(const std::string& label, const std::string& configFieldName)
+    SelectionField(const std::string& label, const std::string& configFieldName)
         : ConfigFieldBase(label, configFieldName)
     {
     }
 
+    void addOption(const std::string& arg) { _options.push_back(arg); }
+
     template<typename... Args>
     void addOptions(Args&&... args)
     {
-        (_options.push_back(args), ...);
+        (addOptions(args), ...);
     }
 
     const auto& getOptions() const { return _options; }
+
+    void useCombo() { _type = ComboType{}; }
+    void useRadio(bool sameLine = true) { _type = RadioType{ sameLine }; }
 
     void setDefaultValue(const std::string& value)
     {
@@ -58,10 +75,14 @@ public:
 
     virtual bool isDirty() { return _dirtySelectedIndex != _selectedIndex; }
 
-private:
+protected:
     virtual void imguiRender();
     virtual void save(nlohmann::json& json);
     virtual void load(const nlohmann::json& json);
+
+private:
+    void renderCombo(ComboType& combo, int size);
+    void renderRadio(RadioType& radio, int size);
 
     int getIndex(const std::string& value)
     {
