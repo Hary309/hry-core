@@ -23,12 +23,12 @@ public:
     KeyBindsUniquePtr_t keyBinds;
 
 public:
-    virtual ~Plugin() {}
+    virtual ~Plugin() = default;
     virtual void init() = 0;
 
     virtual void imguiPage() = 0;
 
-    virtual const PluginInfo& getPluginInfo() const = 0;
+    [[nodiscard]] virtual const PluginInfo& getPluginInfo() const = 0;
 };
 
 HRY_NS_END

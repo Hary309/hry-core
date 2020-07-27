@@ -16,7 +16,8 @@ class Delegate;
 
 template<auto>
 struct ConnectArg
-{};
+{
+};
 
 template<auto Addr>
 inline constexpr ConnectArg<Addr> ConnectArg_v;
@@ -35,13 +36,13 @@ public:
     Delegate() = default;
 
     template<auto FuncAddr>
-    Delegate(ConnectArg<FuncAddr>)
+    Delegate(ConnectArg<FuncAddr> /*unused*/)
     {
         connect<FuncAddr>();
     }
 
     template<auto CtxFuncAddr, typename T>
-    Delegate(ConnectArg<CtxFuncAddr>, T* context)
+    Delegate(ConnectArg<CtxFuncAddr> /*unused*/, T* context)
     {
         connect<CtxFuncAddr>(context);
     }
@@ -53,7 +54,7 @@ public:
             std::is_invocable_r_v<Return, decltype(FuncAddr), Args...>,
             "Passed function doesn't meet declared function template");
 
-        _function = [](void*, Args... args) -> Return {
+        _function = [](void* /*unused*/, Args... args) -> Return {
             return static_cast<Return>(std::invoke(FuncAddr, std::forward<Args>(args)...));
         };
 
@@ -76,7 +77,7 @@ public:
     }
 
     template<auto FuncAddr>
-    void connect(ConnectArg<FuncAddr>)
+    void connect(ConnectArg<FuncAddr> /*unused*/)
     {
         connect<FuncAddr>();
     }

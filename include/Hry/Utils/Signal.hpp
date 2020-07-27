@@ -75,6 +75,10 @@ private:
 
 public:
     Sink(Signal_t& signal) : _signal(signal) {}
+    Sink(Sink&&) noexcept = default;
+    Sink(const Sink&) = default;
+    Sink& operator=(Sink&&) noexcept = default;
+    Sink& operator=(const Sink&) = default;
 
     ~Sink()
     {

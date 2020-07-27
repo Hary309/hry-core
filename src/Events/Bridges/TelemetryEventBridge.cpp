@@ -26,23 +26,23 @@ TelemetryEventBridge::TelemetryEventBridge(
 }
 
 void TelemetryEventBridge::FrameStart(
-    const scs_event_t, const void* const, const scs_context_t context)
+    scs_event_t /*unused*/, const void* /*unused*/, scs_context_t context)
 {
-    EventManager* eventMgr = reinterpret_cast<EventManager*>(context);
+    auto* eventMgr = reinterpret_cast<EventManager*>(context);
     eventMgr->frameStartSignal.call();
 }
 
 void TelemetryEventBridge::FrameEnd(
-    const scs_event_t, const void* const, const scs_context_t context)
+    scs_event_t /*unused*/, const void* /*unused*/, scs_context_t context)
 {
-    EventManager* eventMgr = reinterpret_cast<EventManager*>(context);
+    auto* eventMgr = reinterpret_cast<EventManager*>(context);
     eventMgr->frameEndSignal.call();
 }
 
 void TelemetryEventBridge::ChangedState(
-    const scs_event_t event, const void* const, const scs_context_t context)
+    scs_event_t event, const void* /*unused*/, scs_context_t context)
 {
-    EventManager* eventMgr = reinterpret_cast<EventManager*>(context);
+    auto* eventMgr = reinterpret_cast<EventManager*>(context);
 
     GameStateEvent::Type type;
 

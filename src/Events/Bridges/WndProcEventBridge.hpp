@@ -15,10 +15,10 @@ private:
     Vec2i _lastMousePos{};
 
 public:
-    WndProcEventBridge(EventManager& eventMgr);
+    explicit WndProcEventBridge(EventManager& eventMgr);
 
 private:
-    void onWndProc(const HWND, UINT, WPARAM, LPARAM);
+    void onWndProc(HWND, UINT, WPARAM, LPARAM);
 };
 
 HRY_NS_END

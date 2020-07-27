@@ -29,18 +29,17 @@ public:
     };
 
 private:
-    uintptr_t* _target;
-    uintptr_t* _detour;
-    uintptr_t* _original;
+    uintptr_t* _target{};
+    uintptr_t* _detour{};
+    uintptr_t* _original{};
 
 public:
     Detour(uintptr_t target, uintptr_t detour);
     Detour(uintptr_t* target, uintptr_t* detour);
-
-    template<typename FuncT>
-    Detour(uintptr_t target, FuncT& func) : Detour((uintptr_t*)target, (uintptr_t*)func)
-    {}
-
+    Detour(Detour&&) = default;
+    Detour(const Detour&) = default;
+    Detour& operator=(Detour&&) = default;
+    Detour& operator=(const Detour&) = default;
     ~Detour();
 
     Status hook();
@@ -50,7 +49,7 @@ public:
     template<typename T>
     T* get()
     {
-        return reinterpret_cast<T*>(_original);
+        return static_cast<T*>(_original);
     }
 };
 

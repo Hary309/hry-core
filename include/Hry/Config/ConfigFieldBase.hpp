@@ -1,5 +1,7 @@
 #pragma once
 
+#include <utility>
+
 #include <nlohmann/json_fwd.hpp>
 
 #include "Hry/Namespace.hpp"
@@ -19,11 +21,15 @@ protected:
     std::string _description;
 
 public:
-    ConfigFieldBase(const std::string& label, const std::string& configFieldName)
-        : _label(label), _configFieldName(configFieldName)
+    ConfigFieldBase(std::string label, std::string configFieldName)
+        : _label(std::move(label)), _configFieldName(std::move(configFieldName))
     {
     }
-    virtual ~ConfigFieldBase() {}
+    ConfigFieldBase(ConfigFieldBase&&) = default;
+    ConfigFieldBase(const ConfigFieldBase&) = default;
+    ConfigFieldBase& operator=(ConfigFieldBase&&) = default;
+    ConfigFieldBase& operator=(const ConfigFieldBase&) = default;
+    virtual ~ConfigFieldBase() = default;
 
     void setDescription(const std::string& desc) { _description = desc; }
 

@@ -100,9 +100,9 @@ IDXGISwapChainVtbl* GetSwapChainVTable()
     swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
     swapChainDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
 
-    IDXGISwapChain* swapChain;
-    ID3D11Device* device;
-    ID3D11DeviceContext* context;
+    IDXGISwapChain* swapChain = nullptr;
+    ID3D11Device* device = nullptr;
+    ID3D11DeviceContext* context = nullptr;
 
     if (((long(__stdcall*)(
             IDXGIAdapter*, D3D_DRIVER_TYPE, HMODULE, UINT, const D3D_FEATURE_LEVEL*, UINT, UINT,
@@ -133,7 +133,7 @@ IDXGISwapChainVtbl* GetSwapChainVTable()
     return swapChainVTable;
 }
 
-LRESULT __stdcall WndProc(const HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+LRESULT __stdcall WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
     D3D11Hook::OnWndProc.call(hWnd, uMsg, wParam, lParam);
 
@@ -146,7 +146,7 @@ HRESULT __stdcall new_IDXGISwapChain_Present(
     if (needUpdateInfo)
     {
         needUpdateInfo = false;
-        ID3D11Device* d3dDevice;
+        ID3D11Device* d3dDevice = nullptr;
 
         if (SUCCEEDED(IDXGISwapChain_GetDevice(swapChain, IID_ID3D11Device, (void**)&d3dDevice)))
         {
@@ -154,17 +154,17 @@ HRESULT __stdcall new_IDXGISwapChain_Present(
             IDXGISwapChain_GetDesc(swapChain, &sd);
             D3D11Hook::hWnd = sd.OutputWindow;
 
-            if (isInited == false)
+            if (isInited)
+            {
+                D3D11Hook::OnResize.call(swapChain);
+            }
+            else
             {
                 Core::Logger->info("Hooking WndProc...");
                 oWndProc = reinterpret_cast<WNDPROC>(
                     SetWindowLongPtr(D3D11Hook::hWnd, GWLP_WNDPROC, (LONG_PTR)WndProc));
                 D3D11Hook::OnInit.call(swapChain, d3dDevice);
                 isInited = true;
-            }
-            else
-            {
-                D3D11Hook::OnResize.call(swapChain);
             }
         }
     }
@@ -226,7 +226,7 @@ void D3D11Hook::Uninstall()
         }
     }
 
-    if (oWndProc)
+    if (oWndProc != nullptr)
     {
         Core::Logger->info("Restoring WndProc...");
         SetWindowLongPtr(hWnd, GWLP_WNDPROC, (LONG_PTR)oWndProc);

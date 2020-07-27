@@ -26,7 +26,8 @@ using InitImGui_t = void(ImGuiContext*);
 ModuleManager::ModuleManager(
     const std::string& pluginDirectory, EventManager& eventMgr, KeyBindsManager& keyBindsMgr)
     : _pluginDirectory(pluginDirectory), _eventMgr(eventMgr), _keyBindsMgr(keyBindsMgr)
-{}
+{
+}
 
 void ModuleManager::init()
 {
@@ -121,7 +122,7 @@ bool ModuleManager::load(Module* mod)
         return true; // TODO: enum is probably a better option
     }
 
-    auto handle = LoadLibraryA(mod->dllPath.c_str());
+    auto* handle = LoadLibraryA(mod->dllPath.c_str());
 
     if (handle == nullptr)
     {
@@ -132,8 +133,7 @@ bool ModuleManager::load(Module* mod)
 
     mod->handle = handle;
 
-    InitImGui_t* InitImGui_func =
-        reinterpret_cast<InitImGui_t*>(GetProcAddress(handle, "InitImGui"));
+    auto* InitImGui_func = reinterpret_cast<InitImGui_t*>(GetProcAddress(handle, "InitImGui"));
 
     if (InitImGui_func == nullptr)
     {
@@ -144,7 +144,7 @@ bool ModuleManager::load(Module* mod)
         return false;
     }
 
-    CreatePlugin_t* CreatePlugin_func =
+    auto* CreatePlugin_func =
         reinterpret_cast<CreatePlugin_t*>(GetProcAddress(handle, "CreatePlugin"));
 
     if (CreatePlugin_func == nullptr)
@@ -170,7 +170,7 @@ bool ModuleManager::load(Module* mod)
         return false;
     }
 
-    auto shortName = mod->plugin->getPluginInfo().shortName.c_str();
+    const auto* shortName = mod->plugin->getPluginInfo().shortName.c_str();
 
     mod->plugin->logger = LoggerFactory::GetLogger(shortName);
     mod->plugin->keyBinds = _keyBindsMgr.createKeyBinds(shortName);
@@ -195,12 +195,10 @@ void ModuleManager::unload(Module* mod)
         return;
     }
 
-    if (mod->plugin)
-    {
-        delete mod->plugin;
-    }
+    delete mod->plugin;
+    mod->plugin = nullptr;
 
-    if (mod->handle)
+    if (mod->handle != nullptr)
     {
         FreeLibrary((HMODULE)mod->handle);
     }

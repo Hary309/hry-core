@@ -18,7 +18,7 @@ struct BindableKey
     std::string name;
 
     template<typename T>
-    bool has() const
+    [[nodiscard]] bool has() const
     {
         return std::holds_alternative<T>(key);
     }

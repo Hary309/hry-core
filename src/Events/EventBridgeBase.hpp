@@ -12,7 +12,7 @@ protected:
     EventManager& _eventMgr;
 
 public:
-    EventBridgeBase(EventManager& eventMgr) : _eventMgr(eventMgr) {}
+    explicit EventBridgeBase(EventManager& eventMgr) : _eventMgr(eventMgr) {}
 };
 
 HRY_NS_END

@@ -17,12 +17,9 @@ public:
     TelemetryEventBridge(EventManager& eventMgr, scs_telemetry_init_params_v100_t* scsTelemetry);
 
 private:
-    static void FrameStart(
-        const scs_event_t event, const void* const event_info, const scs_context_t context);
-    static void FrameEnd(
-        const scs_event_t event, const void* const event_info, const scs_context_t context);
-    static void ChangedState(
-        const scs_event_t event, const void* const event_info, const scs_context_t context);
+    static void FrameStart(scs_event_t event, const void* event_info, scs_context_t context);
+    static void FrameEnd(scs_event_t event, const void* event_info, scs_context_t context);
+    static void ChangedState(scs_event_t event, const void* event_info, scs_context_t context);
 };
 
 HRY_NS_END

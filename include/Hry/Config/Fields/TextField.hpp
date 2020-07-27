@@ -30,16 +30,16 @@ public:
         _value = value;
     }
 
-    virtual void applyChanges() { _value = _dirtyValue; }
-    virtual void restoreChanges() { _dirtyValue = _value; }
-    virtual void resetToDefault() { setDefaultValue(_defaultValue); }
+    void applyChanges() override { _value = _dirtyValue; }
+    void restoreChanges() override { _dirtyValue = _value; }
+    void resetToDefault() override { setDefaultValue(_defaultValue); }
 
-    virtual bool isDirty() { return _isDirty; }
+    bool isDirty() override { return _isDirty; }
 
 private:
-    virtual void imguiRender();
-    virtual void save(nlohmann::json& json);
-    virtual void load(const nlohmann::json& json);
+    void imguiRender() override;
+    void save(nlohmann::json& json) override;
+    void load(const nlohmann::json& json) override;
 };
 
 HRY_NS_END

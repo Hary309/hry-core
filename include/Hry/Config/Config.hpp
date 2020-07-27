@@ -18,12 +18,12 @@ private:
     std::vector<std::unique_ptr<ConfigFieldBase>> _fields;
 
 public:
-    Config(const std::string& name);
+    explicit Config(std::string name);
 
     template<typename T, typename = std::enable_if_t<std::is_base_of_v<ConfigFieldBase, T>>>
-    [[nodiscard]] T* const createField(const std::string& label, const std::string& configFieldName)
+    [[nodiscard]] T* createField(const std::string& label, const std::string& configFieldName)
     {
-        auto field = new T(label, configFieldName);
+        T* field = new T(label, configFieldName);
 
         _fields.push_back(std::unique_ptr<T>(field));
 

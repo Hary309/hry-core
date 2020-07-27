@@ -4,7 +4,7 @@
 
 HRY_NS_BEGIN
 
-Config::Config(const std::string& name) : _name(name)
+Config::Config(std::string name) : _name(std::move(name))
 {
 }
 

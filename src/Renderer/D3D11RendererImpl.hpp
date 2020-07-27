@@ -21,16 +21,16 @@ private:
     ID3D11DeviceContext* _context = nullptr;
     Microsoft::WRL::ComPtr<ID3D11RenderTargetView> _mainRenderTargetView = nullptr;
 
-    HWND _hWnd;
+    HWND _hWnd{};
 
     uint32_t _windowWidth = 0;
     uint32_t _windowHeight = 0;
 
 public:
     D3D11RendererImpl(Renderer& renderer);
-    ~D3D11RendererImpl();
+    ~D3D11RendererImpl() override;
 
-    void init();
+    void init() override;
 
 private:
     void onInit(IDXGISwapChain*, ID3D11Device*);

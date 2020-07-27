@@ -24,7 +24,7 @@ KeyBindsManager::KeyBindsManager(EventManager& eventMgr)
 
 KeyBindsUniquePtr_t KeyBindsManager::createKeyBinds(const std::string& name)
 {
-    auto keyBinds = new KeyBinds(name);
+    auto* keyBinds = new KeyBinds(name);
     _keyBinds.push_back(keyBinds);
 
     // use custom deleter to remove from list when KeyBinds is removing
@@ -52,7 +52,7 @@ void KeyBindsManager::handleMouseButtonEvent(const MouseButtonEvent&& buttonEven
     processKey(buttonEvent.button, buttonEvent.state);
 }
 
-void KeyBindsManager::processKey(const BindableKey::Key_t key, ButtonState buttonState)
+void KeyBindsManager::processKey(BindableKey::Key_t key, ButtonState buttonState)
 {
     for (auto& keyBindsSection : _keyBinds)
     {

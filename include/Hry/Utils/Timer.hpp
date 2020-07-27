@@ -23,16 +23,19 @@ public:
 
     void reset() { _start = Clock_t::now(); }
 
-    auto elapsed() const { return Clock_t::now() - _start; }
+    [[nodiscard]] auto elapsed() const { return Clock_t::now() - _start; }
 
-    float asSeconds() const { return std::chrono::duration_cast<Seconds_t>(elapsed()).count(); }
+    [[nodiscard]] float asSeconds() const
+    {
+        return std::chrono::duration_cast<Seconds_t>(elapsed()).count();
+    }
 
-    int64_t asMiliseconds() const
+    [[nodiscard]] int64_t asMiliseconds() const
     {
         return std::chrono::duration_cast<Milliseconds_t>(elapsed()).count();
     }
 
-    int64_t asMicrosecond() const
+    [[nodiscard]] int64_t asMicrosecond() const
     {
         return std::chrono::duration_cast<Microseconds_t>(elapsed()).count();
     }

@@ -29,9 +29,9 @@ DInput8EventBridge::DInput8EventBridge(EventManager& eventMgr) : EventBridgeBase
 }
 
 void DInput8EventBridge::onGetDeviceData(
-    IDirectInputDevice8A*, const std::vector<DIDEVICEOBJECTDATA>&& datas)
+    IDirectInputDevice8A* /*unused*/, const std::vector<DIDEVICEOBJECTDATA>&& datas)
 {
-    for (auto& data : datas)
+    for (const auto& data : datas)
     {
         switch (data.dwOfs)
         {
@@ -40,9 +40,7 @@ void DInput8EventBridge::onGetDeviceData(
             {
                 _mouseOffset.x = data.dwData;
 
-                MouseMoveEvent moveEvent;
-                moveEvent.offset = _mouseOffset;
-
+                MouseMoveEvent moveEvent{ _mouseOffset };
                 _eventMgr.mouseMoveSignal.call(std::move(moveEvent));
             }
             break;
@@ -50,9 +48,7 @@ void DInput8EventBridge::onGetDeviceData(
             {
                 _mouseOffset.y = data.dwData;
 
-                MouseMoveEvent moveEvent;
-                moveEvent.offset = _mouseOffset;
-
+                MouseMoveEvent moveEvent{ _mouseOffset };
                 _eventMgr.mouseMoveSignal.call(std::move(moveEvent));
             }
             break;
@@ -60,9 +56,9 @@ void DInput8EventBridge::onGetDeviceData(
             // mouse move wheel
             case DINPUT_Z:
             {
-                MouseWheelEvent wheelEvent;
+                MouseWheelEvent wheelEvent{};
                 wheelEvent.wheel = Mouse::Wheel::Vertical;
-                wheelEvent.delta = static_cast<short>(data.dwData) / WHEEL_DELTA;
+                wheelEvent.delta = static_cast<short>(data.dwData / WHEEL_DELTA);
 
                 _eventMgr.mouseWheelScrollSignal.call(std::move(wheelEvent));
             }
@@ -100,7 +96,7 @@ void DInput8EventBridge::onGetDeviceData(
 
 void DInput8EventBridge::sendButtonEvent(int pressData, Mouse::Button button)
 {
-    MouseButtonEvent mouseButtonEvent;
+    MouseButtonEvent mouseButtonEvent{};
     mouseButtonEvent.button = button;
 
     // if pressed

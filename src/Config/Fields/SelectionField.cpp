@@ -17,7 +17,9 @@ void SelectionField::imguiRender()
     if (size > 0)
     {
         if (_dirtySelectedIndex > size)
+        {
             _dirtySelectedIndex = 0;
+        }
 
         std::visit(
             [this, &size](auto&& arg) {
@@ -63,7 +65,7 @@ void SelectionField::load(const nlohmann::json& json)
     }
 }
 
-void SelectionField::renderCombo(ComboType&, int size)
+void SelectionField::renderCombo(ComboType& /*unused*/, int size)
 {
     if (ImGui::BeginCombo(_label.c_str(), _options[_dirtySelectedIndex].c_str()))
     {

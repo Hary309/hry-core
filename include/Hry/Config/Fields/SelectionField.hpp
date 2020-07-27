@@ -48,7 +48,7 @@ public:
         (addOption(std::forward<Args>(args)), ...);
     }
 
-    const auto& getOptions() const { return _options; }
+    [[nodiscard]] const auto& getOptions() const { return _options; }
 
     void useCombo() { _type = ComboType{}; }
     void useRadio(bool sameLine = true) { _type = RadioType{ sameLine }; }
@@ -65,20 +65,20 @@ public:
         }
     }
 
-    virtual void applyChanges() { _selectedIndex = _dirtySelectedIndex; }
-    virtual void restoreChanges() { _dirtySelectedIndex = _selectedIndex; }
-    virtual void resetToDefault()
+    void applyChanges() override { _selectedIndex = _dirtySelectedIndex; }
+    void restoreChanges() override { _dirtySelectedIndex = _selectedIndex; }
+    void resetToDefault() override
     {
         _selectedIndex = _defaultIndex;
         _dirtySelectedIndex = _defaultIndex;
     }
 
-    virtual bool isDirty() { return _dirtySelectedIndex != _selectedIndex; }
+    bool isDirty() override { return _dirtySelectedIndex != _selectedIndex; }
 
 protected:
-    virtual void imguiRender();
-    virtual void save(nlohmann::json& json);
-    virtual void load(const nlohmann::json& json);
+    void imguiRender() override;
+    void save(nlohmann::json& json) override;
+    void load(const nlohmann::json& json) override;
 
 private:
     void renderCombo(ComboType& combo, int size);

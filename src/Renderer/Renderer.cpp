@@ -17,10 +17,6 @@ Renderer::Renderer(Core& core) : _core(core)
     _impl = std::make_unique<D3D11RendererImpl>(*this);
 }
 
-Renderer::~Renderer()
-{
-}
-
 void Renderer::init()
 {
     _impl->init();

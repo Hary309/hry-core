@@ -9,9 +9,9 @@ HRY_NS_BEGIN
 class CheckBoxField : public ConfigFieldBase
 {
 private:
-    bool _value;
-    bool _defaultValue;
-    bool _dirtyValue;
+    bool _value{};
+    bool _defaultValue{};
+    bool _dirtyValue{};
 
 public:
     Delegate<void(bool)> onValueChange;
@@ -29,16 +29,16 @@ public:
         _defaultValue = value;
     }
 
-    virtual void applyChanges() { _value = _dirtyValue; }
-    virtual void restoreChanges() { _dirtyValue = _value; }
-    virtual void resetToDefault() { setDefaultValue(_defaultValue); }
+    void applyChanges() override { _value = _dirtyValue; }
+    void restoreChanges() override { _dirtyValue = _value; }
+    void resetToDefault() override { setDefaultValue(_defaultValue); }
 
-    virtual bool isDirty() { return _value != _dirtyValue; }
+    bool isDirty() override { return _value != _dirtyValue; }
 
 private:
-    virtual void imguiRender();
-    virtual void save(nlohmann::json& json);
-    virtual void load(const nlohmann::json& json);
+    void imguiRender() override;
+    void save(nlohmann::json& json) override;
+    void load(const nlohmann::json& json) override;
 };
 
 HRY_NS_END

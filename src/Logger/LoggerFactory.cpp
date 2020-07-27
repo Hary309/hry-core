@@ -1,5 +1,6 @@
 #include "LoggerFactory.hpp"
 
+#include <array>
 #include <ctime>
 #include <filesystem>
 #include <fstream>
@@ -62,7 +63,7 @@ void LoggerFactory::WriteLine(Logger::Level level, const char* msg, const char* 
 
 std::unique_ptr<Logger> LoggerFactory::GetLogger(const char* moduleName)
 {
-    return std::unique_ptr<Logger>(new Logger(moduleName));
+    return std::make_unique<Logger>(moduleName);
 }
 
 HRY_NS_END

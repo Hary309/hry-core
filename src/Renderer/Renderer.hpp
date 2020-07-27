@@ -4,16 +4,11 @@
 
 #include "Hry/Namespace.hpp"
 
+#include "RendererBase.hpp"
+
 HRY_NS_BEGIN
 
 class Core;
-}
-
-#include "Hry/Namespace.hpp"
-
-HRY_NS_BEGIN
-
-class RendererBase;
 class D3D11RendererImpl;
 
 class Renderer
@@ -25,8 +20,7 @@ private:
     std::unique_ptr<RendererBase> _impl;
 
 public:
-    Renderer(Core& core);
-    ~Renderer();
+    explicit Renderer(Core& core);
 
     void init();
 

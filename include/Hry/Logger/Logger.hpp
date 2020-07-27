@@ -2,6 +2,7 @@
 
 #include <sstream>
 #include <string>
+#include <type_traits>
 #include <utility>
 
 #include "Hry/Export.hpp"
@@ -23,7 +24,7 @@ private:
     std::string _moduleName;
 
 public:
-    Logger(const char* moduleName) : _moduleName(std::string(moduleName)) {}
+    explicit Logger(std::string moduleName) : _moduleName(std::move(moduleName)) {}
 
     HRY_API void log(Level level, const char* msg);
 

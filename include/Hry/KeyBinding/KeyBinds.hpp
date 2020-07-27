@@ -3,8 +3,11 @@
 #include <algorithm>
 #include <memory>
 #include <string>
+#include <utility>
 #include <variant>
 #include <vector>
+
+#include <nlohmann/json_fwd.hpp>
 
 #include "Hry/Export.hpp"
 #include "Hry/Namespace.hpp"
@@ -38,21 +41,21 @@ public:
 
 public:
     auto setConfigFieldName(const char* name) -> void;
-    auto getConfigFieldName() const -> const std::string&;
+    [[nodiscard]] auto getConfigFieldName() const -> const std::string&;
 
     auto setName(const char* name) -> void;
-    auto getName() const -> const std::string&;
+    [[nodiscard]] auto getName() const -> const std::string&;
 
     auto setDefaultKey(const BindableKey* key) -> void;
-    auto setDefaultKey(const BindableKey::Key_t key) -> void;
-    auto getDefaultKey() const -> const BindableKey*;
+    auto setDefaultKey(BindableKey::Key_t key) -> void;
+    [[nodiscard]] auto getDefaultKey() const -> const BindableKey*;
 
     auto setKey(const BindableKey* key) -> void;
-    auto setKey(const BindableKey::Key_t key) -> void;
-    auto getKey() const -> const BindableKey*;
+    auto setKey(BindableKey::Key_t key) -> void;
+    [[nodiscard]] auto getKey() const -> const BindableKey*;
 
     auto setKeyState(ButtonState state) -> void;
-    auto getKeyState() const -> ButtonState;
+    [[nodiscard]] auto getKeyState() const -> ButtonState;
 };
 
 class KeyBinds
@@ -62,14 +65,17 @@ private:
     std::vector<KeyBind> _keyBinds;
 
 public:
-    KeyBinds(const std::string& name) : _name(name) {}
+    explicit KeyBinds(std::string name) : _name(std::move(name)) {}
 
     void addKeyBind(KeyBind&& keyBind) { _keyBinds.push_back(std::move(keyBind)); }
 
-    const std::string& getName() const { return _name; }
+    [[nodiscard]] const std::string& getName() const { return _name; }
 
     auto& getKeyBinds() { return _keyBinds; }
-    const auto& getKeyBinds() const { return _keyBinds; }
+    [[nodiscard]] const auto& getKeyBinds() const { return _keyBinds; }
+
+    void save(nlohmann::json& json);
+    void laod(const nlohmann::json& json);
 };
 
 using KeyBindsUniquePtr_t = std::unique_ptr<KeyBinds, Delegate<void(KeyBinds*)>>;
@@ -105,7 +111,7 @@ inline auto KeyBind::getDefaultKey() const -> const BindableKey*
     return _defaultKey;
 }
 
-inline void KeyBind::setDefaultKey(const BindableKey::Key_t key)
+inline void KeyBind::setDefaultKey(BindableKey::Key_t key)
 {
     auto it = std::find_if(
         BindableKeys.begin(), BindableKeys.end(),
@@ -127,7 +133,7 @@ inline auto KeyBind::setKey(const BindableKey* key) -> void
     _key = key;
 }
 
-inline void KeyBind::setKey(const BindableKey::Key_t key)
+inline void KeyBind::setKey(BindableKey::Key_t key)
 {
     auto it = std::find_if(
         BindableKeys.begin(), BindableKeys.end(),

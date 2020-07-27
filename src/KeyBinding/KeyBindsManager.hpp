@@ -26,12 +26,12 @@ private:
     Sink<void(const MouseButtonEvent&&)> _onMouseButtonRelease;
 
 public:
-    KeyBindsManager(EventManager& eventMgr);
+    explicit KeyBindsManager(EventManager& eventMgr);
 
     KeyBindsUniquePtr_t createKeyBinds(const std::string& name);
     void remove(const KeyBinds* keyBind);
 
-    const auto& getKeyBinds() const { return _keyBinds; }
+    [[nodiscard]] const auto& getKeyBinds() const { return _keyBinds; }
 
 private:
     void keyBindsDeleter(KeyBinds* ptr);
@@ -39,7 +39,7 @@ private:
     void handleKeybaordEvent(const KeyboardEvent&& keyboardEvent);
     void handleMouseButtonEvent(const MouseButtonEvent&& buttonEvent);
 
-    void processKey(const BindableKey::Key_t key, ButtonState buttonState);
+    void processKey(BindableKey::Key_t key, ButtonState buttonState);
 };
 
 HRY_NS_END

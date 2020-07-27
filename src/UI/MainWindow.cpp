@@ -36,7 +36,9 @@ void MainWindow::initKeyBinds(KeyBinds& keyBinds)
 void MainWindow::renderImGui()
 {
     if (!_isWindowEnabled)
+    {
         return;
+    }
 
     ImGui::SetNextWindowSize({ 400.f, 300.f }, ImGuiCond_FirstUseEver);
 
@@ -83,7 +85,7 @@ void MainWindow::renderPluginsTab()
         _moduleMgr.scan();
     }
 
-    auto& modules = _moduleMgr.getModules();
+    const auto& modules = _moduleMgr.getModules();
 
     if (modules.empty())
     {
@@ -102,7 +104,7 @@ void MainWindow::renderPluginsTab()
     ImGui::NextColumn();
     ImGui::Separator();
 
-    for (auto& module : modules)
+    for (const auto& module : modules)
     {
         ImGui::PushID(module.get());
 
@@ -125,7 +127,7 @@ void MainWindow::renderPluginsTab()
 
         if (module->isLoaded)
         {
-            auto& pluginInfo = module->plugin->getPluginInfo();
+            const auto& pluginInfo = module->plugin->getPluginInfo();
             ImGui::Text("%s", pluginInfo.shortName.c_str());
             ImGui::NextColumn();
             ImGui::Text("%s", pluginInfo.shortDesc.c_str());
@@ -152,7 +154,7 @@ void MainWindow::renderSettingsTab()
 
 void MainWindow::renderPluginsPageTab()
 {
-    auto& modules = _moduleMgr.getModules();
+    const auto& modules = _moduleMgr.getModules();
     int size = modules.size();
 
     if (size == 0)
@@ -166,14 +168,14 @@ void MainWindow::renderPluginsPageTab()
         _selectedPluginIndex = 0;
     }
 
-    auto& selectedModule = modules[_selectedPluginIndex];
+    const auto& selectedModule = modules[_selectedPluginIndex];
 
     ImGui::PushItemWidth(-1.f);
     if (ImGui::BeginCombo("##Select Plugin", selectedModule->dllName.c_str()))
     {
         for (int i = 0; i < size; i++)
         {
-            auto& module = modules[i];
+            const auto& module = modules[i];
             const bool isSelected = (_selectedPluginIndex == i);
 
             const auto flag =
@@ -207,9 +209,9 @@ void MainWindow::renderPluginsPageTab()
 
 void MainWindow::renderKeyBindsTab()
 {
-    auto& keyBindsList = _keyBindsMgr.getKeyBinds();
+    const auto& keyBindsList = _keyBindsMgr.getKeyBinds();
 
-    for (auto& keyBindsSection : keyBindsList)
+    for (const auto& keyBindsSection : keyBindsList)
     {
         auto& keyBinds = keyBindsSection->getKeyBinds();
 
@@ -227,7 +229,7 @@ void MainWindow::renderKeyBindsTab()
 
                     ImGui::NextColumn();
 
-                    auto key = keyBind.getKey();
+                    const auto* key = keyBind.getKey();
 
                     if (_keyToSetBind == &keyBind)
                     {
@@ -235,12 +237,16 @@ void MainWindow::renderKeyBindsTab()
                     }
                     else
                     {
-                        const char* text;
+                        const char* text = nullptr;
 
-                        if (key)
+                        if (key != nullptr)
+                        {
                             text = key->name.c_str();
+                        }
                         else
+                        {
                             text = "Not set";
+                        }
 
                         if (ImGui::SmallButton(text))
                         {
@@ -274,7 +280,7 @@ void MainWindow::showMainWindowKeyBind()
 
 void MainWindow::handleKeyPress(const KeyboardEvent&& keyboardEvent)
 {
-    if (_keyToSetBind)
+    if (_keyToSetBind != nullptr)
     {
         if (keyboardEvent.key != Keyboard::Key::Escape)
         {
@@ -288,7 +294,7 @@ void MainWindow::handleKeyPress(const KeyboardEvent&& keyboardEvent)
 
 void MainWindow::handleMouseButtonPress(const MouseButtonEvent&& buttonEvent)
 {
-    if (_keyToSetBind)
+    if (_keyToSetBind != nullptr)
     {
         _keyToSetBind->setKey(buttonEvent.button);
         _keyToSetBind = nullptr;

@@ -30,7 +30,7 @@ protected:
         T min;
         T max;
         std::string format;
-        float power;
+        float power{};
     };
 
     struct SliderType
@@ -38,10 +38,10 @@ protected:
         T min;
         T max;
         std::string format;
-        float power;
+        float power{};
     };
 
-protected:
+private:
     T _value{};
     T _defaultValue{};
     T _dirtyValue{};
@@ -108,14 +108,14 @@ public:
         _controlType = SliderType{ min, max, format, power };
     }
 
-    virtual void applyChanges() { _value = _dirtyValue; }
-    virtual void restoreChanges() { _dirtyValue = _value; }
-    virtual void resetToDefault() { setDefaultValue(_defaultValue); }
+    void applyChanges() override { _value = _dirtyValue; }
+    void restoreChanges() override { _dirtyValue = _value; }
+    void resetToDefault() override { setDefaultValue(_defaultValue); }
 
-    virtual bool isDirty() { return _isDirty; }
+    bool isDirty() override { return _isDirty; }
 
 protected:
-    virtual void imguiRender()
+    void imguiRender() override
     {
         std::visit(
             [this](auto&& arg) {
@@ -164,8 +164,8 @@ protected:
         }
     }
 
-    virtual void save(nlohmann::json& json) { json[_configFieldName] = _value; }
-    virtual void load(const nlohmann::json& json)
+    void save(nlohmann::json& json) override { json[_configFieldName] = _value; }
+    void load(const nlohmann::json& json) override
     {
         auto it = json.find(_configFieldName);
         if (it != json.end())
@@ -181,9 +181,13 @@ private:
         std::string format = "%d";
 
         if constexpr (std::is_same_v<T, float>)
+        {
             format = "%.3f";
+        }
         else if constexpr (std::is_same_v<T, double>)
+        {
             format = "%.6f";
+        }
 
         return format;
     }

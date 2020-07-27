@@ -29,7 +29,7 @@ __declspec(dllexport) SCSAPI_VOID scs_telemetry_shutdown(void)
     core.reset();
 }
 
-BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID)
+BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID /*unused*/)
 {
     switch (fdwReason)
     {

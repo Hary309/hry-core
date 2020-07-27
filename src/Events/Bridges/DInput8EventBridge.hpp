@@ -17,10 +17,10 @@ HRY_NS_BEGIN
 class DInput8EventBridge : public EventBridgeBase
 {
 private:
-    Vec2i _mouseOffset;
+    Vec2i _mouseOffset{};
 
 public:
-    DInput8EventBridge(EventManager& eventMgr);
+    explicit DInput8EventBridge(EventManager& eventMgr);
 
 private:
     void onGetDeviceData(IDirectInputDevice8A*, const std::vector<DIDEVICEOBJECTDATA>&&);

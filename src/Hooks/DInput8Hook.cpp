@@ -34,14 +34,14 @@ HRESULT __stdcall new_DirectInputDevice_GetDeviceData(
 {
     auto result = oDirectInputGetDeviceData(self, cbObjectData, rgdod, pdwInOut, dwFlags);
 
-    if (self && rgdod && pdwInOut)
+    if (self != nullptr && rgdod != nullptr && pdwInOut != nullptr)
     {
         DInput8Hook::OnGetDeviceData.call(self, { rgdod, rgdod + (*pdwInOut) });
-    }
 
-    if (DInput8Hook::disableInGameMouse)
-    {
-        *pdwInOut = 0;
+        if (DInput8Hook::disableInGameMouse)
+        {
+            *pdwInOut = 0;
+        }
     }
 
     return result;
@@ -69,7 +69,7 @@ bool DInput8Hook::Install()
     IDirectInput8* DI = nullptr;
     IDirectInputDevice8* DIMouse = nullptr;
 
-    HRESULT hr;
+    HRESULT hr = 0;
 
     hr = dInput8Create(
         ::GetModuleHandle(nullptr), DIRECTINPUT_VERSION, IID_IDirectInput8, (void**)&DI, nullptr);

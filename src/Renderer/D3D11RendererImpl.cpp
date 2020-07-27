@@ -43,7 +43,7 @@ void D3D11RendererImpl::resize()
     }
 
     RECT rect;
-    if (GetClientRect(_hWnd, &rect))
+    if (GetClientRect(_hWnd, &rect) == TRUE)
     {
         _windowWidth = rect.right - rect.left;
         _windowHeight = rect.bottom - rect.top;
@@ -82,7 +82,7 @@ void D3D11RendererImpl::onInit(IDXGISwapChain* swapChain, ID3D11Device* device)
     _renderer.onRendererInit();
 }
 
-void D3D11RendererImpl::onPresent(IDXGISwapChain*)
+void D3D11RendererImpl::onPresent(IDXGISwapChain* /*unused*/)
 {
     ImGui_ImplDX11_NewFrame();
     ImGui_ImplWin32_NewFrame();
@@ -96,7 +96,8 @@ void D3D11RendererImpl::onPresent(IDXGISwapChain*)
     ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 }
 
-void D3D11RendererImpl::onBeforeResize(IDXGISwapChain*, uint32_t, uint32_t)
+void D3D11RendererImpl::onBeforeResize(
+    IDXGISwapChain* /*unused*/, uint32_t /*unused*/, uint32_t /*unused*/)
 {
     if (_mainRenderTargetView != nullptr)
     {
@@ -109,7 +110,7 @@ void D3D11RendererImpl::onBeforeResize(IDXGISwapChain*, uint32_t, uint32_t)
     }
 }
 
-void D3D11RendererImpl::onResize(IDXGISwapChain*)
+void D3D11RendererImpl::onResize(IDXGISwapChain* /*unused*/)
 {
     resize();
 }

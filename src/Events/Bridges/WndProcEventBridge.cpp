@@ -145,20 +145,12 @@ Keyboard::Key vkKeyCodeToEnum(WPARAM key, LPARAM flags)
     return Key::Unknown;
 }
 
-MouseButtonEvent getMouseButtonEvent(Mouse::Button button, ButtonState state)
-{
-    MouseButtonEvent buttonEvent;
-    buttonEvent.button = button;
-    buttonEvent.state = state;
-    return buttonEvent;
-}
-
 WndProcEventBridge::WndProcEventBridge(EventManager& eventMgr) : EventBridgeBase(eventMgr)
 {
     D3D11Hook::OnWndProc.connect<&WndProcEventBridge::onWndProc>(this);
 }
 
-void WndProcEventBridge::onWndProc(const HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
+void WndProcEventBridge::onWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
     ImGui_ImplWin32_WndProcHandler(hWnd, msg, wParam, lParam);
 
@@ -173,7 +165,9 @@ void WndProcEventBridge::onWndProc(const HWND hWnd, UINT msg, WPARAM wParam, LPA
             shouldSkip &= wParam != SIZE_RESTORED;
 
             if (shouldSkip)
+            {
                 break;
+            }
 
             ResizeType resizeType;
 
@@ -184,7 +178,7 @@ void WndProcEventBridge::onWndProc(const HWND hWnd, UINT msg, WPARAM wParam, LPA
                 case SIZE_RESTORED: resizeType = ResizeType::Restored; break;
             }
 
-            ResizeEvent resizeEvent;
+            ResizeEvent resizeEvent{};
             resizeEvent.size.x = LOWORD(lParam);
             resizeEvent.size.y = HIWORD(lParam);
             resizeEvent.type = resizeType;
@@ -215,7 +209,7 @@ void WndProcEventBridge::onWndProc(const HWND hWnd, UINT msg, WPARAM wParam, LPA
 
         case WM_MOUSEWHEEL:
         {
-            MouseWheelEvent wheelEvent;
+            MouseWheelEvent wheelEvent{};
             wheelEvent.wheel = Mouse::Wheel::Vertical;
             wheelEvent.delta = GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA;
 
@@ -226,7 +220,7 @@ void WndProcEventBridge::onWndProc(const HWND hWnd, UINT msg, WPARAM wParam, LPA
         // mouse wheel
         case WM_MOUSEHWHEEL:
         {
-            MouseWheelEvent wheelEvent;
+            MouseWheelEvent wheelEvent{};
             wheelEvent.wheel = Mouse::Wheel::Horizontal;
             wheelEvent.delta = GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA;
 
@@ -252,42 +246,38 @@ void WndProcEventBridge::onWndProc(const HWND hWnd, UINT msg, WPARAM wParam, LPA
         // Left mouse button
         case WM_LBUTTONDOWN:
         {
-            _eventMgr.mouseButtonPressSignal.call(
-                getMouseButtonEvent(Mouse::Button::Left, ButtonState::Pressed));
+            _eventMgr.mouseButtonPressSignal.call({ Mouse::Button::Left, ButtonState::Pressed });
         }
         break;
         case WM_LBUTTONUP:
         {
-            _eventMgr.mouseButtonReleaseSignal.call(
-                getMouseButtonEvent(Mouse::Button::Left, ButtonState::Released));
+            _eventMgr.mouseButtonReleaseSignal.call({ Mouse::Button::Left, ButtonState::Released });
         }
         break;
 
         // Right mouse button
         case WM_RBUTTONDOWN:
         {
-            _eventMgr.mouseButtonPressSignal.call(
-                getMouseButtonEvent(Mouse::Button::Right, ButtonState::Pressed));
+            _eventMgr.mouseButtonPressSignal.call({ Mouse::Button::Right, ButtonState::Pressed });
         }
         break;
         case WM_RBUTTONUP:
         {
             _eventMgr.mouseButtonReleaseSignal.call(
-                getMouseButtonEvent(Mouse::Button::Right, ButtonState::Released));
+                { Mouse::Button::Right, ButtonState::Released });
         }
         break;
 
         // Middle mouse button
         case WM_MBUTTONDOWN:
         {
-            _eventMgr.mouseButtonPressSignal.call(
-                getMouseButtonEvent(Mouse::Button::Middle, ButtonState::Pressed));
+            _eventMgr.mouseButtonPressSignal.call({ Mouse::Button::Middle, ButtonState::Pressed });
         }
         break;
         case WM_MBUTTONUP:
         {
             _eventMgr.mouseButtonReleaseSignal.call(
-                getMouseButtonEvent(Mouse::Button::Middle, ButtonState::Released));
+                { Mouse::Button::Middle, ButtonState::Released });
         }
         break;
 
@@ -298,8 +288,7 @@ void WndProcEventBridge::onWndProc(const HWND hWnd, UINT msg, WPARAM wParam, LPA
                                        Mouse::Button::XButton1 :
                                        Mouse::Button::XButton2;
 
-            _eventMgr.mouseButtonPressSignal.call(
-                getMouseButtonEvent(button, ButtonState::Pressed));
+            _eventMgr.mouseButtonPressSignal.call({ button, ButtonState::Pressed });
         }
         break;
         case WM_XBUTTONUP:
@@ -308,8 +297,7 @@ void WndProcEventBridge::onWndProc(const HWND hWnd, UINT msg, WPARAM wParam, LPA
                                        Mouse::Button::XButton1 :
                                        Mouse::Button::XButton2;
 
-            _eventMgr.mouseButtonReleaseSignal.call(
-                getMouseButtonEvent(button, ButtonState::Released));
+            _eventMgr.mouseButtonReleaseSignal.call({ button, ButtonState::Released });
         }
         break;
     }
