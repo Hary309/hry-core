@@ -63,6 +63,8 @@ void Core::lateInit()
 
     _moduleMgr.init();
 
+    _keyBindsMgr.load();
+
     Logger->info("Core successfully initialized!");
 }
 

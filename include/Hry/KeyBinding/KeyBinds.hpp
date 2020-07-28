@@ -74,11 +74,9 @@ public:
     auto& getKeyBinds() { return _keyBinds; }
     [[nodiscard]] const auto& getKeyBinds() const { return _keyBinds; }
 
-    void save(nlohmann::json& json);
-    void laod(const nlohmann::json& json);
+    HRY_API void toJson(nlohmann::json& json);
+    HRY_API void fromJson(const nlohmann::json& json);
 };
-
-using KeyBindsUniquePtr_t = std::unique_ptr<KeyBinds, Delegate<void(KeyBinds*)>>;
 
 inline auto KeyBind::setConfigFieldName(const char* name) -> void
 {

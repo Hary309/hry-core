@@ -69,6 +69,7 @@ void KeyBindsPage::drawImGuiPage()
                 if (ImGui::SmallButton("Default##KeyBinds"))
                 {
                     keyBind.setKey(keyBind.getDefaultKey());
+                    _keyBindsMgr.save();
                 }
 
                 ImGui::SameLine();
@@ -76,6 +77,7 @@ void KeyBindsPage::drawImGuiPage()
                 if (ImGui::SmallButton("Delete##KeyBinds"))
                 {
                     keyBind.setKey(nullptr);
+                    _keyBindsMgr.save();
                 }
 
                 ImGui::PopID();
@@ -98,6 +100,7 @@ void KeyBindsPage::handleKeyPress(const KeyboardEvent&& keyboardEvent)
 
         EnableImGui(true);
         _keyToSetBind = nullptr;
+        _keyBindsMgr.save();
     }
 }
 
@@ -108,6 +111,7 @@ void KeyBindsPage::handleMouseButtonPress(const MouseButtonEvent&& buttonEvent)
         _keyToSetBind->setKey(buttonEvent.button);
         _keyToSetBind = nullptr;
         EnableImGui(true);
+        _keyBindsMgr.save();
     }
 }
 

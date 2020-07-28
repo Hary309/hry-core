@@ -9,6 +9,7 @@
 #include "Hry/KeyBinding/KeyBinds.hpp"
 #include "Hry/Namespace.hpp"
 #include "Hry/System/System.hpp"
+#include "Hry/Utils.hpp"
 #include "Hry/Utils/Delegate.hpp"
 
 #include "Events/EventManager.hpp"
@@ -17,6 +18,10 @@ HRY_NS_BEGIN
 
 class KeyBindsManager
 {
+public:
+    inline static constexpr auto ConfigDirectory = "plugins/hry_config";
+    inline static constexpr auto FilePath = "plugins/hry_config/keybinds.json";
+
 private:
     std::vector<KeyBinds*> _keyBinds;
 
@@ -28,10 +33,13 @@ private:
 public:
     explicit KeyBindsManager(EventManager& eventMgr);
 
-    KeyBindsUniquePtr_t createKeyBinds(const std::string& name);
+    DelegateDeleterUniquePtr_t<KeyBinds> createKeyBinds(const std::string& name);
     void remove(const KeyBinds* keyBind);
 
     [[nodiscard]] const auto& getKeyBinds() const { return _keyBinds; }
+
+    void save();
+    void load();
 
 private:
     void keyBindsDeleter(KeyBinds* ptr);

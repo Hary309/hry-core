@@ -1,13 +1,18 @@
 #include "KeyBindsManager.hpp"
 
 #include <cstdio>
+#include <filesystem>
+#include <fstream>
+#include <ios>
+
+#include <nlohmann/json.hpp>
 
 #include "Hry/KeyBinding/KeyBinds.hpp"
 #include "Hry/Namespace.hpp"
 #include "Hry/System/System.hpp"
 #include "Hry/Utils/Delegate.hpp"
 
-#include "Core.hpp"
+namespace fs = std::filesystem;
 
 HRY_NS_BEGIN
 
@@ -22,7 +27,7 @@ KeyBindsManager::KeyBindsManager(EventManager& eventMgr)
     _onMouseButtonRelease.connect<&KeyBindsManager::handleMouseButtonEvent>(this);
 }
 
-KeyBindsUniquePtr_t KeyBindsManager::createKeyBinds(const std::string& name)
+DelegateDeleterUniquePtr_t<KeyBinds> KeyBindsManager::createKeyBinds(const std::string& name)
 {
     auto* keyBinds = new KeyBinds(name);
     _keyBinds.push_back(keyBinds);
@@ -69,6 +74,53 @@ void KeyBindsManager::processKey(BindableKey::Key_t key, ButtonState buttonState
                     case ButtonState::Released: keyBind.releaseAction.call(); break;
                 }
                 keyBind.setKeyState(buttonState);
+            }
+        }
+    }
+}
+
+void KeyBindsManager::save()
+{
+    nlohmann::json json;
+
+    for (auto* keyBindsSection : _keyBinds)
+    {
+        auto jKeyBindsSection = nlohmann::json::object();
+
+        keyBindsSection->toJson(jKeyBindsSection);
+
+        json[keyBindsSection->getName()] = jKeyBindsSection;
+    }
+
+    if (!fs::exists(ConfigDirectory))
+    {
+        fs::create_directory(ConfigDirectory);
+    }
+
+    std::ofstream file(FilePath);
+
+    if (file.is_open())
+    {
+        file << json.dump(4);
+    }
+}
+
+void KeyBindsManager::load()
+{
+    std::ifstream file(FilePath);
+
+    if (file.good())
+    {
+        nlohmann::json json;
+        file >> json;
+
+        for (auto* keyBindsSection : _keyBinds)
+        {
+            auto jKeyBindsSection = json.find(keyBindsSection->getName());
+
+            if (jKeyBindsSection != json.end())
+            {
+                keyBindsSection->fromJson(jKeyBindsSection.value());
             }
         }
     }

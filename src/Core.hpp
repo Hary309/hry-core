@@ -6,6 +6,7 @@
 #include "Hry/Events/Event.hpp"
 #include "Hry/KeyBinding/KeyBinds.hpp"
 #include "Hry/Logger/Logger.hpp"
+#include "Hry/Utils.hpp"
 #include "Hry/Utils/Timer.hpp"
 
 #include "Events/EventManager.hpp"
@@ -40,7 +41,7 @@ private:
 
     ImGuiImplEvents _imguiImplEvents;
 
-    KeyBindsUniquePtr_t _coreKeyBinds;
+    DelegateDeleterUniquePtr_t<KeyBinds> _coreKeyBinds;
 
 public:
     inline static std::unique_ptr<Logger> Logger;

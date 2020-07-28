@@ -5,6 +5,7 @@
 
 #include "Hry/Logger/Logger.hpp"
 #include "Hry/Namespace.hpp"
+#include "Hry/Utils.hpp"
 #include "Hry/Utils/Delegate.hpp"
 
 #include "Events/EventHandler.hpp"
@@ -20,7 +21,7 @@ public:
     // these variables are set before calling init()
     std::unique_ptr<Logger> logger;
     std::unique_ptr<EventHandler> eventHandler;
-    KeyBindsUniquePtr_t keyBinds;
+    DelegateDeleterUniquePtr_t<KeyBinds> keyBinds;
 
 public:
     virtual ~Plugin() = default;

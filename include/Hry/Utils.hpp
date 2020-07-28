@@ -1,6 +1,9 @@
 #pragma once
 
+#include <memory>
+
 #include "Hry/Namespace.hpp"
+#include "Hry/Utils/Delegate.hpp"
 
 HRY_NS_BEGIN
 
@@ -9,5 +12,8 @@ HRY_NS_BEGIN
 #else
 #    define HRY_TEXT(text) text
 #endif // !UNICODE
+
+template<typename T>
+using DelegateDeleterUniquePtr_t = std::unique_ptr<T, Delegate<void(T*)>>;
 
 HRY_NS_END
