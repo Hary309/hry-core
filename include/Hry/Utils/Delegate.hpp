@@ -36,19 +36,19 @@ public:
     Delegate() = default;
 
     template<auto FuncAddr>
-    Delegate(ConnectArg<FuncAddr> /*unused*/)
+    Delegate(ConnectArg<FuncAddr> /*unused*/) noexcept
     {
         connect<FuncAddr>();
     }
 
     template<auto CtxFuncAddr, typename T>
-    Delegate(ConnectArg<CtxFuncAddr> /*unused*/, T* context)
+    Delegate(ConnectArg<CtxFuncAddr> /*unused*/, T* context) noexcept
     {
         connect<CtxFuncAddr>(context);
     }
 
     template<auto FuncAddr>
-    void connect()
+    void connect() noexcept
     {
         static_assert(
             std::is_invocable_r_v<Return, decltype(FuncAddr), Args...>,
@@ -62,7 +62,7 @@ public:
     }
 
     template<auto CtxFuncAddr, typename T>
-    void connect(T* content)
+    void connect(T* content) noexcept
     {
         static_assert(
             std::is_invocable_r_v<Return, decltype(CtxFuncAddr), T*, Args...>,
@@ -77,18 +77,18 @@ public:
     }
 
     template<auto FuncAddr>
-    void connect(ConnectArg<FuncAddr> /*unused*/)
+    void connect(ConnectArg<FuncAddr> /*unused*/) noexcept
     {
         connect<FuncAddr>();
     }
 
     template<auto CtxFuncAddr, typename T>
-    void connect(ConnectArg<CtxFuncAddr>, T* context)
+    void connect(ConnectArg<CtxFuncAddr>, T* context) noexcept
     {
         connect<CtxFuncAddr>(context);
     }
 
-    void connect(Function_t* func, void* context)
+    void connect(Function_t* func, void* context) noexcept
     {
         _function = func;
         _content = context;
@@ -104,7 +104,7 @@ public:
 
     Return operator()(Args... args) const { return call(std::forward<Args>(args)...); }
 
-    bool operator==(const Delegate<Return(Args...)>& b) const
+    bool operator==(const Delegate<Return(Args...)>& b) const noexcept
     {
         return (_function == b._function && _content == b._content);
     }

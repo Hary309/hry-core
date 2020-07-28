@@ -29,7 +29,7 @@ private:
     std::vector<Delegate_t> _calls;
 
 public:
-    Return call(Args... args)
+    Return call(Args... args) noexcept
     {
         if constexpr (sizeof...(args) > 0)
         {
@@ -48,9 +48,9 @@ public:
     }
 
 private:
-    void add(Delegate_t delegate) { _calls.push_back(delegate); }
+    void add(Delegate_t delegate) noexcept { _calls.push_back(delegate); }
 
-    void remove(Delegate_t delegate)
+    void remove(Delegate_t delegate) noexcept
     {
         auto it = std::find_if(_calls.begin(), _calls.end(), [&delegate](const Delegate_t& a) {
             return a == delegate;
@@ -74,13 +74,13 @@ private:
     std::vector<typename Signal_t::Delegate_t> _internalCalls;
 
 public:
-    Sink(Signal_t& signal) : _signal(signal) {}
+    Sink(Signal_t& signal) noexcept : _signal(signal) {}
     Sink(Sink&&) noexcept = default;
-    Sink(const Sink&) = default;
+    Sink(const Sink&) noexcept = default;
     Sink& operator=(Sink&&) noexcept = default;
-    Sink& operator=(const Sink&) = default;
+    Sink& operator=(const Sink&) noexcept = default;
 
-    ~Sink()
+    ~Sink() noexcept
     {
         for (auto& delegate : _internalCalls)
         {
@@ -89,7 +89,7 @@ public:
     }
 
     template<auto FuncAddr>
-    void connect()
+    void connect() noexcept
     {
         typename Signal_t::Delegate_t delegate;
         delegate.template connect<FuncAddr>();
@@ -99,7 +99,7 @@ public:
     }
 
     template<auto MethodAddr, typename T>
-    void connect(T* content)
+    void connect(T* content) noexcept
     {
         typename Signal_t::Delegate_t delegate;
         delegate.template connect<MethodAddr>(content);
