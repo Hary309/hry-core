@@ -5,6 +5,7 @@
 #include <scssdk_telemetry.h>
 
 #include "Core.hpp"
+#include "scssdk.h"
 
 static std::unique_ptr<hry::Core> core;
 
@@ -14,6 +15,11 @@ __declspec(dllexport) SCSAPI_RESULT
     if (version != SCS_TELEMETRY_VERSION_1_01)
     {
         return SCS_RESULT_unsupported;
+    }
+
+    if (core == nullptr || core->isInited())
+    {
+        return SCS_RESULT_generic_error;
     }
 
     if (core->init((scs_telemetry_init_params_v100_t*)params))

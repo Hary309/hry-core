@@ -31,6 +31,8 @@ public:
     static inline HINSTANCE hInstance;
 
 private:
+    bool _isInited = false;
+
     scs_telemetry_init_params_v100_t* _scsTelemetry = nullptr;
 
     Renderer _renderer;
@@ -57,6 +59,8 @@ public:
     void initKeyBinds();
 
     void imguiRender();
+
+    [[nodiscard]] bool isInited() const { return _isInited; }
 
 private:
     static bool InstallHooks();
