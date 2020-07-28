@@ -192,7 +192,6 @@ void WndProcEventBridge::onWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lP
         {
             if ((HIWORD(lParam) & KF_REPEAT) == 0)
             {
-                Core::Logger->info("Key pressed ", wParam, " ", lParam);
                 _eventMgr.keyPressSignal.call(
                     KeyboardEvent{ vkKeyCodeToEnum(wParam, lParam), ButtonState::Pressed });
             }
