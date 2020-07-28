@@ -24,8 +24,8 @@ using CreatePlugin_t = Plugin*();
 using InitImGui_t = void(ImGuiContext*);
 
 ModuleManager::ModuleManager(
-    const std::string& pluginDirectory, EventManager& eventMgr, KeyBindsManager& keyBindsMgr)
-    : _pluginDirectory(pluginDirectory), _eventMgr(eventMgr), _keyBindsMgr(keyBindsMgr)
+    std::string pluginDirectory, EventManager& eventMgr, KeyBindsManager& keyBindsMgr)
+    : _pluginDirectory(std::move(pluginDirectory)), _eventMgr(eventMgr), _keyBindsMgr(keyBindsMgr)
 {
 }
 
@@ -66,11 +66,11 @@ void ModuleManager::scan()
     _modules.erase(toRemove, _modules.end());
 
     // add new modules
-    for (auto& item : fs::directory_iterator(_pluginDirectory))
+    for (const auto& item : fs::directory_iterator(_pluginDirectory))
     {
         if (!item.is_directory())
         {
-            auto& path = item.path();
+            const auto& path = item.path();
             Core::Logger->info("Found ", path.filename());
 
             if (tryAdd(path))
@@ -172,8 +172,8 @@ bool ModuleManager::load(Module* mod)
 
     const auto* shortName = mod->plugin->getPluginInfo().shortName.c_str();
 
+    mod->keyBinds = _keyBindsMgr.createKeyBinds(shortName);
     mod->plugin->logger = LoggerFactory::GetLogger(shortName);
-    mod->plugin->keyBinds = _keyBindsMgr.createKeyBinds(shortName);
     mod->plugin->eventHandler = std::make_unique<EventHandler>(_eventMgr.createEventHandler());
 
     mod->isLoaded = true;
@@ -181,6 +181,9 @@ bool ModuleManager::load(Module* mod)
     Core::Logger->info("Successfully loaded '", mod->dllPath, "'");
 
     mod->plugin->init();
+    mod->plugin->initKeyBinds(mod->keyBinds.get());
+
+    _keyBindsMgr.loadFor(mod->keyBinds.get());
 
     return true;
 }
@@ -194,6 +197,8 @@ void ModuleManager::unload(Module* mod)
         Core::Logger->info("'", mod->dllPath, "' is already unloaded");
         return;
     }
+
+    mod->keyBinds.reset();
 
     delete mod->plugin;
     mod->plugin = nullptr;

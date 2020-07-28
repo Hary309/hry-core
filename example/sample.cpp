@@ -21,15 +21,11 @@ private:
     };
 
 public:
-    inline static std::unique_ptr<hry::Logger> Logger;
+    ~SamplePlugin() override { logger->info("Unloading..."); }
 
-public:
-    virtual ~SamplePlugin() { Logger->info("Unloading..."); }
-
-    virtual void init()
+    void init() override
     {
-        Logger = std::move(logger);
-        Logger->info("Created!");
+        logger->info("Created!");
 
         eventHandler->onMouseButtonPress.connect<&SamplePlugin::onKeyPressed>(this);
     }
@@ -44,14 +40,16 @@ public:
         ImGui::End();
     }
 
-    virtual void imguiPage() { ImGui::Text("Settings tab"); }
+    void initKeyBinds(hry::KeyBinds* /*keyBinds*/) override {}
 
-    virtual const hry::PluginInfo& getPluginInfo() const { return _pluginInfo; }
+    void imguiPage() override { ImGui::Text("Settings tab"); }
+
+    const hry::PluginInfo& getPluginInfo() const override { return _pluginInfo; }
 
 private:
     void onKeyPressed(const hry::MouseButtonEvent&& button)
     {
-        Logger->info("Button pressed!", static_cast<int>(button.button));
+        logger->info("Button pressed!", static_cast<int>(button.button));
     }
 };
 

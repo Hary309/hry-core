@@ -25,7 +25,7 @@ private:
 
 public:
     ModuleManager(
-        const std::string& pluginDirectory, EventManager& eventMgr, KeyBindsManager& keyBindsMgr);
+        std::string pluginDirectory, EventManager& eventMgr, KeyBindsManager& keyBindsMgr);
 
     void init();
 

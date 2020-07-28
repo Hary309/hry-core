@@ -53,6 +53,8 @@ bool Core::init(scs_telemetry_init_params_v100_t* scsTelemetry)
     _renderer.init();
     _eventMgr.init(scsTelemetry);
 
+    _isInited = true;
+
     return success;
 }
 
@@ -63,8 +65,6 @@ void Core::lateInit()
 
     _moduleMgr.init();
 
-    _keyBindsMgr.load();
-
     Logger->info("Core successfully initialized!");
 }
 
@@ -72,6 +72,7 @@ void Core::initKeyBinds()
 {
     _coreKeyBinds = _keyBindsMgr.createKeyBinds("Core");
     _mainWindow.initKeyBinds(*_coreKeyBinds);
+    _keyBindsMgr.loadFor(_coreKeyBinds.get());
 }
 
 void Core::imguiRender()

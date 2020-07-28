@@ -23,19 +23,18 @@ private:
     };
 
 public:
-    inline static std::unique_ptr<hry::Logger> Logger;
+    ~ExamplePlugin() override { logger->info("Unloading..."); }
 
-public:
-    virtual ~ExamplePlugin() { Logger->info("Unloading..."); }
-
-    virtual void init()
+    void init() override
     {
-        Logger = std::move(logger);
-        Logger->info("Created!");
+        logger->info("Created!");
 
         eventHandler->onKeyPress.connect<&ExamplePlugin::onKeyPressed>(this);
         eventHandler->onImGuiRender.connect<&ExamplePlugin::imguiRender>(this);
+    }
 
+    void initKeyBinds(hry::KeyBinds* keyBinds) override
+    {
         hry::KeyBind doSomethingBind;
         doSomethingBind.setConfigFieldName("do_something");
         doSomethingBind.setName("Do something");
@@ -43,6 +42,10 @@ public:
         doSomethingBind.pressAction.connect<&ExamplePlugin::onKeyBind>(this);
         keyBinds->addKeyBind(std::move(doSomethingBind));
     }
+
+    void imguiPage() override { ImGui::Text("Test asdf"); }
+
+    const hry::PluginInfo& getPluginInfo() const override { return _pluginInfo; }
 
     void imguiRender()
     {
@@ -56,17 +59,13 @@ public:
         ImGui::End();
     }
 
-    virtual void imguiPage() { ImGui::Text("Test asdf"); }
-
-    virtual const hry::PluginInfo& getPluginInfo() const { return _pluginInfo; }
-
 private:
     void onKeyPressed(const hry::KeyboardEvent& key)
     {
-        Logger->info("Key pressed!", static_cast<int>(key.key));
+        logger->info("Key pressed!", static_cast<int>(key.key));
     }
 
-    void onKeyBind() { Logger->info("Key bind works!"); }
+    void onKeyBind() { logger->info("Key bind works!"); }
 };
 
 INIT_PLUGIN(ExamplePlugin)

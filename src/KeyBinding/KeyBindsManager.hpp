@@ -39,7 +39,7 @@ public:
     [[nodiscard]] const auto& getKeyBinds() const { return _keyBinds; }
 
     void save();
-    void load();
+    void loadFor(KeyBinds* keyBinds);
 
 private:
     void keyBindsDeleter(KeyBinds* ptr);

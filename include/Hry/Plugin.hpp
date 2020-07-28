@@ -21,11 +21,11 @@ public:
     // these variables are set before calling init()
     std::unique_ptr<Logger> logger;
     std::unique_ptr<EventHandler> eventHandler;
-    DelegateDeleterUniquePtr_t<KeyBinds> keyBinds;
 
 public:
     virtual ~Plugin() = default;
-    virtual void init() = 0;
+    virtual void init() = 0; // TODO: add returning type some enum or sth
+    virtual void initKeyBinds(KeyBinds* keyBinds) = 0;
 
     virtual void imguiPage() = 0;
 

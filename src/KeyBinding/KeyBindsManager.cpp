@@ -12,6 +12,8 @@
 #include "Hry/System/System.hpp"
 #include "Hry/Utils/Delegate.hpp"
 
+#include "Core.hpp"
+
 namespace fs = std::filesystem;
 
 HRY_NS_BEGIN
@@ -83,6 +85,8 @@ void KeyBindsManager::save()
 {
     nlohmann::json json;
 
+    Core::Logger->info("Saving keybinds...");
+
     for (auto* keyBindsSection : _keyBinds)
     {
         auto jKeyBindsSection = nlohmann::json::object();
@@ -103,25 +107,27 @@ void KeyBindsManager::save()
     {
         file << json.dump(4);
     }
+    else
+    {
+        Core::Logger->error("Cannot save keybinds to ", FilePath);
+    }
 }
 
-void KeyBindsManager::load()
+void KeyBindsManager::loadFor(KeyBinds* keyBinds)
 {
     std::ifstream file(FilePath);
 
     if (file.good())
     {
+        Core::Logger->info("Loading keybinds for ", keyBinds->getName(), "...");
         nlohmann::json json;
         file >> json;
 
-        for (auto* keyBindsSection : _keyBinds)
-        {
-            auto jKeyBindsSection = json.find(keyBindsSection->getName());
+        auto jKeyBindsSection = json.find(keyBinds->getName());
 
-            if (jKeyBindsSection != json.end())
-            {
-                keyBindsSection->fromJson(jKeyBindsSection.value());
-            }
+        if (jKeyBindsSection != json.end())
+        {
+            keyBinds->fromJson(jKeyBindsSection.value());
         }
     }
 }
