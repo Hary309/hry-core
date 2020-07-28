@@ -16,11 +16,8 @@ HRY_NS_BEGIN
 
 MainWindow::MainWindow(
     ModuleManager& moduleMgr, KeyBindsManager& keyBindsMgr, EventManager& eventMgr)
-    : _moduleMgr(moduleMgr), _keyBindsMgr(keyBindsMgr), _onKeyPress(eventMgr.keyPressSignal),
-      _onMouseButtonPress(eventMgr.mouseButtonPressSignal)
+    : _moduleMgr(moduleMgr), _keyBindsPage(keyBindsMgr, eventMgr)
 {
-    _onKeyPress.connect<&MainWindow::handleKeyPress>(this);
-    _onMouseButtonPress.connect<&MainWindow::handleMouseButtonPress>(this);
 }
 
 void MainWindow::initKeyBinds(KeyBinds& keyBinds)
@@ -63,7 +60,7 @@ void MainWindow::renderImGui()
             }
             if (ImGui::BeginTabItem("Key binds"))
             {
-                renderKeyBindsTab();
+                _keyBindsPage.drawImGuiPage();
                 ImGui::EndTabItem();
             }
             if (ImGui::BeginTabItem("About"))
@@ -207,64 +204,6 @@ void MainWindow::renderPluginsPageTab()
     }
 }
 
-void MainWindow::renderKeyBindsTab()
-{
-    const auto& keyBindsList = _keyBindsMgr.getKeyBinds();
-
-    for (const auto& keyBindsSection : keyBindsList)
-    {
-        auto& keyBinds = keyBindsSection->getKeyBinds();
-
-        if (!keyBinds.empty())
-        {
-            if (ImGui::CollapsingHeader(keyBindsSection->getName().c_str()))
-            {
-                ImGui::Columns(2);
-
-                for (auto& keyBind : keyBinds)
-                {
-                    ImGui::PushID(&keyBind);
-
-                    ImGui::Text("%s", keyBind.getName().c_str());
-
-                    ImGui::NextColumn();
-
-                    const auto* key = keyBind.getKey();
-
-                    if (_keyToSetBind == &keyBind)
-                    {
-                        ImGui::Text("Press key to bind");
-                    }
-                    else
-                    {
-                        const char* text = nullptr;
-
-                        if (key != nullptr)
-                        {
-                            text = key->name.c_str();
-                        }
-                        else
-                        {
-                            text = "Not set";
-                        }
-
-                        if (ImGui::SmallButton(text))
-                        {
-                            _keyToSetBind = &keyBind;
-                            EnableImGui(false);
-                        }
-                    }
-
-                    ImGui::PopID();
-                    ImGui::NextColumn();
-                }
-
-                ImGui::Columns(1);
-            }
-        }
-    }
-}
-
 void MainWindow::renderAboutTab()
 {
     ImGui::Text("Credits etc");
@@ -276,30 +215,6 @@ void MainWindow::showMainWindowKeyBind()
     Mouse::DisableInGameMouse(_isWindowEnabled);
 
     EnableImGui(_isWindowEnabled);
-}
-
-void MainWindow::handleKeyPress(const KeyboardEvent&& keyboardEvent)
-{
-    if (_keyToSetBind != nullptr)
-    {
-        if (keyboardEvent.key != Keyboard::Key::Escape)
-        {
-            _keyToSetBind->setKey(keyboardEvent.key);
-        }
-
-        EnableImGui(true);
-        _keyToSetBind = nullptr;
-    }
-}
-
-void MainWindow::handleMouseButtonPress(const MouseButtonEvent&& buttonEvent)
-{
-    if (_keyToSetBind != nullptr)
-    {
-        _keyToSetBind->setKey(buttonEvent.button);
-        _keyToSetBind = nullptr;
-        EnableImGui(true);
-    }
 }
 
 HRY_NS_END

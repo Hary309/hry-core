@@ -8,6 +8,7 @@
 #include "Events/EventManager.hpp"
 #include "KeyBinding/KeyBindsManager.hpp"
 #include "Modules/ModuleManager.hpp"
+#include "UI/Pages//KeyBindsPage.hpp"
 
 HRY_NS_BEGIN
 
@@ -17,17 +18,13 @@ private:
     bool _isWindowEnabled = false;
 
     ModuleManager& _moduleMgr;
-    KeyBindsManager& _keyBindsMgr;
-
-    Sink<void(const KeyboardEvent&&)> _onKeyPress;
-    Sink<void(const MouseButtonEvent&&)> _onMouseButtonPress;
 
     int _selectedPluginIndex = 0;
 
-    KeyBind* _keyToSetBind = nullptr;
+    KeyBindsPage _keyBindsPage;
 
 public:
-    MainWindow(ModuleManager& moduleMgr, KeyBindsManager& KeyBindsMgr, EventManager& eventMgr);
+    MainWindow(ModuleManager& moduleMgr, KeyBindsManager& keyBindsMgr, EventManager& eventMgr);
 
     void initKeyBinds(KeyBinds& keyBinds);
 
@@ -37,15 +34,9 @@ private:
     void renderPluginsTab();
     void renderSettingsTab();
     void renderPluginsPageTab();
-    void renderKeyBindsTab();
     void renderAboutTab();
 
-    void renderModal();
-
     void showMainWindowKeyBind();
-
-    void handleKeyPress(const KeyboardEvent&&);
-    void handleMouseButtonPress(const MouseButtonEvent&&);
 };
 
 HRY_NS_END
