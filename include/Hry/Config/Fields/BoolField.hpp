@@ -6,7 +6,7 @@
 
 HRY_NS_BEGIN
 
-class CheckBoxField : public ConfigFieldBase
+class BoolField : public ConfigFieldBase
 {
 private:
     bool _value{};
@@ -14,10 +14,9 @@ private:
     bool _dirtyValue{};
 
 public:
-    Delegate<void(bool)> onValueChange;
 
 public:
-    CheckBoxField(const std::string& label, const std::string& configFieldName)
+    BoolField(const std::string& label, const std::string& configFieldName)
         : ConfigFieldBase(label, configFieldName)
     {
     }
@@ -37,8 +36,6 @@ public:
 
 private:
     void imguiRender() override;
-    void save(nlohmann::json& json) override;
-    void load(const nlohmann::json& json) override;
 };
 
 HRY_NS_END
