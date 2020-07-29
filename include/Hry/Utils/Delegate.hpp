@@ -20,7 +20,7 @@ struct ConnectArg
 };
 
 template<auto Addr>
-inline constexpr ConnectArg<Addr> ConnectArg_v;
+inline static ConnectArg<Addr> ConnectArg_v;
 
 template<typename Return, typename... Args>
 class Delegate<Return(Args...)>
