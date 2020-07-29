@@ -111,13 +111,11 @@ inline auto KeyBind::getDefaultKey() const -> const BindableKey*
 
 inline void KeyBind::setDefaultKey(BindableKey::Key_t key)
 {
-    auto it = std::find_if(
-        BindableKeys.begin(), BindableKeys.end(),
-        [&key](const BindableKey& bindableKey) { return key == bindableKey.key; });
+    const auto* bindableKey = GetBindableKey(key);
 
-    if (it != BindableKeys.end())
+    if (bindableKey != nullptr)
     {
-        setDefaultKey(&*it);
+        setDefaultKey(bindableKey);
     }
 }
 
@@ -133,13 +131,11 @@ inline auto KeyBind::setKey(const BindableKey* key) -> void
 
 inline void KeyBind::setKey(BindableKey::Key_t key)
 {
-    auto it = std::find_if(
-        BindableKeys.begin(), BindableKeys.end(),
-        [&key](const BindableKey& bindableKey) { return key == bindableKey.key; });
+    const auto* bindableKey = GetBindableKey(key);
 
-    if (it != BindableKeys.end())
+    if (bindableKey != nullptr)
     {
-        setKey(&*it);
+        setKey(bindableKey);
     }
 }
 
