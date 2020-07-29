@@ -12,7 +12,7 @@ void BoolField::imguiRender()
 {
     if (ImGui::Checkbox(_label.c_str(), &_dirtyValue))
     {
-        onValueChange.call(_dirtyValue);
+        onPreviewChange(_dirtyValue);
     }
 
     if (!_description.empty())
@@ -22,12 +22,12 @@ void BoolField::imguiRender()
     }
 }
 
-void BoolField::save(nlohmann::json& json)
+void BoolField::toJson(nlohmann::json& json)
 {
     json[_configFieldName] = _value;
 }
 
-void BoolField::load(const nlohmann::json& json)
+void BoolField::fromJson(const nlohmann::json& json)
 {
     if (auto it = json.find(_configFieldName); it != json.end())
     {

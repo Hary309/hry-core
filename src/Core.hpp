@@ -9,6 +9,7 @@
 #include "Hry/Utils.hpp"
 #include "Hry/Utils/Timer.hpp"
 
+#include "Config/ConfigManager.hpp"
 #include "Events/EventManager.hpp"
 #include "KeyBinding/KeyBindsManager.hpp"
 #include "Modules/ModuleManager.hpp"
@@ -37,12 +38,14 @@ private:
 
     Renderer _renderer;
     EventManager _eventMgr;
+    ConfigManager _configMgr;
     KeyBindsManager _keyBindsMgr;
     ModuleManager _moduleMgr;
     MainWindow _mainWindow;
 
     ImGuiImplEvents _imguiImplEvents;
 
+    DelegateDeleterUniquePtr_t<Config> _coreConfig;
     DelegateDeleterUniquePtr_t<KeyBinds> _coreKeyBinds;
 
 public:
@@ -56,9 +59,10 @@ public:
     // after renderer and imgui is initalized
     void lateInit();
 
-    void initKeyBinds();
-
     void imguiRender();
+
+    void initConfig();
+    void initKeyBinds();
 
     [[nodiscard]] bool isInited() const { return _isInited; }
 

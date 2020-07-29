@@ -9,6 +9,7 @@
 
 #include "Events/EventManager.hpp"
 #include "KeyBinding/KeyBindsManager.hpp"
+#include "Config/ConfigManager.hpp"
 
 #include "Module.hpp"
 
@@ -21,11 +22,12 @@ private:
     std::vector<std::unique_ptr<Module>> _modules;
 
     EventManager& _eventMgr;
+    ConfigManager& _configMgr;
     KeyBindsManager& _keyBindsMgr;
 
 public:
     ModuleManager(
-        std::string pluginDirectory, EventManager& eventMgr, KeyBindsManager& keyBindsMgr);
+        std::string pluginDirectory, EventManager& eventMgr, ConfigManager& configMgr, KeyBindsManager& keyBindsMgr);
 
     void init();
 

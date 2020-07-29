@@ -16,7 +16,7 @@ private:
     bool _isDirty = false;
 
 public:
-    Delegate<void(const std::string&)> onValueChange;
+    Delegate<void(const std::string&)> onPreviewChange;
 
 public:
     TextField(const std::string& label, const std::string& configFieldName)
@@ -38,8 +38,8 @@ public:
 
 private:
     void imguiRender() override;
-    void save(nlohmann::json& json) override;
-    void load(const nlohmann::json& json) override;
+    void toJson(nlohmann::json& json) override;
+    void fromJson(const nlohmann::json& json) override;
 };
 
 HRY_NS_END

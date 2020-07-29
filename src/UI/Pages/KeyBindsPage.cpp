@@ -14,7 +14,7 @@ KeyBindsPage::KeyBindsPage(KeyBindsManager& keyBindsMgr, EventManager& eventMgr)
     _onMouseButtonPress.connect<&KeyBindsPage::handleMouseButtonPress>(this);
 }
 
-void KeyBindsPage::drawImGuiPage()
+void KeyBindsPage::renderImGuiPage()
 {
     const auto& keyBindsList = _keyBindsMgr.getKeyBinds();
 

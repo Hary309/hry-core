@@ -4,6 +4,8 @@
 #include <imgui.h>
 #include <windows.h>
 
+#include <Hry/Config/Config.hpp>
+#include <Hry/Config/Fields/NumericField.hpp>
 #include <Hry/Events/Event.hpp>
 #include <Hry/KeyBinding/KeyBinds.hpp>
 #include <Hry/Logger/Logger.hpp>
@@ -33,8 +35,14 @@ public:
         eventHandler->onImGuiRender.connect<&ExamplePlugin::imguiRender>(this);
     }
 
-    void initKeyBinds(hry::KeyBinds* keyBinds) override
+    // OBS STUDIO
+
+    void initConfig(hry::Config* config, hry::KeyBinds* keyBinds) override
     {
+        auto intField = config->createField<hry::NumericField<int>>("Test", "test");
+        intField->useDrag();
+        intField->setDefaultValue(23);
+
         hry::KeyBind doSomethingBind;
         doSomethingBind.setConfigFieldName("do_something");
         doSomethingBind.setName("Do something");

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Hry/KeyBinding/KeyBinds.hpp"
+#include "Hry/Config/Config.hpp"
 #include "Hry/Namespace.hpp"
 #include "Hry/Plugin.hpp"
 
@@ -12,6 +13,7 @@ struct Module
     std::string dllPath;
 
     DelegateDeleterUniquePtr_t<KeyBinds> keyBinds; // can be null
+    DelegateDeleterUniquePtr_t<Config> config; // can be null
 
     bool isLoaded = false;
     void* handle = nullptr;

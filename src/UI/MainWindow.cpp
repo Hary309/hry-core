@@ -15,8 +15,11 @@
 HRY_NS_BEGIN
 
 MainWindow::MainWindow(
-    ModuleManager& moduleMgr, KeyBindsManager& keyBindsMgr, EventManager& eventMgr)
-    : _moduleMgr(moduleMgr), _keyBindsPage(keyBindsMgr, eventMgr)
+    ModuleManager& moduleMgr,
+    ConfigManager& configMgr,
+    KeyBindsManager& keyBindsMgr,
+    EventManager& eventMgr)
+    : _moduleMgr(moduleMgr), _configPage(configMgr), _keyBindsPage(keyBindsMgr, eventMgr)
 {
 }
 
@@ -50,7 +53,7 @@ void MainWindow::renderImGui()
             }
             if (ImGui::BeginTabItem("Settings"))
             {
-                renderSettingsTab();
+                _configPage.renderImGuiPage();
                 ImGui::EndTabItem();
             }
             if (ImGui::BeginTabItem("Plugins page"))
@@ -60,7 +63,7 @@ void MainWindow::renderImGui()
             }
             if (ImGui::BeginTabItem("Key binds"))
             {
-                _keyBindsPage.drawImGuiPage();
+                _keyBindsPage.renderImGuiPage();
                 ImGui::EndTabItem();
             }
             if (ImGui::BeginTabItem("About"))
@@ -142,11 +145,6 @@ void MainWindow::renderPluginsTab()
     }
 
     ImGui::Columns(1);
-}
-
-void MainWindow::renderSettingsTab()
-{
-    ImGui::Text("Settings related to this plugin, also some developer options");
 }
 
 void MainWindow::renderPluginsPageTab()

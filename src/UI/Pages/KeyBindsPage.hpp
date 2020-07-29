@@ -21,7 +21,7 @@ private:
 public:
     KeyBindsPage(KeyBindsManager& keyBindsMgr, EventManager& eventMgr);
 
-    void drawImGuiPage();
+    void renderImGuiPage();
 
 private:
     void handleKeyPress(const KeyboardEvent&&);

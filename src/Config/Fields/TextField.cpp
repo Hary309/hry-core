@@ -13,17 +13,17 @@ void TextField::imguiRender()
 {
     if (ImGui::InputText(_label.c_str(), &_dirtyValue))
     {
-        onValueChange(_dirtyValue);
+        onPreviewChange(_dirtyValue);
         _isDirty = _value != _dirtyValue;
     }
 }
 
-void TextField::save(nlohmann::json& json)
+void TextField::toJson(nlohmann::json& json)
 {
     json[_configFieldName] = _value;
 }
 
-void TextField::load(const nlohmann::json& json)
+void TextField::fromJson(const nlohmann::json& json)
 {
     if (auto it = json.find(_configFieldName); it != json.end())
     {

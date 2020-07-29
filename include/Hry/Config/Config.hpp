@@ -5,7 +5,10 @@
 #include <type_traits>
 #include <vector>
 
+#include <nlohmann/json_fwd.hpp>
+
 #include "Hry/Namespace.hpp"
+#include "Hry/Utils/Delegate.hpp"
 
 #include "ConfigFieldBase.hpp"
 
@@ -16,6 +19,9 @@ class Config
 private:
     std::string _name;
     std::vector<std::unique_ptr<ConfigFieldBase>> _fields;
+
+public:
+    hry::Delegate<void(Config&)> onChangesApplied;
 
 public:
     explicit Config(std::string name);
@@ -30,10 +36,15 @@ public:
         return field;
     }
 
+    const std::string& getName() const { return _name; }
+
+    bool isDirty();
+    bool isEmpty() const { return _fields.empty(); }
+
     void imguiRender();
 
-    void save();
-    void load();
+    void toJson(nlohmann::json& json);
+    void fromJson(const nlohmann::json& json);
 };
 
 HRY_NS_END

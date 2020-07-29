@@ -4,6 +4,7 @@
 #include <imgui.h>
 #include <windows.h>
 
+#include <Hry/Config/Config.hpp>
 #include <Hry/Events/Event.hpp>
 #include <Hry/Logger/Logger.hpp>
 #include <Hry/Plugin.hpp>
@@ -40,7 +41,7 @@ public:
         ImGui::End();
     }
 
-    void initKeyBinds(hry::KeyBinds* /*keyBinds*/) override {}
+    void initConfig(hry::Config* config, hry::KeyBinds* keyBinds) override {}
 
     void imguiPage() override { ImGui::Text("Settings tab"); }
 

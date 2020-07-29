@@ -24,8 +24,12 @@ using CreatePlugin_t = Plugin*();
 using InitImGui_t = void(ImGuiContext*);
 
 ModuleManager::ModuleManager(
-    std::string pluginDirectory, EventManager& eventMgr, KeyBindsManager& keyBindsMgr)
-    : _pluginDirectory(std::move(pluginDirectory)), _eventMgr(eventMgr), _keyBindsMgr(keyBindsMgr)
+    std::string pluginDirectory,
+    EventManager& eventMgr,
+    ConfigManager& configMgr,
+    KeyBindsManager& keyBindsMgr)
+    : _pluginDirectory(std::move(pluginDirectory)), _eventMgr(eventMgr), _configMgr(configMgr),
+      _keyBindsMgr(keyBindsMgr)
 {
 }
 
@@ -172,6 +176,7 @@ bool ModuleManager::load(Module* mod)
 
     const auto* shortName = mod->plugin->getPluginInfo().shortName.c_str();
 
+    mod->config = _configMgr.createConfig(shortName);
     mod->keyBinds = _keyBindsMgr.createKeyBinds(shortName);
     mod->plugin->logger = LoggerFactory::GetLogger(shortName);
     mod->plugin->eventHandler = std::make_unique<EventHandler>(_eventMgr.createEventHandler());
@@ -181,8 +186,9 @@ bool ModuleManager::load(Module* mod)
     Core::Logger->info("Successfully loaded '", mod->dllPath, "'");
 
     mod->plugin->init();
-    mod->plugin->initKeyBinds(mod->keyBinds.get());
+    mod->plugin->initConfig(mod->config.get(), mod->keyBinds.get());
 
+    _configMgr.loadFor(mod->config.get());
     _keyBindsMgr.loadFor(mod->keyBinds.get());
 
     return true;
@@ -198,6 +204,7 @@ void ModuleManager::unload(Module* mod)
         return;
     }
 
+    mod->config.reset();
     mod->keyBinds.reset();
 
     delete mod->plugin;

@@ -41,8 +41,8 @@ public:
 
 protected:
     virtual void imguiRender() = 0;
-    virtual void save(nlohmann::json& json) = 0;
-    virtual void load(const nlohmann::json& json) = 0;
+    virtual void toJson(nlohmann::json& json) = 0;
+    virtual void fromJson(const nlohmann::json& json) = 0;
 };
 
 HRY_NS_END

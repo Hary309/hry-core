@@ -21,11 +21,7 @@ void SelectionField::imguiRender()
             _dirtySelectedIndex = 0;
         }
 
-        std::visit(
-            [this, &size](auto&& arg) {
-                renderWidget(arg, size);
-            },
-            _type);
+        std::visit([this, &size](auto&& arg) { renderWidget(arg, size); }, _type);
 
         if (!_description.empty())
         {
@@ -35,12 +31,12 @@ void SelectionField::imguiRender()
     }
 }
 
-void SelectionField::save(nlohmann::json& json)
+void SelectionField::toJson(nlohmann::json& json)
 {
     json[_configFieldName] = _options[_selectedIndex];
 }
 
-void SelectionField::load(const nlohmann::json& json)
+void SelectionField::fromJson(const nlohmann::json& json)
 {
     auto it = json.find(_configFieldName);
 
@@ -69,12 +65,12 @@ void SelectionField::renderWidget(ComboType& /*unused*/, int size)
             if (ImGui::Selectable(option.c_str(), isSelected))
             {
                 _dirtySelectedIndex = i;
+                onPreviewChange(_dirtySelectedIndex);
             }
 
             if (isSelected)
             {
                 ImGui::SetItemDefaultFocus();
-                onValueChange(_dirtySelectedIndex);
             }
         }
 
@@ -90,6 +86,7 @@ void SelectionField::renderWidget(RadioType& radio, int size)
         if (ImGui::RadioButton(option.c_str(), i == _dirtySelectedIndex))
         {
             _dirtySelectedIndex = i;
+            onPreviewChange(_dirtySelectedIndex);
         }
 
         if (radio.sameLine && i != size - 1)

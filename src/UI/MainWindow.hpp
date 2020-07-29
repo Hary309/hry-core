@@ -8,7 +8,8 @@
 #include "Events/EventManager.hpp"
 #include "KeyBinding/KeyBindsManager.hpp"
 #include "Modules/ModuleManager.hpp"
-#include "UI/Pages//KeyBindsPage.hpp"
+#include "UI/Pages/ConfigPage.hpp"
+#include "UI/Pages/KeyBindsPage.hpp"
 
 HRY_NS_BEGIN
 
@@ -21,10 +22,15 @@ private:
 
     int _selectedPluginIndex = 0;
 
+    ConfigPage _configPage;
     KeyBindsPage _keyBindsPage;
 
 public:
-    MainWindow(ModuleManager& moduleMgr, KeyBindsManager& keyBindsMgr, EventManager& eventMgr);
+    MainWindow(
+        ModuleManager& moduleMgr,
+        ConfigManager& configMgr,
+        KeyBindsManager& keyBindsMgr,
+        EventManager& eventMgr);
 
     void initKeyBinds(KeyBinds& keyBinds);
 
@@ -32,7 +38,6 @@ public:
 
 private:
     void renderPluginsTab();
-    void renderSettingsTab();
     void renderPluginsPageTab();
     void renderAboutTab();
 

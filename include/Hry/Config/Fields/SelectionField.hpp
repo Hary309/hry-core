@@ -32,7 +32,7 @@ private:
     std::variant<ComboType, RadioType> _type;
 
 public:
-    Delegate<void(int)> onValueChange;
+    Delegate<void(int)> onPreviewChange;
 
 public:
     SelectionField(const std::string& label, const std::string& configFieldName)
@@ -77,8 +77,8 @@ public:
 
 protected:
     void imguiRender() override;
-    void save(nlohmann::json& json) override;
-    void load(const nlohmann::json& json) override;
+    void toJson(nlohmann::json& json) override;
+    void fromJson(const nlohmann::json& json) override;
 
 private:
     void renderWidget(ComboType& combo, int size);

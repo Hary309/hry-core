@@ -5,6 +5,7 @@
 #include <imgui.h>
 #include <scssdk_telemetry.h>
 
+#include "Hry/Config/Fields/BoolField.hpp"
 #include "Hry/Events/Event.hpp"
 #include "Hry/Namespace.hpp"
 #include "Hry/Utils/Signal.hpp"
@@ -18,8 +19,8 @@ HRY_NS_BEGIN
 
 Core::Core(HINSTANCE hInst)
     : _renderer(*this), _keyBindsMgr(_eventMgr),
-      _moduleMgr("plugins\\hry_plugins", _eventMgr, _keyBindsMgr),
-      _mainWindow(_moduleMgr, _keyBindsMgr, _eventMgr), _imguiImplEvents(_eventMgr)
+      _moduleMgr("plugins\\hry_plugins", _eventMgr, _configMgr, _keyBindsMgr),
+      _mainWindow(_moduleMgr, _configMgr, _keyBindsMgr, _eventMgr), _imguiImplEvents(_eventMgr)
 {
     hInstance = hInst;
 }
@@ -61,11 +62,19 @@ bool Core::init(scs_telemetry_init_params_v100_t* scsTelemetry)
 void Core::lateInit()
 {
     EnableImGui(false);
+    initConfig();
     initKeyBinds();
 
     _moduleMgr.init();
 
     Logger->info("Core successfully initialized!");
+}
+
+void Core::initConfig()
+{
+    _coreConfig = _configMgr.createConfig("Core");
+    auto* checkBox = _coreConfig->createField<BoolField>("Test", "test");
+    checkBox->setDefaultValue(false);
 }
 
 void Core::initKeyBinds()

@@ -14,6 +14,7 @@ private:
     bool _dirtyValue{};
 
 public:
+    Delegate<void(bool)> onPreviewChange;
 
 public:
     BoolField(const std::string& label, const std::string& configFieldName)
@@ -36,6 +37,8 @@ public:
 
 private:
     void imguiRender() override;
+    void toJson(nlohmann::json& json) override;
+    void fromJson(const nlohmann::json& json) override;
 };
 
 HRY_NS_END

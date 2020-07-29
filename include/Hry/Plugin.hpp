@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <memory>
 
+#include "Hry/Config/Config.hpp"
 #include "Hry/Logger/Logger.hpp"
 #include "Hry/Namespace.hpp"
 #include "Hry/Utils.hpp"
@@ -25,7 +26,7 @@ public:
 public:
     virtual ~Plugin() = default;
     virtual void init() = 0; // TODO: add returning type some enum or sth
-    virtual void initKeyBinds(KeyBinds* keyBinds) = 0;
+    virtual void initConfig(Config* config, KeyBinds* keyBinds) = 0;
 
     virtual void imguiPage() = 0;
 

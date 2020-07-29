@@ -51,7 +51,7 @@ private:
     std::variant<InputType, DragType, SliderType> _controlType;
 
 public:
-    Delegate<void(const T&)> onValueChange;
+    Delegate<void(const T&)> onPreviewChange;
 
 public:
     NumericField(const std::string& label, const std::string& configFieldName)
@@ -128,7 +128,7 @@ protected:
                             _label.c_str(), ImGuiDataType_v<T>, &_dirtyValue, &input.step,
                             &input.stepFast, input.format.c_str()))
                     {
-                        onValueChange(_dirtyValue);
+                        onPreviewChange(_dirtyValue);
                         _isDirty = _value != _dirtyValue;
                     }
                 }
@@ -139,7 +139,7 @@ protected:
                             _label.c_str(), ImGuiDataType_v<T>, &_dirtyValue, drag.speed, &drag.min,
                             &drag.max, drag.format.c_str(), drag.power))
                     {
-                        onValueChange(_dirtyValue);
+                        onPreviewChange(_dirtyValue);
                         _isDirty = _value != _dirtyValue;
                     }
                 }
@@ -150,7 +150,7 @@ protected:
                             _label.c_str(), ImGuiDataType_v<T>, &_dirtyValue, &slider.min,
                             &slider.max, slider.format.c_str(), slider.power))
                     {
-                        onValueChange(_dirtyValue);
+                        onPreviewChange(_dirtyValue);
                         _isDirty = _value != _dirtyValue;
                     }
                 }
@@ -164,8 +164,8 @@ protected:
         }
     }
 
-    void save(nlohmann::json& json) override { json[_configFieldName] = _value; }
-    void load(const nlohmann::json& json) override
+    void toJson(nlohmann::json& json) override { json[_configFieldName] = _value; }
+    void fromJson(const nlohmann::json& json) override
     {
         auto it = json.find(_configFieldName);
         if (it != json.end())
