@@ -23,16 +23,7 @@ void SelectionField::imguiRender()
 
         std::visit(
             [this, &size](auto&& arg) {
-                using T = std::decay_t<decltype(arg)>;
-
-                if constexpr (std::is_same_v<T, ComboType>)
-                {
-                    renderCombo(arg, size);
-                }
-                else if constexpr (std::is_same_v<T, RadioType>)
-                {
-                    renderRadio(arg, size);
-                }
+                renderWidget(arg, size);
             },
             _type);
 
@@ -65,7 +56,7 @@ void SelectionField::load(const nlohmann::json& json)
     }
 }
 
-void SelectionField::renderCombo(ComboType& /*unused*/, int size)
+void SelectionField::renderWidget(ComboType& /*unused*/, int size)
 {
     if (ImGui::BeginCombo(_label.c_str(), _options[_dirtySelectedIndex].c_str()))
     {
@@ -91,7 +82,7 @@ void SelectionField::renderCombo(ComboType& /*unused*/, int size)
     }
 }
 
-void SelectionField::renderRadio(RadioType& radio, int size)
+void SelectionField::renderWidget(RadioType& radio, int size)
 {
     for (int i = 0; i < size; i++)
     {

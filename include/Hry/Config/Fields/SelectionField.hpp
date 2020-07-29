@@ -81,8 +81,8 @@ protected:
     void load(const nlohmann::json& json) override;
 
 private:
-    void renderCombo(ComboType& combo, int size);
-    void renderRadio(RadioType& radio, int size);
+    void renderWidget(ComboType& combo, int size);
+    void renderWidget(RadioType& radio, int size);
 
     int getIndex(const std::string& value)
     {
