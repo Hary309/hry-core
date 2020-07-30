@@ -30,7 +30,7 @@ public:
     }
 
     void applyChanges() override { _value = _dirtyValue; }
-    void restoreChanges() override { _dirtyValue = _value; }
+    void cancelChanges() override { _dirtyValue = _value; }
     void resetToDefault() override { setDefaultValue(_defaultValue); }
 
     bool isDirty() override { return _value != _dirtyValue; }

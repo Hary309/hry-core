@@ -30,9 +30,21 @@ public:
         _value = value;
     }
 
-    void applyChanges() override { _value = _dirtyValue; }
-    void restoreChanges() override { _dirtyValue = _value; }
-    void resetToDefault() override { setDefaultValue(_defaultValue); }
+    void applyChanges() override
+    {
+        _value = _dirtyValue;
+        _isDirty = false;
+    }
+    void cancelChanges() override
+    {
+        _dirtyValue = _value;
+        _isDirty = false;
+    }
+    void resetToDefault() override
+    {
+        setDefaultValue(_defaultValue);
+        _isDirty = false;
+    }
 
     bool isDirty() override { return _isDirty; }
 

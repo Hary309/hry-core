@@ -130,6 +130,10 @@ void KeyBindsManager::loadFor(KeyBinds* keyBinds)
             keyBinds->fromJson(jKeyBindsSection.value());
         }
     }
+    else
+    {
+        Core::Logger->warning("Cannot open ", FilePath);
+    }
 }
 
 HRY_NS_END

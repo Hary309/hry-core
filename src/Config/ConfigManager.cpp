@@ -30,6 +30,14 @@ void ConfigManager::save()
 
     Core::Logger->info("Saving config...");
 
+    std::ifstream readFile(FilePath);
+
+    // don't delete fields that aren't loaded and won't be saved by function
+    if (readFile.is_open())
+    {
+        readFile >> json;
+    }
+
     for (auto* config : _configs)
     {
         auto jConfig = nlohmann::json::object();
@@ -44,11 +52,11 @@ void ConfigManager::save()
         fs::create_directories(ConfigDirectory);
     }
 
-    std::ofstream file(FilePath);
+    std::ofstream saveFile(FilePath);
 
-    if (file.is_open())
+    if (saveFile.is_open())
     {
-        file << json.dump(4);
+        saveFile << json.dump(4);
     }
     else
     {
@@ -73,6 +81,10 @@ void ConfigManager::loadFor(Config* config)
             config->fromJson(jKeyBindsSection.value());
             config->onChangesApplied.call(*config);
         }
+    }
+    else
+    {
+        Core::Logger->warning("Cannot open ", FilePath);
     }
 }
 

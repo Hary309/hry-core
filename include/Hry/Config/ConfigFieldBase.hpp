@@ -34,7 +34,7 @@ public:
     void setDescription(const std::string& desc) { _description = desc; }
 
     virtual void applyChanges() = 0;
-    virtual void restoreChanges() = 0;
+    virtual void cancelChanges() = 0;
     virtual void resetToDefault() = 0;
 
     virtual bool isDirty() = 0;

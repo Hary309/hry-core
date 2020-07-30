@@ -22,6 +22,32 @@ bool Config::isDirty()
     return isDirty;
 }
 
+void Config::applyChanges()
+{
+    for (auto& field : _fields)
+    {
+        field->applyChanges();
+    }
+
+    onChangesApplied(*this);
+}
+
+void Config::cancelChanges()
+{
+    for (auto& field : _fields)
+    {
+        field->cancelChanges();
+    }
+}
+
+void Config::resetToDefault()
+{
+    for (auto& field : _fields)
+    {
+        field->resetToDefault();
+    }
+}
+
 void Config::imguiRender()
 {
     for (auto& field : _fields)
@@ -32,13 +58,9 @@ void Config::imguiRender()
 
 void Config::toJson(nlohmann::json& json)
 {
-    json["name"] = _name;
-
-    auto fields = json["fields"];
-
     for (auto& field : _fields)
     {
-        field->toJson(fields);
+        field->toJson(json);
     }
 }
 

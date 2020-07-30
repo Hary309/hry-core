@@ -6,6 +6,8 @@
 #include <scssdk_telemetry.h>
 
 #include "Hry/Config/Fields/BoolField.hpp"
+#include "Hry/Config/Fields/SelectionField.hpp"
+#include "Hry/Config/Fields/TextField.hpp"
 #include "Hry/Events/Event.hpp"
 #include "Hry/Namespace.hpp"
 #include "Hry/Utils/Signal.hpp"
@@ -42,7 +44,7 @@ bool Core::init(scs_telemetry_init_params_v100_t* scsTelemetry)
     freopen("CONOUT$", "w", stdin);
 #endif
 
-    LoggerFactory::Init("hry_core.log");
+    LoggerFactory::Init("plugins/hry_core.log");
     Logger = LoggerFactory::GetLogger("core");
 
     Logger->info("Initializing core...");
@@ -73,8 +75,20 @@ void Core::lateInit()
 void Core::initConfig()
 {
     _coreConfig = _configMgr.createConfig("Core");
+
     auto* checkBox = _coreConfig->createField<BoolField>("Test", "test");
     checkBox->setDefaultValue(false);
+    checkBox->setDescription("some desc");
+
+    auto* text = _coreConfig->createField<TextField>("Tekst", "text");
+    text->setDefaultValue("Extra tekst");
+
+    auto* select = _coreConfig->createField<SelectionField>("Wybierz se", "wybierz_se");
+    select->addOptions("Jeden", "Dwa", "Trzy");
+    select->setDefaultValue("Dwa");
+    select->useCombo();
+
+    _configMgr.loadFor(_coreConfig.get());
 }
 
 void Core::initKeyBinds()

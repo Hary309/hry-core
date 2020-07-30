@@ -66,7 +66,7 @@ public:
     }
 
     void applyChanges() override { _selectedIndex = _dirtySelectedIndex; }
-    void restoreChanges() override { _dirtySelectedIndex = _selectedIndex; }
+    void cancelChanges() override { _dirtySelectedIndex = _selectedIndex; }
     void resetToDefault() override
     {
         _selectedIndex = _defaultIndex;

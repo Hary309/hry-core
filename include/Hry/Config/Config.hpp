@@ -36,12 +36,18 @@ public:
         return field;
     }
 
-    const std::string& getName() const { return _name; }
+    [[nodiscard]] const std::string& getName() const { return _name; }
 
     bool isDirty();
-    bool isEmpty() const { return _fields.empty(); }
+    [[nodiscard]] bool isEmpty() const { return _fields.empty(); }
+
+    void applyChanges();
+    void cancelChanges();
+    void resetToDefault();
 
     void imguiRender();
+
+    [[nodiscard]] auto& getFields() const { return _fields; }
 
     void toJson(nlohmann::json& json);
     void fromJson(const nlohmann::json& json);
