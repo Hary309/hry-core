@@ -24,12 +24,15 @@ bool Config::isDirty()
 
 void Config::applyChanges()
 {
-    for (auto& field : _fields)
+    if (isDirty())
     {
-        field->applyChanges();
-    }
+        for (auto& field : _fields)
+        {
+            field->applyChanges();
+        }
 
-    onChangesApplied(*this);
+        onChangesApplied(*this);
+    }
 }
 
 void Config::cancelChanges()

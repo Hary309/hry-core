@@ -17,7 +17,7 @@ void ConfigPage::renderImGuiPage()
 
     for (auto* config : configs)
     {
-        auto& fields = config->getFields();
+        const auto& fields = config->getFields();
 
         if (fields.empty())
         {

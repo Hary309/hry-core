@@ -85,6 +85,14 @@ void KeyBindsManager::save()
 {
     nlohmann::json json;
 
+    std::ifstream fileOpen(FilePath);
+
+    // don't delete keybinds for modules that aren't loaded
+    if (fileOpen.good())
+    {
+        fileOpen >> json;
+    }
+
     Core::Logger->info("Saving keybinds...");
 
     for (auto* keyBindsSection : _keyBinds)
@@ -101,11 +109,11 @@ void KeyBindsManager::save()
         fs::create_directory(ConfigDirectory);
     }
 
-    std::ofstream file(FilePath);
+    std::ofstream fileSave(FilePath);
 
-    if (file.is_open())
+    if (fileSave.is_open())
     {
-        file << json.dump(4);
+        fileSave << json.dump(4);
     }
     else
     {
