@@ -1,11 +1,11 @@
 #pragma once
 
 #include "Hry/Events/Event.hpp"
+#include "Hry/Events/EventHandler.hpp"
 #include "Hry/KeyBinding/KeyBinds.hpp"
 #include "Hry/Namespace.hpp"
 #include "Hry/Utils/Signal.hpp"
 
-#include "Events/EventManager.hpp"
 #include "KeyBinding/KeyBindsManager.hpp"
 #include "Modules/ModuleManager.hpp"
 #include "UI/Pages/ConfigPage.hpp"
@@ -30,7 +30,7 @@ public:
         ModuleManager& moduleMgr,
         ConfigManager& configMgr,
         KeyBindsManager& keyBindsMgr,
-        EventManager& eventMgr);
+        EventHandler& eventHandler);
 
     void initKeyBinds(KeyBinds& keyBinds);
 

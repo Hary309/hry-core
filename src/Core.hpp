@@ -4,6 +4,7 @@
 #include <windows.h>
 
 #include "Hry/Events/Event.hpp"
+#include "Hry/Events/EventHandler.hpp"
 #include "Hry/KeyBinding/KeyBinds.hpp"
 #include "Hry/Logger/Logger.hpp"
 #include "Hry/Utils.hpp"
@@ -38,6 +39,7 @@ private:
 
     Renderer _renderer;
     EventManager _eventMgr;
+    EventHandler _eventHandler;
     ConfigManager _configMgr;
     KeyBindsManager _keyBindsMgr;
     ModuleManager _moduleMgr;

@@ -3,18 +3,16 @@
 #include <imgui.h>
 
 #include "Hry/Events/Event.hpp"
+#include "Hry/Events/EventHandler.hpp"
 #include "Hry/Namespace.hpp"
 
 HRY_NS_BEGIN
 
-ImGuiImplEvents::ImGuiImplEvents(EventManager& eventMgr)
-    : _onMouseButtonPress(eventMgr.mouseButtonPressSignal),
-      _onMouseButtonRelease(eventMgr.mouseButtonReleaseSignal),
-      _onMouseWheelScroll(eventMgr.mouseWheelScrollSignal)
+ImGuiImplEvents::ImGuiImplEvents(EventHandler& eventHandler)
 {
-    _onMouseButtonPress.connect<OnMouseButtonPress>();
-    _onMouseButtonRelease.connect<OnMouseButtonRelease>();
-    _onMouseWheelScroll.connect<OnMouseWheelScroll>();
+    eventHandler.onMouseButtonPress.connect<OnMouseButtonPress>();
+    eventHandler.onMouseButtonRelease.connect<OnMouseButtonRelease>();
+    eventHandler.onMouseWheelScroll.connect<OnMouseWheelScroll>();
 }
 
 void ImGuiImplEvents::OnMouseButtonPress(const MouseButtonEvent&& buttonEvent)

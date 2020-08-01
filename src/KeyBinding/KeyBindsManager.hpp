@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "Hry/Events/Event.hpp"
+#include "Hry/Events/EventHandler.hpp"
 #include "Hry/KeyBinding/BindableKeys.hpp"
 #include "Hry/KeyBinding/KeyBinds.hpp"
 #include "Hry/Namespace.hpp"
@@ -25,13 +26,8 @@ public:
 private:
     std::vector<KeyBinds*> _keyBinds;
 
-    Sink<void(const KeyboardEvent&&)> _onKeyPress;
-    Sink<void(const KeyboardEvent&&)> _onKeyRelease;
-    Sink<void(const MouseButtonEvent&&)> _onMouseButtonPress;
-    Sink<void(const MouseButtonEvent&&)> _onMouseButtonRelease;
-
 public:
-    explicit KeyBindsManager(EventManager& eventMgr);
+    explicit KeyBindsManager(EventHandler& eventHandler);
 
     DelegateDeleterUniquePtr_t<KeyBinds> createKeyBinds(const std::string& name);
     void remove(const KeyBinds* keyBind);

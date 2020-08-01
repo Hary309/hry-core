@@ -18,15 +18,12 @@ namespace fs = std::filesystem;
 
 HRY_NS_BEGIN
 
-KeyBindsManager::KeyBindsManager(EventManager& eventMgr)
-    : _onKeyPress(eventMgr.keyPressSignal), _onKeyRelease(eventMgr.keyReleaseSignal),
-      _onMouseButtonPress(eventMgr.mouseButtonPressSignal),
-      _onMouseButtonRelease(eventMgr.mouseButtonReleaseSignal)
+KeyBindsManager::KeyBindsManager(EventHandler& eventHandler)
 {
-    _onKeyPress.connect<&KeyBindsManager::handleKeybaordEvent>(this);
-    _onKeyRelease.connect<&KeyBindsManager::handleKeybaordEvent>(this);
-    _onMouseButtonPress.connect<&KeyBindsManager::handleMouseButtonEvent>(this);
-    _onMouseButtonRelease.connect<&KeyBindsManager::handleMouseButtonEvent>(this);
+    eventHandler.onKeyPress.connect<&KeyBindsManager::handleKeybaordEvent>(this);
+    eventHandler.onKeyRelease.connect<&KeyBindsManager::handleKeybaordEvent>(this);
+    eventHandler.onMouseButtonPress.connect<&KeyBindsManager::handleMouseButtonEvent>(this);
+    eventHandler.onMouseButtonRelease.connect<&KeyBindsManager::handleMouseButtonEvent>(this);
 }
 
 DelegateDeleterUniquePtr_t<KeyBinds> KeyBindsManager::createKeyBinds(const std::string& name)

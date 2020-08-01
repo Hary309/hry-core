@@ -11,6 +11,7 @@
 #include "Hry/Config/Fields/SelectionField.hpp"
 #include "Hry/Config/Fields/TextField.hpp"
 #include "Hry/Events/Event.hpp"
+#include "Hry/Events/EventHandler.hpp"
 #include "Hry/Namespace.hpp"
 #include "Hry/Utils/Signal.hpp"
 
@@ -22,9 +23,10 @@
 HRY_NS_BEGIN
 
 Core::Core(HINSTANCE hInst)
-    : _renderer(*this), _keyBindsMgr(_eventMgr),
+    : _renderer(*this), _eventHandler(_eventMgr.createEventHandler()), _keyBindsMgr(_eventHandler),
       _moduleMgr("plugins\\hry_plugins", _eventMgr, _configMgr, _keyBindsMgr),
-      _mainWindow(_moduleMgr, _configMgr, _keyBindsMgr, _eventMgr), _imguiImplEvents(_eventMgr)
+      _mainWindow(_moduleMgr, _configMgr, _keyBindsMgr, _eventHandler),
+      _imguiImplEvents(_eventHandler)
 {
     hInstance = hInst;
 }

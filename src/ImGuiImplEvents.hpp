@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Hry/Events/Event.hpp"
+#include "Hry/Events/EventHandler.hpp"
 #include "Hry/Namespace.hpp"
 #include "Hry/Utils/Signal.hpp"
 
@@ -11,13 +12,8 @@ HRY_NS_BEGIN
 // implement missing mouse events for ImGui (thx dinput8)
 class ImGuiImplEvents
 {
-private:
-    Sink<void(const MouseButtonEvent&&)> _onMouseButtonPress;
-    Sink<void(const MouseButtonEvent&&)> _onMouseButtonRelease;
-    Sink<void(const MouseWheelEvent&&)> _onMouseWheelScroll;
-
 public:
-    ImGuiImplEvents(EventManager& eventMgr);
+    ImGuiImplEvents(EventHandler& eventHandler);
 
 private:
     static void OnMouseButtonPress(const MouseButtonEvent&&);

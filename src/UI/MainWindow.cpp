@@ -18,8 +18,8 @@ MainWindow::MainWindow(
     ModuleManager& moduleMgr,
     ConfigManager& configMgr,
     KeyBindsManager& keyBindsMgr,
-    EventManager& eventMgr)
-    : _moduleMgr(moduleMgr), _configPage(configMgr), _keyBindsPage(keyBindsMgr, eventMgr)
+    EventHandler& eventHandler)
+    : _moduleMgr(moduleMgr), _configPage(configMgr), _keyBindsPage(keyBindsMgr, eventHandler)
 {
 }
 

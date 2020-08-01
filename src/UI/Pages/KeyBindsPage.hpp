@@ -13,13 +13,10 @@ class KeyBindsPage
 private:
     KeyBindsManager& _keyBindsMgr;
 
-    Sink<void(const KeyboardEvent&&)> _onKeyPress;
-    Sink<void(const MouseButtonEvent&&)> _onMouseButtonPress;
-
     KeyBind* _keyToSetBind = nullptr;
 
 public:
-    KeyBindsPage(KeyBindsManager& keyBindsMgr, EventManager& eventMgr);
+    KeyBindsPage(KeyBindsManager& keyBindsMgr, EventHandler& eventHandler);
 
     void renderImGuiPage();
 
