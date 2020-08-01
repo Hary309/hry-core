@@ -31,7 +31,7 @@ void Config::applyChanges()
             field->applyChanges();
         }
 
-        onChangesApplied(*this);
+        invokeCallback();
     }
 }
 
@@ -73,6 +73,18 @@ void Config::fromJson(const nlohmann::json& json)
     {
         field->fromJson(json);
     }
+}
+
+void Config::invokeCallback()
+{
+    ConfigCallbackData callbackData;
+
+    for (auto& field : _fields)
+    {
+        field->setupCallbackData(callbackData);
+    }
+
+    onChangesApplied(std::move(callbackData));
 }
 
 HRY_NS_END

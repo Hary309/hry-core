@@ -187,6 +187,11 @@ protected:
         }
     }
 
+    void setupCallbackData(ConfigCallbackData& callbackData) override
+    {
+        callbackData.addData({ _value, _configFieldName });
+    }
+
 private:
     std::string getFormat()
     {

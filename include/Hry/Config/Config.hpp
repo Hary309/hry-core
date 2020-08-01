@@ -21,7 +21,7 @@ private:
     std::vector<std::unique_ptr<ConfigFieldBase>> _fields;
 
 public:
-    hry::Delegate<void(Config&)> onChangesApplied;
+    hry::Delegate<void(ConfigCallbackData&&)> onChangesApplied;
 
 public:
     explicit Config(std::string name);
@@ -51,6 +51,8 @@ public:
 
     void toJson(nlohmann::json& json);
     void fromJson(const nlohmann::json& json);
+
+    void invokeCallback();
 };
 
 HRY_NS_END

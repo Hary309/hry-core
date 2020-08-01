@@ -1,10 +1,12 @@
 #include "Core.hpp"
 
 #include <cstdio>
+#include <string>
 
 #include <imgui.h>
 #include <scssdk_telemetry.h>
 
+#include "Hry/Config/ConfigFieldBase.hpp"
 #include "Hry/Config/Fields/BoolField.hpp"
 #include "Hry/Config/Fields/SelectionField.hpp"
 #include "Hry/Config/Fields/TextField.hpp"
@@ -75,6 +77,20 @@ void Core::lateInit()
 void Core::initConfig()
 {
     _coreConfig = _configMgr.createConfig("Core");
+    _coreConfig->onChangesApplied.connect(
+        [](void*, ConfigCallbackData&& callbackData) {
+            auto test = callbackData.getValue<bool>("test");
+            auto text = callbackData.getValue<std::string>("text");
+            auto selectOne = callbackData.getValue<std::string>("selectOne");
+
+            if (test.has_value() && text.has_value() && selectOne.has_value())
+            {
+                Core::Logger->info(
+                    "Config values: '", test.value(), "', '", text.value(), "', '",
+                    selectOne.value(), "'");
+            }
+        },
+        nullptr);
 
     auto* checkBox = _coreConfig->createField<BoolField>("Test", "test");
     checkBox->setDefaultValue(false);
@@ -83,9 +99,9 @@ void Core::initConfig()
     auto* text = _coreConfig->createField<TextField>("Tekst", "text");
     text->setDefaultValue("Extra tekst");
 
-    auto* select = _coreConfig->createField<SelectionField>("Wybierz se", "wybierz_se");
-    select->addOptions("Jeden", "Dwa", "Trzy");
-    select->setDefaultValue("Dwa");
+    auto* select = _coreConfig->createField<SelectionField>("Wybierz se", "select_one");
+    select->addOptions("One", "Two", "Three");
+    select->setDefaultValue("Two");
     select->useCombo();
 
     _configMgr.loadFor(_coreConfig.get());

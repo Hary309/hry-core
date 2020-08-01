@@ -80,6 +80,11 @@ protected:
     void toJson(nlohmann::json& json) override;
     void fromJson(const nlohmann::json& json) override;
 
+    void setupCallbackData(ConfigCallbackData& callbackData) override
+    {
+        callbackData.addData({ _options[_selectedIndex], _configFieldName });
+    }
+
 private:
     void renderWidget(ComboType& combo, int size);
     void renderWidget(RadioType& radio, int size);

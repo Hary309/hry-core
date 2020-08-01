@@ -52,6 +52,11 @@ private:
     void imguiRender() override;
     void toJson(nlohmann::json& json) override;
     void fromJson(const nlohmann::json& json) override;
+
+    void setupCallbackData(ConfigCallbackData& callbackData) override
+    {
+        callbackData.addData({ _value, _configFieldName });
+    }
 };
 
 HRY_NS_END

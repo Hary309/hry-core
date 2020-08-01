@@ -79,7 +79,7 @@ void ConfigManager::loadFor(Config* config)
         if (jKeyBindsSection != json.end())
         {
             config->fromJson(jKeyBindsSection.value());
-            config->onChangesApplied.call(*config);
+            config->invokeCallback();
         }
     }
     else
