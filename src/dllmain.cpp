@@ -17,12 +17,23 @@ __declspec(dllexport) SCSAPI_RESULT
         return SCS_RESULT_unsupported;
     }
 
+    auto* initParams = (scs_telemetry_init_params_v100_t*)(params);
+
+    auto log = initParams->common.log;
+
     if (core == nullptr || core->isInited())
     {
+        log(SCS_LOG_TYPE_message, "hry_core is already initialized");
+        return SCS_RESULT_ok;
+    }
+
+    if (::GetModuleHandle(HRY_TEXT("d3d11.dll")) == nullptr)
+    {
+        log(SCS_LOG_TYPE_warning, "[hry_core] Only DirectX 11 is supported so far");
         return SCS_RESULT_generic_error;
     }
 
-    if (core->init((scs_telemetry_init_params_v100_t*)params))
+    if (core->init(initParams))
     {
         return SCS_RESULT_ok;
     }
