@@ -47,6 +47,8 @@ public:
         connect<CtxFuncAddr>(context);
     }
 
+    Delegate(Function_t* func, void* context) noexcept { connect(func, context); }
+
     template<auto FuncAddr>
     void connect() noexcept
     {
