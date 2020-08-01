@@ -58,7 +58,8 @@ void DInput8EventBridge::onGetDeviceData(
             {
                 MouseWheelEvent wheelEvent{};
                 wheelEvent.wheel = Mouse::Wheel::Vertical;
-                wheelEvent.delta = static_cast<short>(data.dwData / WHEEL_DELTA);
+                wheelEvent.delta =
+                    static_cast<short>(static_cast<short>(data.dwData) / WHEEL_DELTA);
 
                 _eventMgr.mouseWheelScrollSignal.call(std::move(wheelEvent));
             }
