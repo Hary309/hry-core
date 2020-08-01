@@ -14,8 +14,14 @@
 
 HRY_NS_BEGIN
 
+class ConfigManager;
+class ConfigPage;
+
 class Config
 {
+    friend ConfigManager;
+    friend ConfigPage;
+
 private:
     std::string _name;
     std::vector<std::unique_ptr<ConfigFieldBase>> _fields;
@@ -36,6 +42,7 @@ public:
         return field;
     }
 
+private:
     [[nodiscard]] const std::string& getName() const { return _name; }
 
     bool isDirty();
