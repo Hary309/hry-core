@@ -80,7 +80,7 @@ void Core::initConfig()
 {
     _coreConfig = _configMgr.createConfig("Core");
     _coreConfig->onChangesApplied.connect(
-        [](void*, ConfigCallbackData&& callbackData) {
+        [](void* /*unused*/, ConfigCallbackData&& callbackData) {
             auto test = callbackData.getValue<bool>("test");
             auto text = callbackData.getValue<std::string>("text");
             auto selectOne = callbackData.getValue<std::string>("selectOne");

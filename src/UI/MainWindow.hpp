@@ -4,6 +4,7 @@
 #include "Hry/Events/EventHandler.hpp"
 #include "Hry/KeyBinding/KeyBinds.hpp"
 #include "Hry/Namespace.hpp"
+#include "Hry/System/System.hpp"
 #include "Hry/Utils/Signal.hpp"
 
 #include "KeyBinding/KeyBindsManager.hpp"
@@ -41,7 +42,7 @@ private:
     void renderPluginsPageTab();
     void renderAboutTab();
 
-    void showMainWindowKeyBind();
+    void showMainWindowKeyBind(hry::ButtonState);
 };
 
 HRY_NS_END

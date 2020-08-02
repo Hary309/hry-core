@@ -4,6 +4,7 @@
 #include <imgui.h>
 #include <windows.h>
 
+#include "Hry/System/System.hpp"
 #include <Hry/Config/Config.hpp>
 #include <Hry/Config/Fields/NumericField.hpp>
 #include <Hry/Events/Event.hpp>
@@ -31,8 +32,8 @@ public:
     {
         logger->info("Created!");
 
-        eventHandler->onKeyPress.connect<&ExamplePlugin::onKeyPressed>(this);
-        eventHandler->onImGuiRender.connect<&ExamplePlugin::imguiRender>(this);
+        // eventHandler->onKeyPress.connect<&ExamplePlugin::onKeyPressed>(this);
+        // eventHandler->onImGuiRender.connect<&ExamplePlugin::imguiRender>(this);
     }
 
     // OBS STUDIO
@@ -48,7 +49,16 @@ public:
         doSomethingBind.setName("Do something");
         doSomethingBind.setDefaultKey(hry::Keyboard::Key::Q);
         doSomethingBind.pressAction.connect<&ExamplePlugin::onKeyBind>(this);
+        doSomethingBind.releaseAction.connect<&ExamplePlugin::onKeyBind>(this);
         keyBinds->addKeyBind(std::move(doSomethingBind));
+
+        hry::KeyBind holdBind(hry::KeyBind::TriggerType::Hold);
+        holdBind.setConfigFieldName("hold");
+        holdBind.setName("Hold button");
+        holdBind.setDefaultKey(hry::Keyboard::Key::Q);
+        holdBind.pressAction.connect<&ExamplePlugin::onKeyHold>(this);
+        holdBind.releaseAction.connect<&ExamplePlugin::onKeyHold>(this);
+        keyBinds->addKeyBind(std::move(holdBind));
     }
 
     void imguiPage() override { ImGui::Text("Test asdf"); }
@@ -73,7 +83,39 @@ private:
         logger->info("Key pressed!", static_cast<int>(key.key));
     }
 
-    void onKeyBind() { logger->info("Key bind works!"); }
+    void onKeyBind(hry::ButtonState state)
+    {
+        switch (state)
+        {
+            case hry::ButtonState::Pressed:
+            {
+                logger->info("Press!");
+            }
+            break;
+            case hry::ButtonState::Released:
+            {
+                logger->info("Release!");
+            }
+            break;
+        }
+    }
+
+    void onKeyHold(hry::ButtonState state)
+    {
+        switch (state)
+        {
+            case hry::ButtonState::Pressed:
+            {
+                logger->info("Holding!");
+            }
+            break;
+            case hry::ButtonState::Released:
+            {
+                logger->info("Released hold!");
+            }
+            break;
+        }
+    }
 };
 
 INIT_PLUGIN(ExamplePlugin)

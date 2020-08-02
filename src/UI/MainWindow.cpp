@@ -207,7 +207,7 @@ void MainWindow::renderAboutTab()
     ImGui::Text("Credits etc");
 }
 
-void MainWindow::showMainWindowKeyBind()
+void MainWindow::showMainWindowKeyBind(hry::ButtonState /*unused*/)
 {
     _isWindowEnabled = !_isWindowEnabled;
     Mouse::DisableInGameMouse(_isWindowEnabled);

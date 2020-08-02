@@ -1,9 +1,11 @@
 #include "KeyBindsManager.hpp"
 
+#include <chrono>
 #include <cstdio>
 #include <filesystem>
 #include <fstream>
 #include <ios>
+#include <ratio>
 
 #include <nlohmann/json.hpp>
 
@@ -15,6 +17,7 @@
 #include "Core.hpp"
 
 namespace fs = std::filesystem;
+using system_clock = std::chrono::system_clock;
 
 HRY_NS_BEGIN
 
@@ -24,6 +27,7 @@ KeyBindsManager::KeyBindsManager(EventHandler& eventHandler)
     eventHandler.onKeyRelease.connect<&KeyBindsManager::handleKeybaordEvent>(this);
     eventHandler.onMouseButtonPress.connect<&KeyBindsManager::handleMouseButtonEvent>(this);
     eventHandler.onMouseButtonRelease.connect<&KeyBindsManager::handleMouseButtonEvent>(this);
+    eventHandler.onFrameEnd.connect<&KeyBindsManager::update>(this);
 }
 
 DelegateDeleterUniquePtr_t<KeyBinds> KeyBindsManager::createKeyBinds(const std::string& name)
@@ -38,6 +42,11 @@ DelegateDeleterUniquePtr_t<KeyBinds> KeyBindsManager::createKeyBinds(const std::
 void KeyBindsManager::remove(const KeyBinds* keyBinds)
 {
     _keyBinds.erase(std::remove(_keyBinds.begin(), _keyBinds.end(), keyBinds));
+}
+
+void KeyBindsManager::update()
+{
+    _taskScheduler.update();
 }
 
 void KeyBindsManager::keyBindsDeleter(KeyBinds* ptr)
@@ -64,17 +73,61 @@ void KeyBindsManager::processKey(BindableKey::Key_t key, ButtonState buttonState
 
         for (auto& keyBind : keyBinds)
         {
-            if (keyBind.getKey() != nullptr && keyBind.getKeyState() != buttonState &&
-                keyBind.getKey()->key == key)
+            if (keyBind.getKey() == nullptr || keyBind._state == buttonState ||
+                keyBind.getKey()->key != key)
+            {
+                continue;
+            }
+
+            if (keyBind.getTriggerType() == KeyBind::TriggerType::Click)
             {
                 switch (buttonState)
                 {
-                    case ButtonState::Pressed: keyBind.pressAction.call(); break;
-                    case ButtonState::Released: keyBind.releaseAction.call(); break;
+                    case ButtonState::Pressed:
+                        keyBind.pressAction.call(ButtonState::Pressed);
+                        break;
+                    case ButtonState::Released:
+                        keyBind.releaseAction.call(ButtonState::Released);
+                        break;
                 }
-                keyBind.setKeyState(buttonState);
             }
+            else if (keyBind.getTriggerType() == KeyBind::TriggerType::Hold)
+            {
+                switch (buttonState)
+                {
+                    case ButtonState::Pressed:
+                    {
+                        auto endTimePoint = system_clock::now() + TimeToHold;
+
+                        _taskScheduler.addTask(
+                            TimeToHold, { ConnectArg_v<&KeyBindsManager::onTaskHold>, this },
+                            &keyBind, endTimePoint);
+
+                        keyBind._keyPressTimePoint = endTimePoint;
+                    }
+                    break;
+                    case ButtonState::Released:
+                    {
+                        if (keyBind._keyPressTimePoint - system_clock::now() <
+                            system_clock::time_point::duration::zero())
+                        {
+                            keyBind.releaseAction(ButtonState::Released);
+                        }
+                    }
+                    break;
+                }
+            }
+
+            keyBind._state = buttonState;
         }
+    }
+}
+
+void KeyBindsManager::onTaskHold(KeyBind* keyBind, system_clock::time_point timePoint)
+{
+    if (keyBind->_state == ButtonState::Pressed && keyBind->_keyPressTimePoint == timePoint)
+    {
+        keyBind->pressAction(ButtonState::Pressed);
     }
 }
 

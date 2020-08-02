@@ -22,7 +22,6 @@ public:
     using Delegate_t = Delegate<Return(Args...)>;
     using SystemClock_t = std::chrono::system_clock;
     using TimePoint_t = SystemClock_t::time_point;
-    using TaskID_t = uint64_t;
 
     struct Task
     {
@@ -30,10 +29,6 @@ public:
         TimePoint_t timePoint;
 
         std::tuple<Args...> args;
-
-        uint64_t id = 0;
-
-        bool enabled = true;
 
         constexpr bool operator()(const Task& lhs, const Task& rhs) const
         {
@@ -47,13 +42,8 @@ private:
 public:
     void update()
     {
-        // remove disabled tasks
-        while (!_tasks.top().enabled)
-        {
-            _tasks.pop();
-        }
-
-        while (_tasks.top().timePoint - SystemClock_t::now() < std::chrono::milliseconds(0))
+        while (!_tasks.empty() &&
+               _tasks.top().timePoint - SystemClock_t::now() < TimePoint_t::duration::zero())
         {
             const auto& task = _tasks.top();
             invokeTask(task, task.args, std::make_index_sequence<sizeof...(Args)>());
@@ -61,36 +51,10 @@ public:
         }
     }
 
-    void disableTask(TaskID_t id)
-    {
-        auto it = std::find_if(std::begin(_tasks), std::end(_tasks), [&id](const Task& task) {
-            return task.id == id;
-        });
-
-        if (it != std::end(_tasks))
-        {
-            it->enabled = false;
-        }
-    }
-
-    void hasTask(TaskID_t id)
-    {
-        auto it = std::find_if(std::begin(_tasks), std::end(_tasks), [&id](const Task& task) {
-            return task.id == id;
-        });
-
-        return it != std::end(_tasks);
-    }
-
-    TaskID_t addTask(std::chrono::milliseconds delay, Delegate_t&& delegate, Args... args)
+    void addTask(std::chrono::milliseconds delay, Delegate_t&& delegate, Args... args)
     {
         Task task{ delegate, SystemClock_t::now() + delay, std::tuple<Args...>(args...) };
-
-        auto id = reinterpret_cast<TaskID_t>(&task);
-        task.id = id;
         _tasks.push(std::move(task));
-
-        return id;
     }
 
 private:

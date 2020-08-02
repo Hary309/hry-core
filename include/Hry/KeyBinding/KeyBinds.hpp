@@ -1,6 +1,7 @@
 #pragma once
 
 #include <algorithm>
+#include <chrono>
 #include <memory>
 #include <string>
 #include <utility>
@@ -15,23 +16,43 @@
 #include "Hry/System/Mouse.hpp"
 #include "Hry/System/System.hpp"
 #include "Hry/Utils/Delegate.hpp"
+#include "Hry/Utils/TaskScheduler.hpp"
 
 #include "BindableKeys.hpp"
 
 HRY_NS_BEGIN
 
 class KeyBinds;
+class KeyBindsManager;
+class KeyBindsPage;
 
 class KeyBind
 {
+    friend KeyBinds;
+    friend KeyBindsManager;
+    friend KeyBindsPage;
+
 public:
-    using Delegate_t = Delegate<void()>;
+    using Delegate_t = Delegate<void(ButtonState)>;
+
+    enum class TriggerType
+    {
+        Click = 0,
+        Hold
+    };
 
 private:
     std::string _configFieldName;
     std::string _name;
+
     const BindableKey* _defaultKey = nullptr; // if null not set
     const BindableKey* _key = nullptr;        // if null no set
+
+    TriggerType _defaultTriggerType = TriggerType::Click;
+    TriggerType _triggerType = TriggerType::Click;
+
+    // time point when key was pressed
+    std::chrono::system_clock::time_point _keyPressTimePoint;
 
     ButtonState _state = ButtonState::Released;
 
@@ -40,22 +61,32 @@ public:
     Delegate_t releaseAction;
 
 public:
-    auto setConfigFieldName(const char* name) -> void;
-    [[nodiscard]] auto getConfigFieldName() const -> const std::string&;
+    KeyBind() = default;
+    explicit KeyBind(TriggerType triggerType)
+        : _defaultTriggerType(triggerType), _triggerType(triggerType)
+    {
+    }
 
-    auto setName(const char* name) -> void;
-    [[nodiscard]] auto getName() const -> const std::string&;
+    void setConfigFieldName(const char* name);
 
-    auto setDefaultKey(const BindableKey* key) -> void;
-    auto setDefaultKey(BindableKey::Key_t key) -> void;
-    [[nodiscard]] auto getDefaultKey() const -> const BindableKey*;
+    void setName(const char* name);
 
-    auto setKey(const BindableKey* key) -> void;
-    auto setKey(BindableKey::Key_t key) -> void;
-    [[nodiscard]] auto getKey() const -> const BindableKey*;
+    void setDefaultKey(const BindableKey* key);
+    void setDefaultKey(BindableKey::Key_t key);
 
-    auto setKeyState(ButtonState state) -> void;
-    [[nodiscard]] auto getKeyState() const -> ButtonState;
+    // default value is TriggerType::Click
+    void setDefaultTriggerType(TriggerType triggerType);
+
+private:
+    auto getConfigFieldName() const -> const std::string&;
+    auto getName() const -> const std::string&;
+
+    void setKey(const BindableKey* key);
+    void setKey(BindableKey::Key_t key);
+    auto getKey() const -> const BindableKey*;
+
+    auto getDefaultKey() const -> const BindableKey*;
+    auto getTriggerType() const -> TriggerType;
 };
 
 class KeyBinds
@@ -139,14 +170,15 @@ inline void KeyBind::setKey(BindableKey::Key_t key)
     }
 }
 
-inline auto KeyBind::setKeyState(ButtonState state) -> void
+inline void KeyBind::setDefaultTriggerType(TriggerType triggerType)
 {
-    _state = state;
+    _defaultTriggerType = triggerType;
+    _triggerType = triggerType;
 }
 
-inline auto KeyBind::getKeyState() const -> ButtonState
+inline auto KeyBind::getTriggerType() const -> TriggerType
 {
-    return _state;
+    return _triggerType;
 }
 
 HRY_NS_END
