@@ -11,7 +11,7 @@ class Timer
 public:
     using Clock_t = std::chrono::high_resolution_clock;
     using TimePoint_t = Clock_t::time_point;
-    using Seconds_t = std::chrono::duration<float, std::ratio<1>>;
+    using Seconds_t = std::chrono::duration<double, std::ratio<1>>;
     using Milliseconds_t = std::chrono::milliseconds;
     using Microseconds_t = std::chrono::microseconds;
 
@@ -25,7 +25,7 @@ public:
 
     [[nodiscard]] auto elapsed() const { return Clock_t::now() - _start; }
 
-    [[nodiscard]] float asSeconds() const
+    [[nodiscard]] double asSeconds() const
     {
         return std::chrono::duration_cast<Seconds_t>(elapsed()).count();
     }

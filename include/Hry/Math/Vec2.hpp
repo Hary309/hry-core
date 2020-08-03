@@ -86,7 +86,7 @@ constexpr Vec2<T>& operator/=(Vec2<T>& left, T right)
     return left;
 }
 
-using Vec2f = Vec2<float>;
+using Vec2f = Vec2<double>;
 using Vec2i = Vec2<int>;
 using Vec2u = Vec2<unsigned int>;
 

@@ -39,15 +39,14 @@ void LoggerFactory::WriteLine(Logger::Level level, const char* msg, const char* 
     time_t tm = std::time(nullptr);
     strftime(timeBuffer, 16, "%H:%M:%S", std::localtime(&tm));
 
-    std::string levelName;
-    levelName.reserve(5);
-
-    switch (level)
-    {
-        case Logger::Level::Info: levelName = "info"; break;
-        case Logger::Level::Warning: levelName = "warn"; break;
-        case Logger::Level::Error: levelName = "erro"; break;
-    }
+    std::string levelName = [&level]() {
+        switch (level)
+        {
+            case Logger::Level::Info: return "info";
+            case Logger::Level::Warning: return "warn";
+            case Logger::Level::Error: return "erro";
+        }
+    }();
 
     char buffer[128];
     snprintf(buffer, 128, "[%s] [%s] [%s] ", timeBuffer, levelName.c_str(), module);

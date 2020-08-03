@@ -7,18 +7,19 @@
 
 #include "Hry/Namespace.hpp"
 
+#include "Config/ConfigManager.hpp"
 #include "Events/EventManager.hpp"
 #include "KeyBinding/KeyBindsManager.hpp"
-#include "Config/ConfigManager.hpp"
 
 #include "Module.hpp"
+
 
 HRY_NS_BEGIN
 
 class ModuleManager
 {
 private:
-    std::string _pluginDirectory;
+    std::filesystem::path _pluginDirectory;
     std::vector<std::unique_ptr<Module>> _modules;
 
     EventManager& _eventMgr;
@@ -27,7 +28,10 @@ private:
 
 public:
     ModuleManager(
-        std::string pluginDirectory, EventManager& eventMgr, ConfigManager& configMgr, KeyBindsManager& keyBindsMgr);
+        std::filesystem::path pluginDirectory,
+        EventManager& eventMgr,
+        ConfigManager& configMgr,
+        KeyBindsManager& keyBindsMgr);
 
     void init();
 

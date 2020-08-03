@@ -40,7 +40,7 @@ public:
 
     void initConfig(hry::Config* config, hry::KeyBinds* keyBinds) override
     {
-        auto intField = config->createField<hry::NumericField<int>>("Test", "test");
+        auto* intField = config->createField<hry::NumericField<int>>("Test", "test");
         intField->useDrag();
         intField->setDefaultValue(23);
 

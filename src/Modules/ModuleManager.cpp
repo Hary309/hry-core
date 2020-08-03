@@ -24,7 +24,7 @@ using CreatePlugin_t = Plugin*();
 using InitImGui_t = void(ImGuiContext*);
 
 ModuleManager::ModuleManager(
-    std::string pluginDirectory,
+    std::filesystem::path pluginDirectory,
     EventManager& eventMgr,
     ConfigManager& configMgr,
     KeyBindsManager& keyBindsMgr)
@@ -83,7 +83,7 @@ void ModuleManager::scan()
             }
             else
             {
-                Core::Logger->info(path.filename(), " already indexed");
+                Core::Logger->info(path.filename(), " is already indexed");
             }
         }
     }
