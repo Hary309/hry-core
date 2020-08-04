@@ -41,11 +41,11 @@ static inline const auto BindableKeys = std::array{
     BindableKey{ Keyboard::Key::Num8, "8" },
     BindableKey{ Keyboard::Key::Num9, "9" },
     BindableKey{ Keyboard::Key::Escape, "Escape" },
-    BindableKey{ Keyboard::Key::LControl, "Left Control" },
+    BindableKey{ Keyboard::Key::LControl, "Left Ctrl" },
     BindableKey{ Keyboard::Key::LShift, "Left Shift" },
     BindableKey{ Keyboard::Key::LAlt, "Left Alt" },
     BindableKey{ Keyboard::Key::LSystem, "Left System" },
-    BindableKey{ Keyboard::Key::RControl, "Right Control" },
+    BindableKey{ Keyboard::Key::RControl, "Right Ctrl" },
     BindableKey{ Keyboard::Key::RShift, "Right Shift" },
     BindableKey{ Keyboard::Key::RAlt, "Right Alt" },
     BindableKey{ Keyboard::Key::RSystem, "Right System" },
@@ -114,11 +114,11 @@ static inline const auto BindableKeys = std::array{
     BindableKey{ Keyboard::Key::BrowserHome, "Home" },
 
     // Mouse
-    BindableKey{ Mouse::Button::Left, "Left Mouse Button" },
-    BindableKey{ Mouse::Button::Right, "Right Mouse Button" },
-    BindableKey{ Mouse::Button::Middle, "Middle Mouse Button" },
-    BindableKey{ Mouse::Button::XButton1, "X1 Mouse Button" },
-    BindableKey{ Mouse::Button::Left, "X2 Mouse Button" },
+    BindableKey{ Mouse::Button::Left, "LMB" },
+    BindableKey{ Mouse::Button::Right, "RMB" },
+    BindableKey{ Mouse::Button::Middle, "MMB" },
+    BindableKey{ Mouse::Button::XButton1, "X1 MB" },
+    BindableKey{ Mouse::Button::Left, "X2 MB" },
 };
 
 const BindableKey* GetBindableKey(BindableKey::Key_t key)
