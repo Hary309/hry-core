@@ -2,6 +2,8 @@
 
 #include <imgui.h>
 
+#include "Hry/KeyBinding/KeyBinds.hpp"
+
 #include "Utils/ImGuiUtils.hpp"
 
 HRY_NS_BEGIN
@@ -16,6 +18,8 @@ KeyBindsPage::KeyBindsPage(KeyBindsManager& keyBindsMgr, EventHandler& eventHand
 void KeyBindsPage::renderImGuiPage()
 {
     const auto& keyBindsList = _keyBindsMgr.getKeyBinds();
+
+    ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, { 4, 8 });
 
     for (const auto& keyBindsSection : keyBindsList)
     {
@@ -65,9 +69,24 @@ void KeyBindsPage::renderImGuiPage()
 
                 ImGui::NextColumn();
 
+                bool checkBoxValue = keyBind._triggerType == KeyBind::TriggerType::Hold;
+
+                ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, { 4, 0 });
+
+                if (ImGui::Checkbox("Hold", &checkBoxValue))
+                {
+                    keyBind._triggerType =
+                        checkBoxValue ? KeyBind::TriggerType::Hold : KeyBind::TriggerType::Click;
+                }
+
+                ImGui::PopStyleVar();
+
+                ImGui::SameLine();
+
                 if (ImGui::SmallButton("Default##KeyBinds"))
                 {
                     keyBind.setKey(keyBind.getDefaultKey());
+                    keyBind._triggerType = keyBind._defaultTriggerType;
                     _keyBindsMgr.save();
                 }
 
@@ -86,6 +105,8 @@ void KeyBindsPage::renderImGuiPage()
             ImGui::Columns(1);
         }
     }
+
+    ImGui::PopStyleVar();
 }
 
 void KeyBindsPage::handleKeyPress(const KeyboardEvent&& keyboardEvent)
