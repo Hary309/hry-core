@@ -27,7 +27,14 @@ private:
     std::vector<std::unique_ptr<ConfigFieldBase>> _fields;
 
 public:
+    // is called when settings are loaded or applied (pressing save in settings)
     hry::Delegate<void(ConfigCallbackData&&)> onChangesApplied;
+
+    // use to save extra data
+    hry::Delegate<void(nlohmann::json&)> onSave;
+
+    // use to load saved extra data
+    hry::Delegate<void(const nlohmann::json&)> onLoad;
 
 public:
     explicit Config(std::string name);

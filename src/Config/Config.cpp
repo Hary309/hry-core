@@ -65,6 +65,10 @@ void Config::toJson(nlohmann::json& json)
     {
         field->toJson(json);
     }
+
+    auto extraData = nlohmann::json::object();
+    onSave(extraData);
+    json["extra"] = extraData;
 }
 
 void Config::fromJson(const nlohmann::json& json)
@@ -72,6 +76,11 @@ void Config::fromJson(const nlohmann::json& json)
     for (auto& field : _fields)
     {
         field->fromJson(json);
+    }
+
+    if (auto it = json.find("extra"); it != json.end())
+    {
+        onLoad(it.value());
     }
 }
 
