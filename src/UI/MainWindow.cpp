@@ -56,14 +56,14 @@ void MainWindow::renderImGui()
                 _configPage.renderImGuiPage();
                 ImGui::EndTabItem();
             }
-            if (ImGui::BeginTabItem("Plugins page"))
-            {
-                renderPluginsPageTab();
-                ImGui::EndTabItem();
-            }
             if (ImGui::BeginTabItem("Key binds"))
             {
                 _keyBindsPage.renderImGuiPage();
+                ImGui::EndTabItem();
+            }
+            if (ImGui::BeginTabItem("Plugins page"))
+            {
+                renderPluginsPageTab();
                 ImGui::EndTabItem();
             }
             if (ImGui::BeginTabItem("About"))

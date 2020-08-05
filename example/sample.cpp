@@ -22,15 +22,29 @@ private:
     };
 
 public:
-    ~SamplePlugin() override { logger->info("Unloading..."); }
+    inline static hry::Logger* Logger;
 
-    void init() override
+public:
+    ~SamplePlugin() override { Logger->info("Unloading..."); }
+
+    void init(hry::Logger* logger) override
     {
-        logger->info("Created!");
-
-        eventHandler->onMouseButtonPress.connect<&SamplePlugin::onKeyPressed>(this);
+        Logger = logger;
+        Logger->info("Created!");
     }
 
+    void initEvents(hry::EventHandler* eventHandler) override
+    {
+        eventHandler->onMouseButtonPress.connect<&SamplePlugin::onKeyPressed>(this);
+    }
+    void initConfig(hry::Config* /*config*/) override {}
+    void initKeyBinds(hry::KeyBinds* /*keyBinds*/) override {}
+
+    void imguiPage() override { ImGui::Text("Settings tab"); }
+
+    const hry::PluginInfo& getPluginInfo() const override { return _pluginInfo; }
+
+private:
     void imguiRender()
     {
         if (ImGui::Begin("hry-example"))
@@ -41,16 +55,9 @@ public:
         ImGui::End();
     }
 
-    void initConfig(hry::Config* config, hry::KeyBinds* keyBinds) override {}
-
-    void imguiPage() override { ImGui::Text("Settings tab"); }
-
-    const hry::PluginInfo& getPluginInfo() const override { return _pluginInfo; }
-
-private:
     void onKeyPressed(const hry::MouseButtonEvent&& button)
     {
-        logger->info("Button pressed!", static_cast<int>(button.button));
+        Logger->info("Button pressed!", static_cast<int>(button.button));
     }
 };
 

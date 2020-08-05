@@ -4,6 +4,7 @@
 #include <imgui.h>
 #include <windows.h>
 
+#include "Hry/Events/EventHandler.hpp"
 #include "Hry/System/System.hpp"
 #include <Hry/Config/Config.hpp>
 #include <Hry/Config/Fields/NumericField.hpp>
@@ -26,24 +27,32 @@ private:
     };
 
 public:
-    ~ExamplePlugin() override { logger->info("Unloading..."); }
+    inline static hry::Logger* Logger;
 
-    void init() override
+public:
+    ~ExamplePlugin() override { Logger->info("Unloading..."); }
+
+    void init(hry::Logger* logger) override
     {
-        logger->info("Created!");
-
-        // eventHandler->onKeyPress.connect<&ExamplePlugin::onKeyPressed>(this);
-        // eventHandler->onImGuiRender.connect<&ExamplePlugin::imguiRender>(this);
+        Logger = logger;
+        Logger->info("Created!");
     }
 
-    // OBS STUDIO
+    void initEvents(hry::EventHandler* eventHandler) override
+    {
+        eventHandler->onKeyPress.connect<&ExamplePlugin::onKeyPressed>(this);
+        eventHandler->onImGuiRender.connect<&ExamplePlugin::imguiRender>(this);
+    }
 
-    void initConfig(hry::Config* config, hry::KeyBinds* keyBinds) override
+    void initConfig(hry::Config* config) override
     {
         auto* intField = config->createField<hry::NumericField<int>>("Test", "test");
         intField->useDrag();
         intField->setDefaultValue(23);
+    }
 
+    void initKeyBinds(hry::KeyBinds* keyBinds) override
+    {
         hry::KeyBind doSomethingBind;
         doSomethingBind.setConfigFieldName("do_something");
         doSomethingBind.setName("Do something");
@@ -80,7 +89,7 @@ public:
 private:
     void onKeyPressed(const hry::KeyboardEvent& key)
     {
-        logger->info("Key pressed!", static_cast<int>(key.key));
+        Logger->info("Key pressed!", static_cast<int>(key.key));
     }
 
     void onKeyBind(hry::ButtonState state)
@@ -89,12 +98,12 @@ private:
         {
             case hry::ButtonState::Pressed:
             {
-                logger->info("Press!");
+                Logger->info("Press!");
             }
             break;
             case hry::ButtonState::Released:
             {
-                logger->info("Release!");
+                Logger->info("Release!");
             }
             break;
         }
@@ -106,12 +115,12 @@ private:
         {
             case hry::ButtonState::Pressed:
             {
-                logger->info("Holding!");
+                Logger->info("Holding!");
             }
             break;
             case hry::ButtonState::Released:
             {
-                logger->info("Released hold!");
+                Logger->info("Released hold!");
             }
             break;
         }

@@ -175,20 +175,21 @@ bool ModuleManager::load(Module* mod)
 
     const auto* shortName = mod->plugin->getPluginInfo().shortName.c_str();
 
-    mod->config = _configMgr.createConfig(shortName);
-    mod->keyBinds = _keyBindsMgr.createKeyBinds(shortName);
-    mod->plugin->logger = LoggerFactory::GetLogger(shortName);
-    mod->plugin->eventHandler = std::make_unique<EventHandler>(_eventMgr.createEventHandler());
+    mod->data.config = _configMgr.createConfig(shortName);
+    mod->data.keyBinds = _keyBindsMgr.createKeyBinds(shortName);
+    mod->data.logger = LoggerFactory::GetLogger(shortName);
+    mod->data.eventHandler = std::make_unique<EventHandler>(_eventMgr.createEventHandler());
 
     mod->isLoaded = true;
 
     Core::Logger->info("Successfully loaded '", mod->dllPath, "'");
 
-    mod->plugin->init();
-    mod->plugin->initConfig(mod->config.get(), mod->keyBinds.get());
+    mod->plugin->init(mod->data.logger.get());
+    mod->plugin->initConfig(mod->data.config.get());
+    mod->plugin->initKeyBinds(mod->data.keyBinds.get());
 
-    _configMgr.loadFor(mod->config.get());
-    _keyBindsMgr.loadFor(mod->keyBinds.get());
+    _configMgr.loadFor(mod->data.config.get());
+    _keyBindsMgr.loadFor(mod->data.keyBinds.get());
 
     return true;
 }
@@ -203,11 +204,13 @@ void ModuleManager::unload(Module* mod)
         return;
     }
 
-    mod->config.reset();
-    mod->keyBinds.reset();
-
     delete mod->plugin;
     mod->plugin = nullptr;
+
+    mod->data.eventHandler.reset();
+    mod->data.logger.reset();
+    mod->data.config.reset();
+    mod->data.keyBinds.reset();
 
     if (mod->handle != nullptr)
     {

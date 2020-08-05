@@ -1,19 +1,28 @@
 #pragma once
 
-#include "Hry/KeyBinding/KeyBinds.hpp"
-#include "Hry/Config/Config.hpp"
 #include "Hry/Namespace.hpp"
 #include "Hry/Plugin.hpp"
 
 HRY_NS_BEGIN
+
+class Logger;
+struct EventHandler;
+class KeyBinds;
+class Config;
 
 struct Module
 {
     std::string dllName;
     std::string dllPath;
 
-    DelegateDeleterUniquePtr_t<KeyBinds> keyBinds; // can be null
-    DelegateDeleterUniquePtr_t<Config> config; // can be null
+    // can be nulls
+    struct
+    {
+        std::unique_ptr<Logger> logger;
+        std::unique_ptr<EventHandler> eventHandler;
+        DelegateDeleterUniquePtr_t<KeyBinds> keyBinds;
+        DelegateDeleterUniquePtr_t<Config> config;
+    } data;
 
     bool isLoaded = false;
     void* handle = nullptr;
