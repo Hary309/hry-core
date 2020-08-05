@@ -97,10 +97,10 @@ void KeyBindsManager::processKey(BindableKey::Key_t key, ButtonState buttonState
                 {
                     case ButtonState::Pressed:
                     {
-                        auto endTimePoint = system_clock::now() + TimeToHold;
+                        auto endTimePoint = system_clock::now() + LongPressTimeout;
 
                         _taskScheduler.addTask(
-                            TimeToHold, { ConnectArg_v<&KeyBindsManager::onTaskHold>, this },
+                            LongPressTimeout, { ConnectArg_v<&KeyBindsManager::onTaskHold>, this },
                             &keyBind, endTimePoint);
 
                         keyBind._keyPressTimePoint = endTimePoint;

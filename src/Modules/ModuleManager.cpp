@@ -49,23 +49,22 @@ void ModuleManager::scan()
     }
 
     // remove missing modules
-    auto toRemove = std::remove_if(
-        _modules.begin(), _modules.end(), [this](const std::unique_ptr<Module>& mod) {
-            if (!fs::exists(mod->dllPath))
+    auto toRemove = std::remove_if(_modules.begin(), _modules.end(), [this](const auto& mod) {
+        if (!fs::exists(mod->dllPath))
+        {
+            Core::Logger->info(mod->dllPath, " not found, removing from list");
+
+            // it is possible if file is symbolic link
+            if (mod->isLoaded)
             {
-                Core::Logger->info(mod->dllPath, " not found, removing from list");
-
-                // it is possible if file is symbolic link
-                if (mod->isLoaded)
-                {
-                    unload(mod.get());
-                }
-
-                return true;
+                unload(mod.get());
             }
 
-            return false;
-        });
+            return true;
+        }
+
+        return false;
+    });
 
     _modules.erase(toRemove, _modules.end());
 

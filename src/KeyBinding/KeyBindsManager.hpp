@@ -25,7 +25,7 @@ public:
     inline static constexpr auto ConfigDirectory = "plugins/hry_config";
     inline static constexpr auto FilePath = "plugins/hry_config/keybinds.json";
 
-    inline static constexpr auto TimeToHold = std::chrono::milliseconds(300);
+    inline static constexpr auto LongPressTimeout = std::chrono::milliseconds(400);
 
 private:
     std::vector<KeyBinds*> _keyBinds;
