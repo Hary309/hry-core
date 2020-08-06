@@ -69,14 +69,14 @@ void KeyBindsPage::renderImGuiPage()
 
                 ImGui::NextColumn();
 
-                bool checkBoxValue = keyBind._triggerType == KeyBind::TriggerType::Hold;
+                bool checkBoxValue = keyBind._activator == KeyBind::Activator::Hold;
 
                 ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, { 4, 0 });
 
                 if (ImGui::Checkbox("Hold", &checkBoxValue))
                 {
-                    keyBind._triggerType =
-                        checkBoxValue ? KeyBind::TriggerType::Hold : KeyBind::TriggerType::Click;
+                    keyBind._activator =
+                        checkBoxValue ? KeyBind::Activator::Hold : KeyBind::Activator::Click;
                 }
 
                 ImGui::PopStyleVar();
@@ -86,7 +86,7 @@ void KeyBindsPage::renderImGuiPage()
                 if (ImGui::SmallButton("Default##KeyBinds"))
                 {
                     keyBind.setKey(keyBind.getDefaultKey());
-                    keyBind._triggerType = keyBind._defaultTriggerType;
+                    keyBind._activator = keyBind._defaultActivator;
                     _keyBindsMgr.save();
                 }
 

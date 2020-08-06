@@ -61,7 +61,7 @@ public:
         doSomethingBind.releaseAction.connect<&ExamplePlugin::onKeyBind>(this);
         keyBinds->addKeyBind(std::move(doSomethingBind));
 
-        hry::KeyBind holdBind(hry::KeyBind::TriggerType::Hold);
+        hry::KeyBind holdBind(hry::KeyBind::Activator::Hold);
         holdBind.setConfigFieldName("hold");
         holdBind.setName("Hold button");
         holdBind.setDefaultKey(hry::Keyboard::Key::Q);

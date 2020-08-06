@@ -35,7 +35,7 @@ class KeyBind
 public:
     using Delegate_t = Delegate<void(ButtonState)>;
 
-    enum class TriggerType
+    enum class Activator
     {
         Click = 0,
         Hold
@@ -48,8 +48,8 @@ private:
     const BindableKey* _defaultKey = nullptr; // if null not set
     const BindableKey* _key = nullptr;        // if null no set
 
-    TriggerType _defaultTriggerType = TriggerType::Click;
-    TriggerType _triggerType = TriggerType::Click;
+    Activator _defaultActivator = Activator::Click;
+    Activator _activator = Activator::Click;
 
     // time point when key was pressed
     std::chrono::system_clock::time_point _keyPressTimePoint;
@@ -62,10 +62,7 @@ public:
 
 public:
     KeyBind() = default;
-    explicit KeyBind(TriggerType triggerType)
-        : _defaultTriggerType(triggerType), _triggerType(triggerType)
-    {
-    }
+    explicit KeyBind(Activator activator) : _defaultActivator(activator), _activator(activator) {}
 
     void setConfigFieldName(const char* name);
 
@@ -74,8 +71,8 @@ public:
     void setDefaultKey(const BindableKey* key);
     void setDefaultKey(BindableKey::Key_t key);
 
-    // default value is TriggerType::Click
-    void setDefaultTriggerType(TriggerType triggerType);
+    // default value is Activator::Click
+    void setDefaultActivator(Activator activator);
 
 private:
     auto getConfigFieldName() const -> const std::string&;
@@ -86,7 +83,7 @@ private:
     auto getKey() const -> const BindableKey*;
 
     auto getDefaultKey() const -> const BindableKey*;
-    auto getTriggerType() const -> TriggerType;
+    auto getActivator() const -> Activator;
 };
 
 class KeyBinds
@@ -170,15 +167,15 @@ inline void KeyBind::setKey(BindableKey::Key_t key)
     }
 }
 
-inline void KeyBind::setDefaultTriggerType(TriggerType triggerType)
+inline void KeyBind::setDefaultActivator(Activator activator)
 {
-    _defaultTriggerType = triggerType;
-    _triggerType = triggerType;
+    _defaultActivator = activator;
+    _activator = activator;
 }
 
-inline auto KeyBind::getTriggerType() const -> TriggerType
+inline auto KeyBind::getActivator() const -> Activator
 {
-    return _triggerType;
+    return _activator;
 }
 
 HRY_NS_END

@@ -79,7 +79,7 @@ void KeyBindsManager::processKey(BindableKey::Key_t key, ButtonState buttonState
                 continue;
             }
 
-            if (keyBind.getTriggerType() == KeyBind::TriggerType::Click)
+            if (keyBind.getActivator() == KeyBind::Activator::Click)
             {
                 switch (buttonState)
                 {
@@ -91,7 +91,7 @@ void KeyBindsManager::processKey(BindableKey::Key_t key, ButtonState buttonState
                         break;
                 }
             }
-            else if (keyBind.getTriggerType() == KeyBind::TriggerType::Hold)
+            else if (keyBind.getActivator() == KeyBind::Activator::Hold)
             {
                 switch (buttonState)
                 {

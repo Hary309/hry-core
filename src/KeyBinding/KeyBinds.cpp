@@ -23,7 +23,7 @@ HRY_API void KeyBinds::toJson(nlohmann::json& json)
         {
             json[keyBind.getConfigFieldName()] = {
                 { "device", "keyboard" },
-                { "trigger", static_cast<int>(keyBind._triggerType) },
+                { "trigger", static_cast<int>(keyBind.getActivator()) },
                 { "key", static_cast<int>(std::get<Keyboard::Key>(key->key)) }
             };
         }
@@ -31,7 +31,7 @@ HRY_API void KeyBinds::toJson(nlohmann::json& json)
         {
             json[keyBind.getConfigFieldName()] = {
                 { "device", "mouse" },
-                { "trigger", static_cast<int>(keyBind._triggerType) },
+                { "trigger", static_cast<int>(keyBind.getActivator()) },
                 { "key", static_cast<int>(std::get<Mouse::Button>(key->key)) }
             };
         }
@@ -64,7 +64,7 @@ HRY_API void KeyBinds::fromJson(const nlohmann::json& json)
 
             if (auto jTrigger = jKeyBind->find("trigger"); jTrigger != jKeyBind->end())
             {
-                keyBind._triggerType = static_cast<KeyBind::TriggerType>(jTrigger->get<int>());
+                keyBind._activator = static_cast<KeyBind::Activator>(jTrigger->get<int>());
             }
 
             if (deviceType == "keyboard")
