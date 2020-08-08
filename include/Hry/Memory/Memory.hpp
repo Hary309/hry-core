@@ -28,4 +28,9 @@ void WriteMemory(T* target, U data)
     WriteMemory(target, data, sizeof(U));
 }
 
+inline uintptr_t GetBaseAddress()
+{
+    return reinterpret_cast<uintptr_t>(GetModuleHandle(nullptr)) - 0x140000000;
+}
+
 HRY_NS_END

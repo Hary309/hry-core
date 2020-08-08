@@ -1,6 +1,7 @@
 #include "Core.hpp"
 
 #include <cstdio>
+#include <ios>
 #include <string>
 
 #include <imgui.h>
@@ -12,6 +13,7 @@
 #include "Hry/Config/Fields/TextField.hpp"
 #include "Hry/Events/Event.hpp"
 #include "Hry/Events/EventHandler.hpp"
+#include "Hry/Memory/Memory.hpp"
 #include "Hry/Namespace.hpp"
 #include "Hry/Utils/Signal.hpp"
 
@@ -47,9 +49,11 @@ bool Core::init(scs_telemetry_init_params_v100_t* scsTelemetry)
     freopen("CONOUT$", "w", stdout);
     freopen("CONOUT$", "w", stdin);
 #endif
-
+    
     LoggerFactory::Init("plugins/hry_core.log");
     Logger = LoggerFactory::GetLogger("core");
+
+    Logger->info("Base address: 0x", std::hex, GetBaseAddress());
 
     Logger->info("Initializing core...");
 
