@@ -36,10 +36,18 @@ private:
 public:
     Detour(uintptr_t target, uintptr_t detour);
     Detour(uintptr_t* target, uintptr_t* detour);
-    Detour(Detour&&) = default;
-    Detour(const Detour&) = default;
-    Detour& operator=(Detour&&) = default;
-    Detour& operator=(const Detour&) = default;
+
+    template<typename Function>
+    Detour(Function target, Function detour)
+        : _target(reinterpret_cast<uintptr_t*>(target)),
+          _detour(reinterpret_cast<uintptr_t*>(detour))
+    {
+    }
+
+    Detour(Detour&&) = delete;
+    Detour(const Detour&) = delete;
+    Detour& operator=(Detour&&) = delete;
+    Detour& operator=(const Detour&) = delete;
     ~Detour();
 
     Status hook();
@@ -47,9 +55,9 @@ public:
     Status disable();
 
     template<typename T>
-    T* getOriginal()
+    T getOriginal()
     {
-        return reinterpret_cast<T*>(_original);
+        return reinterpret_cast<T>(_original);
     }
 };
 
