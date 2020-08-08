@@ -22,7 +22,7 @@ Detour::~Detour()
 Detour::Status Detour::hook()
 {
     return static_cast<Detour::Status>(
-        MH_CreateHook(static_cast<void*>(_target), _detour, reinterpret_cast<void**>(_original)));
+        MH_CreateHook(static_cast<void*>(_target), _detour, reinterpret_cast<void**>(&_original)));
 }
 
 Detour::Status Detour::enable()
