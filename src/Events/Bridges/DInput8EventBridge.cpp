@@ -19,17 +19,15 @@ constexpr int DINPUT_BUTTON2 = (offsetof(DIMOUSESTATE, rgbButtons) + 2);
 constexpr int DINPUT_BUTTON3 = (offsetof(DIMOUSESTATE, rgbButtons) + 3);
 constexpr int DINPUT_BUTTON4 = (offsetof(DIMOUSESTATE, rgbButtons) + 4);
 
-#include "Hry/Namespace.hpp"
-
 HRY_NS_BEGIN
 
 DInput8EventBridge::DInput8EventBridge(EventManager& eventMgr) : EventBridgeBase(eventMgr)
 {
-    DInput8Hook::OnGetDeviceData.connect<&DInput8EventBridge::onGetDeviceData>(this);
+    DInput8Hook::OnMouseData.connect<&DInput8EventBridge::onMouseData>(this);
+    DInput8Hook::OnControllerData.connect<&DInput8EventBridge::onControllerData>(this);
 }
 
-void DInput8EventBridge::onGetDeviceData(
-    IDirectInputDevice8A* /*unused*/, const std::vector<DIDEVICEOBJECTDATA>&& datas)
+void DInput8EventBridge::onMouseData(const std::vector<DIDEVICEOBJECTDATA>&& datas)
 {
     for (const auto& data : datas)
     {
@@ -110,6 +108,15 @@ void DInput8EventBridge::sendButtonEvent(int pressData, Mouse::Button button)
     {
         mouseButtonEvent.state = ButtonState::Released;
         _eventMgr.mouseButtonReleaseSignal.call(std::move(mouseButtonEvent));
+    }
+}
+
+void DInput8EventBridge::onControllerData(
+    const std::vector<DIDEVICEOBJECTDATA>&& datas, uint32_t deviceType)
+{
+    for (const auto& data : datas)
+    {
+        printf("Joystick: %lu\n", data.dwOfs);
     }
 }
 

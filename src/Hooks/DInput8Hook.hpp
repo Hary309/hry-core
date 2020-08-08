@@ -5,21 +5,21 @@
 
 #include "Hry/Utils/Delegate.hpp"
 
-struct IDirectInputDevice8A;
 struct DIDEVICEOBJECTDATA;
-
-#include "Hry/Namespace.hpp"
 
 HRY_NS_BEGIN
 
 struct DInput8Hook
 {
-    using OnGetDeviceData_t =
-        Delegate<void(IDirectInputDevice8A*, const std::vector<DIDEVICEOBJECTDATA>&&)>;
+    using OnMouseData_t = Delegate<void(const std::vector<DIDEVICEOBJECTDATA>&&)>;
+    using OnControllerData_t = Delegate<void(
+        const std::vector<DIDEVICEOBJECTDATA>&&,
+        uint32_t)>; // TODO: use enum or some struct instead of uint32_t
 
-    inline static OnGetDeviceData_t OnGetDeviceData;
+    inline static OnMouseData_t OnMouseData;
+    inline static OnControllerData_t OnControllerData;
 
-    inline static bool disableInGameMouse;
+    inline static bool DisableInGameMouse;
 
     static bool Install();
     static void Uninstall();

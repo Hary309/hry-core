@@ -7,7 +7,6 @@
 
 #include "Events/EventBridgeBase.hpp"
 
-struct IDirectInputDevice8A;
 struct DIDEVICEOBJECTDATA;
 
 #include "Hry/Namespace.hpp"
@@ -23,7 +22,8 @@ public:
     explicit DInput8EventBridge(EventManager& eventMgr);
 
 private:
-    void onGetDeviceData(IDirectInputDevice8A*, const std::vector<DIDEVICEOBJECTDATA>&&);
+    void onMouseData(const std::vector<DIDEVICEOBJECTDATA>&&);
+    void onControllerData(const std::vector<DIDEVICEOBJECTDATA>&&, uint32_t);
     void sendButtonEvent(int pressData, Mouse::Button button);
 };
 

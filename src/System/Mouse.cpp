@@ -8,7 +8,7 @@ HRY_NS_BEGIN
 
 void Mouse::DisableInGameMouse(bool disable)
 {
-    DInput8Hook::disableInGameMouse = disable;
+    DInput8Hook::DisableInGameMouse = disable;
 }
 
 HRY_NS_END
