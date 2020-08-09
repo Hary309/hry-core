@@ -38,9 +38,3 @@ HRY_NS_END
     {                                                                                              \
         __declspec(dllexport) hry::Plugin* CreatePlugin() { return new PLUGIN_TYPE(); }            \
     }
-
-#define INIT_IMGUI()                                                                               \
-    extern "C"                                                                                     \
-    {                                                                                              \
-        __declspec(dllexport) void InitImGui(ImGuiContext* ctx) { ImGui::SetCurrentContext(ctx); } \
-    }

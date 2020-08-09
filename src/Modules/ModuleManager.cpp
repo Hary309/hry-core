@@ -136,16 +136,6 @@ bool ModuleManager::load(Module* mod)
 
     mod->handle = handle;
 
-    auto* InitImGui_func = reinterpret_cast<InitImGui_t*>(GetProcAddress(handle, "InitImGui"));
-
-    if (InitImGui_func == nullptr)
-    {
-        Core::Logger->warning(
-            "Cannot find InitImGui inside '", mod->dllPath, "' [", GetLastError(), "]");
-        FreeLibrary(handle);
-
-        return false;
-    }
 
     auto* CreatePlugin_func =
         reinterpret_cast<CreatePlugin_t*>(GetProcAddress(handle, "CreatePlugin"));
@@ -158,10 +148,7 @@ bool ModuleManager::load(Module* mod)
 
         return false;
     }
-
-    // pass imgui's context to module
-    InitImGui_func(ImGui::GetCurrentContext());
-
+    
     // create plugin object
     mod->plugin = CreatePlugin_func();
 

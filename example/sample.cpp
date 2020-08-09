@@ -62,4 +62,3 @@ private:
 };
 
 INIT_PLUGIN(SamplePlugin)
-INIT_IMGUI()

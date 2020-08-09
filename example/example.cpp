@@ -128,4 +128,3 @@ private:
 };
 
 INIT_PLUGIN(ExamplePlugin)
-INIT_IMGUI()
