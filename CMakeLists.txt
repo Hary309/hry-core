@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0.0)
+cmake_minimum_required(VERSION 3.4.0)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
@@ -31,7 +31,7 @@ target_include_directories(hry-core PUBLIC include vendor/scs_sdk_1_10/include v
 target_include_directories(hry-core PRIVATE src)
 
 target_link_libraries(hry-core PUBLIC imgui)
-target_link_libraries(hry-core PRIVATE minhook dxguid D3DCompiler Xinput)
+target_link_libraries(hry-core PRIVATE minhook)
 
 # example
 project(hry-example VERSION 0.1.0)

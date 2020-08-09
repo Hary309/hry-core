@@ -17,6 +17,10 @@
 
 #include "Core.hpp"
 
+const GUID IID_ID3D11Device{
+    0xdb6f6ddb, 0xac77, 0x4e88, { 0x82, 0x53, 0x81, 0x9d, 0xf9, 0xbb, 0xf1, 0x40 }
+};
+
 HRY_NS_BEGIN
 
 using IDXGISwapChain_Present_t = decltype(IDXGISwapChainVtbl::Present);
@@ -34,6 +38,12 @@ static bool isInited = false;
 // original code: https://github.com/Rebzzel/kiero
 IDXGISwapChainVtbl* GetSwapChainVTable()
 {
+    HMODULE libD3D11 = ::GetModuleHandle(HRY_TEXT("d3d11.dll"));
+    if (libD3D11 == nullptr)
+    {
+        return nullptr;
+    }
+
     WNDCLASSEX windowClass;
     windowClass.cbSize = sizeof(WNDCLASSEX);
     windowClass.style = CS_HREDRAW | CS_VREDRAW;
@@ -54,18 +64,12 @@ IDXGISwapChainVtbl* GetSwapChainVTable()
         windowClass.lpszClassName, HRY_TEXT("D3D11 Hook"), WS_OVERLAPPEDWINDOW, 0, 0, 100, 100,
         nullptr, nullptr, windowClass.hInstance, nullptr);
 
-    HMODULE libD3D11 = ::GetModuleHandle(HRY_TEXT("d3d11.dll"));
-    if (libD3D11 == nullptr)
-    {
-        ::DestroyWindow(window);
-        ::UnregisterClass(windowClass.lpszClassName, windowClass.hInstance);
-        return nullptr;
-    }
-
     FARPROC D3D11CreateDeviceAndSwapChain =
         ::GetProcAddress(libD3D11, "D3D11CreateDeviceAndSwapChain");
     if (D3D11CreateDeviceAndSwapChain == nullptr)
     {
+        Core::Logger->error("Cannot find D3D11CreateDeviceAndSwapChain inside d3d11.dll");
+
         ::DestroyWindow(window);
         ::UnregisterClass(windowClass.lpszClassName, windowClass.hInstance);
         return nullptr;
@@ -133,7 +137,7 @@ IDXGISwapChainVtbl* GetSwapChainVTable()
     return swapChainVTable;
 }
 
-LRESULT __stdcall WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+LRESULT __stdcall WndProcD3D(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
     D3D11Hook::OnWndProc.call(hWnd, uMsg, wParam, lParam);
 
@@ -162,7 +166,7 @@ HRESULT __stdcall new_IDXGISwapChain_Present(
             {
                 Core::Logger->info("Hooking WndProc...");
                 oWndProc = reinterpret_cast<WNDPROC>(
-                    SetWindowLongPtr(D3D11Hook::hWnd, GWLP_WNDPROC, (LONG_PTR)WndProc));
+                    SetWindowLongPtr(D3D11Hook::hWnd, GWLP_WNDPROC, (LONG_PTR)WndProcD3D));
                 D3D11Hook::OnInit.call(swapChain, d3dDevice);
                 isInited = true;
             }
@@ -189,15 +193,14 @@ HRESULT __stdcall new_IDXGISwapChain_ResizeBuffers(
 
 bool D3D11Hook::Install()
 {
-    Core::Logger->info("Initializing D3D11 hooks...");
-
     swapChainVTable = GetSwapChainVTable();
 
     if (swapChainVTable == nullptr)
     {
-        Core::Logger->error("Cannot find swap chain's vtable");
         return false;
     }
+
+    Core::Logger->info("Using D3D11 renderer");
 
     Core::Logger->info("Hooking IDXGISwapChain::Present...");
     oSwapChainPresent = HookVTableField(&swapChainVTable->Present, &new_IDXGISwapChain_Present);

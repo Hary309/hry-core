@@ -14,6 +14,14 @@
 
 #include "Core.hpp"
 
+const GUID IID_IDirectInput8W{
+    0xbf798031, 0x483a, 0x4da2, { 0xaa, 0x99, 0x5d, 0x64, 0xed, 0x36, 0x97, 0x00 }
+};
+
+const GUID GUID_SysMouseEm{
+    0x6F1D2B80, 0xD5A0, 0x11CF, { 0xBF, 0xC7, 0x44, 0x45, 0x53, 0x54, 0x00, 0x00 }
+};
+
 using DirectInput8Create_t = decltype(DirectInput8Create);
 using DirectInputDevice8_GetDeviceData_t = decltype(IDirectInputDevice8WVtbl::GetDeviceData);
 
