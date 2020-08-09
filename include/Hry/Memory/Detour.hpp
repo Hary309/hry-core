@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <type_traits>
 
 #include "Hry/Export.hpp"
 #include "Hry/Namespace.hpp"
@@ -54,10 +55,11 @@ public:
     Status enable();
     Status disable();
 
-    template<typename T>
-    T getOriginal()
+    // remove pointer from T (if exists) and than cast to pointer, it will prevent double pointer
+    template<typename T, typename U = std::remove_pointer_t<T>>
+    U* getOriginal()
     {
-        return reinterpret_cast<T>(_original);
+        return reinterpret_cast<U*>(_original);
     }
 };
 

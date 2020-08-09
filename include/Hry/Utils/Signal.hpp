@@ -29,13 +29,13 @@ private:
     std::vector<Delegate_t> _calls;
 
 public:
-    Return call(Args... args) noexcept
+    void call(Args... args) noexcept
     {
         if constexpr (sizeof...(args) > 0)
         {
             for (Delegate_t& delegate : _calls)
             {
-                delegate.call(std::forward<Args...>(args...));
+                delegate.call(std::forward<Args>(args)...);
             }
         }
         else
