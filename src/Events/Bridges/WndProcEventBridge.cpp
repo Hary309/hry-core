@@ -16,8 +16,6 @@
 IMGUI_IMPL_API LRESULT
     ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
-#include "Hry/Namespace.hpp"
-
 HRY_NS_BEGIN
 
 // source: https://github.com/SFML/SFML
@@ -145,9 +143,10 @@ Keyboard::Key vkKeyCodeToEnum(WPARAM key, LPARAM flags)
     return Key::Unknown;
 }
 
-WndProcEventBridge::WndProcEventBridge(EventManager& eventMgr) : EventBridgeBase(eventMgr)
+WndProcEventBridge::WndProcEventBridge(EventManager& eventMgr)
+    : EventBridgeBase(eventMgr), _onWndProc(eventMgr.wndProcSignal)
 {
-    D3D11Hook::OnWndProc.connect<&WndProcEventBridge::onWndProc>(this);
+    _onWndProc.connect<&WndProcEventBridge::onWndProc>(this);
 }
 
 void WndProcEventBridge::onWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)

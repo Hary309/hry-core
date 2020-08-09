@@ -19,13 +19,15 @@
 
 #include "Hooks/D3D11Hook.hpp"
 #include "Hooks/DInput8Hook.hpp"
+#include "Hooks/OpenGLHook.hpp"
 #include "Logger/LoggerFactory.hpp"
 #include "Utils/ImGuiUtils.hpp"
 
 HRY_NS_BEGIN
 
 Core::Core(HINSTANCE hInst)
-    : _renderer(*this), _eventHandler(_eventMgr.createEventHandler()), _keyBindsMgr(_eventHandler),
+    : _eventHandler(_eventMgr.createEventHandler()), _renderer(*this, _eventMgr),
+      _keyBindsMgr(_eventHandler),
       _moduleMgr("plugins\\hry_plugins", _eventMgr, _configMgr, _keyBindsMgr),
       _mainWindow(_moduleMgr, _configMgr, _keyBindsMgr, _eventHandler),
       _imguiImplEvents(_eventHandler)
@@ -49,7 +51,7 @@ bool Core::init(scs_telemetry_init_params_v100_t* scsTelemetry)
     freopen("CONOUT$", "w", stdout);
     freopen("CONOUT$", "w", stdin);
 #endif
-    
+
     LoggerFactory::Init("plugins/hry_core.log");
     Logger = LoggerFactory::GetLogger("core");
 
@@ -134,7 +136,13 @@ bool Core::InstallHooks()
 
     bool success = true;
 
-    success &= D3D11Hook::Install();
+    bool rendererSuccess = false;
+
+    rendererSuccess |= D3D11Hook::Install();
+    rendererSuccess |= OpenGLHook::Install();
+
+    success &= rendererSuccess;
+
     success &= DInput8Hook::Install();
 
     if (success)
@@ -154,6 +162,7 @@ void Core::UninstallHooks()
     Logger->info("Uninstalling hooks...");
 
     D3D11Hook::Uninstall();
+    OpenGLHook::Uninstall();
     DInput8Hook::Uninstall();
 
     Logger->info("Hooks uninstalled");

@@ -3,6 +3,8 @@
 #include <memory>
 #include <vector>
 
+#include <Windows.h>
+
 #include "Hry/Events/Event.hpp"
 #include "Hry/Events/EventHandler.hpp"
 #include "Hry/Utils/Signal.hpp"
@@ -23,9 +25,11 @@ private:
     std::vector<std::unique_ptr<EventBridgeBase>> _eventBridges;
 
 public:
-    // system events
+    // internal signals
     Signal<void(const char*)> logSignal;
+    Signal<void(HWND, UINT, WPARAM, LPARAM)> wndProcSignal;
 
+    // system events
     Signal<void(const ResizeEvent&&)> windowResizeSignal;
     Signal<void()> windowGainFocusSignal;
     Signal<void()> windowLoseFocusSignal;

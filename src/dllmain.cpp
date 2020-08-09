@@ -27,12 +27,6 @@ __declspec(dllexport) SCSAPI_RESULT
         return SCS_RESULT_ok;
     }
 
-    if (::GetModuleHandle(HRY_TEXT("d3d11.dll")) == nullptr)
-    {
-        log(SCS_LOG_TYPE_warning, "[hry_core] Only DirectX 11 is supported so far");
-        return SCS_RESULT_generic_error;
-    }
-
     if (core->init(initParams))
     {
         return SCS_RESULT_ok;

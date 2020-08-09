@@ -37,9 +37,9 @@ private:
 
     scs_telemetry_init_params_v100_t* _scsTelemetry = nullptr;
 
-    Renderer _renderer;
     EventManager _eventMgr;
     EventHandler _eventHandler;
+    Renderer _renderer;
     ConfigManager _configMgr;
     KeyBindsManager _keyBindsMgr;
     ModuleManager _moduleMgr;

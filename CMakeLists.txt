@@ -31,7 +31,7 @@ target_include_directories(hry-core PUBLIC include vendor/scs_sdk_1_10/include v
 target_include_directories(hry-core PRIVATE src)
 
 target_link_libraries(hry-core PUBLIC imgui)
-target_link_libraries(hry-core PRIVATE minhook)
+target_link_libraries(hry-core PRIVATE glad minhook)
 
 # example
 project(hry-example VERSION 0.1.0)

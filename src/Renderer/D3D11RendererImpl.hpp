@@ -27,7 +27,7 @@ private:
     uint32_t _windowHeight = 0;
 
 public:
-    D3D11RendererImpl(Renderer& renderer);
+    D3D11RendererImpl(Renderer& renderer, EventManager& eventMgr);
     ~D3D11RendererImpl() override;
 
     void init() override;
@@ -37,6 +37,7 @@ private:
     void onPresent(IDXGISwapChain*);
     void onBeforeResize(IDXGISwapChain*, uint32_t width, uint32_t height);
     void onResize(IDXGISwapChain*);
+    void onWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
     void resize();
 };

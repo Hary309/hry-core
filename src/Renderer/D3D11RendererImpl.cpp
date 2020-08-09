@@ -15,7 +15,8 @@
 
 HRY_NS_BEGIN
 
-D3D11RendererImpl::D3D11RendererImpl(Renderer& renderer) : RendererBase(renderer)
+D3D11RendererImpl::D3D11RendererImpl(Renderer& renderer, EventManager& eventMgr)
+    : RendererBase(renderer, eventMgr)
 {
 }
 
@@ -33,6 +34,7 @@ void D3D11RendererImpl::init()
     D3D11Hook::OnPresent.connect<&D3D11RendererImpl::onPresent>(this);
     D3D11Hook::OnBeforeResize.connect<&D3D11RendererImpl::onBeforeResize>(this);
     D3D11Hook::OnResize.connect<&D3D11RendererImpl::onResize>(this);
+    D3D11Hook::OnWndProc.connect<&D3D11RendererImpl::onWndProc>(this);
 }
 
 void D3D11RendererImpl::resize()
@@ -108,6 +110,11 @@ void D3D11RendererImpl::onBeforeResize(
         _context->Flush();
         _mainRenderTargetView = nullptr;
     }
+}
+
+void D3D11RendererImpl::onWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+{
+    _eventMgr.wndProcSignal.call(hWnd, uMsg, wParam, lParam);
 }
 
 void D3D11RendererImpl::onResize(IDXGISwapChain* /*unused*/)
