@@ -124,14 +124,14 @@ bool DInput8Hook::Install()
     if (auto err = detour->hook(); err != Detour::Status::Ok)
     {
         Core::Logger->error(
-            "Cannot hook DirectInputDevice::GetDeviceData [", static_cast<int>(err), "]");
+            "Cannot hook DirectInputDevice::GetDeviceData [{}]", static_cast<int>(err));
         return false;
     }
 
     if (auto err = detour->enable(); err != Detour::Status::Ok)
     {
         Core::Logger->error(
-            "Cannot enable hook DirectInputDevice::GetDeviceData [", static_cast<int>(err), "]");
+            "Cannot enable hook DirectInputDevice::GetDeviceData [{}]", static_cast<int>(err));
         return false;
     }
 

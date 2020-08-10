@@ -5,6 +5,9 @@
 #include <type_traits>
 #include <utility>
 
+#include <fmt/core.h>
+#include <fmt/format.h>
+
 #include "Hry/Export.hpp"
 #include "Hry/Namespace.hpp"
 
@@ -26,33 +29,29 @@ private:
 public:
     explicit Logger(std::string moduleName) : _moduleName(std::move(moduleName)) {}
 
-    HRY_API void log(Level level, const char* msg);
+    HRY_API void log(Level level, std::string_view msg);
 
     template<typename... Args>
-    void log(Level level, Args&&... args)
+    void log(Level level, std::string_view format, Args&&... args)
     {
-        static_assert(sizeof...(args) != 0, "You must pass some arguments!");
-
-        std::stringstream ss;
-        ((ss << args), ...);
-        log(level, ss.str().c_str());
+        log(level, fmt::format(format, std::forward<Args>(args)...));
     }
 
     template<typename... Args>
-    void info(Args&&... args)
+    void info(std::string_view format, Args&&... args)
     {
-        log(Level::Info, std::forward<Args>(args)...);
+        log(Level::Info, format, std::forward<Args>(args)...);
     }
 
     template<typename... Args>
-    void warning(Args&&... args)
+    void warning(std::string_view format, Args&&... args)
     {
-        log(Level::Warning, std::forward<Args>(args)...);
+        log(Level::Warning, format, std::forward<Args>(args)...);
     }
     template<typename... Args>
-    void error(Args&&... args)
+    void error(std::string_view format, Args&&... args)
     {
-        log(Level::Error, std::forward<Args>(args)...);
+        log(Level::Error, format, std::forward<Args>(args)...);
     }
 };
 

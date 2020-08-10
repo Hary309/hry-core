@@ -1,5 +1,7 @@
 #pragma once
 
+#include <Windows.h>
+
 #include "Hry/Namespace.hpp"
 #include "Hry/Plugin.hpp"
 
@@ -25,7 +27,7 @@ struct Module
     } data;
 
     bool isLoaded = false;
-    void* handle = nullptr;
+    HMODULE handle = nullptr;
     Plugin* plugin = nullptr; // can be null
 };
 

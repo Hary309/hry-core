@@ -60,7 +60,7 @@ void ConfigManager::save()
     }
     else
     {
-        Core::Logger->error("Cannot save config to ", FilePath);
+        Core::Logger->error("Cannot save config to {}", FilePath);
     }
 }
 
@@ -70,7 +70,7 @@ void ConfigManager::loadFor(Config* config)
 
     if (file.good())
     {
-        Core::Logger->info("Loading config for ", config->getName(), "...");
+        Core::Logger->info("Loading config for {}...", config->getName());
         nlohmann::json json;
         file >> json;
 
@@ -84,7 +84,7 @@ void ConfigManager::loadFor(Config* config)
     }
     else
     {
-        Core::Logger->warning("Cannot open ", FilePath);
+        Core::Logger->warning("Cannot open {}", FilePath);
     }
 }
 

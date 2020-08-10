@@ -57,7 +57,7 @@ private:
 
     void onKeyPressed(const hry::MouseButtonEvent&& button)
     {
-        Logger->info("Button pressed!", static_cast<int>(button.button));
+        Logger->info("Button pressed! ID: {}", static_cast<int>(button.button));
     }
 };
 

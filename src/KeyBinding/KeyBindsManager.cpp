@@ -167,7 +167,7 @@ void KeyBindsManager::save()
     }
     else
     {
-        Core::Logger->error("Cannot save keybinds to ", FilePath);
+        Core::Logger->error("Cannot save keybinds to {}", FilePath);
     }
 }
 
@@ -177,7 +177,7 @@ void KeyBindsManager::loadFor(KeyBinds* keyBinds)
 
     if (file.good())
     {
-        Core::Logger->info("Loading keybinds for ", keyBinds->getName(), "...");
+        Core::Logger->info("Loading keybinds for {}...", keyBinds->getName());
         nlohmann::json json;
         file >> json;
 
@@ -190,7 +190,7 @@ void KeyBindsManager::loadFor(KeyBinds* keyBinds)
     }
     else
     {
-        Core::Logger->warning("Cannot open ", FilePath);
+        Core::Logger->warning("Cannot open {}", FilePath);
     }
 }
 

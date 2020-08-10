@@ -55,7 +55,7 @@ bool Core::init(scs_telemetry_init_params_v100_t* scsTelemetry)
     LoggerFactory::Init("plugins/hry_core.log");
     Logger = LoggerFactory::GetLogger("core");
 
-    Logger->info("Base address: 0x", std::hex, GetBaseAddress());
+    Logger->info("Base address: {0:#x}", GetBaseAddress());
 
     Logger->info("Initializing core...");
 

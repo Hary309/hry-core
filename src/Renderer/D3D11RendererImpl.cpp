@@ -49,11 +49,11 @@ void D3D11RendererImpl::resize()
     {
         _windowWidth = rect.right - rect.left;
         _windowHeight = rect.bottom - rect.top;
-        Core::Logger->info("Window resized to: ", _windowWidth, " ", _windowHeight);
+        Core::Logger->info("Window resized to: {}x{}", _windowWidth, _windowHeight);
     }
     else
     {
-        Core::Logger->warning("Unable to get window's size ", "[", GetLastError(), "]");
+        Core::Logger->warning("Unable to get window's size [{}]", GetLastError());
     }
 
     Microsoft::WRL::ComPtr<ID3D11Texture2D> backBuffer;

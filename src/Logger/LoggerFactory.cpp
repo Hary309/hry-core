@@ -1,12 +1,11 @@
 #include "LoggerFactory.hpp"
 
-#include <array>
-#include <ctime>
 #include <filesystem>
 #include <fstream>
-#include <iomanip>
-#include <iostream>
-#include <memory>
+
+#include <fmt/chrono.h>
+#include <fmt/core.h>
+#include <fmt/format.h>
 
 #include "Hry/Logger/Logger.hpp"
 #include "Hry/Namespace.hpp"
@@ -22,11 +21,12 @@ void LoggerFactory::Init(const char* logFilePath)
         std::filesystem::remove(_logFilePath);
     }
 
-    WriteLine(
-        Logger::Level::Info, (std::string("Started logging to ") + _logFilePath).c_str(), "core");
+    std::string msg = fmt::format("Started logging to {}", _logFilePath);
+
+    WriteLine(Logger::Level::Info, "core", msg);
 }
 
-void LoggerFactory::WriteLine(Logger::Level level, const char* msg, const char* module)
+void LoggerFactory::WriteLine(Logger::Level level, std::string_view module, std::string_view msg)
 {
     std::ofstream logFile(_logFilePath, std::ios::app);
 
@@ -34,10 +34,6 @@ void LoggerFactory::WriteLine(Logger::Level level, const char* msg, const char* 
     {
         return;
     }
-
-    char timeBuffer[16];
-    time_t tm = std::time(nullptr);
-    strftime(timeBuffer, 16, "%H:%M:%S", std::localtime(&tm));
 
     std::string levelName = [&level]() {
         switch (level)
@@ -48,15 +44,15 @@ void LoggerFactory::WriteLine(Logger::Level level, const char* msg, const char* 
         }
     }();
 
-    char buffer[128];
-    snprintf(buffer, 128, "[%s] [%s] [%s] ", timeBuffer, levelName.c_str(), module);
+    std::time_t t = std::time(nullptr);
 
-    logFile << buffer;
-    logFile << msg;
-    logFile << std::endl;
+    auto buffer =
+        fmt::format("[{:%H:%M:%S}] [{}] [{}] {}", fmt::localtime(t), levelName, module, msg);
+
+    logFile << buffer << std::endl;
 
 #ifdef DEBUG
-    std::cout << buffer << msg << '\n';
+    puts(buffer.c_str());
 #endif
 }
 

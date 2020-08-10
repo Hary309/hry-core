@@ -6,9 +6,9 @@
 
 HRY_NS_BEGIN
 
-void Logger::log(Level level, const char* msg)
+void Logger::log(Level level, std::string_view msg)
 {
-    LoggerFactory::WriteLine(level, msg, _moduleName.c_str());
+    LoggerFactory::WriteLine(level, _moduleName, msg);
 }
 
 HRY_NS_END

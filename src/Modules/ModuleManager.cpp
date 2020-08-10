@@ -41,7 +41,7 @@ void ModuleManager::init()
 
 void ModuleManager::scan()
 {
-    Core::Logger->info("Scanning '", _pluginDirectory, "'...");
+    Core::Logger->info("Scanning {}...", _pluginDirectory.string());
 
     if (!fs::exists(_pluginDirectory))
     {
@@ -52,7 +52,7 @@ void ModuleManager::scan()
     auto toRemove = std::remove_if(_modules.begin(), _modules.end(), [this](const auto& mod) {
         if (!fs::exists(mod->dllPath))
         {
-            Core::Logger->info(mod->dllPath, " not found, removing from list");
+            Core::Logger->info("{} not found, removing from list", mod->dllPath);
 
             // it is possible if file is symbolic link
             if (mod->isLoaded)
@@ -74,15 +74,17 @@ void ModuleManager::scan()
         if (!item.is_directory())
         {
             const auto& path = item.path();
-            Core::Logger->info("Found ", path.filename());
+            auto str = path.filename().string();
+
+            Core::Logger->info("Found {}", str);
 
             if (tryAdd(path))
             {
-                Core::Logger->info("Added ", path.filename(), " to list");
+                Core::Logger->info("Added {} to list", str);
             }
             else
             {
-                Core::Logger->info(path.filename(), " is already indexed");
+                Core::Logger->info("{} is already indexed", str);
             }
         }
     }
@@ -117,19 +119,19 @@ void ModuleManager::unloadAll()
 
 bool ModuleManager::load(Module* mod)
 {
-    Core::Logger->info("Loading '", mod->dllPath, "'...");
+    Core::Logger->info("Loading {}...", mod->dllPath);
 
     if (mod->isLoaded)
     {
-        Core::Logger->info("'", mod->dllPath, "' is already loaded");
+        Core::Logger->info("{} is already loaded", mod->dllPath);
         return true; // TODO: enum is probably a better option
     }
 
-    auto* handle = LoadLibraryA(mod->dllPath.c_str());
+    HMODULE handle = LoadLibraryA(mod->dllPath.c_str());
 
     if (handle == nullptr)
     {
-        Core::Logger->warning("Cannot load '", mod->dllPath, " [", GetLastError(), "]");
+        Core::Logger->warning("Cannot load {} [{}]", mod->dllPath, GetLastError());
 
         return false;
     }
@@ -142,12 +144,12 @@ bool ModuleManager::load(Module* mod)
     if (CreatePlugin_func == nullptr)
     {
         Core::Logger->warning(
-            "Cannot find CreatePlugin inside '", mod->dllPath, "' [", GetLastError(), "]");
+            "Cannot find CreatePlugin inside {} [{}]", mod->dllPath, GetLastError());
         FreeLibrary(handle);
 
         return false;
     }
-    
+
     // create plugin object
     mod->plugin = CreatePlugin_func();
 
@@ -168,9 +170,10 @@ bool ModuleManager::load(Module* mod)
 
     mod->isLoaded = true;
 
-    Core::Logger->info("Successfully loaded '", mod->dllPath, "'");
+    Core::Logger->info("Successfully loaded {}", mod->dllPath);
 
     mod->plugin->init(mod->data.logger.get());
+    mod->plugin->initEvents(mod->data.eventHandler.get());
     mod->plugin->initConfig(mod->data.config.get());
     mod->plugin->initKeyBinds(mod->data.keyBinds.get());
 
@@ -182,11 +185,11 @@ bool ModuleManager::load(Module* mod)
 
 void ModuleManager::unload(Module* mod)
 {
-    Core::Logger->info("Unloading '", mod->dllPath, "'...");
+    Core::Logger->info("Unloading {}", mod->dllPath);
 
     if (!mod->isLoaded)
     {
-        Core::Logger->info("'", mod->dllPath, "' is already unloaded");
+        Core::Logger->info("{} is already unloaded", mod->dllPath);
         return;
     }
 
@@ -200,7 +203,7 @@ void ModuleManager::unload(Module* mod)
 
     if (mod->handle != nullptr)
     {
-        FreeLibrary((HMODULE)mod->handle);
+        FreeLibrary(mod->handle);
     }
 
     mod->isLoaded = false;

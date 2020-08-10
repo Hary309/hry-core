@@ -15,7 +15,7 @@ private:
 
 public:
     static void Init(const char* logFilePath);
-    static void WriteLine(Logger::Level level, const char* msg, const char* module);
+    static void WriteLine(Logger::Level level, std::string_view module, std::string_view msg);
 
     static std::unique_ptr<Logger> GetLogger(const char* moduleName);
 };

@@ -89,7 +89,7 @@ public:
 private:
     void onKeyPressed(const hry::KeyboardEvent& key)
     {
-        Logger->info("Key pressed!", static_cast<int>(key.key));
+        Logger->info("Key pressed! ID: {}", static_cast<int>(key.key));
     }
 
     void onKeyBind(hry::ButtonState state)
