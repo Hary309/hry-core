@@ -16,7 +16,7 @@ private:
     using wglGetProcAddress_t = decltype(wglGetProcAddress);
 
 private:
-    inline static HMODULE dllOpenGL3;
+    inline static HMODULE _dllOpenGL3;
     inline static wglGetProcAddress_t* _wglGetProcAddress;
 
 public:

@@ -24,6 +24,10 @@ Renderer::Renderer(Core& core, EventManager& eventMgr) : _core(core)
     {
         _impl = std::make_unique<OpenGLRendererImpl>(*this, eventMgr);
     }
+    else
+    {
+        Core::Logger->error("Cannot find supported renderer!");
+    }
 }
 
 void Renderer::init()

@@ -29,7 +29,7 @@ OpenGLRendererImpl::~OpenGLRendererImpl()
 
 void OpenGLRendererImpl::init()
 {
-    dllOpenGL3 = GetModuleHandle(HRY_TEXT("opengl32.dll"));
+    _dllOpenGL3 = GetModuleHandle(HRY_TEXT("opengl32.dll"));
     _wglGetProcAddress = reinterpret_cast<wglGetProcAddress_t*>(gladLoader("wglGetProcAddress"));
 
     OpenGLHook::OnInit.connect<&OpenGLRendererImpl::onInit>(this);
@@ -41,7 +41,7 @@ void OpenGLRendererImpl::onInit(HWND hWnd)
 {
     Core::Logger->info("Initializing OpenGL renderer...");
 
-    if (!gladLoadGLLoader(OpenGLRendererImpl::gladLoader))
+    if (gladLoadGLLoader(OpenGLRendererImpl::gladLoader) == 0)
     {
         Core::Logger->error("Cannot initialize glad loader!");
     }
@@ -82,7 +82,7 @@ void* OpenGLRendererImpl::gladLoader(const char* name)
         }
     }
 
-    return reinterpret_cast<void*>(GetProcAddress(dllOpenGL3, name));
+    return reinterpret_cast<void*>(GetProcAddress(_dllOpenGL3, name));
 }
 
 HRY_NS_END

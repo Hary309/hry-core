@@ -63,6 +63,13 @@ bool Core::init(scs_telemetry_init_params_v100_t* scsTelemetry)
 
     success &= Core::InstallHooks();
 
+    if (success == false)
+    {
+        Logger->info("Cannot initialize!");
+        Core::UninstallHooks();
+        return false;
+    }
+
     _renderer.init();
     _eventMgr.init(scsTelemetry);
 

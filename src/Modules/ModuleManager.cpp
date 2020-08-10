@@ -136,7 +136,6 @@ bool ModuleManager::load(Module* mod)
 
     mod->handle = handle;
 
-
     auto* CreatePlugin_func =
         reinterpret_cast<CreatePlugin_t*>(GetProcAddress(handle, "CreatePlugin"));
 
