@@ -3,12 +3,12 @@
 #include <vector>
 
 #include "Hry/Math/Vec2.hpp"
+#include "Hry/System/DeviceGUID.hpp"
 #include "Hry/System/Mouse.hpp"
 
 #include "Events/EventBridgeBase.hpp"
 
 struct DIDEVICEOBJECTDATA;
-struct _GUID;
 
 #include "Hry/Namespace.hpp"
 
@@ -24,7 +24,7 @@ public:
 
 private:
     void onMouseData(const std::vector<DIDEVICEOBJECTDATA>&&);
-    void onJoystickData(const std::vector<DIDEVICEOBJECTDATA>&&, const _GUID&& guid);
+    void onJoystickData(const std::vector<DIDEVICEOBJECTDATA>&&, const DeviceGUID&& guid);
     void sendMouseButtonEvent(int pressData, Mouse::Button button);
 };
 

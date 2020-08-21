@@ -12,9 +12,9 @@
 
 #include "Hry/Memory/Detour.hpp"
 #include "Hry/Memory/Hooking.hpp"
+#include "Hry/System/DeviceGUID.hpp"
 
 #include "Core.hpp"
-
 
 const GUID IID_IDirectInput8W{
     0xbf798031, 0x483a, 0x4da2, { 0xaa, 0x99, 0x5d, 0x64, 0xed, 0x36, 0x97, 0x00 }
@@ -31,6 +31,12 @@ using DirectInputDevice8_GetDeviceData_t = decltype(IDirectInputDevice8WVtbl::Ge
 static std::unique_ptr<hry::Detour> detour;
 
 HRY_NS_BEGIN
+DeviceGUID toHryGUID(::GUID guid)
+{
+    DeviceGUID result;
+    memcpy(&result, &guid, sizeof(::GUID));
+    return result;
+}
 
 HRESULT __stdcall new_DirectInputDevice_GetDeviceData(
     IDirectInputDevice8W* self,
@@ -67,7 +73,8 @@ HRESULT __stdcall new_DirectInputDevice_GetDeviceData(
 
             default:
             {
-                DInput8Hook::OnJoystickData({ rgdod, rgdod + (*pdwInOut) }, std::move(instance.guidInstance));
+                DInput8Hook::OnJoystickData(
+                    { rgdod, rgdod + (*pdwInOut) }, toHryGUID(instance.guidInstance));
             }
             break;
         }
@@ -120,7 +127,7 @@ bool DInput8Hook::Install()
         return false;
     }
 
-    HookVTableField(&DI->lpVtbl->EnumDevices, &new_IDirectInput8W_EnumDevices);
+    // HookVTableField(&DI->lpVtbl->EnumDevices, &new_IDirectInput8W_EnumDevices);
 
     // use GUID_SysMouseEm because GUID_SysMouse and GUID_SysKeyboard are overwritten by steamoverlay
     hr = IDirectInput8_CreateDevice(DI, GUID_SysMouseEm, &DIMouse, nullptr);

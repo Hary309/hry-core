@@ -78,7 +78,8 @@ void DInput8EventBridge::onMouseData(const std::vector<DIDEVICEOBJECTDATA>&& dat
             {
                 if (offset >= DI_MOUSE_BUTTON_0 && offset <= DI_MOUSE_BUTTON_7)
                 {
-                    sendMouseButtonEvent(data.dwData, static_cast<Mouse::Button>(offset - DI_MOUSE_BUTTON_0));
+                    sendMouseButtonEvent(
+                        data.dwData, static_cast<Mouse::Button>(offset - DI_MOUSE_BUTTON_0));
                 }
             }
         }
@@ -103,7 +104,8 @@ void DInput8EventBridge::sendMouseButtonEvent(int pressData, Mouse::Button butto
     }
 }
 
-void DInput8EventBridge::onJoystickData(const std::vector<DIDEVICEOBJECTDATA>&& datas, const _GUID&& guid)
+void DInput8EventBridge::onJoystickData(
+    const std::vector<DIDEVICEOBJECTDATA>&& datas, const DeviceGUID&& guid)
 {
     for (const auto& data : datas)
     {

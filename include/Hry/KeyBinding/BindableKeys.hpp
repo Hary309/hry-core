@@ -6,9 +6,9 @@
 
 #include "Hry/Export.hpp"
 #include "Hry/Namespace.hpp"
+#include "Hry/System/Joystick.hpp"
 #include "Hry/System/Keyboard.hpp"
 #include "Hry/System/Mouse.hpp"
-#include "Hry/System/Joystick.hpp"
 
 HRY_NS_BEGIN
 

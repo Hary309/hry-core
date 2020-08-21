@@ -18,7 +18,6 @@ struct Joystick
         PovY  // Y axis of the point-of-view hat
     };
 
-
     enum class Button
     {
         Button1,
