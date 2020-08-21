@@ -13,6 +13,13 @@
 HRY_NS_BEGIN
 
 using glViewport_t = decltype(glViewport);
+using wglCreateContext_t = decltype(wglCreateContext);
+using wglGetCurrentContext_t = decltype(wglGetCurrentContext);
+using wglMakeCurrent_t = decltype(wglMakeCurrent);
+
+static wglCreateContext_t* wglCreateContext_func;
+static wglGetCurrentContext_t* wglGetCurrentContext_func;
+static wglMakeCurrent_t* wglMakeCurrent_func;
 
 static std::unique_ptr<Detour> wglSwapBuffer_Detour;
 static std::unique_ptr<Detour> glViewPort_Detour;
@@ -20,6 +27,7 @@ static std::unique_ptr<Detour> glViewPort_Detour;
 static bool isInited = false;
 static HWND hWnd;
 static WNDPROC oWndProc;
+static HGLRC hGRLC;
 
 LRESULT __stdcall WndProcOpenGL(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
@@ -30,8 +38,9 @@ LRESULT __stdcall WndProcOpenGL(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 
 BOOL new_wglSwapBuffers(HDC hdc)
 {
-    if (isInited == false)
+    if (!isInited)
     {
+        hGRLC = wglCreateContext_func(hdc);
         hWnd = WindowFromDC(hdc);
         Core::Logger->info("Hooking WndProc...");
         oWndProc = reinterpret_cast<WNDPROC>(
@@ -42,8 +51,12 @@ BOOL new_wglSwapBuffers(HDC hdc)
         isInited = true;
     }
 
+    HGLRC oHGLRC = wglGetCurrentContext_func();
+    wglMakeCurrent_func(hdc, hGRLC);
+
     OpenGLHook::OnSwapBuffers();
 
+    wglMakeCurrent_func(hdc, oHGLRC);
     return wglSwapBuffer_Detour->getOriginal<BOOL(HDC)>()(hdc);
 }
 
@@ -64,10 +77,22 @@ bool OpenGLHook::Install()
     }
 
     auto wglSwapBuffers_addr = GetProcAddress(libOpenGL, "wglSwapBuffers");
+    wglCreateContext_func =
+        reinterpret_cast<wglCreateContext_t*>(GetProcAddress(libOpenGL, "wglCreateContext"));
+    wglGetCurrentContext_func = reinterpret_cast<wglGetCurrentContext_t*>(
+        GetProcAddress(libOpenGL, "wglGetCurrentContext"));
+    wglMakeCurrent_func =
+        reinterpret_cast<wglMakeCurrent_t*>(GetProcAddress(libOpenGL, "wglMakeCurrent"));
 
-    if (wglSwapBuffers_addr == nullptr)
+    bool foundFuncs = true;
+    foundFuncs &= wglSwapBuffers_addr != nullptr;
+    foundFuncs &= wglCreateContext_func != nullptr;
+    foundFuncs &= wglGetCurrentContext_func != nullptr;
+    foundFuncs &= wglMakeCurrent_func != nullptr;
+
+    if (!foundFuncs)
     {
-        Core::Logger->error("Cannot find wglSwapBuffers inside opengl32.dll");
+        Core::Logger->error("Cannot find functions inside opengl32.dll");
         return false;
     }
 
