@@ -40,6 +40,9 @@ BOOL new_wglSwapBuffers(HDC hdc)
 {
     if (!isInited)
     {
+        // it works fine until you unload this library
+        // crash for some reason after using wglMakeCurrent_func(hdc, hGRLC);
+        // TODO: investigate for possible fix
         hGRLC = wglCreateContext_func(hdc);
         hWnd = WindowFromDC(hdc);
         Core::Logger->info("Hooking WndProc...");
