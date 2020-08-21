@@ -10,14 +10,11 @@
 #include "Events/EventManager.hpp"
 #include "Hooks/DInput8Hook.hpp"
 
-constexpr int DINPUT_X = offsetof(DIMOUSESTATE, lX);
-constexpr int DINPUT_Y = offsetof(DIMOUSESTATE, lY);
-constexpr int DINPUT_Z = offsetof(DIMOUSESTATE, lZ);
-constexpr int DINPUT_BUTTON0 = (offsetof(DIMOUSESTATE, rgbButtons) + 0);
-constexpr int DINPUT_BUTTON1 = (offsetof(DIMOUSESTATE, rgbButtons) + 1);
-constexpr int DINPUT_BUTTON2 = (offsetof(DIMOUSESTATE, rgbButtons) + 2);
-constexpr int DINPUT_BUTTON3 = (offsetof(DIMOUSESTATE, rgbButtons) + 3);
-constexpr int DINPUT_BUTTON4 = (offsetof(DIMOUSESTATE, rgbButtons) + 4);
+constexpr int DI_MOUSE_X = offsetof(DIMOUSESTATE2, lX);
+constexpr int DI_MOUSE_Y = offsetof(DIMOUSESTATE2, lY);
+constexpr int DI_MOUSE_Z = offsetof(DIMOUSESTATE2, lZ);
+constexpr int DI_MOUSE_BUTTON_0 = (offsetof(DIMOUSESTATE2, rgbButtons) + 0);
+constexpr int DI_MOUSE_BUTTON_7 = (offsetof(DIMOUSESTATE2, rgbButtons) + 7);
 
 HRY_NS_BEGIN
 
@@ -31,10 +28,12 @@ void DInput8EventBridge::onMouseData(const std::vector<DIDEVICEOBJECTDATA>&& dat
 {
     for (const auto& data : datas)
     {
-        switch (data.dwOfs)
+        auto offset = data.dwOfs;
+
+        switch (offset)
         {
             // mouse move x
-            case DINPUT_X:
+            case DI_MOUSE_X:
             {
                 _mouseOffset.x = data.dwData;
 
@@ -42,7 +41,7 @@ void DInput8EventBridge::onMouseData(const std::vector<DIDEVICEOBJECTDATA>&& dat
                 _eventMgr.mouseMoveSignal.call(std::move(moveEvent));
             }
             break;
-            case DINPUT_Y:
+            case DI_MOUSE_Y:
             {
                 _mouseOffset.y = data.dwData;
 
@@ -52,7 +51,7 @@ void DInput8EventBridge::onMouseData(const std::vector<DIDEVICEOBJECTDATA>&& dat
             break;
 
             // mouse move wheel
-            case DINPUT_Z:
+            case DI_MOUSE_Z:
             {
                 MouseWheelEvent wheelEvent{};
                 wheelEvent.wheel = Mouse::Wheel::Vertical;
@@ -61,39 +60,19 @@ void DInput8EventBridge::onMouseData(const std::vector<DIDEVICEOBJECTDATA>&& dat
 
                 _eventMgr.mouseWheelScrollSignal.call(std::move(wheelEvent));
             }
-            break;
 
-            // mouse buttons
-            case DINPUT_BUTTON0:
+            default:
             {
-                sendButtonEvent(data.dwData, Mouse::Button::Left);
-            }
-            break;
-            case DINPUT_BUTTON1:
+                if (offset >= DI_MOUSE_BUTTON_0 && offset <= DI_MOUSE_BUTTON_7)
             {
-                sendButtonEvent(data.dwData, Mouse::Button::Right);
+                    sendMouseButtonEvent(data.dwData, static_cast<Mouse::Button>(offset - DI_MOUSE_BUTTON_0));
             }
-            break;
-            case DINPUT_BUTTON2:
-            {
-                sendButtonEvent(data.dwData, Mouse::Button::Middle);
             }
-            break;
-            case DINPUT_BUTTON3:
-            {
-                sendButtonEvent(data.dwData, Mouse::Button::XButton1);
-            }
-            break;
-            case DINPUT_BUTTON4:
-            {
-                sendButtonEvent(data.dwData, Mouse::Button::XButton2);
-            }
-            break;
         }
     }
 }
 
-void DInput8EventBridge::sendButtonEvent(int pressData, Mouse::Button button)
+void DInput8EventBridge::sendMouseButtonEvent(int pressData, Mouse::Button button)
 {
     MouseButtonEvent mouseButtonEvent{};
     mouseButtonEvent.button = button;

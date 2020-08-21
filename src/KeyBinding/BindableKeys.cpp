@@ -117,8 +117,11 @@ static const auto BindableKeys = std::array{
     BindableKey{ Mouse::Button::Left, "LMB" },
     BindableKey{ Mouse::Button::Right, "RMB" },
     BindableKey{ Mouse::Button::Middle, "MMB" },
-    BindableKey{ Mouse::Button::XButton1, "X1 MB" },
-    BindableKey{ Mouse::Button::Left, "X2 MB" },
+    BindableKey{ Mouse::Button::Button4, "MB 4" },
+    BindableKey{ Mouse::Button::Button5, "MB 5" },
+    BindableKey{ Mouse::Button::Button6, "MB 6" },
+    BindableKey{ Mouse::Button::Button7, "MB 7" },
+    BindableKey{ Mouse::Button::Button8, "MB 8" },
 
     // Controller
     BindableKey{ Joystick::Button::Button1,  "JoyB 1" },

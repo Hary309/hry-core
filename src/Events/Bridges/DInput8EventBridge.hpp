@@ -23,8 +23,7 @@ public:
 
 private:
     void onMouseData(const std::vector<DIDEVICEOBJECTDATA>&&);
-    void onControllerData(const std::vector<DIDEVICEOBJECTDATA>&&, uint32_t);
-    void sendButtonEvent(int pressData, Mouse::Button button);
+    void sendMouseButtonEvent(int pressData, Mouse::Button button);
 };
 
 HRY_NS_END

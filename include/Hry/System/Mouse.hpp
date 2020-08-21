@@ -11,8 +11,11 @@ struct Mouse
         Left,
         Right,
         Middle,
-        XButton1,
-        XButton2
+        Button4,
+        Button5,
+        Button6,
+        Button7,
+        Button8
     };
 
     enum class Wheel

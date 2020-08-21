@@ -283,8 +283,8 @@ void WndProcEventBridge::onWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lP
         case WM_XBUTTONDOWN:
         {
             Mouse::Button button = GET_XBUTTON_WPARAM(wParam) == XBUTTON1 ?
-                                       Mouse::Button::XButton1 :
-                                       Mouse::Button::XButton2;
+                                       Mouse::Button::Button4 :
+                                       Mouse::Button::Button5;
 
             _eventMgr.mouseButtonPressSignal.call({ button, ButtonState::Pressed });
         }
@@ -292,8 +292,8 @@ void WndProcEventBridge::onWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lP
         case WM_XBUTTONUP:
         {
             Mouse::Button button = GET_XBUTTON_WPARAM(wParam) == XBUTTON1 ?
-                                       Mouse::Button::XButton1 :
-                                       Mouse::Button::XButton2;
+                                       Mouse::Button::Button4 :
+                                       Mouse::Button::Button5;
 
             _eventMgr.mouseButtonReleaseSignal.call({ button, ButtonState::Released });
         }
