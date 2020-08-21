@@ -11,8 +11,10 @@
 #include <windows.h>
 
 #include "Hry/Memory/Detour.hpp"
+#include "Hry/Memory/Hooking.hpp"
 
 #include "Core.hpp"
+
 
 const GUID IID_IDirectInput8W{
     0xbf798031, 0x483a, 0x4da2, { 0xaa, 0x99, 0x5d, 0x64, 0xed, 0x36, 0x97, 0x00 }
@@ -23,6 +25,7 @@ const GUID GUID_SysMouseEm{
 };
 
 using DirectInput8Create_t = decltype(DirectInput8Create);
+using DirectInput8_EnumDevices_t = decltype(IDirectInput8WVtbl::EnumDevices);
 using DirectInputDevice8_GetDeviceData_t = decltype(IDirectInputDevice8WVtbl::GetDeviceData);
 
 static std::unique_ptr<hry::Detour> detour;
@@ -64,13 +67,22 @@ HRESULT __stdcall new_DirectInputDevice_GetDeviceData(
 
             default:
             {
-                DInput8Hook::OnControllerData({ rgdod, rgdod + (*pdwInOut) }, instance.dwDevType);
+                DInput8Hook::OnJoystickData({ rgdod, rgdod + (*pdwInOut) }, std::move(instance.guidInstance));
             }
             break;
         }
     }
 
     return result;
+}
+
+HRESULT __stdcall new_IDirectInput8W_EnumDevices(
+    IDirectInput8W* self,
+    DWORD dwDevType,
+    LPDIENUMDEVICESCALLBACKW lpCallback,
+    void* pvRef,
+    DWORD dwFlags)
+{
 }
 
 bool DInput8Hook::Install()
@@ -89,6 +101,7 @@ bool DInput8Hook::Install()
 
     auto dInput8Create =
         reinterpret_cast<DirectInput8Create_t*>(::GetProcAddress(libDInput, "DirectInput8Create"));
+
     if (dInput8Create == nullptr)
     {
         Core::Logger->error("Cannot find DirectInput8Create inside dinput8.dll");
@@ -107,7 +120,9 @@ bool DInput8Hook::Install()
         return false;
     }
 
-    // use GUID_SysMouseEm because GUID_SysMouse and GUID_SysKeyboard overrides steamoverlay
+    HookVTableField(&DI->lpVtbl->EnumDevices, &new_IDirectInput8W_EnumDevices);
+
+    // use GUID_SysMouseEm because GUID_SysMouse and GUID_SysKeyboard are overwritten by steamoverlay
     hr = IDirectInput8_CreateDevice(DI, GUID_SysMouseEm, &DIMouse, nullptr);
 
     if (FAILED(hr))

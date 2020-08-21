@@ -13,7 +13,6 @@
 
 #include "Module.hpp"
 
-
 HRY_NS_BEGIN
 
 class ModuleManager
