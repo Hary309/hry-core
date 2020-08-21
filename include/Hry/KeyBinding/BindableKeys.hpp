@@ -8,12 +8,13 @@
 #include "Hry/Namespace.hpp"
 #include "Hry/System/Keyboard.hpp"
 #include "Hry/System/Mouse.hpp"
+#include "Hry/System/Joystick.hpp"
 
 HRY_NS_BEGIN
 
 struct BindableKey
 {
-    using Key_t = std::variant<Keyboard::Key, Mouse::Button>; // TODO: Add controller's keys
+    using Key_t = std::variant<Keyboard::Key, Mouse::Button, Joystick::Button>;
 
     Key_t key;
     std::string name;

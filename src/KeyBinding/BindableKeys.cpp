@@ -2,7 +2,7 @@
 
 HRY_NS_BEGIN
 
-static inline const auto BindableKeys = std::array{
+static const auto BindableKeys = std::array{
     // Keyboard
     BindableKey{ Keyboard::Key::A, "A" },
     BindableKey{ Keyboard::Key::B, "B" },
@@ -119,6 +119,40 @@ static inline const auto BindableKeys = std::array{
     BindableKey{ Mouse::Button::Middle, "MMB" },
     BindableKey{ Mouse::Button::XButton1, "X1 MB" },
     BindableKey{ Mouse::Button::Left, "X2 MB" },
+
+    // Controller
+    BindableKey{ Joystick::Button::Button1,  "JoyB 1" },
+    BindableKey{ Joystick::Button::Button2,  "JoyB 2" },
+    BindableKey{ Joystick::Button::Button3,  "JoyB 3" },
+    BindableKey{ Joystick::Button::Button4,  "JoyB 4" },
+    BindableKey{ Joystick::Button::Button5,  "JoyB 5" },
+    BindableKey{ Joystick::Button::Button6,  "JoyB 6" },
+    BindableKey{ Joystick::Button::Button7,  "JoyB 7" },
+    BindableKey{ Joystick::Button::Button8,  "JoyB 8" },
+    BindableKey{ Joystick::Button::Button9,  "JoyB 9" },
+    BindableKey{ Joystick::Button::Button10, "JoyB 10" },
+    BindableKey{ Joystick::Button::Button11, "JoyB 11" },
+    BindableKey{ Joystick::Button::Button12, "JoyB 12" },
+    BindableKey{ Joystick::Button::Button13, "JoyB 13" },
+    BindableKey{ Joystick::Button::Button14, "JoyB 14" },
+    BindableKey{ Joystick::Button::Button15, "JoyB 15" },
+    BindableKey{ Joystick::Button::Button16, "JoyB 16" },
+    BindableKey{ Joystick::Button::Button17, "JoyB 17" },
+    BindableKey{ Joystick::Button::Button18, "JoyB 18" },
+    BindableKey{ Joystick::Button::Button19, "JoyB 19" },
+    BindableKey{ Joystick::Button::Button20, "JoyB 20" },
+    BindableKey{ Joystick::Button::Button21, "JoyB 21" },
+    BindableKey{ Joystick::Button::Button22, "JoyB 22" },
+    BindableKey{ Joystick::Button::Button23, "JoyB 23" },
+    BindableKey{ Joystick::Button::Button24, "JoyB 24" },
+    BindableKey{ Joystick::Button::Button25, "JoyB 25" },
+    BindableKey{ Joystick::Button::Button26, "JoyB 26" },
+    BindableKey{ Joystick::Button::Button27, "JoyB 27" },
+    BindableKey{ Joystick::Button::Button28, "JoyB 28" },
+    BindableKey{ Joystick::Button::Button29, "JoyB 29" },
+    BindableKey{ Joystick::Button::Button30, "JoyB 30" },
+    BindableKey{ Joystick::Button::Button31, "JoyB 31" },
+    BindableKey{ Joystick::Button::Button32, "JoyB 32" },
 };
 
 const BindableKey* GetBindableKey(BindableKey::Key_t key)
