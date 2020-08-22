@@ -168,14 +168,13 @@ void WndProcEventBridge::onWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lP
                 break;
             }
 
-            ResizeType resizeType;
-
-            switch (wParam)
-            {
-                case SIZE_MAXIMIZED: resizeType = ResizeType::Maximized; break;
-                case SIZE_MINIMIZED: resizeType = ResizeType::Minimized; break;
-                case SIZE_RESTORED: resizeType = ResizeType::Restored; break;
-            }
+            ResizeType resizeType = [wParam]() {
+                switch (wParam) {
+                case SIZE_MAXIMIZED: return ResizeType::Maximized;
+                case SIZE_MINIMIZED: return ResizeType::Minimized;
+                case SIZE_RESTORED: return ResizeType::Restored;
+                }
+            }();
 
             ResizeEvent resizeEvent{};
             resizeEvent.size.x = LOWORD(lParam);
@@ -282,18 +281,16 @@ void WndProcEventBridge::onWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lP
         // xbutton
         case WM_XBUTTONDOWN:
         {
-            Mouse::Button button = GET_XBUTTON_WPARAM(wParam) == XBUTTON1 ?
-                                       Mouse::Button::Button4 :
-                                       Mouse::Button::Button5;
+            Mouse::Button button = GET_XBUTTON_WPARAM(wParam) == XBUTTON1 ? Mouse::Button::Button4 :
+                                                                            Mouse::Button::Button5;
 
             _eventMgr.mouseButtonPressSignal.call({ button, ButtonState::Pressed });
         }
         break;
         case WM_XBUTTONUP:
         {
-            Mouse::Button button = GET_XBUTTON_WPARAM(wParam) == XBUTTON1 ?
-                                       Mouse::Button::Button4 :
-                                       Mouse::Button::Button5;
+            Mouse::Button button = GET_XBUTTON_WPARAM(wParam) == XBUTTON1 ? Mouse::Button::Button4 :
+                                                                            Mouse::Button::Button5;
 
             _eventMgr.mouseButtonReleaseSignal.call({ button, ButtonState::Released });
         }

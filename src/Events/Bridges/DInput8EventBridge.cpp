@@ -1,10 +1,12 @@
 #include "DInput8EventBridge.hpp"
 
 #include <cstdio>
+#include <numbers>
 
 #include <dinput.h>
 
 #include "Hry/Events/Event.hpp"
+#include "Hry/System/Joystick.hpp"
 #include "Hry/System/Mouse.hpp"
 
 #include "Events/EventManager.hpp"
@@ -37,18 +39,18 @@ DInput8EventBridge::DInput8EventBridge(EventManager& eventMgr) : EventBridgeBase
     DInput8Hook::OnJoystickData.connect<&DInput8EventBridge::onJoystickData>(this);
 }
 
-void DInput8EventBridge::onMouseData(const std::vector<DIDEVICEOBJECTDATA>&& datas)
+void DInput8EventBridge::onMouseData(const std::vector<DIDEVICEOBJECTDATA>&& events)
 {
-    for (const auto& data : datas)
+    for (const auto& event : events)
     {
-        auto offset = data.dwOfs;
+        auto offset = event.dwOfs;
 
         switch (offset)
         {
             // mouse move x
             case DI_MOUSE_X:
             {
-                _mouseOffset.x = data.dwData;
+                _mouseOffset.x = event.dwData;
 
                 MouseMoveEvent moveEvent{ _mouseOffset };
                 _eventMgr.mouseMoveSignal.call(std::move(moveEvent));
@@ -56,7 +58,7 @@ void DInput8EventBridge::onMouseData(const std::vector<DIDEVICEOBJECTDATA>&& dat
             break;
             case DI_MOUSE_Y:
             {
-                _mouseOffset.y = data.dwData;
+                _mouseOffset.y = event.dwData;
 
                 MouseMoveEvent moveEvent{ _mouseOffset };
                 _eventMgr.mouseMoveSignal.call(std::move(moveEvent));
@@ -69,7 +71,7 @@ void DInput8EventBridge::onMouseData(const std::vector<DIDEVICEOBJECTDATA>&& dat
                 MouseWheelEvent wheelEvent{};
                 wheelEvent.wheel = Mouse::Wheel::Vertical;
                 wheelEvent.delta =
-                    static_cast<short>(static_cast<short>(data.dwData) / WHEEL_DELTA);
+                    static_cast<short>(static_cast<short>(event.dwData) / WHEEL_DELTA);
 
                 _eventMgr.mouseWheelScrollSignal.call(std::move(wheelEvent));
             }
@@ -79,7 +81,7 @@ void DInput8EventBridge::onMouseData(const std::vector<DIDEVICEOBJECTDATA>&& dat
                 if (offset >= DI_MOUSE_BUTTON_0 && offset <= DI_MOUSE_BUTTON_7)
                 {
                     sendMouseButtonEvent(
-                        data.dwData, static_cast<Mouse::Button>(offset - DI_MOUSE_BUTTON_0));
+                        event.dwData, static_cast<Mouse::Button>(offset - DI_MOUSE_BUTTON_0));
                 }
             }
         }
@@ -105,51 +107,68 @@ void DInput8EventBridge::sendMouseButtonEvent(int pressData, Mouse::Button butto
 }
 
 void DInput8EventBridge::onJoystickData(
-    const std::vector<DIDEVICEOBJECTDATA>&& datas, const DeviceGUID&& guid)
+    const std::vector<DIDEVICEOBJECTDATA>&& events, const DeviceGUID&& guid)
 {
-    for (const auto& data : datas)
+    for (const auto& event : events)
     {
-        auto offset = data.dwOfs;
+        const auto offset = event.dwOfs;
 
-        switch (offset)
+        if (offset >= DI_JOYSTICK_BUTTON_0 && offset <= DI_JOYSTICK_BUTTON_31)
         {
-        case DI_JOYSTICK_X:
-        {
-        } break;
-        case DI_JOYSTICK_Y:
-        {
-        } break;
-        case DI_JOYSTICK_Z:
-        {
-        } break;
-        case DI_JOYSTICK_RX:
-        {
-        } break;
-        case DI_JOYSTICK_RY:
-        {
-        } break;
-        case DI_JOYSTICK_RZ:
-        {
-        } break;
-        case DI_JOYSTICK_SLIDER_0:
-        {
-        } break;
-        case DI_JOYSTICK_SLIDER_1:
-        {
-        } break;
-        case DI_JOYSTICK_POV_0:
-        {
-        } break;
-        case DI_JOYSTICK_POV_1:
-        {
-        } break;
-        default:
-        {
-            if (offset >= DI_JOYSTICK_BUTTON_0 && offset <= DI_JOYSTICK_BUTTON_31)
+            const auto buttonId = offset - DI_JOYSTICK_BUTTON_0;
+            JoystickButtonEvent e{};
+            e.button = static_cast<Joystick::Button>(buttonId);
+
+            if (event.dwData != 0)
             {
-                // TODO: send event
+                printf("Press %lu\n", buttonId);
+                _eventMgr.joystickButtonPressSignal.call(std::move(e));
+            }
+            else
+            {
+                printf("Release %lu\n", buttonId);
+                _eventMgr.joystickButtonReleaseSignal.call(std::move(e));
             }
         }
+        else
+        {
+            double result{};
+
+            if (offset ==
+                DI_JOYSTICK_POV_0) // [[unlikely]] // TODO: use when C++20 will be fully supported
+            {
+                const auto value = LOWORD(event.dwData);
+
+                if (value != 0xFFFF)
+                {
+                    auto angle =
+                        (static_cast<double>(value)) * std::numbers::pi / DI_DEGREES / 180.f;
+
+                    result = std::sin(angle) * 180.0;
+                }
+            }
+            else if (offset == DI_JOYSTICK_POV_1) // [[unlikely]]
+            {
+                const auto value = LOWORD(event.dwData);
+
+                if (value != 0xFFFF)
+                {
+                    auto angle =
+                        (static_cast<double>(value)) * std::numbers::pi / DI_DEGREES / 180.f;
+
+                    result = std::cos(angle) * 180.0;
+                }
+            }
+            else // [[likely]]
+            {
+                result = (static_cast<double>(static_cast<int>(event.dwData)) * 100.0) / 65535.0;
+            }
+
+            JoystickMoveEvent e{};
+            e.axis = static_cast<Joystick::Axis>(offset / sizeof(DI_JOYSTICK_X));
+            e.value = result;
+
+            _eventMgr.joystickMoveSignal.call(std::move(e));
         }
     }
 }

@@ -6,6 +6,7 @@
 
 #include "Hry/Math/Vec2.hpp"
 #include "Hry/Namespace.hpp"
+#include "Hry/System/Joystick.hpp"
 #include "Hry/System/Keyboard.hpp"
 #include "Hry/System/Mouse.hpp"
 #include "Hry/System/System.hpp"
@@ -48,6 +49,25 @@ struct GameStateEvent
         Paused,
         Resumed
     } type;
+};
+
+// for joystickConnectSignal and joystickDisconnectSignal
+struct JoystickStatusChangeEvent
+{
+    // TODO: add guid, pointer to joystick or id of joystick
+};
+
+struct JoystickMoveEvent
+{
+    // TODO: add guid, pointer to joystick or id of joystick
+    Joystick::Axis axis;
+    double value; // range [-100 .. 100]
+};
+
+struct JoystickButtonEvent
+{
+    // TODO: add guid, pointer to joystick or id of joystick
+    Joystick::Button button;
 };
 
 HRY_NS_END
