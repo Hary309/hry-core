@@ -29,7 +29,7 @@ Core::Core(HINSTANCE hInst)
     : _eventHandler(_eventMgr.createEventHandler()), _renderer(*this, _eventMgr),
       _keyBindsMgr(_eventHandler),
       _moduleMgr("plugins\\hry_plugins", _eventMgr, _configMgr, _keyBindsMgr),
-      _mainWindow(_moduleMgr, _configMgr, _keyBindsMgr, _eventHandler),
+      _mainWindow(_moduleMgr, _configMgr, _keyBindsMgr, _eventHandler), _loggerWindow(_eventMgr),
       _imguiImplEvents(_eventHandler)
 {
     hInstance = hInst;
@@ -46,13 +46,7 @@ bool Core::init(scs_telemetry_init_params_v100_t* scsTelemetry)
 {
     _scsTelemetry = scsTelemetry;
 
-#ifdef DEBUG
-    AllocConsole();
-    freopen("CONOUT$", "w", stdout);
-    freopen("CONOUT$", "w", stdin);
-#endif
-
-    LoggerFactory::Init("plugins/hry_core.log");
+    LoggerFactory::Init("plugins/hry_core.log", _eventMgr);
     Logger = LoggerFactory::GetLogger("core");
 
     Logger->info("Base address: {0:#x}", GetBaseAddress());
@@ -92,32 +86,10 @@ void Core::lateInit()
 void Core::initConfig()
 {
     _coreConfig = _configMgr.createConfig("Core");
-    _coreConfig->onChangesApplied.connect(
-        [](void* /*unused*/, ConfigCallbackData&& callbackData) {
-            auto test = callbackData.getValue<bool>("test");
-            auto text = callbackData.getValue<std::string>("text");
-            auto selectOne = callbackData.getValue<std::string>("selectOne");
+    _coreConfig->onChangesApplied.connect<&Core::onConfigChangesApplied>(this);
 
-            if (test.has_value() && text.has_value() && selectOne.has_value())
-            {
-                Core::Logger->info(
-                    "Config values: '", test.value(), "', '", text.value(), "', '",
-                    selectOne.value(), "'");
-            }
-        },
-        nullptr);
-
-    auto* checkBox = _coreConfig->createField<BoolField>("Test", "test");
+    auto* checkBox = _coreConfig->createField<BoolField>("Show log window", "show_log_window");
     checkBox->setDefaultValue(false);
-    checkBox->setDescription("some desc");
-
-    auto* text = _coreConfig->createField<TextField>("Tekst", "text");
-    text->setDefaultValue("Extra tekst");
-
-    auto* select = _coreConfig->createField<SelectionField>("Wybierz se", "select_one");
-    select->addOptions("One", "Two", "Three");
-    select->setDefaultValue("Two");
-    select->useCombo();
 
     _configMgr.loadFor(_coreConfig.get());
 }
@@ -132,9 +104,21 @@ void Core::initKeyBinds()
 void Core::imguiRender()
 {
     ImGui::ShowDemoWindow();
-    _mainWindow.renderImGui();
+
+    _mainWindow.imguiRender();
+    _loggerWindow.imguiRender();
 
     _eventMgr.imguiRenderSignal.call();
+}
+
+void Core::onConfigChangesApplied(const ConfigCallbackData&& data)
+{
+    const auto showLogWindow = data.getValue<bool>("show_log_window");
+
+    if (showLogWindow.has_value())
+    {
+        _loggerWindow.setEnabled(showLogWindow.value());
+    }
 }
 
 bool Core::InstallHooks()

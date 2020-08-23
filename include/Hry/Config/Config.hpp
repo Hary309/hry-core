@@ -28,7 +28,7 @@ private:
 
 public:
     // is called when settings are loaded or applied (pressing save in settings)
-    hry::Delegate<void(ConfigCallbackData&&)> onChangesApplied;
+    hry::Delegate<void(const ConfigCallbackData&&)> onChangesApplied;
 
     // use to save extra data
     hry::Delegate<void(nlohmann::json&)> onSave;

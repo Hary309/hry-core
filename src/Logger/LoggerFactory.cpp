@@ -12,8 +12,9 @@
 
 HRY_NS_BEGIN
 
-void LoggerFactory::Init(const char* logFilePath)
+void LoggerFactory::Init(const char* logFilePath, EventManager& eventMgr)
 {
+    _eventMgr = &eventMgr;
     _logFilePath = logFilePath;
 
     if (std::filesystem::exists(_logFilePath))
@@ -52,7 +53,7 @@ void LoggerFactory::WriteLine(Logger::Level level, std::string_view module, std:
     logFile << buffer << std::endl;
 
 #ifdef DEBUG
-    puts(buffer.c_str());
+    _eventMgr->logSignal.call(buffer, level);
 #endif
 }
 

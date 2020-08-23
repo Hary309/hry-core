@@ -33,7 +33,7 @@ void MainWindow::initKeyBinds(KeyBinds& keyBinds)
     keyBinds.addKeyBind(std::move(showMainWindowBind));
 }
 
-void MainWindow::renderImGui()
+void MainWindow::imguiRender()
 {
     if (!_isWindowEnabled)
     {

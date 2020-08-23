@@ -35,7 +35,7 @@ public:
 
     void initKeyBinds(KeyBinds& keyBinds);
 
-    void renderImGui();
+    void imguiRender();
 
 private:
     void renderPluginsTab();

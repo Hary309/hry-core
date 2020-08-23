@@ -15,6 +15,7 @@
 #include "KeyBinding/KeyBindsManager.hpp"
 #include "Modules/ModuleManager.hpp"
 #include "Renderer/Renderer.hpp"
+#include "UI/LoggerWindow.hpp"
 #include "UI/MainWindow.hpp"
 
 #include "ImGuiImplEvents.hpp"
@@ -44,6 +45,7 @@ private:
     KeyBindsManager _keyBindsMgr;
     ModuleManager _moduleMgr;
     MainWindow _mainWindow;
+    LoggerWindow _loggerWindow;
 
     ImGuiImplEvents _imguiImplEvents;
 
@@ -67,6 +69,9 @@ public:
     void initKeyBinds();
 
     [[nodiscard]] bool isInited() const { return _isInited; }
+
+private:
+    void onConfigChangesApplied(const ConfigCallbackData&& data);
 
 private:
     static bool InstallHooks();

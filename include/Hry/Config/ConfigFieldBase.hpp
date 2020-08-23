@@ -44,7 +44,7 @@ public:
 
     // will return empty if name or type don't match
     template<typename T>
-    std::optional<T> getValue(std::string_view fieldName)
+    std::optional<T> getValue(std::string_view fieldName) const
     {
         static_assert(std::is_arithmetic_v<T> || std::is_same_v<T, std::string>, "Wrong type");
 
@@ -54,7 +54,7 @@ public:
 
         if (it != _data.end())
         {
-            ConfigCallbackFieldData& fieldData = *it;
+            const ConfigCallbackFieldData& fieldData = *it;
             if (std::holds_alternative<T>(fieldData.data))
             {
                 return std::get<T>(fieldData.data);

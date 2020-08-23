@@ -1,19 +1,19 @@
 #pragma once
 
 #include <memory>
+#include <string>
 #include <vector>
 
 #include <Windows.h>
 
 #include "Hry/Events/Event.hpp"
 #include "Hry/Events/EventHandler.hpp"
+#include "Hry/Logger/Logger.hpp"
 #include "Hry/Utils/Signal.hpp"
 
 #include "Events/EventBridgeBase.hpp"
 
 struct scs_telemetry_init_params_v100_t;
-
-#include "Hry/Namespace.hpp"
 
 HRY_NS_BEGIN
 
@@ -26,7 +26,7 @@ private:
 
 public:
     // internal signals
-    Signal<void(const char*)> logSignal;
+    Signal<void(std::string msg, Logger::Level)> logSignal;
     Signal<void(HWND, UINT, WPARAM, LPARAM)> wndProcSignal;
 
     // system events
