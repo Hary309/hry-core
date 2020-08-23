@@ -23,6 +23,7 @@ public:
     using SystemClock_t = std::chrono::system_clock;
     using TimePoint_t = SystemClock_t::time_point;
 
+private:
     struct Task
     {
         Delegate_t task;
@@ -53,8 +54,7 @@ public:
 
     void addTask(std::chrono::milliseconds delay, Delegate_t&& delegate, Args... args)
     {
-        Task task{ delegate, SystemClock_t::now() + delay, std::tuple<Args...>(args...) };
-        _tasks.push(std::move(task));
+        _tasks.push({ delegate, SystemClock_t::now() + delay, std::tuple<Args...>(args...) });
     }
 
 private:

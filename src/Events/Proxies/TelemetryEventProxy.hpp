@@ -4,17 +4,17 @@
 
 #include "Hry/Namespace.hpp"
 
-#include "Events/EventBridgeBase.hpp"
+#include "Events/EventProxyBase.hpp"
 
 HRY_NS_BEGIN
 
-class TelemetryEventBridge : public EventBridgeBase
+class TelemetryEventProxy : public EventProxyBase
 {
 private:
     scs_telemetry_init_params_v100_t* _scsTelemetry;
 
 public:
-    TelemetryEventBridge(EventManager& eventMgr, scs_telemetry_init_params_v100_t* scsTelemetry);
+    TelemetryEventProxy(EventManager& eventMgr, scs_telemetry_init_params_v100_t* scsTelemetry);
 
 private:
     static void FrameStart(scs_event_t event, const void* event_info, scs_context_t context);

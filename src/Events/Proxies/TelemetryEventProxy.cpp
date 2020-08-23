@@ -1,4 +1,4 @@
-#include "TelemetryEventBridge.hpp"
+#include "TelemetryEventProxy.hpp"
 
 #include <scssdk_telemetry.h>
 
@@ -9,37 +9,37 @@
 
 HRY_NS_BEGIN
 
-TelemetryEventBridge::TelemetryEventBridge(
+TelemetryEventProxy::TelemetryEventProxy(
     EventManager& eventMgr, scs_telemetry_init_params_v100_t* scsTelemetry)
-    : EventBridgeBase(eventMgr), _scsTelemetry(scsTelemetry)
+    : EventProxyBase(eventMgr), _scsTelemetry(scsTelemetry)
 {
     _scsTelemetry->register_for_event(
-        SCS_TELEMETRY_EVENT_frame_start, TelemetryEventBridge::FrameStart, &eventMgr);
+        SCS_TELEMETRY_EVENT_frame_start, TelemetryEventProxy::FrameStart, &eventMgr);
     _scsTelemetry->register_for_event(
-        SCS_TELEMETRY_EVENT_frame_end, TelemetryEventBridge::FrameEnd, &eventMgr);
+        SCS_TELEMETRY_EVENT_frame_end, TelemetryEventProxy::FrameEnd, &eventMgr);
     _scsTelemetry->register_for_event(
-        SCS_TELEMETRY_EVENT_paused, TelemetryEventBridge::ChangedState, &eventMgr);
+        SCS_TELEMETRY_EVENT_paused, TelemetryEventProxy::ChangedState, &eventMgr);
     _scsTelemetry->register_for_event(
-        SCS_TELEMETRY_EVENT_started, TelemetryEventBridge::ChangedState, &eventMgr);
+        SCS_TELEMETRY_EVENT_started, TelemetryEventProxy::ChangedState, &eventMgr);
 
     // TODO: Add SCS_TELEMETRY_EVENT_configuration and SCS_TELEMETRY_EVENT_gameplay
 }
 
-void TelemetryEventBridge::FrameStart(
+void TelemetryEventProxy::FrameStart(
     scs_event_t /*unused*/, const void* /*unused*/, scs_context_t context)
 {
     auto* eventMgr = reinterpret_cast<EventManager*>(context);
     eventMgr->frameStartSignal.call();
 }
 
-void TelemetryEventBridge::FrameEnd(
+void TelemetryEventProxy::FrameEnd(
     scs_event_t /*unused*/, const void* /*unused*/, scs_context_t context)
 {
     auto* eventMgr = reinterpret_cast<EventManager*>(context);
     eventMgr->frameEndSignal.call();
 }
 
-void TelemetryEventBridge::ChangedState(
+void TelemetryEventProxy::ChangedState(
     scs_event_t event, const void* /*unused*/, scs_context_t context)
 {
     auto* eventMgr = reinterpret_cast<EventManager*>(context);

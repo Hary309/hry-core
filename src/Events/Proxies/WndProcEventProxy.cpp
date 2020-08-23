@@ -1,4 +1,4 @@
-#include "WndProcEventBridge.hpp"
+#include "WndProcEventProxy.hpp"
 
 #include <imgui.h>
 #include <windowsx.h>
@@ -143,13 +143,13 @@ Keyboard::Key vkKeyCodeToEnum(WPARAM key, LPARAM flags)
     return Key::Unknown;
 }
 
-WndProcEventBridge::WndProcEventBridge(EventManager& eventMgr)
-    : EventBridgeBase(eventMgr), _onWndProc(eventMgr.wndProcSignal)
+WndProcEventProxy::WndProcEventProxy(EventManager& eventMgr)
+    : EventProxyBase(eventMgr), _onWndProc(eventMgr.wndProcSignal)
 {
-    _onWndProc.connect<&WndProcEventBridge::onWndProc>(this);
+    _onWndProc.connect<&WndProcEventProxy::onWndProc>(this);
 }
 
-void WndProcEventBridge::onWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
+void WndProcEventProxy::onWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
     ImGui_ImplWin32_WndProcHandler(hWnd, msg, wParam, lParam);
 

@@ -2,10 +2,10 @@
 
 #include "Hry/Namespace.hpp"
 
-#include "Bridges/DInput8EventBridge.hpp"
-#include "Bridges/TelemetryEventBridge.hpp"
-#include "Bridges/WndProcEventBridge.hpp"
-#include "Events/Bridges/TelemetryEventBridge.hpp"
+#include "Events/Proxies/TelemetryEventProxy.hpp"
+#include "Proxies/DInput8EventProxy.hpp"
+#include "Proxies/TelemetryEventProxy.hpp"
+#include "Proxies/WndProcEventProxy.hpp"
 
 #include "Core.hpp"
 
@@ -15,9 +15,9 @@ void EventManager::init(scs_telemetry_init_params_v100_t* scsTelemetry)
 {
     Core::Logger->info("Initializing EventManager...");
 
-    _eventBridges.push_back(std::make_unique<WndProcEventBridge>(*this));
-    _eventBridges.push_back(std::make_unique<DInput8EventBridge>(*this));
-    _eventBridges.push_back(std::make_unique<TelemetryEventBridge>(*this, scsTelemetry));
+    _eventProxies.push_back(std::make_unique<WndProcEventProxy>(*this));
+    _eventProxies.push_back(std::make_unique<DInput8EventProxy>(*this));
+    _eventProxies.push_back(std::make_unique<TelemetryEventProxy>(*this, scsTelemetry));
 }
 
 EventHandler EventManager::createEventHandler()

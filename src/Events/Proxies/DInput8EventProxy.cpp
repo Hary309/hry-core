@@ -1,4 +1,4 @@
-#include "DInput8EventBridge.hpp"
+#include "DInput8EventProxy.hpp"
 
 #include <cstdio>
 #include <numbers>
@@ -33,13 +33,13 @@ constexpr int DI_JOYSTICK_BUTTON_31 = (offsetof(DIJOYSTATE, rgbButtons) + 31);
 
 HRY_NS_BEGIN
 
-DInput8EventBridge::DInput8EventBridge(EventManager& eventMgr) : EventBridgeBase(eventMgr)
+DInput8EventProxy::DInput8EventProxy(EventManager& eventMgr) : EventProxyBase(eventMgr)
 {
-    DInput8Hook::OnMouseData.connect<&DInput8EventBridge::onMouseData>(this);
-    DInput8Hook::OnJoystickData.connect<&DInput8EventBridge::onJoystickData>(this);
+    DInput8Hook::OnMouseData.connect<&DInput8EventProxy::onMouseData>(this);
+    DInput8Hook::OnJoystickData.connect<&DInput8EventProxy::onJoystickData>(this);
 }
 
-void DInput8EventBridge::onMouseData(const std::vector<DIDEVICEOBJECTDATA>&& events)
+void DInput8EventProxy::onMouseData(const std::vector<DIDEVICEOBJECTDATA>&& events)
 {
     for (const auto& event : events)
     {
@@ -88,7 +88,7 @@ void DInput8EventBridge::onMouseData(const std::vector<DIDEVICEOBJECTDATA>&& eve
     }
 }
 
-void DInput8EventBridge::sendMouseButtonEvent(int pressData, Mouse::Button button)
+void DInput8EventProxy::sendMouseButtonEvent(int pressData, Mouse::Button button)
 {
     MouseButtonEvent mouseButtonEvent{};
     mouseButtonEvent.button = button;
@@ -106,7 +106,7 @@ void DInput8EventBridge::sendMouseButtonEvent(int pressData, Mouse::Button butto
     }
 }
 
-void DInput8EventBridge::onJoystickData(
+void DInput8EventProxy::onJoystickData(
     const std::vector<DIDEVICEOBJECTDATA>&& events, const DeviceGUID&& guid)
 {
     for (const auto& event : events)

@@ -6,18 +6,18 @@
 #include "Hry/Namespace.hpp"
 #include "Hry/Utils/Signal.hpp"
 
-#include "Events/EventBridgeBase.hpp"
+#include "Events/EventProxyBase.hpp"
 
 HRY_NS_BEGIN
 
-class WndProcEventBridge : public EventBridgeBase
+class WndProcEventProxy : public EventProxyBase
 {
 private:
     Sink<void(HWND, UINT, WPARAM, LPARAM)> _onWndProc;
     Vec2i _lastMousePos{};
 
 public:
-    explicit WndProcEventBridge(EventManager& eventMgr);
+    explicit WndProcEventProxy(EventManager& eventMgr);
 
 private:
     void onWndProc(HWND, UINT, WPARAM, LPARAM);

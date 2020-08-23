@@ -11,18 +11,18 @@
 #include "Hry/Logger/Logger.hpp"
 #include "Hry/Utils/Signal.hpp"
 
-#include "Events/EventBridgeBase.hpp"
+#include "Events/EventProxyBase.hpp"
 
 struct scs_telemetry_init_params_v100_t;
 
 HRY_NS_BEGIN
 
-class EventBridgeBase;
+class EventProxyBase;
 
 class EventManager
 {
 private:
-    std::vector<std::unique_ptr<EventBridgeBase>> _eventBridges;
+    std::vector<std::unique_ptr<EventProxyBase>> _eventProxies;
 
 public:
     // internal signals

@@ -6,7 +6,7 @@
 #include "Hry/System/DeviceGUID.hpp"
 #include "Hry/System/Mouse.hpp"
 
-#include "Events/EventBridgeBase.hpp"
+#include "Events/EventProxyBase.hpp"
 
 struct DIDEVICEOBJECTDATA;
 
@@ -14,13 +14,13 @@ struct DIDEVICEOBJECTDATA;
 
 HRY_NS_BEGIN
 
-class DInput8EventBridge : public EventBridgeBase
+class DInput8EventProxy : public EventProxyBase
 {
 private:
     Vec2i _mouseOffset{};
 
 public:
-    explicit DInput8EventBridge(EventManager& eventMgr);
+    explicit DInput8EventProxy(EventManager& eventMgr);
 
 private:
     void onMouseData(const std::vector<DIDEVICEOBJECTDATA>&&);
