@@ -74,7 +74,7 @@ bool Core::init(scs_telemetry_init_params_v100_t* scsTelemetry)
 
 void Core::lateInit()
 {
-    EnableImGui(false);
+    EnableImGuiCursor(false);
     initConfig();
     initKeyBinds();
 

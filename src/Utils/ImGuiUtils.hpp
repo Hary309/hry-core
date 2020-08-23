@@ -5,6 +5,6 @@
 HRY_NS_BEGIN
 
 // @enable: if true enable mouse input and show cursor
-void EnableImGui(bool enable);
+void EnableImGuiCursor(bool enable);
 
 HRY_NS_END

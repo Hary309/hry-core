@@ -63,7 +63,7 @@ void KeyBindsPage::renderImGuiPage()
                     if (ImGui::SmallButton(text))
                     {
                         _keyToSetBind = &keyBind;
-                        EnableImGui(false);
+                        EnableImGuiCursor(false);
                     }
                 }
 
@@ -118,7 +118,7 @@ void KeyBindsPage::handleKeyPress(const KeyboardEvent&& keyboardEvent)
             _keyToSetBind->setKey(keyboardEvent.key);
         }
 
-        EnableImGui(true);
+        EnableImGuiCursor(true);
         _keyToSetBind = nullptr;
         _keyBindsMgr.save();
     }
@@ -130,7 +130,7 @@ void KeyBindsPage::handleMouseButtonPress(const MouseButtonEvent&& buttonEvent)
     {
         _keyToSetBind->setKey(buttonEvent.button);
         _keyToSetBind = nullptr;
-        EnableImGui(true);
+        EnableImGuiCursor(true);
         _keyBindsMgr.save();
     }
 }

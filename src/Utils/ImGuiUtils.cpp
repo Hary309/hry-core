@@ -6,7 +6,7 @@
 
 HRY_NS_BEGIN
 
-void EnableImGui(bool enable)
+void EnableImGuiCursor(bool enable)
 {
     auto& io = ImGui::GetIO();
 

@@ -212,7 +212,7 @@ void MainWindow::showMainWindowKeyBind(hry::ButtonState /*unused*/)
     _isWindowEnabled = !_isWindowEnabled;
     Mouse::DisableInGameMouse(_isWindowEnabled);
 
-    EnableImGui(_isWindowEnabled);
+    EnableImGuiCursor(_isWindowEnabled);
 }
 
 HRY_NS_END
