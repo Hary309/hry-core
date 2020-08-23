@@ -21,6 +21,11 @@ struct EventHandler
     Sink<void(const MouseMoveEvent&&)> onMouseMove;
     Sink<void(const MouseWheelEvent&&)> onMouseWheelScroll;
 
+    Sink<void(const JoystickStatusChangeEvent&&)> onJoystickStatusChange;
+    Sink<void(const JoystickMoveEvent&&)> onJoystickMove;
+    Sink<void(const JoystickButtonEvent&&)> onJoystickButtonPress;
+    Sink<void(const JoystickButtonEvent&&)> onJoystickButtonRelease;
+
     Sink<void()> onImGuiRender;
 
     // game events

@@ -36,11 +36,16 @@ EventHandler EventManager::createEventHandler()
         mouseMoveSignal,
         mouseWheelScrollSignal,
 
+        joystickStatusChangeSignal,
+        joystickMoveSignal,
+        joystickButtonPressSignal,
+        joystickButtonReleaseSignal,
+
         imguiRenderSignal,
 
         frameStartSignal,
         frameEndSignal,
-        stateChangeSignal
+        stateChangeSignal,
     };
     // clang-format on
 }

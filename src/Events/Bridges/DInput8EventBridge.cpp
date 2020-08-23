@@ -121,12 +121,12 @@ void DInput8EventBridge::onJoystickData(
 
             if (event.dwData != 0)
             {
-                printf("Press %lu\n", buttonId);
+                e.state = ButtonState::Pressed;
                 _eventMgr.joystickButtonPressSignal.call(std::move(e));
             }
             else
             {
-                printf("Release %lu\n", buttonId);
+                e.state = ButtonState::Released;
                 _eventMgr.joystickButtonReleaseSignal.call(std::move(e));
             }
         }

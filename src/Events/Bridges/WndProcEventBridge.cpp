@@ -168,13 +168,15 @@ void WndProcEventBridge::onWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lP
                 break;
             }
 
-            ResizeType resizeType = [wParam]() {
-                switch (wParam) {
-                case SIZE_MAXIMIZED: return ResizeType::Maximized;
-                case SIZE_MINIMIZED: return ResizeType::Minimized;
-                case SIZE_RESTORED: return ResizeType::Restored;
-                }
-            }();
+            ResizeType resizeType{};
+
+            switch (wParam)
+            {
+                case SIZE_MAXIMIZED: resizeType = ResizeType::Maximized; break;
+                case SIZE_MINIMIZED: resizeType = ResizeType::Minimized; break;
+                case SIZE_RESTORED: resizeType = ResizeType::Restored; break;
+                default: break;
+            }
 
             ResizeEvent resizeEvent{};
             resizeEvent.size.x = LOWORD(lParam);

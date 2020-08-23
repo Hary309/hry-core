@@ -68,6 +68,7 @@ struct JoystickButtonEvent
 {
     // TODO: add guid, pointer to joystick or id of joystick
     Joystick::Button button;
+    ButtonState state;
 };
 
 HRY_NS_END
