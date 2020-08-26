@@ -28,9 +28,16 @@ using DirectInput8Create_t = decltype(DirectInput8Create);
 using DirectInput8_EnumDevices_t = decltype(IDirectInput8WVtbl::EnumDevices);
 using DirectInputDevice8_GetDeviceData_t = decltype(IDirectInputDevice8WVtbl::GetDeviceData);
 
+static IDirectInput8WVtbl* DIVTable;
+
 static std::unique_ptr<hry::Detour> detour;
 
+static DirectInput8_EnumDevices_t oDirectInput8EnumDevices;
+
+static LPDIENUMDEVICESCALLBACKW oCallback;
+
 HRY_NS_BEGIN
+
 DeviceGUID toHryGUID(::GUID guid)
 {
     DeviceGUID result;
@@ -83,6 +90,14 @@ HRESULT __stdcall new_DirectInputDevice_GetDeviceData(
     return result;
 }
 
+// TODO: pvRef probably hides something cool, investigate it
+BOOL new_EnumDevicesCallback(const DIDEVICEINSTANCEW* deviceInstance, void* pvRef)
+{
+    DInput8Hook::OnDeviceEnum(deviceInstance);
+
+    return oCallback(deviceInstance, pvRef);
+}
+
 HRESULT __stdcall new_IDirectInput8W_EnumDevices(
     IDirectInput8W* self,
     DWORD dwDevType,
@@ -90,6 +105,15 @@ HRESULT __stdcall new_IDirectInput8W_EnumDevices(
     void* pvRef,
     DWORD dwFlags)
 {
+    if (dwDevType == DI8DEVCLASS_GAMECTRL)
+    {
+        DInput8Hook::OnDeviceEnumStart();
+        oCallback = lpCallback;
+
+        return oDirectInput8EnumDevices(self, dwDevType, new_EnumDevicesCallback, pvRef, dwFlags);
+    }
+
+    return oDirectInput8EnumDevices(self, dwDevType, lpCallback, pvRef, dwFlags);
 }
 
 bool DInput8Hook::Install()
@@ -127,7 +151,10 @@ bool DInput8Hook::Install()
         return false;
     }
 
-    // HookVTableField(&DI->lpVtbl->EnumDevices, &new_IDirectInput8W_EnumDevices);
+    DIVTable = DI->lpVtbl;
+
+    oDirectInput8EnumDevices =
+        HookVTableField(&DIVTable->EnumDevices, &new_IDirectInput8W_EnumDevices);
 
     // use GUID_SysMouseEm because GUID_SysMouse and GUID_SysKeyboard are overwritten by steamoverlay
     hr = IDirectInput8_CreateDevice(DI, GUID_SysMouseEm, &DIMouse, nullptr);
@@ -166,6 +193,11 @@ bool DInput8Hook::Install()
 void DInput8Hook::Uninstall()
 {
     detour.reset();
+
+    if (oDirectInput8EnumDevices != nullptr)
+    {
+        HookVTableField(&DIVTable->EnumDevices, oDirectInput8EnumDevices);
+    }
 }
 
 HRY_NS_END
