@@ -3,7 +3,8 @@
 #include <cstdint>
 #include <vector>
 
-#include "Hry/System/DeviceGUID.hpp"
+#include <guiddef.h>
+
 #include "Hry/System/Joystick.hpp"
 #include "Hry/Utils/Delegate.hpp"
 
@@ -15,8 +16,7 @@ HRY_NS_BEGIN
 struct DInput8Hook
 {
     using OnMouseData_t = Delegate<void(const std::vector<DIDEVICEOBJECTDATA>&&)>;
-    using OnJoystickData_t =
-        Delegate<void(const std::vector<DIDEVICEOBJECTDATA>&&, const DeviceGUID&&)>;
+    using OnJoystickData_t = Delegate<void(const std::vector<DIDEVICEOBJECTDATA>&&, const GUID&)>;
 
     inline static OnMouseData_t OnMouseData;
     inline static OnJoystickData_t OnJoystickData;

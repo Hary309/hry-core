@@ -2,8 +2,9 @@
 
 #include <vector>
 
+#include <guiddef.h>
+
 #include "Hry/Math/Vec2.hpp"
-#include "Hry/System/DeviceGUID.hpp"
 #include "Hry/System/Mouse.hpp"
 
 #include "Events/EventProxyBase.hpp"
@@ -23,8 +24,8 @@ public:
     explicit DInput8EventProxy(EventManager& eventMgr);
 
 private:
-    void onMouseData(const std::vector<DIDEVICEOBJECTDATA>&&);
-    void onJoystickData(const std::vector<DIDEVICEOBJECTDATA>&&, const DeviceGUID&& guid);
+    void onMouseData(const std::vector<DIDEVICEOBJECTDATA>&& events);
+    void onJoystickData(const std::vector<DIDEVICEOBJECTDATA>&& events, const GUID& guid);
     void sendMouseButtonEvent(int pressData, Mouse::Button button);
 };
 

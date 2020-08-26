@@ -38,13 +38,6 @@ static LPDIENUMDEVICESCALLBACKW oCallback;
 
 HRY_NS_BEGIN
 
-DeviceGUID toHryGUID(::GUID guid)
-{
-    DeviceGUID result;
-    memcpy(&result, &guid, sizeof(::GUID));
-    return result;
-}
-
 HRESULT __stdcall new_DirectInputDevice_GetDeviceData(
     IDirectInputDevice8W* self,
     DWORD cbObjectData,
@@ -80,8 +73,7 @@ HRESULT __stdcall new_DirectInputDevice_GetDeviceData(
 
             default:
             {
-                DInput8Hook::OnJoystickData(
-                    { rgdod, rgdod + (*pdwInOut) }, toHryGUID(instance.guidInstance));
+                DInput8Hook::OnJoystickData({ rgdod, rgdod + (*pdwInOut) }, instance.guidInstance);
             }
             break;
         }

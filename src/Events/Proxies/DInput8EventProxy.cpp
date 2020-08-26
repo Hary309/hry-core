@@ -108,7 +108,7 @@ void DInput8EventProxy::sendMouseButtonEvent(int pressData, Mouse::Button button
 }
 
 void DInput8EventProxy::onJoystickData(
-    const std::vector<DIDEVICEOBJECTDATA>&& events, const DeviceGUID&& guid)
+    const std::vector<DIDEVICEOBJECTDATA>&& events, const GUID& guid)
 {
     for (const auto& event : events)
     {
@@ -135,8 +135,8 @@ void DInput8EventProxy::onJoystickData(
         {
             double result{};
 
-            if (offset ==
-                DI_JOYSTICK_POV_0) // [[unlikely]] // TODO: use when C++20 will be fully supported
+            // TODO: use [[likely]] and [[unlikely]] when C++20 will be fully supported
+            if (offset == DI_JOYSTICK_POV_0)
             {
                 const auto value = LOWORD(event.dwData);
 
@@ -147,7 +147,7 @@ void DInput8EventProxy::onJoystickData(
                     result = std::sin(angle) * 180.0;
                 }
             }
-            else if (offset == DI_JOYSTICK_POV_1) // [[unlikely]]
+            else if (offset == DI_JOYSTICK_POV_1)
             {
                 const auto value = LOWORD(event.dwData);
 
@@ -158,7 +158,7 @@ void DInput8EventProxy::onJoystickData(
                     result = std::cos(angle) * 180.0;
                 }
             }
-            else // [[likely]]
+            else
             {
                 result = (static_cast<double>(static_cast<int>(event.dwData)) * 100.0) / 65535.0;
             }
