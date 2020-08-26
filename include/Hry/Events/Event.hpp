@@ -4,6 +4,8 @@
 #include <optional>
 #include <variant>
 
+#include <guiddef.h>
+
 #include "Hry/Math/Vec2.hpp"
 #include "Hry/Namespace.hpp"
 #include "Hry/System/Joystick.hpp"
@@ -51,22 +53,16 @@ struct GameStateEvent
     } type;
 };
 
-// for joystickConnectSignal and joystickDisconnectSignal
-struct JoystickStatusChangeEvent
-{
-    // TODO: add guid, pointer to joystick or id of joystick
-};
-
 struct JoystickMoveEvent
 {
-    // TODO: add guid, pointer to joystick or id of joystick
+    GUID deviceGUID;
     Joystick::Axis axis;
     double value; // range [-100 .. 100]
 };
 
 struct JoystickButtonEvent
 {
-    // TODO: add guid, pointer to joystick or id of joystick
+    GUID deviceGUID;
     Joystick::Button button;
     ButtonState state;
 };

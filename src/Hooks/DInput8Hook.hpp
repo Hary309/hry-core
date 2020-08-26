@@ -9,7 +9,6 @@
 #include "Hry/Utils/Delegate.hpp"
 
 struct DIDEVICEOBJECTDATA;
-struct DIDEVICEINSTANCEW;
 
 HRY_NS_BEGIN
 
@@ -20,9 +19,6 @@ struct DInput8Hook
 
     inline static OnMouseData_t OnMouseData;
     inline static OnJoystickData_t OnJoystickData;
-
-    inline static Delegate<void()> OnDeviceEnumStart;
-    inline static Delegate<void(const DIDEVICEINSTANCEW*)> OnDeviceEnum;
 
     inline static bool DisableInGameMouse;
 

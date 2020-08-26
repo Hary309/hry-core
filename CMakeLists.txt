@@ -19,6 +19,8 @@ add_subdirectory(vendor)
 file(GLOB_RECURSE hry-core-src include/*.hpp src/*.hpp src/*.cpp)
 add_library(hry-core SHARED ${hry-core-src})
 
+target_compile_definitions(hry-core PUBLIC _USE_MATH_DEFINES)
+
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
   target_compile_definitions(hry-core PUBLIC DEBUG)
 endif()

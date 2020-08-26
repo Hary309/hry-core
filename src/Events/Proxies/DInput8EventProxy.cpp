@@ -1,12 +1,9 @@
 #include "DInput8EventProxy.hpp"
 
-#define _USE_MATH_DEFINES
-
 #include <cmath>
 #include <cstdio>
 
 #include <dinput.h>
-#include <math.h>
 
 #include "Hry/Events/Event.hpp"
 #include "Hry/System/Joystick.hpp"
@@ -14,6 +11,8 @@
 
 #include "Events/EventManager.hpp"
 #include "Hooks/DInput8Hook.hpp"
+
+#undef max
 
 constexpr int DI_MOUSE_X = offsetof(DIMOUSESTATE2, lX);
 constexpr int DI_MOUSE_Y = offsetof(DIMOUSESTATE2, lY);
@@ -118,6 +117,7 @@ void DInput8EventProxy::onJoystickData(
         {
             const auto buttonId = offset - DI_JOYSTICK_BUTTON_0;
             JoystickButtonEvent e{};
+            e.deviceGUID = guid;
             e.button = static_cast<Joystick::Button>(buttonId);
 
             if (event.dwData != 0)
@@ -160,10 +160,12 @@ void DInput8EventProxy::onJoystickData(
             }
             else
             {
-                result = (static_cast<double>(static_cast<int>(event.dwData)) * 100.0) / 65535.0;
+                result = (static_cast<double>(static_cast<int>(event.dwData)) * 100.0) /
+                         static_cast<double>(std::numeric_limits<uint16_t>::max());
             }
 
             JoystickMoveEvent e{};
+            e.deviceGUID = guid;
             e.axis = static_cast<Joystick::Axis>(offset / sizeof(DI_JOYSTICK_X));
             e.value = result;
 

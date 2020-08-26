@@ -42,7 +42,6 @@ public:
     Signal<void(const MouseMoveEvent&&)> mouseMoveSignal;
     Signal<void(const MouseWheelEvent&&)> mouseWheelScrollSignal;
 
-    Signal<void(const JoystickStatusChangeEvent&&)> joystickStatusChangeSignal;
     Signal<void(const JoystickMoveEvent&&)> joystickMoveSignal;
     Signal<void(const JoystickButtonEvent&&)> joystickButtonPressSignal;
     Signal<void(const JoystickButtonEvent&&)> joystickButtonReleaseSignal;
