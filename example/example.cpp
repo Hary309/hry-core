@@ -38,11 +38,7 @@ public:
         Logger->info("Created!");
     }
 
-    void initEvents(hry::EventHandler* eventHandler) override
-    {
-        eventHandler->onKeyPress.connect<&ExamplePlugin::onKeyPressed>(this);
-        eventHandler->onImGuiRender.connect<&ExamplePlugin::imguiRender>(this);
-    }
+    void initEvents(hry::EventHandler* eventHandler) override {}
 
     void initConfig(hry::Config* config) override
     {
@@ -51,80 +47,11 @@ public:
         intField->setDefaultValue(23);
     }
 
-    void initKeyBinds(hry::KeyBinds* keyBinds) override
-    {
-        hry::KeyBind doSomethingBind;
-        doSomethingBind.setConfigFieldName("do_something");
-        doSomethingBind.setName("Do something");
-        doSomethingBind.setDefaultKey(hry::Keyboard::Key::Q);
-        doSomethingBind.pressAction.connect<&ExamplePlugin::onKeyBind>(this);
-        doSomethingBind.releaseAction.connect<&ExamplePlugin::onKeyBind>(this);
-        keyBinds->addKeyBind(std::move(doSomethingBind));
-
-        hry::KeyBind holdBind(hry::KeyBind::Activator::Hold);
-        holdBind.setConfigFieldName("hold");
-        holdBind.setName("Hold button");
-        holdBind.setDefaultKey(hry::Keyboard::Key::Q);
-        holdBind.pressAction.connect<&ExamplePlugin::onKeyHold>(this);
-        holdBind.releaseAction.connect<&ExamplePlugin::onKeyHold>(this);
-        keyBinds->addKeyBind(std::move(holdBind));
-    }
+    void initKeyBinds(hry::KeyBinds* keyBinds) override {}
 
     void imguiPage() override { ImGui::Text("Test asdf"); }
 
     const hry::PluginInfo& getPluginInfo() const override { return _pluginInfo; }
-
-    void imguiRender()
-    {
-        static float ads;
-        if (ImGui::Begin("hry-example"))
-        {
-            ImGui::Text("asdf");
-            ImGui::InputFloat("float", &ads);
-        }
-
-        ImGui::End();
-    }
-
-private:
-    void onKeyPressed(const hry::KeyboardEvent& key)
-    {
-        Logger->info("Key pressed! ID: {}", static_cast<int>(key.key));
-    }
-
-    void onKeyBind(hry::ButtonState state)
-    {
-        switch (state)
-        {
-            case hry::ButtonState::Pressed:
-            {
-                Logger->info("Press!");
-            }
-            break;
-            case hry::ButtonState::Released:
-            {
-                Logger->info("Release!");
-            }
-            break;
-        }
-    }
-
-    void onKeyHold(hry::ButtonState state)
-    {
-        switch (state)
-        {
-            case hry::ButtonState::Pressed:
-            {
-                Logger->info("Holding!");
-            }
-            break;
-            case hry::ButtonState::Released:
-            {
-                Logger->info("Released hold!");
-            }
-            break;
-        }
-    }
 };
 
 INIT_PLUGIN(ExamplePlugin)

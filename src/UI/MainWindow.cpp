@@ -25,12 +25,9 @@ MainWindow::MainWindow(
 
 void MainWindow::initKeyBinds(KeyBinds& keyBinds)
 {
-    KeyBind showMainWindowBind;
-    showMainWindowBind.setConfigFieldName("show_main_window");
-    showMainWindowBind.setName("Show main window");
-    showMainWindowBind.setDefaultKey(Keyboard::Key::F9);
-    showMainWindowBind.pressAction.connect<&MainWindow::showMainWindowKeyBind>(this);
-    keyBinds.addKeyBind(std::move(showMainWindowBind));
+    auto* showMainWindowBind = keyBinds.createKeyBind("Show main window", "show_main_window");
+    showMainWindowBind->setDefaultKey(Keyboard::Key::F9);
+    showMainWindowBind->pressAction.connect<&MainWindow::showMainWindowKeyBind>(this);
 }
 
 void MainWindow::imguiRender()

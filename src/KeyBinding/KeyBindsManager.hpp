@@ -49,8 +49,12 @@ private:
 
     void handleKeybaordEvent(const KeyboardEvent&& keyboardEvent);
     void handleMouseButtonEvent(const MouseButtonEvent&& buttonEvent);
+    void handleJoystickButtonEvent(const JoystickButtonEvent&& buttonEvent);
 
-    void processKey(BindableKey::Key_t key, ButtonState buttonState);
+    void processKey(BindableKey::Key_t key, ButtonState buttonState, std::optional<GUID> guid);
+
+    static void handleClickActivator(ButtonState buttonState, KeyBind* keyBind);
+    void handleHoldActivator(ButtonState buttonState, KeyBind* keyBind);
 
     void onTaskHold(KeyBind* keyBind, std::chrono::system_clock::time_point);
 };

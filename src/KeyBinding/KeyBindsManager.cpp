@@ -25,8 +25,13 @@ KeyBindsManager::KeyBindsManager(EventHandler& eventHandler)
 {
     eventHandler.onKeyPress.connect<&KeyBindsManager::handleKeybaordEvent>(this);
     eventHandler.onKeyRelease.connect<&KeyBindsManager::handleKeybaordEvent>(this);
+
     eventHandler.onMouseButtonPress.connect<&KeyBindsManager::handleMouseButtonEvent>(this);
     eventHandler.onMouseButtonRelease.connect<&KeyBindsManager::handleMouseButtonEvent>(this);
+
+    eventHandler.onJoystickButtonPress.connect<&KeyBindsManager::handleJoystickButtonEvent>(this);
+    eventHandler.onJoystickButtonRelease.connect<&KeyBindsManager::handleJoystickButtonEvent>(this);
+
     eventHandler.onFrameEnd.connect<&KeyBindsManager::update>(this);
 }
 
@@ -57,15 +62,21 @@ void KeyBindsManager::keyBindsDeleter(KeyBinds* ptr)
 
 void KeyBindsManager::handleKeybaordEvent(const KeyboardEvent&& keyboardEvent)
 {
-    processKey(keyboardEvent.key, keyboardEvent.state);
+    processKey(keyboardEvent.key, keyboardEvent.state, {});
 }
 
 void KeyBindsManager::handleMouseButtonEvent(const MouseButtonEvent&& buttonEvent)
 {
-    processKey(buttonEvent.button, buttonEvent.state);
+    processKey(buttonEvent.button, buttonEvent.state, {});
 }
 
-void KeyBindsManager::processKey(BindableKey::Key_t key, ButtonState buttonState)
+void KeyBindsManager::handleJoystickButtonEvent(const JoystickButtonEvent&& buttonEvent)
+{
+    processKey(buttonEvent.button, buttonEvent.state, buttonEvent.deviceGUID);
+}
+
+void KeyBindsManager::processKey(
+    BindableKey::Key_t key, ButtonState buttonState, std::optional<GUID> guid)
 {
     for (auto& keyBindsSection : _keyBinds)
     {
@@ -73,59 +84,66 @@ void KeyBindsManager::processKey(BindableKey::Key_t key, ButtonState buttonState
 
         for (auto& keyBind : keyBinds)
         {
-            if (keyBind.getKey() == nullptr || keyBind._state == buttonState ||
-                keyBind.getKey()->key != key)
+            if (keyBind->getKey() == nullptr || keyBind->getState() == buttonState ||
+                keyBind->getKey()->key != key || keyBind->getJoystickGUID() != guid)
             {
                 continue;
             }
 
-            if (keyBind.getActivator() == KeyBind::Activator::Click)
+            switch (keyBind->getActivator())
             {
-                switch (buttonState)
-                {
-                    case ButtonState::Pressed:
-                        keyBind.pressAction.call(ButtonState::Pressed);
-                        break;
-                    case ButtonState::Released:
-                        keyBind.releaseAction.call(ButtonState::Released);
-                        break;
-                }
-            }
-            else if (keyBind.getActivator() == KeyBind::Activator::Hold)
-            {
-                switch (buttonState)
-                {
-                    case ButtonState::Pressed:
-                    {
-                        auto endTimePoint = system_clock::now() + LongPressTimeout;
-
-                        _taskScheduler.addTask(
-                            LongPressTimeout, { ConnectArg_v<&KeyBindsManager::onTaskHold>, this },
-                            &keyBind, endTimePoint);
-
-                        keyBind._keyPressTimePoint = endTimePoint;
-                    }
+                case KeyBind::Activator::Click:
+                    handleClickActivator(buttonState, keyBind.get());
                     break;
-                    case ButtonState::Released:
-                    {
-                        if (keyBind._keyPressTimePoint - system_clock::now() <
-                            system_clock::time_point::duration::zero())
-                        {
-                            keyBind.releaseAction(ButtonState::Released);
-                        }
-                    }
+                case KeyBind::Activator::Hold:
+                    handleHoldActivator(buttonState, keyBind.get());
                     break;
-                }
             }
 
-            keyBind._state = buttonState;
+            keyBind->setState(buttonState);
         }
+    }
+}
+
+void KeyBindsManager::handleClickActivator(ButtonState buttonState, KeyBind* keyBind)
+{
+    switch (buttonState)
+    {
+        case ButtonState::Pressed: keyBind->pressAction.call(ButtonState::Pressed); break;
+        case ButtonState::Released: keyBind->releaseAction.call(ButtonState::Released); break;
+    }
+}
+
+void KeyBindsManager::handleHoldActivator(ButtonState buttonState, KeyBind* keyBind)
+{
+    switch (buttonState)
+    {
+        case ButtonState::Pressed:
+        {
+            auto endTimePoint = system_clock::now() + LongPressTimeout;
+
+            _taskScheduler.addTask(
+                LongPressTimeout, { ConnectArg_v<&KeyBindsManager::onTaskHold>, this }, keyBind,
+                endTimePoint);
+
+            keyBind->setKeyPressTimePoint(endTimePoint);
+        }
+        break;
+        case ButtonState::Released:
+        {
+            if (keyBind->getKeyPressTimePoint() - system_clock::now() <
+                system_clock::time_point::duration::zero())
+            {
+                keyBind->releaseAction(ButtonState::Released);
+            }
+        }
+        break;
     }
 }
 
 void KeyBindsManager::onTaskHold(KeyBind* keyBind, system_clock::time_point timePoint)
 {
-    if (keyBind->_state == ButtonState::Pressed && keyBind->_keyPressTimePoint == timePoint)
+    if (keyBind->getState() == ButtonState::Pressed && keyBind->getKeyPressTimePoint() == timePoint)
     {
         keyBind->pressAction(ButtonState::Pressed);
     }

@@ -13,6 +13,7 @@ KeyBindsPage::KeyBindsPage(KeyBindsManager& keyBindsMgr, EventHandler& eventHand
 {
     eventHandler.onKeyPress.connect<&KeyBindsPage::handleKeyPress>(this);
     eventHandler.onMouseButtonPress.connect<&KeyBindsPage::handleMouseButtonPress>(this);
+    eventHandler.onJoystickButtonPress.connect<&KeyBindsPage::handleJoystickButtonPress>(this);
 }
 
 void KeyBindsPage::renderImGuiPage()
@@ -37,13 +38,13 @@ void KeyBindsPage::renderImGuiPage()
             {
                 ImGui::PushID(&keyBind);
 
-                ImGui::Text("%s", keyBind.getName().c_str());
+                ImGui::Text("%s", keyBind->getName().c_str());
 
                 ImGui::NextColumn();
 
-                const auto* key = keyBind.getKey();
+                const auto* key = keyBind->getKey();
 
-                if (_keyToSetBind == &keyBind)
+                if (_keyToSetBind == keyBind.get())
                 {
                     ImGui::Text("Press key to bind");
                 }
@@ -62,20 +63,20 @@ void KeyBindsPage::renderImGuiPage()
 
                     if (ImGui::SmallButton(text))
                     {
-                        _keyToSetBind = &keyBind;
+                        _keyToSetBind = keyBind.get();
                         EnableImGuiCursor(false);
                     }
                 }
 
                 ImGui::NextColumn();
 
-                bool checkBoxValue = keyBind._activator == KeyBind::Activator::Hold;
+                bool checkBoxValue = keyBind->_activator == KeyBind::Activator::Hold;
 
                 ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, { 4, 0 });
 
                 if (ImGui::Checkbox("Hold", &checkBoxValue))
                 {
-                    keyBind._activator =
+                    keyBind->_activator =
                         checkBoxValue ? KeyBind::Activator::Hold : KeyBind::Activator::Click;
                 }
 
@@ -85,8 +86,8 @@ void KeyBindsPage::renderImGuiPage()
 
                 if (ImGui::SmallButton("Default##KeyBinds"))
                 {
-                    keyBind.setKey(keyBind.getDefaultKey());
-                    keyBind._activator = keyBind._defaultActivator;
+                    keyBind->setKey(keyBind->getDefaultKey());
+                    keyBind->_activator = keyBind->_defaultActivator;
                     _keyBindsMgr.save();
                 }
 
@@ -94,7 +95,7 @@ void KeyBindsPage::renderImGuiPage()
 
                 if (ImGui::SmallButton("Delete##KeyBinds"))
                 {
-                    keyBind.setKey(nullptr);
+                    keyBind->setKey(nullptr);
                     _keyBindsMgr.save();
                 }
 
@@ -116,11 +117,10 @@ void KeyBindsPage::handleKeyPress(const KeyboardEvent&& keyboardEvent)
         if (keyboardEvent.key != Keyboard::Key::Escape)
         {
             _keyToSetBind->setKey(keyboardEvent.key);
+            _keyToSetBind->_joystickGUID.reset();
         }
 
-        EnableImGuiCursor(true);
-        _keyToSetBind = nullptr;
-        _keyBindsMgr.save();
+        applyChanges();
     }
 }
 
@@ -129,10 +129,28 @@ void KeyBindsPage::handleMouseButtonPress(const MouseButtonEvent&& buttonEvent)
     if (_keyToSetBind != nullptr)
     {
         _keyToSetBind->setKey(buttonEvent.button);
-        _keyToSetBind = nullptr;
-        EnableImGuiCursor(true);
-        _keyBindsMgr.save();
+        _keyToSetBind->_joystickGUID.reset();
+
+        applyChanges();
     }
+}
+
+void KeyBindsPage::handleJoystickButtonPress(const JoystickButtonEvent&& buttonEvent)
+{
+    if (_keyToSetBind != nullptr)
+    {
+        _keyToSetBind->setKey(buttonEvent.button);
+        _keyToSetBind->_joystickGUID = buttonEvent.deviceGUID;
+
+        applyChanges();
+    }
+}
+
+void KeyBindsPage::applyChanges()
+{
+    _keyToSetBind = nullptr;
+    EnableImGuiCursor(true);
+    _keyBindsMgr.save();
 }
 
 HRY_NS_END

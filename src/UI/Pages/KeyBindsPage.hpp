@@ -23,6 +23,9 @@ public:
 private:
     void handleKeyPress(const KeyboardEvent&&);
     void handleMouseButtonPress(const MouseButtonEvent&&);
+    void handleJoystickButtonPress(const JoystickButtonEvent&&);
+
+    void applyChanges();
 };
 
 HRY_NS_END
