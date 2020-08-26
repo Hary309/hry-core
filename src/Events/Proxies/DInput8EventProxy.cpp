@@ -1,9 +1,12 @@
 #include "DInput8EventProxy.hpp"
 
+#define _USE_MATH_DEFINES
+
+#include <cmath>
 #include <cstdio>
-#include <numbers>
 
 #include <dinput.h>
+#include <math.h>
 
 #include "Hry/Events/Event.hpp"
 #include "Hry/System/Joystick.hpp"
@@ -19,13 +22,11 @@ constexpr int DI_MOUSE_BUTTON_0 = (offsetof(DIMOUSESTATE2, rgbButtons) + 0);
 constexpr int DI_MOUSE_BUTTON_7 = (offsetof(DIMOUSESTATE2, rgbButtons) + 7);
 
 constexpr int DI_JOYSTICK_X = offsetof(DIJOYSTATE, lX);
-constexpr int DI_JOYSTICK_Y = offsetof(DIJOYSTATE, lY);
-constexpr int DI_JOYSTICK_Z = offsetof(DIJOYSTATE, lZ);
-constexpr int DI_JOYSTICK_RX = offsetof(DIJOYSTATE, lRx);
-constexpr int DI_JOYSTICK_RY = offsetof(DIJOYSTATE, lRy);
-constexpr int DI_JOYSTICK_RZ = offsetof(DIJOYSTATE, lRz);
-constexpr int DI_JOYSTICK_SLIDER_0 = (offsetof(DIJOYSTATE, rglSlider) + 0);
-constexpr int DI_JOYSTICK_SLIDER_1 = (offsetof(DIJOYSTATE, rglSlider) + 1);
+// constexpr int DI_JOYSTICK_RX = offsetof(DIJOYSTATE, lRx);
+// constexpr int DI_JOYSTICK_RY = offsetof(DIJOYSTATE, lRy);
+// constexpr int DI_JOYSTICK_RZ = offsetof(DIJOYSTATE, lRz);
+// constexpr int DI_JOYSTICK_SLIDER_0 = (offsetof(DIJOYSTATE, rglSlider) + 0);
+// constexpr int DI_JOYSTICK_SLIDER_1 = (offsetof(DIJOYSTATE, rglSlider) + 1);
 constexpr int DI_JOYSTICK_POV_0 = (offsetof(DIJOYSTATE, rgdwPOV) + 0);
 constexpr int DI_JOYSTICK_POV_1 = (offsetof(DIJOYSTATE, rgdwPOV) + 1);
 constexpr int DI_JOYSTICK_BUTTON_0 = (offsetof(DIJOYSTATE, rgbButtons) + 0);
@@ -141,8 +142,7 @@ void DInput8EventProxy::onJoystickData(
 
                 if (value != 0xFFFF)
                 {
-                    auto angle =
-                        (static_cast<double>(value)) * std::numbers::pi / DI_DEGREES / 180.f;
+                    auto angle = (static_cast<double>(value)) * M_PI / DI_DEGREES / 180.0;
 
                     result = std::sin(angle) * 180.0;
                 }
@@ -153,8 +153,7 @@ void DInput8EventProxy::onJoystickData(
 
                 if (value != 0xFFFF)
                 {
-                    auto angle =
-                        (static_cast<double>(value)) * std::numbers::pi / DI_DEGREES / 180.f;
+                    auto angle = (static_cast<double>(value)) * M_PI / DI_DEGREES / 180.0;
 
                     result = std::cos(angle) * 180.0;
                 }
