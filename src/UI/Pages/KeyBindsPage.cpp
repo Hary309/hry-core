@@ -50,18 +50,18 @@ void KeyBindsPage::renderImGuiPage()
                 }
                 else
                 {
-                    const char* text = nullptr;
+                    std::string_view text{};
 
                     if (key != nullptr)
                     {
-                        text = key->name.c_str();
+                        text = key->name;
                     }
                     else
                     {
                         text = "Not set";
                     }
 
-                    if (ImGui::SmallButton(text))
+                    if (ImGui::SmallButton(text.data()))
                     {
                         _keyToSetBind = keyBind.get();
                         EnableImGuiCursor(false);

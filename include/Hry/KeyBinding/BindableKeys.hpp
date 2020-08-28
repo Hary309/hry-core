@@ -17,7 +17,7 @@ struct BindableKey
     using Key_t = std::variant<Keyboard::Key, Mouse::Button, Joystick::Button>;
 
     Key_t key;
-    std::string name;
+    std::string_view name;
 
     template<typename T>
     [[nodiscard]] bool has() const
