@@ -86,14 +86,18 @@ void Config::fromJson(const nlohmann::json& json)
 
 void Config::invokeCallback()
 {
-    ConfigCallbackData callbackData;
-
-    for (auto& field : _fields)
+    if (_bindingStructSize > 0)
     {
-        field->setupCallbackData(callbackData);
-    }
+        ConfigCallbackData callbackData{ _bindingStructSize };
 
-    onChangesApplied(std::move(callbackData));
+        for (auto& field : _fields)
+        {
+            field->setupCallbackData(callbackData);
+        }
+
+        onChangesApplied(callbackData);
+        _bindingStructDtor(callbackData._data.data());
+    }
 }
 
 HRY_NS_END

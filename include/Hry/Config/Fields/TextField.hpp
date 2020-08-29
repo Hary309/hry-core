@@ -18,12 +18,10 @@ private:
 public:
     Delegate<void(const std::string&)> onPreviewChange;
 
-public:
-    TextField(const std::string& label, const std::string& configFieldName)
-        : ConfigFieldBase(label, configFieldName)
-    {
-    }
+private:
+    TextField() = default;
 
+public:
     void setDefaultValue(const std::string& value)
     {
         _dirtyValue = value;
@@ -48,6 +46,8 @@ public:
 
     bool isDirty() override { return _isDirty; }
 
+    CREATE_BIND_METHOD(std::string)
+
 private:
     void imguiRender() override;
     void toJson(nlohmann::json& json) override;
@@ -55,7 +55,7 @@ private:
 
     void setupCallbackData(ConfigCallbackData& callbackData) override
     {
-        callbackData.addData({ _value, _configFieldName });
+        callbackData.insert(_bindingStructFieldOffset, _value);
     }
 };
 

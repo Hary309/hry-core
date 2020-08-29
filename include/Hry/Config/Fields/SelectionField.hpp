@@ -11,6 +11,8 @@ HRY_NS_BEGIN
 
 class SelectionField : public ConfigFieldBase
 {
+    friend Config;
+
 private:
     struct ComboType
     {
@@ -34,12 +36,10 @@ private:
 public:
     Delegate<void(int)> onPreviewChange;
 
-public:
-    SelectionField(const std::string& label, const std::string& configFieldName)
-        : ConfigFieldBase(label, configFieldName)
-    {
-    }
+private:
+    SelectionField() = default;
 
+public:
     void addOption(const std::string& arg) { _options.push_back(arg); }
 
     template<typename... Args>
@@ -75,6 +75,8 @@ public:
 
     bool isDirty() override { return _dirtySelectedIndex != _selectedIndex; }
 
+    CREATE_BIND_METHOD(std::string)
+
 protected:
     void imguiRender() override;
     void toJson(nlohmann::json& json) override;
@@ -82,7 +84,7 @@ protected:
 
     void setupCallbackData(ConfigCallbackData& callbackData) override
     {
-        callbackData.addData({ _options[_selectedIndex], _configFieldName });
+        callbackData.insert(_bindingStructFieldOffset, _options[_selectedIndex]);
     }
 
 private:

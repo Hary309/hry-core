@@ -8,6 +8,8 @@ HRY_NS_BEGIN
 
 class BoolField : public ConfigFieldBase
 {
+    friend Config;
+
 private:
     bool _value{};
     bool _defaultValue{};
@@ -16,12 +18,10 @@ private:
 public:
     Delegate<void(bool)> onPreviewChange;
 
-public:
-    BoolField(const std::string& label, const std::string& configFieldName)
-        : ConfigFieldBase(label, configFieldName)
-    {
-    }
+private:
+    BoolField() = default;
 
+public:
     void setDefaultValue(bool value)
     {
         _dirtyValue = value;
@@ -35,6 +35,8 @@ public:
 
     bool isDirty() override { return _value != _dirtyValue; }
 
+    CREATE_BIND_METHOD(bool)
+
 private:
     void imguiRender() override;
     void toJson(nlohmann::json& json) override;
@@ -42,7 +44,7 @@ private:
 
     void setupCallbackData(ConfigCallbackData& callbackData) override
     {
-        callbackData.addData({ _value, _configFieldName });
+        callbackData.insert(_bindingStructFieldOffset, _value);
     }
 };
 

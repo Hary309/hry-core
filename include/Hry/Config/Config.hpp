@@ -1,5 +1,6 @@
 #pragma once
 
+#include <fstream>
 #include <memory>
 #include <string>
 #include <type_traits>
@@ -9,6 +10,8 @@
 
 #include "Hry/Namespace.hpp"
 #include "Hry/Utils/Delegate.hpp"
+#include "Hry/Utils/Hash.hpp"
+#include "Hry/Utils/TypeID.hpp"
 
 #include "ConfigFieldBase.hpp"
 
@@ -22,13 +25,19 @@ class Config
     friend ConfigManager;
     friend ConfigPage;
 
+    using BindingStructDtor_t = void (*)(void*);
+
 private:
     std::string _name;
     std::vector<std::unique_ptr<ConfigFieldBase>> _fields;
 
+    size_t _bindingStructSize = 0;
+    Hash64_t _bindingStructHash;
+    BindingStructDtor_t _bindingStructDtor;
+
 public:
     // is called when settings are loaded or applied (pressing save in settings)
-    hry::Delegate<void(const ConfigCallbackData&&)> onChangesApplied;
+    hry::Delegate<void(const ConfigCallbackData&)> onChangesApplied;
 
     // use to save extra data
     hry::Delegate<void(nlohmann::json&)> onSave;
@@ -39,10 +48,23 @@ public:
 public:
     explicit Config(std::string name);
 
+    template<typename T>
+    void setBindingType()
+    {
+        _bindingStructSize = sizeof(T);
+        _bindingStructHash = TypeID<T>();
+        _bindingStructDtor = +[](void* data) {
+            static_cast<T*>(data)->~T();
+        };
+    }
+
     template<typename T, typename = std::enable_if_t<std::is_base_of_v<ConfigFieldBase, T>>>
     [[nodiscard]] T* createField(const std::string& label, const std::string& configFieldName)
     {
-        T* field = new T(label, configFieldName);
+        T* field = new T();
+        field->_bindingStructHash = _bindingStructHash;
+        field->_label = label;
+        field->_configFieldName = configFieldName;
 
         _fields.push_back(std::unique_ptr<T>(field));
 

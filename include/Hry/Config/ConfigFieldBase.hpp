@@ -8,77 +8,82 @@
 
 #include "Hry/Namespace.hpp"
 #include "Hry/Utils/Delegate.hpp"
+#include "Hry/Utils/Hash.hpp"
+#include "Hry/Utils/OffsetOf.hpp"
 
 HRY_NS_BEGIN
 
 class Config;
 
-struct ConfigCallbackFieldData
-{
-    using Variant_t = std::variant<
-        bool,
-        int8_t,
-        uint8_t,
-        int16_t,
-        uint16_t,
-        int32_t,
-        uint32_t,
-        int64_t,
-        uint64_t,
-        float,
-        double,
-        std::string>;
-
-    Variant_t data;
-
-    std::string name;
-};
-
 class ConfigCallbackData
 {
+    friend Config;
+
 private:
-    std::vector<ConfigCallbackFieldData> _data;
+    std::vector<uint8_t> _data;
+
+private:
+    explicit ConfigCallbackData(size_t size) : _data(size) {}
 
 public:
-    void addData(ConfigCallbackFieldData&& data) { _data.push_back(std::move(data)); }
-
-    // will return empty if name or type don't match
     template<typename T>
-    std::optional<T> getValue(std::string_view fieldName) const
+    void insert(size_t offset, const T& value)
     {
-        static_assert(std::is_arithmetic_v<T> || std::is_same_v<T, std::string>, "Wrong type");
+        static_assert(std::is_copy_constructible_v<T>, "T must be copyable!");
 
-        auto it = std::find_if(
-            _data.begin(), _data.end(),
-            [&fieldName](const ConfigCallbackFieldData& data) { return data.name == fieldName; });
-
-        if (it != _data.end())
+        if (offset >= 0 && offset + sizeof(T) <= _data.size())
         {
-            const ConfigCallbackFieldData& fieldData = *it;
-            if (std::holds_alternative<T>(fieldData.data))
+            auto* ptr = reinterpret_cast<T*>(_data.data() + offset);
+
+            if constexpr (std::is_trivial_v<T>)
             {
-                return std::get<T>(fieldData.data);
+                *ptr = value;
+            }
+            else
+            {
+                new (ptr) T(value);
             }
         }
+    }
 
-        return {};
+    template<typename T>
+    const T* getData() const
+    {
+        if (sizeof(T) != _data.size())
+        {
+            return nullptr;
+        }
+
+        return reinterpret_cast<const T*>(_data.data());
     }
 };
+
+#define CREATE_BIND_METHOD(VALUE_TYPE)                                                             \
+    template<typename ObjectType>                                                                  \
+    void bind(VALUE_TYPE ObjectType::*member)                                                      \
+    {                                                                                              \
+        if (_bindingStructHash == TypeID<ObjectType>())                                            \
+        {                                                                                          \
+            setBind(member);                                                                       \
+        }                                                                                          \
+    }
 
 class ConfigFieldBase
 {
     friend Config;
 
 protected:
+    size_t _bindingStructFieldOffset = -1;
+    Hash64_t _bindingStructHash{};
+
     std::string _label;
     std::string _configFieldName;
     std::string _description;
 
+protected:
+    ConfigFieldBase() = default;
+
 public:
-    ConfigFieldBase(std::string label, std::string configFieldName)
-        : _label(std::move(label)), _configFieldName(std::move(configFieldName))
-    {
-    }
     ConfigFieldBase(ConfigFieldBase&&) = default;
     ConfigFieldBase(const ConfigFieldBase&) = default;
     ConfigFieldBase& operator=(ConfigFieldBase&&) = default;
@@ -99,6 +104,12 @@ protected:
     virtual void fromJson(const nlohmann::json& json) = 0;
 
     virtual void setupCallbackData(ConfigCallbackData& callbackData) = 0;
+
+    template<typename ValueType, typename ObjectType>
+    void setBind(ValueType ObjectType::*member)
+    {
+        _bindingStructFieldOffset = OffsetOf(member);
+    }
 };
 
 HRY_NS_END

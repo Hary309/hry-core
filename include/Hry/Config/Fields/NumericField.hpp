@@ -16,6 +16,8 @@ HRY_NS_BEGIN
 template<typename T, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
 class NumericField : public ConfigFieldBase
 {
+    friend Config;
+
 protected:
     struct InputType
     {
@@ -53,12 +55,10 @@ private:
 public:
     Delegate<void(const T&)> onPreviewChange;
 
-public:
-    NumericField(const std::string& label, const std::string& configFieldName)
-        : ConfigFieldBase(label, configFieldName)
-    {
-    }
+private:
+    NumericField() = default;
 
+public:
     void setDefaultValue(const T& value)
     {
         _dirtyValue = value;
@@ -126,6 +126,8 @@ public:
 
     bool isDirty() override { return _isDirty; }
 
+    CREATE_BIND_METHOD(T)
+
 protected:
     void imguiRender() override
     {
@@ -189,7 +191,7 @@ protected:
 
     void setupCallbackData(ConfigCallbackData& callbackData) override
     {
-        callbackData.addData({ _value, _configFieldName });
+        callbackData.insert(_bindingStructFieldOffset, _value);
     }
 
 private:

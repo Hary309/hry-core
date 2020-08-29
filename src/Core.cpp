@@ -86,9 +86,11 @@ void Core::lateInit()
 void Core::initConfig()
 {
     _coreConfig = _configMgr.createConfig("Core");
+    _coreConfig->setBindingType<CoreConfig>();
     _coreConfig->onChangesApplied.connect<&Core::onConfigChangesApplied>(this);
 
     auto* checkBox = _coreConfig->createField<BoolField>("Show log window", "show_log_window");
+    checkBox->bind(&CoreConfig::showLogWindow);
     checkBox->setDefaultValue(false);
 
     _configMgr.loadFor(_coreConfig.get());
@@ -111,14 +113,11 @@ void Core::imguiRender()
     _eventMgr.imguiRenderSignal.call();
 }
 
-void Core::onConfigChangesApplied(const ConfigCallbackData&& data)
+void Core::onConfigChangesApplied(const ConfigCallbackData& data)
 {
-    const auto showLogWindow = data.getValue<bool>("show_log_window");
+    const auto* coreConfigData = data.getData<CoreConfig>();
 
-    if (showLogWindow.has_value())
-    {
-        _loggerWindow.setEnabled(showLogWindow.value());
-    }
+    _loggerWindow.setEnabled(coreConfigData->showLogWindow);
 }
 
 bool Core::InstallHooks()

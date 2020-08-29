@@ -28,6 +28,11 @@ HRY_NS_BEGIN
 
 class Event;
 
+struct CoreConfig
+{
+    bool showLogWindow;
+};
+
 class Core
 {
 public:
@@ -71,7 +76,7 @@ public:
     [[nodiscard]] bool isInited() const { return _isInited; }
 
 private:
-    void onConfigChangesApplied(const ConfigCallbackData&& data);
+    void onConfigChangesApplied(const ConfigCallbackData& data);
 
 private:
     static bool InstallHooks();
