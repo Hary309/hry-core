@@ -8,7 +8,7 @@ ConfigPage::ConfigPage(ConfigManager& configMgr) : _configMgr(configMgr)
 {
 }
 
-void ConfigPage::renderImGuiPage()
+void ConfigPage::imguiRender()
 {
     bool isAnyDirty = false;
     auto& configs = _configMgr.getConfigs();

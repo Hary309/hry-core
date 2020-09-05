@@ -31,6 +31,7 @@ class Event;
 struct CoreConfig
 {
     bool showLogWindow;
+    bool showImGuiDemo;
 };
 
 class Core
@@ -56,6 +57,8 @@ private:
 
     DelegateDeleterUniquePtr_t<Config> _coreConfig;
     DelegateDeleterUniquePtr_t<KeyBinds> _coreKeyBinds;
+
+    bool _showImGuiDemo{};
 
 public:
     inline static std::unique_ptr<Logger> Logger;

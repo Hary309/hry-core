@@ -4,9 +4,11 @@
 
 #include "Config/ConfigManager.hpp"
 
+#include "PageBase.hpp"
+
 HRY_NS_BEGIN
 
-class ConfigPage
+class ConfigPage : public PageBase
 {
 private:
     ConfigManager& _configMgr;
@@ -14,7 +16,7 @@ private:
 public:
     explicit ConfigPage(ConfigManager& configMgr);
 
-    void renderImGuiPage();
+    void imguiRender() override;
 };
 
 HRY_NS_END

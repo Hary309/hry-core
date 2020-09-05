@@ -72,7 +72,7 @@ public:
     void setDefaultKey(BindableKey::Key_t key);
 
     // default value is Activator::Click
-    void setDefaultActivator(Activator activator);
+    void setActivator(Activator activator);
 
 private:
     auto getConfigFieldName() const -> const std::string&;
@@ -174,7 +174,7 @@ inline void KeyBind::setKey(BindableKey::Key_t key)
     }
 }
 
-inline void KeyBind::setDefaultActivator(Activator activator)
+inline void KeyBind::setActivator(Activator activator)
 {
     _defaultActivator = activator;
     _activator = activator;

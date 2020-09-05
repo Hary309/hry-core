@@ -1,5 +1,6 @@
 #include "Hry/Config/Config.hpp"
 
+#include <imgui.h>
 #include <nlohmann/json.hpp>
 
 #include "Hry/Config/ConfigFieldBase.hpp"
@@ -55,7 +56,9 @@ void Config::imguiRender()
 {
     for (auto& field : _fields)
     {
+        ImGui::PushID(&field);
         field->imguiRender();
+        ImGui::PopID();
     }
 }
 

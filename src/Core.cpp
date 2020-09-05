@@ -59,7 +59,7 @@ bool Core::init(scs_telemetry_init_params_v100_t* scsTelemetry)
 
     if (success == false)
     {
-        Logger->info("Cannot initialize!");
+        Logger->error("Cannot initialize!");
         Core::UninstallHooks();
         return false;
     }
@@ -74,7 +74,10 @@ bool Core::init(scs_telemetry_init_params_v100_t* scsTelemetry)
 
 void Core::lateInit()
 {
-    EnableImGuiCursor(false);
+    ImGuiUtils::LoadFonts();
+    ImGuiUtils::ApplyDarkTheme();
+    ImGuiUtils::EnableCursor(false);
+
     initConfig();
     initKeyBinds();
 
@@ -89,9 +92,13 @@ void Core::initConfig()
     _coreConfig->setBindingType<CoreConfig>();
     _coreConfig->onChangesApplied.connect<&Core::onConfigChangesApplied>(this);
 
-    auto* checkBox = _coreConfig->createField<BoolField>("Show log window", "show_log_window");
-    checkBox->bind(&CoreConfig::showLogWindow);
-    checkBox->setDefaultValue(false);
+    auto* showLogWindow = _coreConfig->createField<BoolField>("Show log window", "show_log_window");
+    showLogWindow->bind(&CoreConfig::showLogWindow);
+    showLogWindow->setDefaultValue(false);
+
+    auto* showImGuiDemo = _coreConfig->createField<BoolField>("Show ImGUI Demo", "show_imgui_demo");
+    showImGuiDemo->bind(&CoreConfig::showImGuiDemo);
+    showImGuiDemo->setDefaultValue(false);
 
     _configMgr.loadFor(_coreConfig.get());
 }
@@ -105,7 +112,10 @@ void Core::initKeyBinds()
 
 void Core::imguiRender()
 {
-    ImGui::ShowDemoWindow();
+    if (_showImGuiDemo)
+    {
+        ImGui::ShowDemoWindow();
+    }
 
     _mainWindow.imguiRender();
     _loggerWindow.imguiRender();
@@ -118,6 +128,7 @@ void Core::onConfigChangesApplied(const ConfigCallbackData& data)
     const auto* coreConfigData = data.getData<CoreConfig>();
 
     _loggerWindow.setEnabled(coreConfigData->showLogWindow);
+    _showImGuiDemo = coreConfigData->showImGuiDemo;
 }
 
 bool Core::InstallHooks()

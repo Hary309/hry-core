@@ -6,9 +6,11 @@
 
 #include "KeyBinding/KeyBindsManager.hpp"
 
+#include "PageBase.hpp"
+
 HRY_NS_BEGIN
 
-class KeyBindsPage
+class KeyBindsPage : public PageBase
 {
 private:
     KeyBindsManager& _keyBindsMgr;
@@ -18,7 +20,7 @@ private:
 public:
     KeyBindsPage(KeyBindsManager& keyBindsMgr, EventHandler& eventHandler);
 
-    void renderImGuiPage();
+    void imguiRender() override;
 
 private:
     void handleKeyPress(const KeyboardEvent&&);

@@ -14,12 +14,34 @@
 
 HRY_NS_BEGIN
 
+bool TabButton(const char* text, bool active)
+{
+    if (active)
+    {
+        ImGui::PushStyleColor(ImGuiCol_Button, ImGui::GetStyle().Colors[ImGuiCol_ButtonActive]);
+        ImGui::PushStyleColor(
+            ImGuiCol_ButtonHovered, ImGui::GetStyle().Colors[ImGuiCol_ButtonActive]);
+    }
+
+    if (auto result = ImGui::Button(text, { -1, 32 }); result && !active)
+    {
+        return result;
+    }
+
+    if (active)
+    {
+        ImGui::PopStyleColor(2);
+    }
+
+    return false;
+}
+
 MainWindow::MainWindow(
     ModuleManager& moduleMgr,
     ConfigManager& configMgr,
     KeyBindsManager& keyBindsMgr,
     EventHandler& eventHandler)
-    : _moduleMgr(moduleMgr), _configPage(configMgr), _keyBindsPage(keyBindsMgr, eventHandler)
+    : _pluginsPage(moduleMgr), _configPage(configMgr), _keyBindsPage(keyBindsMgr, eventHandler)
 {
 }
 
@@ -37,171 +59,46 @@ void MainWindow::imguiRender()
         return;
     }
 
-    ImGui::SetNextWindowSize({ 400.f, 300.f }, ImGuiCond_FirstUseEver);
+    ImGui::SetNextWindowSize({ 600.f, 400.f }, ImGuiCond_FirstUseEver);
 
     if (ImGui::Begin("Plugin Manager"))
     {
-        if (ImGui::BeginTabBar("MainWindow::TabBar"))
+        ImGui::Columns(4, "tabs##plugin_manager", false);
+
+        if (TabButton("Plugins", _currentPage == &_pluginsPage))
         {
-            if (ImGui::BeginTabItem("Manager"))
-            {
-                renderPluginsTab();
-                ImGui::EndTabItem();
-            }
-            if (ImGui::BeginTabItem("Settings"))
-            {
-                _configPage.renderImGuiPage();
-                ImGui::EndTabItem();
-            }
-            if (ImGui::BeginTabItem("Key binds"))
-            {
-                _keyBindsPage.renderImGuiPage();
-                ImGui::EndTabItem();
-            }
-            if (ImGui::BeginTabItem("Plugins page"))
-            {
-                renderPluginsPageTab();
-                ImGui::EndTabItem();
-            }
-            if (ImGui::BeginTabItem("About"))
-            {
-                renderAboutTab();
-                ImGui::EndTabItem();
-            }
-            ImGui::EndTabBar();
-        }
-    }
-
-    ImGui::End();
-}
-
-void MainWindow::renderPluginsTab()
-{
-    if (ImGui::Button("Rescan"))
-    {
-        _moduleMgr.scan();
-    }
-
-    const auto& modules = _moduleMgr.getModules();
-
-    if (modules.empty())
-    {
-        ImGui::Text("No plugins");
-        return;
-    }
-
-    ImGui::Columns(3);
-
-    ImGui::Separator();
-    ImGui::Text("Action");
-    ImGui::NextColumn();
-    ImGui::Text("Name");
-    ImGui::NextColumn();
-    ImGui::Text("Description");
-    ImGui::NextColumn();
-    ImGui::Separator();
-
-    for (const auto& module : modules)
-    {
-        ImGui::PushID(module.get());
-
-        if (module->isLoaded)
-        {
-            if (ImGui::SmallButton("Unload"))
-            {
-                _moduleMgr.unload(module.get());
-            }
-        }
-        else
-        {
-            if (ImGui::SmallButton("Load"))
-            {
-                _moduleMgr.load(module.get());
-            }
+            _currentPage = &_pluginsPage;
         }
 
         ImGui::NextColumn();
 
-        if (module->isLoaded)
+        if (TabButton("Settings", _currentPage == &_configPage))
         {
-            const auto& pluginInfo = module->plugin->getPluginInfo();
-            ImGui::Text("%s", pluginInfo.shortName.c_str());
-            ImGui::NextColumn();
-            ImGui::Text("%s", pluginInfo.shortDesc.c_str());
-            ImGui::NextColumn();
-        }
-        else
-        {
-            ImGui::Text("%s", module->dllName.c_str());
-            ImGui::NextColumn();
-            ImGui::Text("N/A");
-            ImGui::NextColumn();
+            _currentPage = &_configPage;
         }
 
-        ImGui::PopID();
-    }
+        ImGui::NextColumn();
 
-    ImGui::Columns(1);
-}
-
-void MainWindow::renderPluginsPageTab()
-{
-    const auto& modules = _moduleMgr.getModules();
-    int size = modules.size();
-
-    if (size == 0)
-    {
-        ImGui::Text("No plugins");
-        return;
-    }
-
-    if (_selectedPluginIndex >= size)
-    {
-        _selectedPluginIndex = 0;
-    }
-
-    const auto& selectedModule = modules[_selectedPluginIndex];
-
-    ImGui::PushItemWidth(-1.f);
-    if (ImGui::BeginCombo("##Select Plugin", selectedModule->dllName.c_str()))
-    {
-        for (int i = 0; i < size; i++)
+        if (TabButton("Key binds", _currentPage == &_keyBindsPage))
         {
-            const auto& module = modules[i];
-            const bool isSelected = (_selectedPluginIndex == i);
-
-            const auto flag =
-                module->isLoaded ? ImGuiSelectableFlags_None : ImGuiSelectableFlags_Disabled;
-
-            if (ImGui::Selectable(module->dllName.c_str(), isSelected, flag))
-            {
-                _selectedPluginIndex = i;
-            }
-
-            if (isSelected)
-            {
-                ImGui::SetItemDefaultFocus();
-            }
+            _currentPage = &_keyBindsPage;
         }
 
-        ImGui::EndCombo();
+        ImGui::NextColumn();
+
+        if (TabButton("About", _currentPage == &_aboutPage))
+        {
+            _currentPage = &_aboutPage;
+        }
+
+        ImGui::Columns(1);
+
+        ImGui::Separator();
+
+        _currentPage->imguiRender();
     }
 
-    ImGui::Separator();
-
-    if (selectedModule->isLoaded)
-    {
-        selectedModule->plugin->imguiPage();
-    }
-    else
-    {
-        ImGui::Text("This plugin isn't loaded!");
-    }
-}
-
-void MainWindow::renderAboutTab()
-{
-    ImGui::Text("Credits etc");
+    ImGui::End();
 }
 
 void MainWindow::showMainWindowKeyBind(hry::ButtonState /*unused*/)
@@ -209,7 +106,7 @@ void MainWindow::showMainWindowKeyBind(hry::ButtonState /*unused*/)
     _isWindowEnabled = !_isWindowEnabled;
     Mouse::DisableInGameMouse(_isWindowEnabled);
 
-    EnableImGuiCursor(_isWindowEnabled);
+    ImGuiUtils::EnableCursor(_isWindowEnabled);
 }
 
 HRY_NS_END

@@ -9,8 +9,10 @@
 
 #include "KeyBinding/KeyBindsManager.hpp"
 #include "Modules/ModuleManager.hpp"
+#include "UI/Pages/AboutPage.hpp"
 #include "UI/Pages/ConfigPage.hpp"
 #include "UI/Pages/KeyBindsPage.hpp"
+#include "UI/Pages/PluginsPage.hpp"
 
 HRY_NS_BEGIN
 
@@ -19,12 +21,12 @@ class MainWindow
 private:
     bool _isWindowEnabled = false;
 
-    ModuleManager& _moduleMgr;
-
-    int _selectedPluginIndex = 0;
-
+    PluginsPage _pluginsPage;
     ConfigPage _configPage;
     KeyBindsPage _keyBindsPage;
+    AboutPage _aboutPage;
+
+    PageBase* _currentPage{ &_pluginsPage };
 
 public:
     MainWindow(
@@ -38,10 +40,6 @@ public:
     void imguiRender();
 
 private:
-    void renderPluginsTab();
-    void renderPluginsPageTab();
-    void renderAboutTab();
-
     void showMainWindowKeyBind(hry::ButtonState);
 };
 

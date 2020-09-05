@@ -16,11 +16,9 @@ KeyBindsPage::KeyBindsPage(KeyBindsManager& keyBindsMgr, EventHandler& eventHand
     eventHandler.onJoystickButtonPress.connect<&KeyBindsPage::handleJoystickButtonPress>(this);
 }
 
-void KeyBindsPage::renderImGuiPage()
+void KeyBindsPage::imguiRender()
 {
     const auto& keyBindsList = _keyBindsMgr.getKeyBinds();
-
-    ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, { 4, 8 });
 
     for (const auto& keyBindsSection : keyBindsList)
     {
@@ -64,30 +62,15 @@ void KeyBindsPage::renderImGuiPage()
                     if (ImGui::SmallButton(text.data()))
                     {
                         _keyToSetBind = keyBind.get();
-                        EnableImGuiCursor(false);
+                        ImGuiUtils::EnableCursor(false);
                     }
                 }
 
                 ImGui::NextColumn();
 
-                bool checkBoxValue = keyBind->_activator == KeyBind::Activator::Hold;
-
-                ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, { 4, 0 });
-
-                if (ImGui::Checkbox("Hold", &checkBoxValue))
-                {
-                    keyBind->_activator =
-                        checkBoxValue ? KeyBind::Activator::Hold : KeyBind::Activator::Click;
-                }
-
-                ImGui::PopStyleVar();
-
-                ImGui::SameLine();
-
                 if (ImGui::SmallButton("Default##KeyBinds"))
                 {
                     keyBind->setKey(keyBind->getDefaultKey());
-                    keyBind->_activator = keyBind->_defaultActivator;
                     _keyBindsMgr.save();
                 }
 
@@ -106,8 +89,6 @@ void KeyBindsPage::renderImGuiPage()
             ImGui::Columns(1);
         }
     }
-
-    ImGui::PopStyleVar();
 }
 
 void KeyBindsPage::handleKeyPress(const KeyboardEvent&& keyboardEvent)
@@ -149,7 +130,7 @@ void KeyBindsPage::handleJoystickButtonPress(const JoystickButtonEvent&& buttonE
 void KeyBindsPage::applyChanges()
 {
     _keyToSetBind = nullptr;
-    EnableImGuiCursor(true);
+    ImGuiUtils::EnableCursor(true);
     _keyBindsMgr.save();
 }
 
