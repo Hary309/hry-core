@@ -59,12 +59,12 @@ public:
     }
 
     template<typename T, typename = std::enable_if_t<std::is_base_of_v<ConfigFieldBase, T>>>
-    [[nodiscard]] T* createField(const std::string& label, const std::string& configFieldName)
+    [[nodiscard]] T* createField(std::string label, std::string configFieldName)
     {
         T* field = new T();
         field->_bindingStructHash = _bindingStructHash;
-        field->_label = label;
-        field->_configFieldName = configFieldName;
+        field->_label = std::move(label);
+        field->_configFieldName = std::move(configFieldName);
 
         _fields.push_back(std::unique_ptr<T>(field));
 

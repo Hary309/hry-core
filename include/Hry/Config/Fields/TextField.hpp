@@ -3,11 +3,14 @@
 #include <string>
 
 #include "Hry/Config/ConfigFieldBase.hpp"
+#include "Hry/Export.hpp"
 
 HRY_NS_BEGIN
 
-class TextField : public ConfigFieldBase
+class HRY_API TextField : public ConfigFieldBase
 {
+    friend Config;
+
 private:
     std::string _value;
     std::string _dirtyValue;

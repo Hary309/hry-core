@@ -3,10 +3,11 @@
 #include <string>
 
 #include "Hry/Config/ConfigFieldBase.hpp"
+#include "Hry/Export.hpp"
 
 HRY_NS_BEGIN
 
-class BoolField : public ConfigFieldBase
+class HRY_API BoolField : public ConfigFieldBase
 {
     friend Config;
 

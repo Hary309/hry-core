@@ -6,10 +6,11 @@
 #include <vector>
 
 #include "Hry/Config/ConfigFieldBase.hpp"
+#include "Hry/Export.hpp"
 
 HRY_NS_BEGIN
 
-class SelectionField : public ConfigFieldBase
+class HRY_API SelectionField : public ConfigFieldBase
 {
     friend Config;
 
