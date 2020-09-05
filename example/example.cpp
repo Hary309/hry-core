@@ -6,6 +6,7 @@
 
 #include "Hry/Events/EventHandler.hpp"
 #include "Hry/System/System.hpp"
+#include "Hry/Version.hpp"
 #include <Hry/Config/Config.hpp>
 #include <Hry/Config/Fields/NumericField.hpp>
 #include <Hry/Events/Event.hpp>
@@ -18,13 +19,11 @@
 class ExamplePlugin : public hry::Plugin
 {
 private:
-    hry::PluginInfo _pluginInfo = {
-        "Example plugin",
-        "hry-example",
-        "This is a example of plugin based on hry-core.",
-        "Example implementation of plugin",
-        1000,
-    };
+    hry::PluginInfo _pluginInfo{ "hry-example",
+                                 "Example plugin",
+                                 { "Hary309", "piotrkrupa06@gmail.com" },
+                                 "This is a example of plugin based on hry-core.",
+                                 hry::Version{ 1, 0, 0 } };
 
 public:
     inline static hry::Logger* Logger;
@@ -32,10 +31,17 @@ public:
 public:
     ~ExamplePlugin() override { Logger->info("Unloading..."); }
 
-    void init(hry::Logger* logger) override
+    Result init(const InitParams&& initParams) override
     {
-        Logger = logger;
+        if (!hry::IsApiCompatible(initParams.apiVersion))
+        {
+            return Result::ApiNotSupported;
+        }
+
+        Logger = initParams.logger;
         Logger->info("Created!");
+
+        return Result::Ok;
     }
 
     void initEvents(hry::EventHandler* eventHandler) override {}

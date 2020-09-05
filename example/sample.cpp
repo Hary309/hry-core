@@ -4,6 +4,7 @@
 #include <imgui.h>
 #include <windows.h>
 
+#include "Hry/Version.hpp"
 #include <Hry/Config/Config.hpp>
 #include <Hry/Events/Event.hpp>
 #include <Hry/Logger/Logger.hpp>
@@ -13,13 +14,11 @@
 class SamplePlugin : public hry::Plugin
 {
 private:
-    hry::PluginInfo _pluginInfo = {
-        "Sample plugin",
-        "hry-sample",
-        "This is a example of plugin based on hry-core.",
-        "Example implementation of plugin",
-        1000,
-    };
+    hry::PluginInfo _pluginInfo{ "hry-sample",
+                                 "Simple plugin",
+                                 { "Hary309", "piotrkrupa06@gmail.com" },
+                                 "This is a example of plugin based on hry-core.",
+                                 hry::Version{ 1, 0, 0 } };
 
 public:
     inline static hry::Logger* Logger;
@@ -27,10 +26,17 @@ public:
 public:
     ~SamplePlugin() override { Logger->info("Unloading..."); }
 
-    void init(hry::Logger* logger) override
+    Result init(const InitParams&& initParams) override
     {
-        Logger = logger;
+        if (!hry::IsApiCompatible(initParams.apiVersion))
+        {
+            return Result::ApiNotSupported;
+        }
+
+        Logger = initParams.logger;
         Logger->info("Created!");
+
+        return Result::Ok;
     }
 
     void initEvents(hry::EventHandler* eventHandler) override

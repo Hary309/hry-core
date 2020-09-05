@@ -9,6 +9,7 @@
 #include "Hry/Logger/Logger.hpp"
 #include "Hry/Utils.hpp"
 #include "Hry/Utils/Timer.hpp"
+#include "Hry/Version.hpp"
 
 #include "Config/ConfigManager.hpp"
 #include "Events/EventManager.hpp"
@@ -37,7 +38,9 @@ struct CoreConfig
 class Core
 {
 public:
-    static inline HINSTANCE hInstance;
+    inline static HINSTANCE hInstance;
+    inline static std::unique_ptr<Logger> Logger;
+    inline static Version GameVersion;
 
 private:
     bool _isInited = false;
@@ -50,6 +53,7 @@ private:
     ConfigManager _configMgr;
     KeyBindsManager _keyBindsMgr;
     ModuleManager _moduleMgr;
+
     MainWindow _mainWindow;
     LoggerWindow _loggerWindow;
 
@@ -59,9 +63,6 @@ private:
     DelegateDeleterUniquePtr_t<KeyBinds> _coreKeyBinds;
 
     bool _showImGuiDemo{};
-
-public:
-    inline static std::unique_ptr<Logger> Logger;
 
 public:
     explicit Core(HINSTANCE hInst);

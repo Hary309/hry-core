@@ -3,18 +3,26 @@
 #include <string>
 
 #include "Hry/Namespace.hpp"
+#include "Hry/Version.hpp"
 
 HRY_NS_BEGIN
 
-struct PluginInfo
+struct AuthorInfo
 {
     std::string name;
-    std::string shortName;
+    std::string email;
+};
 
-    std::string desc;
-    std::string shortDesc;
+struct PluginInfo
+{
+    const std::string name;
+    const std::string fullName;
 
-    int version;
+    const AuthorInfo authorInfo;
+
+    const std::string desc;
+
+    const Version version;
 };
 
 HRY_NS_END

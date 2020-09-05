@@ -88,11 +88,15 @@ void PluginsPage::renderList()
 
         ImGui::Text("%s", module->dllName.c_str());
 
-        ImGui::SameLine();
+        if (module->plugin != nullptr)
+        {
+            ImGui::SameLine();
 
-        // ImGui::PushStyleColor(ImGuiCol_Text, ImGui::GetStyle().Colors[ImGuiCol_ButtonHovered]);
-        // ImGui::Text(module->version.c_str());
-        // ImGui::PopStyleColor();
+            ImGui::PushStyleColor(ImGuiCol_Text, Colors::Gray.Value);
+            const auto version = module->plugin->getPluginInfo().version.toString();
+            ImGui::Text("v%s", version.c_str());
+            ImGui::PopStyleColor();
+        }
 
         ImGui::NextColumn();
 
@@ -125,13 +129,18 @@ void PluginsPage::renderDetail()
 
     ImGui::PushFont(Fonts::OpenSans_Bold_20);
     ImGui::PushStyleColor(ImGuiCol_Text, Colors::Orange.Value);
-    ImGui::Text("%s", _selectedPlugin->name.c_str());
+    ImGui::Text("%s", _selectedPlugin->fullName.c_str());
     ImGui::PopStyleColor();
 
-    // ImGui::SameLine();
-    // ImGui::Text(_selectedPlugin->version.c_str());
+    ImGui::SameLine();
+    ImGui::Text("v%s", _selectedPlugin->version.toString().c_str());
 
     ImGui::PopFont();
+
+    ImGui::PushStyleColor(ImGuiCol_Text, Colors::Gray.Value);
+    const auto& authorInfo = _selectedPlugin->authorInfo;
+    ImGui::Text("%s <%s>", authorInfo.name.c_str(), authorInfo.email.c_str());
+    ImGui::PopStyleColor();
 
     ImGui::Dummy({ 0, 4 });
 

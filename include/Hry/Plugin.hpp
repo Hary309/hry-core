@@ -19,8 +19,30 @@ HRY_NS_BEGIN
 class Plugin
 {
 public:
+    enum class Result
+    {
+        Ok,               // plugin initialized successfully
+        ApiNotSupported,  // api version not supported (incompatible, abi breaks)
+        GameNotSupported, // game version not supported
+        Error             // plugin have internal error
+    };
+
+    struct InitParams
+    {
+        Logger* logger;
+        Version apiVersion;
+        Version gameVersion;
+    };
+
+public:
+    Plugin() = default;
+    Plugin(Plugin&&) = delete;
+    Plugin(const Plugin&) = delete;
+    Plugin& operator=(Plugin&&) = delete;
+    Plugin& operator=(const Plugin&) = delete;
     virtual ~Plugin() = default;
-    virtual void init(Logger* logger) = 0; // TODO: add returning type some enum or sth
+
+    virtual Result init(const InitParams&& initParams) = 0;
     virtual void initConfig(Config* config) = 0;
     virtual void initKeyBinds(KeyBinds* keyBinds) = 0;
     virtual void initEvents(EventHandler* eventHandler) = 0;

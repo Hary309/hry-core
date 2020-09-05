@@ -46,6 +46,11 @@ bool Core::init(scs_telemetry_init_params_v100_t* scsTelemetry)
 {
     _scsTelemetry = scsTelemetry;
 
+    auto gameVersion = scsTelemetry->common.game_version;
+
+    Core::GameVersion = { static_cast<uint8_t>(SCS_GET_MAJOR_VERSION(gameVersion)),
+                          static_cast<uint16_t>(SCS_GET_MINOR_VERSION(gameVersion)), 0 };
+
     LoggerFactory::Init("plugins/hry_core.log", _eventMgr);
     Logger = LoggerFactory::GetLogger("core");
 

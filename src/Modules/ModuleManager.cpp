@@ -8,6 +8,7 @@
 #include <imgui.h>
 
 #include "Hry/Events/EventHandler.hpp"
+#include "Hry/Version.hpp"
 
 #include "Logger/LoggerFactory.hpp"
 #include "Modules/Module.hpp"
@@ -161,18 +162,18 @@ bool ModuleManager::load(Module* mod)
         return false;
     }
 
-    const auto* shortName = mod->plugin->getPluginInfo().shortName.c_str();
+    const auto* name = mod->plugin->getPluginInfo().name.c_str();
 
-    mod->data.config = _configMgr.createConfig(shortName);
-    mod->data.keyBinds = _keyBindsMgr.createKeyBinds(shortName);
-    mod->data.logger = LoggerFactory::GetLogger(shortName);
+    mod->data.config = _configMgr.createConfig(name);
+    mod->data.keyBinds = _keyBindsMgr.createKeyBinds(name);
+    mod->data.logger = LoggerFactory::GetLogger(name);
     mod->data.eventHandler = std::make_unique<EventHandler>(_eventMgr.createEventHandler());
 
     mod->isLoaded = true;
 
     Core::Logger->info("Successfully loaded {}", mod->dllPath);
 
-    mod->plugin->init(mod->data.logger.get());
+    mod->plugin->init(Plugin::InitParams{ mod->data.logger.get(), ApiVersion, Core::GameVersion });
     mod->plugin->initEvents(mod->data.eventHandler.get());
     mod->plugin->initConfig(mod->data.config.get());
     mod->plugin->initKeyBinds(mod->data.keyBinds.get());
