@@ -34,7 +34,7 @@ void ConfigPage::imguiRender()
 
         ImGui::PushID(config);
 
-        if (ImGui::CollapsingHeader(config->getName().c_str()))
+        if (ImGui::CollapsingHeader(config->getName().c_str(), ImGuiTreeNodeFlags_DefaultOpen))
         {
             config->imguiRender();
         }

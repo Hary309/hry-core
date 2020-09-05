@@ -29,7 +29,8 @@ void KeyBindsPage::imguiRender()
             continue;
         }
 
-        if (ImGui::CollapsingHeader(keyBindsSection->getName().c_str()))
+        if (ImGui::CollapsingHeader(
+                keyBindsSection->getName().c_str(), ImGuiTreeNodeFlags_DefaultOpen))
         {
             ImGui::Columns(3);
             for (auto& keyBind : keyBinds)
