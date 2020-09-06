@@ -4,7 +4,7 @@
 
 #include "Hry/KeyBinding/KeyBinds.hpp"
 
-#include "Utils/ImGuiUtils.hpp"
+#include "Utils/InternalImGuiUtils.hpp"
 
 HRY_NS_BEGIN
 

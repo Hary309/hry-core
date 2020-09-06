@@ -21,7 +21,7 @@
 #include "Hooks/DInput8Hook.hpp"
 #include "Hooks/OpenGLHook.hpp"
 #include "Logger/LoggerFactory.hpp"
-#include "Utils/ImGuiUtils.hpp"
+#include "Utils/InternalImGuiUtils.hpp"
 
 HRY_NS_BEGIN
 
@@ -78,9 +78,9 @@ bool Core::init(scs_telemetry_init_params_v100_t* scsTelemetry)
 
 void Core::lateInit()
 {
-    ImGuiUtils::LoadFonts();
-    ImGuiUtils::ApplyDarkTheme();
-    ImGuiUtils::EnableCursor(false);
+    InternalImGuiUtils::LoadFonts();
+    InternalImGuiUtils::ApplyDarkTheme();
+    InternalImGuiUtils::EnableCursor(false);
 
     initConfig();
     initKeyBinds();

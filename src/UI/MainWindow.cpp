@@ -10,7 +10,7 @@
 #include "Hry/System/Mouse.hpp"
 #include "Hry/Utils/Delegate.hpp"
 
-#include "Utils/ImGuiUtils.hpp"
+#include "Utils/InternalImGuiUtils.hpp"
 
 HRY_NS_BEGIN
 
@@ -106,7 +106,7 @@ void MainWindow::showMainWindowKeyBind(hry::ButtonState /*unused*/)
     _isWindowEnabled = !_isWindowEnabled;
     Mouse::DisableInGameMouse(_isWindowEnabled);
 
-    ImGuiUtils::EnableCursor(_isWindowEnabled);
+    InternalImGuiUtils::EnableCursor(_isWindowEnabled);
 }
 
 HRY_NS_END

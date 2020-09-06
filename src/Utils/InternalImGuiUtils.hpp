@@ -4,7 +4,7 @@
 
 HRY_NS_BEGIN
 
-struct ImGuiUtils
+struct InternalImGuiUtils
 {
     // @enable: if true enable mouse input and show cursor
     static void EnableCursor(bool enable);

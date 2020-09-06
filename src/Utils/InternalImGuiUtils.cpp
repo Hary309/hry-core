@@ -1,4 +1,4 @@
-#include "ImGuiUtils.hpp"
+#include "InternalImGuiUtils.hpp"
 
 #include <imgui.h>
 
@@ -7,7 +7,7 @@
 
 HRY_NS_BEGIN
 
-void ImGuiUtils::EnableCursor(bool enable)
+void InternalImGuiUtils::EnableCursor(bool enable)
 {
     auto& io = ImGui::GetIO();
 
@@ -15,7 +15,7 @@ void ImGuiUtils::EnableCursor(bool enable)
     io.MouseDrawCursor = enable;
 }
 
-void ImGuiUtils::ApplyDarkTheme()
+void InternalImGuiUtils::ApplyDarkTheme()
 {
     ImGuiStyle& style = ImGui::GetStyle();
     style.Colors[ImGuiCol_Text] = ImVec4(1.00f, 1.00f, 1.00f, 1.00f);
@@ -69,7 +69,7 @@ void ImGuiUtils::ApplyDarkTheme()
     style.GrabRounding = style.FrameRounding = 2.3f;
 }
 
-void ImGuiUtils::LoadFonts()
+void InternalImGuiUtils::LoadFonts()
 {
     auto& io = ImGui::GetIO();
     Fonts::OpenSans_16 =
