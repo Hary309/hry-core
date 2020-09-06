@@ -11,7 +11,7 @@
 
 #include "Hry/Memory/Hooking.hpp"
 #include "Hry/Namespace.hpp"
-#include "Hry/Utils.hpp"
+#include "Hry/Utils/Utils.hpp"
 
 #include "Renderer/Renderer.hpp"
 

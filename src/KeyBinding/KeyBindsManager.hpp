@@ -11,9 +11,9 @@
 #include "Hry/KeyBinding/KeyBinds.hpp"
 #include "Hry/Namespace.hpp"
 #include "Hry/System/System.hpp"
-#include "Hry/Utils.hpp"
 #include "Hry/Utils/Delegate.hpp"
 #include "Hry/Utils/TaskScheduler.hpp"
+#include "Hry/Utils/Utils.hpp"
 
 #include "Events/EventManager.hpp"
 

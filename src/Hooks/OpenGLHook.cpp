@@ -6,7 +6,7 @@
 #include <gl/GL.h>
 
 #include "Hry/Memory/Detour.hpp"
-#include "Hry/Utils.hpp"
+#include "Hry/Utils/Utils.hpp"
 
 #include "Core.hpp"
 

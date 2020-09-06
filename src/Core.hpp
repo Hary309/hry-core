@@ -7,8 +7,8 @@
 #include "Hry/Events/EventHandler.hpp"
 #include "Hry/KeyBinding/KeyBinds.hpp"
 #include "Hry/Logger/Logger.hpp"
-#include "Hry/Utils.hpp"
 #include "Hry/Utils/Timer.hpp"
+#include "Hry/Utils/Utils.hpp"
 #include "Hry/Version.hpp"
 
 #include "Config/ConfigManager.hpp"

@@ -6,8 +6,8 @@
 #include "Hry/Config/Config.hpp"
 #include "Hry/Logger/Logger.hpp"
 #include "Hry/Namespace.hpp"
-#include "Hry/Utils.hpp"
 #include "Hry/Utils/Delegate.hpp"
+#include "Hry/Utils/Utils.hpp"
 
 #include "Events/EventHandler.hpp"
 #include "KeyBinding/KeyBinds.hpp"

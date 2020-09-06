@@ -4,7 +4,7 @@
 
 #include "Hry/Config/Config.hpp"
 #include "Hry/Namespace.hpp"
-#include "Hry/Utils.hpp"
+#include "Hry/Utils/Utils.hpp"
 
 HRY_NS_BEGIN
 

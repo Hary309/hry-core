@@ -6,7 +6,7 @@
 #include <imgui.h>
 
 #include "Hry/Namespace.hpp"
-#include "Hry/Utils.hpp"
+#include "Hry/Utils/Utils.hpp"
 
 #include "Core.hpp"
 #include "D3D11RendererImpl.hpp"
