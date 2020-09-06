@@ -100,7 +100,7 @@ SCSSDK_HEADER
  *
  * If there are less trailers in game than @c SCS_TELEMETRY_trailers_count
  * telemetry will return all configurations however starting from the trailer after last
- * existing one its attributes will be empty. (only one unnamed attribute will be returned)
+ * existing one its attributes will be empty.
  *
  * Supported attributes:
  * @li id
@@ -109,8 +109,8 @@ SCSSDK_HEADER
  * @li brand_id
  * @li brand
  * @li name
- * @li chain_type
- * @li body_type
+ * @li chain_type (reported only for first trailer)
+ * @li body_type (reported only for first trailer)
  * @li license_plate
  * @li license_plate_country
  * @li license_plate_country_id
@@ -141,6 +141,7 @@ SCSSDK_HEADER
  * @li is_cargo_loaded
  * @li job_market
  * @li special_job
+ * @li planned_distance_km
  */
 #define SCS_TELEMETRY_CONFIG_job                                "job"
 
@@ -606,6 +607,14 @@ SCSSDK_HEADER
  */
 #define SCS_TELEMETRY_CONFIG_ATTRIBUTE_delivery_time            "delivery.time"
 
+/**
+ * @brief Planned job distance in simulated kilometers.
+ *
+ * Does not include distance driven using ferry.
+ *
+ * Type: u32
+ */
+#define SCS_TELEMETRY_CONFIG_ATTRIBUTE_planned_distance_km	"planned_distance.km"
 
 /**
  * @brief Is cargo loaded on the trailer?

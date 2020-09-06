@@ -144,6 +144,10 @@ SCSSDK_HEADER
  * @li speeding
  * @li avoid_weighing
  * @li illegal_trailer
+ * @li avoid_inspection
+ * @li illegal_border_crossing
+ * @li hard_shoulder_violation
+ * @li damaged_vehicle_usage
  * @li generic
  *
  * Type: string
