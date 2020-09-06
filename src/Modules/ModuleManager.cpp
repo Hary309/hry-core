@@ -2,10 +2,12 @@
 
 #include <algorithm>
 #include <filesystem>
+#include <fstream>
 #include <memory>
 
 #include <Windows.h>
 #include <imgui.h>
+#include <nlohmann/json.hpp>
 
 #include "Hry/Events/EventHandler.hpp"
 #include "Hry/Version.hpp"
@@ -16,8 +18,6 @@
 #include "Core.hpp"
 
 namespace fs = std::filesystem;
-
-#include "Hry/Namespace.hpp"
 
 HRY_NS_BEGIN
 
@@ -34,10 +34,18 @@ ModuleManager::ModuleManager(
 {
 }
 
+ModuleManager::~ModuleManager()
+{
+    unloadAll();
+    saveListToFile();
+}
+
 void ModuleManager::init()
 {
+    loadListFromFile();
     scan();
     loadAll();
+    _firstInit = false;
 }
 
 void ModuleManager::scan()
@@ -56,7 +64,7 @@ void ModuleManager::scan()
             Core::Logger->info("{} not found, removing from list", mod->dllPath);
 
             // it is possible if file is symbolic link
-            if (mod->isLoaded)
+            if (mod->isLoaded())
             {
                 unload(mod.get());
             }
@@ -75,20 +83,22 @@ void ModuleManager::scan()
         if (!item.is_directory())
         {
             const auto& path = item.path();
-            auto str = path.filename().string();
+            auto filename = path.filename().string();
 
-            Core::Logger->info("Found {}", str);
+            Core::Logger->info("Found {}", filename);
 
-            if (tryAdd(path))
+            if (tryAdd(path) != nullptr)
             {
-                Core::Logger->info("Added {} to list", str);
+                Core::Logger->info("Added {} to list", filename);
             }
             else
             {
-                Core::Logger->info("{} is already indexed", str);
+                Core::Logger->info("{} is already indexed", filename);
             }
         }
     }
+
+    saveListToFile();
 }
 
 void ModuleManager::loadAll()
@@ -120,39 +130,59 @@ void ModuleManager::unloadAll()
 
 bool ModuleManager::load(Module* mod)
 {
-    Core::Logger->info("Loading {}...", mod->dllPath);
+    const auto& dllPath = mod->dllPath;
 
-    if (mod->isLoaded)
+    if (!fs::exists(dllPath))
     {
-        Core::Logger->info("{} is already loaded", mod->dllPath);
-        return true; // TODO: enum is probably a better option
-    }
+        Core::Logger->warning("Cannot find {}, removing from list", dllPath);
 
-    HMODULE handle = LoadLibraryA(mod->dllPath.c_str());
-
-    if (handle == nullptr)
-    {
-        Core::Logger->warning("Cannot load {} [{}]", mod->dllPath, GetLastError());
+        _modules.erase(
+            std::remove_if(
+                _modules.begin(), _modules.end(),
+                [mod](const auto& lambdaMod) { return mod == lambdaMod.get(); }),
+            _modules.end());
 
         return false;
     }
 
-    mod->handle = handle;
+    if (_firstInit && !mod->loadAtStart)
+    {
+        Core::Logger->info("Skipping {}", dllPath);
+        return true;
+    }
+
+    Core::Logger->info("Loading {}...", dllPath);
+
+    if (mod->isLoaded())
+    {
+        Core::Logger->info("{} is already loaded", dllPath);
+        return true; // TODO: enum is probably a better option
+    }
+
+    HMODULE handle = LoadLibraryA(dllPath.c_str());
+
+    if (handle == nullptr)
+    {
+        Core::Logger->warning("Cannot load {} [{}]", dllPath, GetLastError());
+
+        return false;
+    }
+
+    mod->dllHandle = handle;
 
     auto* CreatePlugin_func =
         reinterpret_cast<CreatePlugin_t*>(GetProcAddress(handle, "CreatePlugin"));
 
     if (CreatePlugin_func == nullptr)
     {
-        Core::Logger->warning(
-            "Cannot find CreatePlugin inside {} [{}]", mod->dllPath, GetLastError());
+        Core::Logger->warning("Cannot find CreatePlugin inside {} [{}]", dllPath, GetLastError());
         FreeLibrary(handle);
 
         return false;
     }
 
     // create plugin object
-    mod->plugin = CreatePlugin_func();
+    mod->plugin = std::unique_ptr<Plugin>(CreatePlugin_func());
 
     if (mod->plugin == nullptr)
     {
@@ -169,48 +199,121 @@ bool ModuleManager::load(Module* mod)
     mod->data.logger = LoggerFactory::GetLogger(name);
     mod->data.eventHandler = std::make_unique<EventHandler>(_eventMgr.createEventHandler());
 
-    mod->isLoaded = true;
+    mod->loadResult = mod->plugin->init(
+        Plugin::InitParams{ mod->data.logger.get(), ApiVersion, Core::GameVersion });
 
-    Core::Logger->info("Successfully loaded {}", mod->dllPath);
+    if (mod->loadResult == Plugin::Result::Ok)
+    {
+        Core::Logger->info("Successfully loaded {}", dllPath);
 
-    mod->plugin->init(Plugin::InitParams{ mod->data.logger.get(), ApiVersion, Core::GameVersion });
-    mod->plugin->initEvents(mod->data.eventHandler.get());
-    mod->plugin->initConfig(mod->data.config.get());
-    mod->plugin->initKeyBinds(mod->data.keyBinds.get());
+        mod->plugin->initEvents(mod->data.eventHandler.get());
+        mod->plugin->initConfig(mod->data.config.get());
+        mod->plugin->initKeyBinds(mod->data.keyBinds.get());
 
-    _configMgr.loadFor(mod->data.config.get());
-    _keyBindsMgr.loadFor(mod->data.keyBinds.get());
+        _configMgr.loadFor(mod->data.config.get());
+        _keyBindsMgr.loadFor(mod->data.keyBinds.get());
 
-    return true;
+        return true;
+    }
+
+    Core::Logger->error("Cannot load plugin [{}]", mod->loadResult);
+
+    unload(mod);
+    return false;
 }
 
 void ModuleManager::unload(Module* mod)
 {
     Core::Logger->info("Unloading {}", mod->dllPath);
 
-    if (!mod->isLoaded)
+    if (!mod->isLoaded())
     {
         Core::Logger->info("{} is already unloaded", mod->dllPath);
         return;
     }
 
-    delete mod->plugin;
-    mod->plugin = nullptr;
-
+    mod->plugin.reset();
     mod->data.eventHandler.reset();
     mod->data.logger.reset();
     mod->data.config.reset();
     mod->data.keyBinds.reset();
 
-    if (mod->handle != nullptr)
+    if (mod->dllHandle != nullptr)
     {
-        FreeLibrary(mod->handle);
+        FreeLibrary(mod->dllHandle);
+        mod->dllHandle = nullptr;
     }
-
-    mod->isLoaded = false;
 }
 
-bool ModuleManager::tryAdd(const fs::path& path)
+void ModuleManager::saveListToFile()
+{
+    nlohmann::json json;
+
+    for (const auto& module : _modules)
+    {
+        nlohmann::json obj;
+        obj["dll_path"] = module->dllPath;
+        obj["load_at_start"] = module->loadAtStart;
+        json.push_back(obj);
+    }
+
+    std::ofstream file(PluginListFilePath);
+
+    if (file.bad())
+    {
+        return;
+    }
+
+    file << json;
+
+    Core::Logger->info("Saving plugins list to file...");
+}
+
+void ModuleManager::loadListFromFile()
+{
+    if (!fs::exists(PluginListFilePath))
+    {
+        return;
+    }
+
+    std::ifstream file(PluginListFilePath);
+
+    if (file.bad())
+    {
+        return;
+    }
+
+    Core::Logger->info("Loading plugins list from file...");
+
+    nlohmann::json json;
+
+    file >> json;
+
+    for (auto& obj : json)
+    {
+        auto jdllPath = obj.find("dll_path");
+        auto jLoadAtStart = obj.find("load_at_start");
+
+        if (jdllPath == obj.end() || jLoadAtStart == obj.end())
+        {
+            continue;
+        }
+
+        auto dllPath = jdllPath->get<std::string>();
+        auto loadAtStart = jLoadAtStart->get<bool>();
+
+        Module* mod = tryAdd(dllPath);
+
+        if (mod != nullptr)
+        {
+            Core::Logger->info("Added {} to list from saved file", mod->dllName);
+
+            mod->loadAtStart = loadAtStart;
+        }
+    }
+}
+
+Module* ModuleManager::tryAdd(const fs::path& path)
 {
     std::string filepath = path.string();
 
@@ -220,14 +323,16 @@ bool ModuleManager::tryAdd(const fs::path& path)
 
     if (it == _modules.end())
     {
-        auto mod = std::make_unique<Module>();
+        auto* mod = new Module();
         mod->dllName = path.filename().string();
         mod->dllPath = filepath;
-        _modules.push_back(std::move(mod));
-        return true;
+
+        _modules.push_back(std::unique_ptr<Module>(mod));
+
+        return mod;
     }
 
-    return false;
+    return nullptr;
 }
 
 HRY_NS_END

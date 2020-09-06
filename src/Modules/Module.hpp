@@ -17,6 +17,8 @@ struct Module
     std::string dllName;
     std::string dllPath;
 
+    Plugin::Result loadResult{ Plugin::Result::Ok };
+
     // can be nulls
     struct
     {
@@ -26,9 +28,12 @@ struct Module
         DelegateDeleterUniquePtr_t<Config> config;
     } data;
 
-    bool isLoaded = false;
-    HMODULE handle = nullptr;
-    Plugin* plugin = nullptr; // can be null
+    bool loadAtStart = true;
+
+    HMODULE dllHandle = nullptr;
+    std::unique_ptr<Plugin> plugin; // can be null
+
+    [[nodiscard]] bool isLoaded() const { return plugin != nullptr; }
 };
 
 HRY_NS_END

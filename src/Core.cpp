@@ -38,7 +38,6 @@ Core::Core(HINSTANCE hInst)
 Core::~Core()
 {
     Logger->info("Deinitializing...");
-    _moduleMgr.unloadAll();
     Core::UninstallHooks();
 }
 

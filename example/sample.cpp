@@ -24,7 +24,13 @@ public:
     inline static hry::Logger* Logger;
 
 public:
-    ~SamplePlugin() override { Logger->info("Unloading..."); }
+    ~SamplePlugin() override
+    {
+        if (Logger != nullptr)
+        {
+            Logger->info("Unloading...");
+        }
+    }
 
     Result init(const InitParams&& initParams) override
     {

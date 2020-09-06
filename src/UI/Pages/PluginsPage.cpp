@@ -4,6 +4,8 @@
 
 #include "Hry/Colors.hpp"
 #include "Hry/Fonts.hpp"
+#include "Hry/Plugin.hpp"
+#include "Hry/Utils/ImGuiUtils.hpp"
 
 HRY_NS_BEGIN
 
@@ -14,7 +16,7 @@ bool ButtonColored(const char* txt, ImVec4 color, bool enabled = true)
     ImVec4 hsv;
     ImGui::ColorConvertRGBtoHSV(color.x, color.y, color.z, hsv.x, hsv.y, hsv.z);
 
-    if (!enabled)
+    if (enabled)
     {
         hsv.z /= 1.2f;
     }
@@ -65,30 +67,35 @@ void PluginsPage::renderList()
 
     ImGui::SetColumnOffset(2, ImGui::GetWindowContentRegionWidth() - 32);
 
-    for (auto& module : _moduleMgr.getModules())
+    for (const auto& module : _moduleMgr.getModules())
     {
-        const bool active = module->isLoaded;
+        bool isLoaded = module->isLoaded();
         const auto gray = ImColor(140, 140, 140).Value;
         const auto red = ImColor(200, 50, 50).Value;
         const auto green = ImColor(50, 200, 50).Value;
 
         ImGui::PushID(&module);
 
-        if (ButtonColored("On", active ? gray : green, !active) && active)
+        if (ButtonColored("On", isLoaded ? gray : green, !isLoaded) && !isLoaded)
         {
-            module->isLoaded = false;
+            module->loadAtStart = true;
+            _moduleMgr.load(module.get());
         }
         ImGui::SameLine();
-        if (ButtonColored("Off", active ? red : gray, active) && !active)
+        if (ButtonColored("Off", isLoaded ? red : gray, isLoaded) && isLoaded)
         {
-            module->isLoaded = true;
+            module->loadAtStart = false;
+            _moduleMgr.unload(module.get());
         }
+
+        // if user loaded or unloaded module
+        isLoaded = module->isLoaded();
 
         ImGui::NextColumn();
 
         ImGui::Text("%s", module->dllName.c_str());
 
-        if (module->plugin != nullptr)
+        if (isLoaded)
         {
             ImGui::SameLine();
 
@@ -97,12 +104,25 @@ void PluginsPage::renderList()
             ImGui::Text("v%s", version.c_str());
             ImGui::PopStyleColor();
         }
+        else if (module->loadResult != Plugin::Result::Ok)
+        {
+            ImGui::SameLine();
+            ImGui::TextColored(ImColor(200, 50, 50).Value, "%s", [](Plugin::Result result) {
+                switch (result)
+                {
+                    case Plugin::Result::ApiNotSupported: return "Not supported API version";
+                    case Plugin::Result::GameNotSupported: return "Not supported game version";
+                    case Plugin::Result::Error: return "Internal error";
+                    default: return "Unknown";
+                }
+            }(module->loadResult));
+        }
 
         ImGui::NextColumn();
 
-        if (ImGui::Button("..."))
+        if (isLoaded)
         {
-            if (module->plugin != nullptr)
+            if (ImGui::Button("..."))
             {
                 _selectedPlugin = &module->plugin->getPluginInfo();
             }
@@ -139,7 +159,7 @@ void PluginsPage::renderDetail()
 
     ImGui::PushStyleColor(ImGuiCol_Text, Colors::Gray.Value);
     const auto& authorInfo = _selectedPlugin->authorInfo;
-    ImGui::Text("%s <%s>", authorInfo.name.c_str(), authorInfo.email.c_str());
+    ImGui::Text("by %s <%s>", authorInfo.name.c_str(), authorInfo.email.c_str());
     ImGui::PopStyleColor();
 
     ImGui::Dummy({ 0, 4 });
