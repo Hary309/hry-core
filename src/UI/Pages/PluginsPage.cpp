@@ -107,15 +107,18 @@ void PluginsPage::renderList()
         else if (module->loadResult != Plugin::Result::Ok)
         {
             ImGui::SameLine();
-            ImGui::TextColored(ImColor(200, 50, 50).Value, "%s", [](Plugin::Result result) {
-                switch (result)
-                {
-                    case Plugin::Result::ApiNotSupported: return "Not supported API version";
-                    case Plugin::Result::GameNotSupported: return "Not supported game version";
-                    case Plugin::Result::Error: return "Internal error";
-                    default: return "Unknown";
-                }
-            }(module->loadResult));
+            ImGui::TextColored(
+                ImColor(200, 50, 50).Value, "%s [%d]",
+                [](Plugin::Result result) {
+                    switch (result)
+                    {
+                        case Plugin::Result::ApiNotSupported: return "Not supported API version";
+                        case Plugin::Result::GameNotSupported: return "Not supported game version";
+                        case Plugin::Result::Error: return "Internal error";
+                        default: return "Unknown";
+                    }
+                }(module->loadResult),
+                module->loadResult);
         }
 
         ImGui::NextColumn();

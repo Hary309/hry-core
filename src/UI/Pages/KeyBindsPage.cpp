@@ -33,6 +33,7 @@ void KeyBindsPage::imguiRender()
                 keyBindsSection->getName().c_str(), ImGuiTreeNodeFlags_DefaultOpen))
         {
             ImGui::Columns(3);
+            ImGui::SetColumnOffset(2, ImGui::GetWindowContentRegionWidth() - 96);
             for (auto& keyBind : keyBinds)
             {
                 ImGui::PushID(&keyBind);
@@ -60,16 +61,16 @@ void KeyBindsPage::imguiRender()
                         text = "Not set";
                     }
 
-                    if (ImGui::SmallButton(text.data()))
+                    if (ImGui::Button(text.data()))
                     {
                         _keyToSetBind = keyBind.get();
-                        ImGuiUtils::EnableCursor(false);
+                        InternalImGuiUtils::EnableCursor(false);
                     }
                 }
 
                 ImGui::NextColumn();
 
-                if (ImGui::SmallButton("Default##KeyBinds"))
+                if (ImGui::Button("Default##KeyBinds"))
                 {
                     keyBind->setKey(keyBind->getDefaultKey());
                     _keyBindsMgr.save();
@@ -77,7 +78,7 @@ void KeyBindsPage::imguiRender()
 
                 ImGui::SameLine();
 
-                if (ImGui::SmallButton("Delete##KeyBinds"))
+                if (ImGui::Button("Unset##KeyBinds"))
                 {
                     keyBind->setKey(nullptr);
                     _keyBindsMgr.save();
@@ -131,7 +132,7 @@ void KeyBindsPage::handleJoystickButtonPress(const JoystickButtonEvent&& buttonE
 void KeyBindsPage::applyChanges()
 {
     _keyToSetBind = nullptr;
-    ImGuiUtils::EnableCursor(true);
+    InternalImGuiUtils::EnableCursor(true);
     _keyBindsMgr.save();
 }
 
