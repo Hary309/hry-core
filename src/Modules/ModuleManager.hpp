@@ -18,24 +18,21 @@ HRY_NS_BEGIN
 class ModuleManager
 {
 private:
-    inline static constexpr auto PluginListFilePath = "plugins/hry_config/plugins.json";
+    inline static constexpr auto PluginListFileName = "/plugins.json";
 
 private:
     bool _firstInit = true;
 
-    std::filesystem::path _pluginDirectory;
     std::vector<std::unique_ptr<Module>> _modules;
 
     EventManager& _eventMgr;
     ConfigManager& _configMgr;
     KeyBindsManager& _keyBindsMgr;
 
+    std::string _pluginListFilePath;
+
 public:
-    ModuleManager(
-        std::filesystem::path pluginDirectory,
-        EventManager& eventMgr,
-        ConfigManager& configMgr,
-        KeyBindsManager& keyBindsMgr);
+    ModuleManager(EventManager& eventMgr, ConfigManager& configMgr, KeyBindsManager& keyBindsMgr);
 
     ~ModuleManager();
 

@@ -10,6 +10,7 @@
 #include <nlohmann/json.hpp>
 
 #include "Hry/Events/EventHandler.hpp"
+#include "Hry/Utils/Paths.hpp"
 #include "Hry/Version.hpp"
 
 #include "Logger/LoggerFactory.hpp"
@@ -25,12 +26,8 @@ using CreatePlugin_t = Plugin*();
 using InitImGui_t = void(ImGuiContext*);
 
 ModuleManager::ModuleManager(
-    std::filesystem::path pluginDirectory,
-    EventManager& eventMgr,
-    ConfigManager& configMgr,
-    KeyBindsManager& keyBindsMgr)
-    : _pluginDirectory(std::move(pluginDirectory)), _eventMgr(eventMgr), _configMgr(configMgr),
-      _keyBindsMgr(keyBindsMgr)
+    EventManager& eventMgr, ConfigManager& configMgr, KeyBindsManager& keyBindsMgr)
+    : _eventMgr(eventMgr), _configMgr(configMgr), _keyBindsMgr(keyBindsMgr)
 {
 }
 
@@ -42,6 +39,8 @@ ModuleManager::~ModuleManager()
 
 void ModuleManager::init()
 {
+    _pluginListFilePath = Paths::HomePath + PluginListFileName;
+
     loadListFromFile();
     scan();
     loadAll();
@@ -50,11 +49,9 @@ void ModuleManager::init()
 
 void ModuleManager::scan()
 {
-    Core::Logger->info("Scanning {}...", _pluginDirectory.string());
-
-    if (!fs::exists(_pluginDirectory))
+    if (!fs::exists(Paths::PluginsPath))
     {
-        fs::create_directory(_pluginDirectory);
+        fs::create_directory(Paths::PluginsPath);
     }
 
     // remove missing modules
@@ -63,7 +60,7 @@ void ModuleManager::scan()
         {
             Core::Logger->info("{} not found, removing from list", mod->dllPath);
 
-            // it is possible if file is symbolic link
+            // it is possible that plugin is loaded and deleted at the same time, when file is symbolic link
             if (mod->isLoaded())
             {
                 unload(mod.get());
@@ -78,7 +75,7 @@ void ModuleManager::scan()
     _modules.erase(toRemove, _modules.end());
 
     // add new modules
-    for (const auto& item : fs::directory_iterator(_pluginDirectory))
+    for (const auto& item : fs::directory_iterator(Paths::PluginsPath))
     {
         if (!item.is_directory())
         {
@@ -130,11 +127,12 @@ void ModuleManager::unloadAll()
 
 bool ModuleManager::load(Module* mod)
 {
+    const auto& dllName = mod->dllName;
     const auto& dllPath = mod->dllPath;
 
     if (!fs::exists(dllPath))
     {
-        Core::Logger->warning("Cannot find {}, removing from list", dllPath);
+        Core::Logger->warning("Cannot find {}, removing from list", dllName);
 
         _modules.erase(
             std::remove_if(
@@ -147,15 +145,15 @@ bool ModuleManager::load(Module* mod)
 
     if (_firstInit && !mod->loadAtStart)
     {
-        Core::Logger->info("Skipping {}", dllPath);
+        Core::Logger->info("Skipping {}", dllName);
         return true;
     }
 
-    Core::Logger->info("Loading {}...", dllPath);
+    Core::Logger->info("Loading {}...", dllName);
 
     if (mod->isLoaded())
     {
-        Core::Logger->info("{} is already loaded", dllPath);
+        Core::Logger->info("{} is already loaded", dllName);
         return true; // TODO: enum is probably a better option
     }
 
@@ -163,7 +161,7 @@ bool ModuleManager::load(Module* mod)
 
     if (handle == nullptr)
     {
-        Core::Logger->warning("Cannot load {} [{}]", dllPath, GetLastError());
+        Core::Logger->warning("Cannot load {} [{}]", dllName, GetLastError());
 
         return false;
     }
@@ -175,7 +173,7 @@ bool ModuleManager::load(Module* mod)
 
     if (CreatePlugin_func == nullptr)
     {
-        Core::Logger->warning("Cannot find CreatePlugin inside {} [{}]", dllPath, GetLastError());
+        Core::Logger->warning("Cannot find CreatePlugin inside {} [{}]", dllName, GetLastError());
         FreeLibrary(handle);
 
         return false;
@@ -199,12 +197,12 @@ bool ModuleManager::load(Module* mod)
     mod->data.logger = LoggerFactory::GetLogger(name);
     mod->data.eventHandler = std::make_unique<EventHandler>(_eventMgr.createEventHandler());
 
-    mod->loadResult = mod->plugin->init(
-        Plugin::InitParams{ mod->data.logger.get(), ApiVersion, Core::GameVersion });
+    mod->loadResult =
+        mod->plugin->init(Plugin::InitParams{ mod->data.logger.get(), ApiVersion, Core::GameType });
 
     if (mod->loadResult == Plugin::Result::Ok)
     {
-        Core::Logger->info("Successfully loaded {}", dllPath);
+        Core::Logger->info("Successfully loaded {}", dllName);
 
         mod->plugin->initEvents(mod->data.eventHandler.get());
         mod->plugin->initConfig(mod->data.config.get());
@@ -224,11 +222,11 @@ bool ModuleManager::load(Module* mod)
 
 void ModuleManager::unload(Module* mod)
 {
-    Core::Logger->info("Unloading {}", mod->dllPath);
+    Core::Logger->info("Unloading {}", mod->dllName);
 
     if (!mod->isLoaded())
     {
-        Core::Logger->info("{} is already unloaded", mod->dllPath);
+        Core::Logger->info("{} is already unloaded", mod->dllName);
         return;
     }
 
@@ -257,7 +255,7 @@ void ModuleManager::saveListToFile()
         json.push_back(obj);
     }
 
-    std::ofstream file(PluginListFilePath);
+    std::ofstream file(_pluginListFilePath);
 
     if (file.bad())
     {
@@ -271,12 +269,12 @@ void ModuleManager::saveListToFile()
 
 void ModuleManager::loadListFromFile()
 {
-    if (!fs::exists(PluginListFilePath))
+    if (!fs::exists(_pluginListFilePath))
     {
         return;
     }
 
-    std::ifstream file(PluginListFilePath);
+    std::ifstream file(_pluginListFilePath);
 
     if (file.bad())
     {
@@ -289,18 +287,18 @@ void ModuleManager::loadListFromFile()
 
     file >> json;
 
-    for (auto& obj : json)
+    for (const auto& obj : json)
     {
-        auto jdllPath = obj.find("dll_path");
-        auto jLoadAtStart = obj.find("load_at_start");
+        const auto jdllPath = obj.find("dll_path");
+        const auto jLoadAtStart = obj.find("load_at_start");
 
         if (jdllPath == obj.end() || jLoadAtStart == obj.end())
         {
             continue;
         }
 
-        auto dllPath = jdllPath->get<std::string>();
-        auto loadAtStart = jLoadAtStart->get<bool>();
+        const auto dllPath = jdllPath->get<std::string>();
+        const auto loadAtStart = jLoadAtStart->get<bool>();
 
         Module* mod = tryAdd(dllPath);
 
@@ -315,7 +313,7 @@ void ModuleManager::loadListFromFile()
 
 Module* ModuleManager::tryAdd(const fs::path& path)
 {
-    std::string filepath = path.string();
+    const std::string filepath = path.string();
 
     auto it = std::find_if(
         _modules.begin(), _modules.end(),

@@ -5,6 +5,7 @@
 
 #include "Hry/Events/Event.hpp"
 #include "Hry/Events/EventHandler.hpp"
+#include "Hry/GameType.hpp"
 #include "Hry/KeyBinding/KeyBinds.hpp"
 #include "Hry/Logger/Logger.hpp"
 #include "Hry/Utils/Timer.hpp"
@@ -40,7 +41,7 @@ class Core
 public:
     inline static HINSTANCE hInstance;
     inline static std::unique_ptr<Logger> Logger;
-    inline static Version GameVersion;
+    inline static GameType GameType;
 
 private:
     bool _isInited = false;
@@ -85,6 +86,8 @@ private:
 private:
     static bool InstallHooks();
     static void UninstallHooks();
+
+    static hry::GameType DetermineGameType(const char* gameID);
 };
 
 HRY_NS_END

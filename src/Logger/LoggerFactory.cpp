@@ -2,6 +2,7 @@
 
 #include <filesystem>
 #include <fstream>
+#include <utility>
 
 #include <fmt/chrono.h>
 #include <fmt/core.h>
@@ -12,10 +13,10 @@
 
 HRY_NS_BEGIN
 
-void LoggerFactory::Init(const char* logFilePath, EventManager& eventMgr)
+void LoggerFactory::Init(std::string logFilePath, EventManager& eventMgr)
 {
     _eventMgr = &eventMgr;
-    _logFilePath = logFilePath;
+    _logFilePath = std::move(logFilePath);
 
     if (std::filesystem::exists(_logFilePath))
     {

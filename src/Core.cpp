@@ -1,11 +1,15 @@
 #include "Core.hpp"
 
 #include <cstdio>
+#include <filesystem>
 #include <ios>
 #include <string>
 
+#include <amtrucks/scssdk_ats.h>
+#include <eurotrucks2/scssdk_eut2.h>
 #include <imgui.h>
 #include <scssdk_telemetry.h>
+#include <vcruntime_typeinfo.h>
 
 #include "Hry/Config/ConfigFieldBase.hpp"
 #include "Hry/Config/Fields/BoolField.hpp"
@@ -13,9 +17,13 @@
 #include "Hry/Config/Fields/TextField.hpp"
 #include "Hry/Events/Event.hpp"
 #include "Hry/Events/EventHandler.hpp"
+#include "Hry/GameType.hpp"
 #include "Hry/Memory/Memory.hpp"
 #include "Hry/Namespace.hpp"
+#include "Hry/Utils/Paths.hpp"
 #include "Hry/Utils/Signal.hpp"
+#include "Hry/Utils/Utils.hpp"
+#include "Hry/Version.hpp"
 
 #include "Hooks/D3D11Hook.hpp"
 #include "Hooks/DInput8Hook.hpp"
@@ -27,8 +35,7 @@ HRY_NS_BEGIN
 
 Core::Core(HINSTANCE hInst)
     : _eventHandler(_eventMgr.createEventHandler()), _renderer(*this, _eventMgr),
-      _keyBindsMgr(_eventHandler),
-      _moduleMgr("plugins\\hry_plugins", _eventMgr, _configMgr, _keyBindsMgr),
+      _keyBindsMgr(_eventHandler), _moduleMgr(_eventMgr, _configMgr, _keyBindsMgr),
       _mainWindow(_moduleMgr, _configMgr, _keyBindsMgr, _eventHandler), _loggerWindow(_eventMgr),
       _imguiImplEvents(_eventHandler)
 {
@@ -45,17 +52,18 @@ bool Core::init(scs_telemetry_init_params_v100_t* scsTelemetry)
 {
     _scsTelemetry = scsTelemetry;
 
-    auto gameVersion = scsTelemetry->common.game_version;
+    Paths::Init();
 
-    Core::GameVersion = { static_cast<uint8_t>(SCS_GET_MAJOR_VERSION(gameVersion)),
-                          static_cast<uint16_t>(SCS_GET_MINOR_VERSION(gameVersion)), 0 };
+    Core::GameType = DetermineGameType(_scsTelemetry->common.game_id);
 
-    LoggerFactory::Init("plugins/hry_core.log", _eventMgr);
+    LoggerFactory::Init(Paths::HomePath + "/hry_core.log", _eventMgr);
     Logger = LoggerFactory::GetLogger("core");
 
     Logger->info("Base address: {0:#x}", GetBaseAddress());
-
-    Logger->info("Initializing core...");
+    Logger->info("API version {}.{}.{}", ApiVersion.major, ApiVersion.minor, ApiVersion.patch);
+    Logger->info("Game name: {}", GameTypeToString(Core::GameType));
+    Logger->info("Module's path: {}", Paths::ModulePath);
+    Logger->info("Home path: {}", Paths::HomePath);
 
     bool success = true;
 
@@ -63,6 +71,7 @@ bool Core::init(scs_telemetry_init_params_v100_t* scsTelemetry)
 
     if (success == false)
     {
+        scsTelemetry->common.log(SCS_LOG_TYPE_error, "[hry-core] Cannot initialize!");
         Logger->error("Cannot initialize!");
         Core::UninstallHooks();
         return false;
@@ -72,6 +81,8 @@ bool Core::init(scs_telemetry_init_params_v100_t* scsTelemetry)
     _eventMgr.init(scsTelemetry);
 
     _isInited = true;
+
+    scsTelemetry->common.log(SCS_LOG_TYPE_message, "[hry-core] Initialized!");
 
     return success;
 }
@@ -137,8 +148,6 @@ void Core::onConfigChangesApplied(const ConfigCallbackData& data)
 
 bool Core::InstallHooks()
 {
-    Logger->info("Installing hooks...");
-
     bool success = true;
 
     bool rendererSuccess = false;
@@ -171,6 +180,21 @@ void Core::UninstallHooks()
     DInput8Hook::Uninstall();
 
     Logger->info("Hooks uninstalled");
+}
+
+GameType Core::DetermineGameType(const char* gameID)
+{
+    if (strcmp(gameID, SCS_GAME_ID_EUT2) == 0)
+    {
+        return GameType::ETS2;
+    }
+
+    if (strcmp(gameID, SCS_GAME_ID_ATS) == 0)
+    {
+        return GameType::ATS;
+    }
+
+    return GameType::Unknown;
 }
 
 HRY_NS_END

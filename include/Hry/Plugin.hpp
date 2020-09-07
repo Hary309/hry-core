@@ -4,6 +4,7 @@
 #include <memory>
 
 #include "Hry/Config/Config.hpp"
+#include "Hry/GameType.hpp"
 #include "Hry/Logger/Logger.hpp"
 #include "Hry/Namespace.hpp"
 #include "Hry/Utils/Delegate.hpp"
@@ -31,7 +32,7 @@ public:
     {
         Logger* logger;
         Version apiVersion;
-        Version gameVersion;
+        GameType gameType;
     };
 
 public:

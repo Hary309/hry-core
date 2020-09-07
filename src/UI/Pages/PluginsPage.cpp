@@ -56,9 +56,12 @@ void PluginsPage::renderList()
     ImGui::PopStyleColor();
     ImGui::PopFont();
 
-    ImGui::SameLine();
+    ImGui::SameLine(ImGui::GetWindowContentRegionWidth() - 40);
 
-    ImGui::Dummy({ 0, 4 });
+    if (ImGui::Button("Refresh##PluginsPage"))
+    {
+        _moduleMgr.scan();
+    }
 
     ImGui::BeginChild("##plugins");
 
@@ -95,18 +98,15 @@ void PluginsPage::renderList()
 
         ImGui::Text("%s", module->dllName.c_str());
 
+        ImGui::SameLine();
+
         if (isLoaded)
         {
-            ImGui::SameLine();
-
-            ImGui::PushStyleColor(ImGuiCol_Text, Colors::Gray.Value);
             const auto version = module->plugin->getPluginInfo().version.toString();
-            ImGui::Text("v%s", version.c_str());
-            ImGui::PopStyleColor();
+            ImGui::TextColored(Colors::Gray.Value, "v%s", version.c_str());
         }
         else if (module->loadResult != Plugin::Result::Ok)
         {
-            ImGui::SameLine();
             ImGui::TextColored(
                 ImColor(200, 50, 50).Value, "%s [%d]",
                 [](Plugin::Result result) {
@@ -119,6 +119,10 @@ void PluginsPage::renderList()
                     }
                 }(module->loadResult),
                 module->loadResult);
+        }
+        else
+        {
+            ImGui::TextColored(Colors::Gray.Value, "%s", "Not loaded");
         }
 
         ImGui::NextColumn();

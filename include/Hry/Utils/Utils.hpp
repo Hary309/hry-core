@@ -1,5 +1,6 @@
 #pragma once
 
+#include <filesystem>
 #include <memory>
 
 #include <guiddef.h>
@@ -19,6 +20,14 @@ HRY_NS_BEGIN
 template<typename T>
 using DelegateDeleterUniquePtr_t = std::unique_ptr<T, Delegate<void(T*)>>;
 
-std::string HRY_API FormatGUID(const GUID& guid);
+HRY_API std::string FormatGUID(const GUID& guid);
+
+// Folder where are saved settings, keybinds and logs
+// For ETS2: My Documents/hry_core/ets2
+// For ATS: My Documents/hry_core/ats
+HRY_API std::filesystem::path GetHomePath();
+
+// Folder where hry_core.dll is located
+HRY_API std::filesystem::path GetModulePath();
 
 HRY_NS_END
