@@ -49,6 +49,8 @@ void ModuleManager::init()
 
 void ModuleManager::scan()
 {
+    Core::Logger->info("Scanning plugins directory...");
+
     if (!fs::exists(Paths::PluginsPath))
     {
         fs::create_directory(Paths::PluginsPath);
@@ -82,15 +84,9 @@ void ModuleManager::scan()
             const auto& path = item.path();
             auto filename = path.filename().string();
 
-            Core::Logger->info("Found {}", filename);
-
             if (tryAdd(path) != nullptr)
             {
                 Core::Logger->info("Added {} to list", filename);
-            }
-            else
-            {
-                Core::Logger->info("{} is already indexed", filename);
             }
         }
     }

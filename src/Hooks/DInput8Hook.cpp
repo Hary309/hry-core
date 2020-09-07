@@ -77,8 +77,6 @@ HRESULT __stdcall new_DirectInputDevice_GetDeviceData(
 
 bool DInput8Hook::Install()
 {
-    Core::Logger->info("Initializing DInput8 hooks...");
-
     HMODULE libDInput = ::GetModuleHandle(HRY_TEXT("dinput8.dll"));
     IDirectInput8W* DI = nullptr;
     IDirectInputDevice8W* DIMouse = nullptr;
