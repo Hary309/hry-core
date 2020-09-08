@@ -53,7 +53,7 @@ endif()
 
 target_compile_options(hry-core PUBLIC ${STATIC_FLAG})
 
-target_include_directories(hry-core PUBLIC include vendor/scs_sdk_1_10/include
+target_include_directories(hry-core PUBLIC include vendor/scs_sdk/include
                                            vendor/json/include vendor/imgui)
 target_include_directories(hry-core PRIVATE src vendor/imgui_markdown)
 

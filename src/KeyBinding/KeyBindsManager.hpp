@@ -22,9 +22,6 @@ HRY_NS_BEGIN
 class KeyBindsManager
 {
 public:
-    inline static constexpr auto ConfigDirectory = "plugins/hry_config";
-    inline static constexpr auto FilePath = "plugins/hry_config/keybinds.json";
-
     inline static constexpr auto LongPressTimeout = std::chrono::milliseconds(400);
 
 private:
@@ -41,13 +38,12 @@ public:
 
     [[nodiscard]] const auto& getKeyBinds() const { return _keyBinds; }
 
-    void save();
-    void loadFor(KeyBinds* keyBinds);
+    void saveAll() const;
 
 private:
     void keyBindsDeleter(KeyBinds* ptr);
 
-    void handleKeybaordEvent(const KeyboardEvent&& keyboardEvent);
+    void handleKeyboardEvent(const KeyboardEvent&& keyboardEvent);
     void handleMouseButtonEvent(const MouseButtonEvent&& buttonEvent);
     void handleJoystickButtonEvent(const JoystickButtonEvent&& buttonEvent);
 

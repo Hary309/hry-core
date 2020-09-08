@@ -31,9 +31,11 @@ private:
     std::string _name;
     std::vector<std::unique_ptr<ConfigFieldBase>> _fields;
 
-    size_t _bindingStructSize = 0;
-    Hash64_t _bindingStructHash;
-    BindingStructDtor_t _bindingStructDtor;
+    std::string _configFilePath;
+
+    size_t _bindingStructSize{};
+    Hash64_t _bindingStructHash{};
+    BindingStructDtor_t _bindingStructDtor{};
 
 public:
     // is called when settings are loaded or applied (pressing save in settings)
@@ -71,6 +73,10 @@ public:
         return field;
     }
 
+    void saveToFile() const;
+    // return false if cannot save
+    bool loadFromFile();
+
 private:
     [[nodiscard]] const std::string& getName() const { return _name; }
 
@@ -85,7 +91,7 @@ private:
 
     [[nodiscard]] auto& getFields() const { return _fields; }
 
-    void toJson(nlohmann::json& json);
+    void toJson(nlohmann::json& json) const;
     void fromJson(const nlohmann::json& json);
 
     void invokeCallback();

@@ -19,10 +19,10 @@ void TryCreateDirectory(std::string_view path)
 void Paths::Init()
 {
     Paths::ModulePath = GetModulePath().string();
-    Paths::PluginsPath = Paths::ModulePath + "/hry_plugins";
+    Paths::PluginsPath = Paths::ModulePath + "\\hry_plugins";
     Paths::HomePath = GetHomePath().string();
-    Paths::ConfigsPath = Paths::HomePath + "/configs";
-    Paths::KeyBindsPath = Paths::HomePath + "/keybinds";
+    Paths::ConfigsPath = Paths::HomePath + "\\configs";
+    Paths::KeyBindsPath = Paths::HomePath + "\\keybinds";
 
     TryCreateDirectory(Paths::ModulePath);
     TryCreateDirectory(Paths::PluginsPath);

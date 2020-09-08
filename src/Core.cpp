@@ -115,14 +115,21 @@ void Core::initConfig()
     showImGuiDemo->bind(&CoreConfig::showImGuiDemo);
     showImGuiDemo->setDefaultValue(false);
 
-    _configMgr.loadFor(_coreConfig.get());
+    if (!_coreConfig->loadFromFile())
+    {
+        _coreConfig->saveToFile();
+    }
 }
 
 void Core::initKeyBinds()
 {
     _coreKeyBinds = _keyBindsMgr.createKeyBinds("Core");
     _mainWindow.initKeyBinds(*_coreKeyBinds);
-    _keyBindsMgr.loadFor(_coreKeyBinds.get());
+
+    if (!_coreKeyBinds->loadFromFile())
+    {
+        _coreKeyBinds->saveToFile();
+    }
 }
 
 void Core::imguiRender()

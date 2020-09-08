@@ -51,7 +51,7 @@ void ConfigPage::imguiRender()
             config->applyChanges();
         }
 
-        _configMgr.save();
+        _configMgr.saveAll();
     }
 
     ImGui::SameLine();

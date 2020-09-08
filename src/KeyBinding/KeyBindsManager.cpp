@@ -23,8 +23,8 @@ HRY_NS_BEGIN
 
 KeyBindsManager::KeyBindsManager(EventHandler& eventHandler)
 {
-    eventHandler.onKeyPress.connect<&KeyBindsManager::handleKeybaordEvent>(this);
-    eventHandler.onKeyRelease.connect<&KeyBindsManager::handleKeybaordEvent>(this);
+    eventHandler.onKeyPress.connect<&KeyBindsManager::handleKeyboardEvent>(this);
+    eventHandler.onKeyRelease.connect<&KeyBindsManager::handleKeyboardEvent>(this);
 
     eventHandler.onMouseButtonPress.connect<&KeyBindsManager::handleMouseButtonEvent>(this);
     eventHandler.onMouseButtonRelease.connect<&KeyBindsManager::handleMouseButtonEvent>(this);
@@ -60,7 +60,7 @@ void KeyBindsManager::keyBindsDeleter(KeyBinds* ptr)
     delete ptr;
 }
 
-void KeyBindsManager::handleKeybaordEvent(const KeyboardEvent&& keyboardEvent)
+void KeyBindsManager::handleKeyboardEvent(const KeyboardEvent&& keyboardEvent)
 {
     processKey(keyboardEvent.key, keyboardEvent.state, {});
 }
@@ -149,66 +149,11 @@ void KeyBindsManager::onTaskHold(KeyBind* keyBind, system_clock::time_point time
     }
 }
 
-void KeyBindsManager::save()
+void KeyBindsManager::saveAll() const
 {
-    nlohmann::json json;
-
-    std::ifstream fileOpen(FilePath);
-
-    // don't delete keybinds for modules that aren't loaded
-    if (fileOpen.good())
+    for (const auto& k : _keyBinds)
     {
-        fileOpen >> json;
-    }
-
-    Core::Logger->info("Saving keybinds...");
-
-    for (auto* keyBindsSection : _keyBinds)
-    {
-        auto jKeyBindsSection = nlohmann::json::object();
-
-        keyBindsSection->toJson(jKeyBindsSection);
-
-        json[keyBindsSection->getName()] = jKeyBindsSection;
-    }
-
-    if (!fs::exists(ConfigDirectory))
-    {
-        fs::create_directory(ConfigDirectory);
-    }
-
-    std::ofstream fileSave(FilePath);
-
-    if (fileSave.is_open())
-    {
-        fileSave << json.dump(4);
-    }
-    else
-    {
-        Core::Logger->error("Cannot save keybinds to {}", FilePath);
-    }
-}
-
-void KeyBindsManager::loadFor(KeyBinds* keyBinds)
-{
-    std::ifstream file(FilePath);
-
-    if (file.good())
-    {
-        Core::Logger->info("Loading keybinds for {}...", keyBinds->getName());
-        nlohmann::json json;
-        file >> json;
-
-        auto jKeyBindsSection = json.find(keyBinds->getName());
-
-        if (jKeyBindsSection != json.end())
-        {
-            keyBinds->fromJson(jKeyBindsSection.value());
-        }
-    }
-    else
-    {
-        Core::Logger->warning("Cannot open {}", FilePath);
+        k->saveToFile();
     }
 }
 

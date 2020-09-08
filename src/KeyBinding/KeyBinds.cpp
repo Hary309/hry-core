@@ -1,17 +1,69 @@
 #include "Hry/KeyBinding/KeyBinds.hpp"
 
+#include <filesystem>
 #include <string>
 
 #include <nlohmann/json.hpp>
 
 #include "Hry/System/Joystick.hpp"
 #include "Hry/System/Mouse.hpp"
+#include "Hry/Utils/Paths.hpp"
+
+#include "Core.hpp"
+
+namespace fs = std::filesystem;
 
 HRY_NS_BEGIN
 
-HRY_API void KeyBinds::toJson(nlohmann::json& json)
+KeyBinds::KeyBinds(std::string name) : _name(std::move(name))
 {
-    for (auto& keyBind : _keyBinds)
+    _keyBindsFilePath = fmt::format("{}/{}.json", Paths::KeyBindsPath, _name);
+}
+
+void KeyBinds::saveToFile() const
+{
+    if (!fs::exists(Paths::KeyBindsPath))
+    {
+        fs::create_directory(Paths::KeyBindsPath);
+    }
+
+    std::ofstream f(_keyBindsFilePath);
+
+    if (f.is_open())
+    {
+        nlohmann::json json;
+        toJson(json);
+
+        f << json.dump(4);
+
+        Core::Logger->info("Saved keybinds for {}", _name);
+    }
+    else
+    {
+        Core::Logger->error("Cannot save keybinds to {}", _keyBindsFilePath);
+    }
+}
+
+bool KeyBinds::loadFromFile()
+{
+    std::ifstream f(_keyBindsFilePath);
+
+    if (f.is_open())
+    {
+        nlohmann::json json;
+        f >> json;
+        fromJson(json);
+        Core::Logger->info("Loaded keybinds for {}", _name);
+
+        return true;
+    }
+
+    return false;
+}
+
+void KeyBinds::toJson(nlohmann::json& json) const
+{
+    for (const auto& keyBind : _keyBinds)
     {
         const auto* key = keyBind->getKey();
 
@@ -48,7 +100,7 @@ HRY_API void KeyBinds::toJson(nlohmann::json& json)
     }
 }
 
-HRY_API void KeyBinds::fromJson(const nlohmann::json& json)
+void KeyBinds::fromJson(const nlohmann::json& json)
 {
     for (auto& keyBind : _keyBinds)
     {

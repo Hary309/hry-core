@@ -59,7 +59,11 @@ public:
         intField->setDefaultValue(23);
     }
 
-    void initKeyBinds(hry::KeyBinds* keyBinds) override {}
+    void initKeyBinds(hry::KeyBinds* keyBinds) override
+    {
+        auto* kb = keyBinds->createKeyBind("Do sth", "do_sth");
+        kb->setDefaultKey(hry::Keyboard::Key::Q);
+    }
 
     void imguiPage() override { ImGui::Text("Test asdf"); }
 

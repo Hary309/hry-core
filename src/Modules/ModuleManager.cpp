@@ -204,9 +204,15 @@ bool ModuleManager::load(Module* mod)
         mod->plugin->initConfig(mod->data.config.get());
         mod->plugin->initKeyBinds(mod->data.keyBinds.get());
 
-        _configMgr.loadFor(mod->data.config.get());
-        _keyBindsMgr.loadFor(mod->data.keyBinds.get());
+        if (!mod->data.config->loadFromFile())
+        {
+            mod->data.config->saveToFile();
+        }
 
+        if (!mod->data.keyBinds->loadFromFile())
+        {
+            mod->data.keyBinds->saveToFile();
+        }
         return true;
     }
 
@@ -258,7 +264,7 @@ void ModuleManager::saveListToFile()
         return;
     }
 
-    file << json;
+    file << json.dump(4);
 
     Core::Logger->info("Saving plugins list to file...");
 }

@@ -73,7 +73,7 @@ void KeyBindsPage::imguiRender()
                 if (ImGui::Button("Default##KeyBinds"))
                 {
                     keyBind->setKey(keyBind->getDefaultKey());
-                    _keyBindsMgr.save();
+                    keyBindsSection->saveToFile();
                 }
 
                 ImGui::SameLine();
@@ -81,7 +81,7 @@ void KeyBindsPage::imguiRender()
                 if (ImGui::Button("Unset##KeyBinds"))
                 {
                     keyBind->setKey(nullptr);
-                    _keyBindsMgr.save();
+                    keyBindsSection->saveToFile();
                 }
 
                 ImGui::PopID();
@@ -133,7 +133,7 @@ void KeyBindsPage::applyChanges()
 {
     _keyToSetBind = nullptr;
     InternalImGuiUtils::EnableCursor(true);
-    _keyBindsMgr.save();
+    _keyBindsMgr.saveAll();
 }
 
 HRY_NS_END

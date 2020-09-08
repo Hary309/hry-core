@@ -97,12 +97,17 @@ private:
 
 class KeyBinds
 {
+    friend KeyBindsManager;
+    friend KeyBindsPage;
+
 private:
-    std::string _label;
+    std::string _name;
+    std::string _keyBindsFilePath;
+
     std::vector<std::unique_ptr<KeyBind>> _keyBinds;
 
 public:
-    explicit KeyBinds(std::string name) : _label(std::move(name)) {}
+    explicit KeyBinds(std::string name);
 
     KeyBind* createKeyBind(std::string label, std::string configFieldName)
     {
@@ -114,13 +119,18 @@ public:
         return keyBind;
     }
 
-    [[nodiscard]] const std::string& getName() const { return _label; }
+    void saveToFile() const;
+    // return false if cannot save
+    bool loadFromFile();
+
+private:
+    const std::string& getName() const { return _name; }
 
     auto& getKeyBinds() { return _keyBinds; }
-    [[nodiscard]] const auto& getKeyBinds() const { return _keyBinds; }
+    const auto& getKeyBinds() const { return _keyBinds; }
 
-    HRY_API void toJson(nlohmann::json& json);
-    HRY_API void fromJson(const nlohmann::json& json);
+    void toJson(nlohmann::json& json) const;
+    void fromJson(const nlohmann::json& json);
 };
 
 inline auto KeyBind::getConfigFieldName() const -> const std::string&
