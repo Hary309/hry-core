@@ -12,7 +12,6 @@ class TextFieldBuilder;
 class HRY_API TextField : public ConfigFieldBase
 {
     friend TextFieldBuilder;
-    friend Config;
 
 private:
     std::string _value;
@@ -43,7 +42,6 @@ public:
 
     bool isDirty() override { return _isDirty; }
 
-private:
     void imguiRender() override;
     void toJson(nlohmann::json& json) override;
     void fromJson(const nlohmann::json& json) override;

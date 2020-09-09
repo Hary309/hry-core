@@ -12,7 +12,6 @@ class BoolFieldBuilder;
 
 class HRY_API BoolField : public ConfigFieldBase
 {
-    friend Config;
     friend BoolFieldBuilder;
 
 private:
@@ -34,7 +33,6 @@ public:
 
     bool isDirty() override { return _value != _dirtyValue; }
 
-private:
     void imguiRender() override;
     void toJson(nlohmann::json& json) override;
     void fromJson(const nlohmann::json& json) override;

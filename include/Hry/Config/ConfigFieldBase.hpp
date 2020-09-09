@@ -68,8 +68,6 @@ class ConfigFieldBase
     template<class, class, typename>
     friend class ConfigFieldBuilderBase;
 
-    friend Config;
-
 protected:
     std::string _id;
     std::string _label;
@@ -94,7 +92,6 @@ public:
 
     virtual bool isDirty() = 0;
 
-protected:
     virtual void imguiRender() = 0;
     virtual void toJson(nlohmann::json& json) = 0;
     virtual void fromJson(const nlohmann::json& json) = 0;

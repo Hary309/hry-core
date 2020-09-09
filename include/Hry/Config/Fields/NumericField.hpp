@@ -81,7 +81,6 @@ public:
 
     bool isDirty() override { return _isDirty; }
 
-protected:
     void imguiRender() override
     {
         std::visit([this](auto&& arg) { this->renderWidget(arg); }, _widgetType);
@@ -93,6 +92,23 @@ protected:
         }
     }
 
+    void toJson(nlohmann::json& json) override { json[_id] = _value; }
+    void fromJson(const nlohmann::json& json) override
+    {
+        auto it = json.find(_id);
+        if (it != json.end())
+        {
+            _value = it->template get<T>();
+            _dirtyValue = _value;
+        }
+    }
+
+    void setupCallbackData(ConfigCallbackData& callbackData) override
+    {
+        callbackData.insert(_bindingFieldOffset, _value);
+    }
+
+private:
     // render input widget
     void renderWidget(InputType& input)
     {
@@ -126,23 +142,6 @@ protected:
         }
     }
 
-    void toJson(nlohmann::json& json) override { json[_id] = _value; }
-    void fromJson(const nlohmann::json& json) override
-    {
-        auto it = json.find(_id);
-        if (it != json.end())
-        {
-            _value = it->template get<T>();
-            _dirtyValue = _value;
-        }
-    }
-
-    void setupCallbackData(ConfigCallbackData& callbackData) override
-    {
-        callbackData.insert(_bindingFieldOffset, _value);
-    }
-
-private:
     static std::string getFormat()
     {
         std::string format = "%d";

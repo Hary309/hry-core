@@ -15,7 +15,6 @@ class SelectionFieldBuilder;
 class HRY_API SelectionField : public ConfigFieldBase
 {
     friend SelectionFieldBuilder;
-    friend Config;
 
 private:
     struct ComboType
@@ -53,7 +52,6 @@ public:
 
     bool isDirty() override { return _dirtySelectedIndex != _selectedIndex; }
 
-protected:
     void imguiRender() override;
     void toJson(nlohmann::json& json) override;
     void fromJson(const nlohmann::json& json) override;
