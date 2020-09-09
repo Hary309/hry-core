@@ -13,6 +13,7 @@
 
 #include "Hry/Config/ConfigFieldBase.hpp"
 #include "Hry/Config/Fields/BoolField.hpp"
+#include "Hry/Config/Fields/NumericField.hpp"
 #include "Hry/Config/Fields/SelectionField.hpp"
 #include "Hry/Config/Fields/TextField.hpp"
 #include "Hry/Events/Event.hpp"
@@ -107,13 +108,24 @@ void Core::initConfig()
     _coreConfig->setBindingType<CoreConfig>();
     _coreConfig->onChangesApplied.connect<&Core::onConfigChangesApplied>(this);
 
-    auto* showLogWindow = _coreConfig->createField<BoolField>("Show log window", "show_log_window");
-    showLogWindow->bind(&CoreConfig::showLogWindow);
-    showLogWindow->setDefaultValue(false);
+    _coreConfig->add(BoolFieldBuilder()
+                         .setID("show_log_window")
+                         .setLabel("Show log window")
+                         .bind(&CoreConfig::showLogWindow)
+                         .setDefaultValue(false));
 
-    auto* showImGuiDemo = _coreConfig->createField<BoolField>("Show ImGUI Demo", "show_imgui_demo");
-    showImGuiDemo->bind(&CoreConfig::showImGuiDemo);
-    showImGuiDemo->setDefaultValue(false);
+    _coreConfig->add(BoolFieldBuilder()
+                         .setID("show_imgui_demo")
+                         .setLabel("Show ImGui Demo")
+                         .bind(&CoreConfig::showImGuiDemo)
+                         .setDefaultValue(false));
+
+    _coreConfig->add(NumericFieldBuilder<float>()
+                         .setID("window_opacity")
+                         .setLabel("Window opacity")
+                         .bind(&CoreConfig::windowOpacity)
+                         .setDefaultValue(0.94f)
+                         .useSlider(0, 1, "%.2f"));
 
     if (!_coreConfig->loadFromFile())
     {
@@ -151,6 +163,10 @@ void Core::onConfigChangesApplied(const ConfigCallbackData& data)
 
     _loggerWindow.setEnabled(coreConfigData->showLogWindow);
     _showImGuiDemo = coreConfigData->showImGuiDemo;
+
+    auto& colors = ImGui::GetStyle().Colors;
+
+    colors[ImGuiCol_WindowBg].w = coreConfigData->windowOpacity;
 }
 
 bool Core::InstallHooks()

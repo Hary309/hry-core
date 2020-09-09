@@ -8,15 +8,19 @@
 #include <imgui.h>
 #include <nlohmann/json.hpp>
 
-#include "Hry/Config//ConfigFieldBase.hpp"
+#include "Hry/Config/ConfigFieldBase.hpp"
 #include "Hry/Utils/ImGuiUtils.hpp"
 
 HRY_NS_BEGIN
 
+template<typename, typename>
+class NumericFieldBuilder;
+
 template<typename T, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
 class NumericField : public ConfigFieldBase
 {
-    friend Config;
+    template<typename, typename>
+    friend class NumericFieldBuilder;
 
 protected:
     struct InputType
@@ -43,6 +47,8 @@ protected:
         float power{};
     };
 
+    using Variant_t = std::variant<InputType, DragType, SliderType>;
+
 private:
     T _value{};
     T _defaultValue{};
@@ -50,64 +56,12 @@ private:
 
     bool _isDirty = false;
 
-    std::variant<InputType, DragType, SliderType> _controlType;
-
-public:
-    Delegate<void(const T&)> onPreviewChange;
+    Variant_t _widgetType;
 
 private:
     NumericField() = default;
 
 public:
-    void setDefaultValue(const T& value)
-    {
-        _dirtyValue = value;
-        _value = value;
-        _defaultValue = value;
-    }
-
-    void useInput()
-    {
-        T step = 1;
-        T stepFast = 100;
-
-        if constexpr (std::is_floating_point_v<T>)
-        {
-            step = 0.0;
-            stepFast = 0.0;
-        }
-
-        useInput(step, stepFast);
-    }
-
-    void useInput(T step, T stepFast) { useInput(step, stepFast, getFormat()); }
-
-    void useInput(T step, T stepFast, const std::string& format)
-    {
-        _controlType = InputType{ step, stepFast, format };
-    }
-
-    void useDrag(T speed = 1, T min = 0, T max = 0) { useDrag(speed, min, max, getFormat()); }
-
-    void useDrag(T speed, T min, T max, const std::string& format)
-    {
-        useDrag(speed, min, max, format, 1.f);
-    }
-
-    void useDrag(T speed, T min, T max, const std::string& format, float power)
-    {
-        _controlType = DragType{ speed, min, max, format, power };
-    }
-
-    void useSlider(T min, T max) { useSlider(min, max, getFormat()); }
-
-    void useSlider(T min, T max, const std::string& format) { useSlider(min, max, format, 1.f); }
-
-    void useSlider(T min, T max, const std::string& format, float power)
-    {
-        _controlType = SliderType{ min, max, format, power };
-    }
-
     void applyChanges() override
     {
         _value = _dirtyValue;
@@ -120,56 +74,17 @@ public:
     }
     void resetToDefault() override
     {
-        setDefaultValue(_defaultValue);
+        _dirtyValue = _defaultValue;
+        _value = _defaultValue;
         _isDirty = false;
     }
 
     bool isDirty() override { return _isDirty; }
 
-    CREATE_BIND_METHOD(T)
-
 protected:
     void imguiRender() override
     {
-        std::visit(
-            [this](auto&& arg) {
-                using ControlType_t = std::decay_t<decltype(arg)>;
-
-                if constexpr (std::is_same_v<ControlType_t, InputType>)
-                {
-                    InputType& input = arg;
-                    if (ImGui::InputScalar(
-                            _label.c_str(), ImGuiDataType_v<T>, &_dirtyValue, &input.step,
-                            &input.stepFast, input.format.c_str()))
-                    {
-                        onPreviewChange(_dirtyValue);
-                        _isDirty = _value != _dirtyValue;
-                    }
-                }
-                else if constexpr (std::is_same_v<ControlType_t, DragType>)
-                {
-                    DragType& drag = arg;
-                    if (ImGui::DragScalar(
-                            _label.c_str(), ImGuiDataType_v<T>, &_dirtyValue, drag.speed, &drag.min,
-                            &drag.max, drag.format.c_str(), drag.power))
-                    {
-                        onPreviewChange(_dirtyValue);
-                        _isDirty = _value != _dirtyValue;
-                    }
-                }
-                else if constexpr (std::is_same_v<ControlType_t, SliderType>)
-                {
-                    SliderType& slider = arg;
-                    if (ImGui::SliderScalar(
-                            _label.c_str(), ImGuiDataType_v<T>, &_dirtyValue, &slider.min,
-                            &slider.max, slider.format.c_str(), slider.power))
-                    {
-                        onPreviewChange(_dirtyValue);
-                        _isDirty = _value != _dirtyValue;
-                    }
-                }
-            },
-            _controlType);
+        std::visit([this](auto&& arg) { this->renderWidget(arg); }, _widgetType);
 
         if (!_description.empty())
         {
@@ -178,10 +93,43 @@ protected:
         }
     }
 
-    void toJson(nlohmann::json& json) override { json[_configFieldName] = _value; }
+    // render input widget
+    void renderWidget(InputType& input)
+    {
+        if (ImGui::InputScalar(
+                _label.c_str(), ImGuiDataType_v<T>, &_dirtyValue, &input.step, &input.stepFast,
+                input.format.c_str()))
+        {
+            _isDirty = _value != _dirtyValue;
+        }
+    }
+
+    // render drag widget
+    void renderWidget(DragType& drag)
+    {
+        if (ImGui::DragScalar(
+                _label.c_str(), ImGuiDataType_v<T>, &_dirtyValue, drag.speed, &drag.min, &drag.max,
+                drag.format.c_str(), drag.power))
+        {
+            _isDirty = _value != _dirtyValue;
+        }
+    }
+
+    // render slider widget
+    void renderWidget(SliderType& slider)
+    {
+        if (ImGui::SliderScalar(
+                _label.c_str(), ImGuiDataType_v<T>, &_dirtyValue, &slider.min, &slider.max,
+                slider.format.c_str(), slider.power))
+        {
+            _isDirty = _value != _dirtyValue;
+        }
+    }
+
+    void toJson(nlohmann::json& json) override { json[_id] = _value; }
     void fromJson(const nlohmann::json& json) override
     {
-        auto it = json.find(_configFieldName);
+        auto it = json.find(_id);
         if (it != json.end())
         {
             _value = it->template get<T>();
@@ -191,11 +139,11 @@ protected:
 
     void setupCallbackData(ConfigCallbackData& callbackData) override
     {
-        callbackData.insert(_bindingStructFieldOffset, _value);
+        callbackData.insert(_bindingFieldOffset, _value);
     }
 
 private:
-    std::string getFormat()
+    static std::string getFormat()
     {
         std::string format = "%d";
 
@@ -209,6 +157,85 @@ private:
         }
 
         return format;
+    }
+};
+
+template<typename T, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
+class NumericFieldBuilder
+    : public ConfigFieldBuilderBase<NumericField<T>, NumericFieldBuilder<T>, T>
+{
+private:
+    typename NumericField<T>::Variant_t _widgetType;
+
+public:
+    NumericFieldBuilder() = default;
+
+    NumericFieldBuilder& useInput()
+    {
+        T step = 0;
+        T stepFast = 100;
+
+        if constexpr (std::is_floating_point_v<T>)
+        {
+            step = 0.0;
+            stepFast = 0.0;
+        }
+
+        return useInput(step, stepFast);
+    }
+
+    NumericFieldBuilder& useInput(T step, T stepFast)
+    {
+        return useInput(step, stepFast, NumericField<T>::getFormat());
+    }
+
+    NumericFieldBuilder& useInput(T step, T stepFast, const std::string& format)
+    {
+        _widgetType = typename NumericField<T>::InputType{ step, stepFast, format };
+        return *this;
+    }
+
+    NumericFieldBuilder& useDrag(T speed = 1, T min = 0, T max = 0)
+    {
+        return useDrag(speed, min, max, NumericField<T>::getFormat());
+    }
+
+    NumericFieldBuilder& useDrag(T speed, T min, T max, const std::string& format)
+    {
+        return useDrag(speed, min, max, format, 1.f);
+    }
+
+    NumericFieldBuilder& useDrag(T speed, T min, T max, const std::string& format, float power)
+    {
+        _widgetType = typename NumericField<T>::DragType{ speed, min, max, format, power };
+        return *this;
+    }
+
+    NumericFieldBuilder& useSlider(T min, T max)
+    {
+        return useSlider(min, max, NumericField<T>::getFormat());
+    }
+
+    NumericFieldBuilder& useSlider(T min, T max, const std::string& format)
+    {
+        return useSlider(min, max, format, 1.f);
+    }
+
+    NumericFieldBuilder& useSlider(T min, T max, const std::string& format, float power)
+    {
+        _widgetType = typename NumericField<T>::SliderType{ min, max, format, power };
+        return *this;
+    }
+
+protected:
+    NumericField<T>* create() const override
+    {
+        auto* numericField = new NumericField<T>();
+        numericField->_defaultValue = this->_defaultValue;
+        numericField->_dirtyValue = this->_defaultValue;
+        numericField->_value = this->_defaultValue;
+        numericField->_widgetType = this->_widgetType;
+        return numericField;
     }
 };
 

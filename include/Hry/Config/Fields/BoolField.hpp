@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include <string>
 
 #include "Hry/Config/ConfigFieldBase.hpp"
@@ -7,36 +8,31 @@
 
 HRY_NS_BEGIN
 
+class BoolFieldBuilder;
+
 class HRY_API BoolField : public ConfigFieldBase
 {
     friend Config;
+    friend BoolFieldBuilder;
 
 private:
     bool _value{};
     bool _defaultValue{};
     bool _dirtyValue{};
 
-public:
-    Delegate<void(bool)> onPreviewChange;
-
 private:
     BoolField() = default;
 
 public:
-    void setDefaultValue(bool value)
-    {
-        _dirtyValue = value;
-        _value = value;
-        _defaultValue = value;
-    }
-
     void applyChanges() override { _value = _dirtyValue; }
     void cancelChanges() override { _dirtyValue = _value; }
-    void resetToDefault() override { setDefaultValue(_defaultValue); }
+    void resetToDefault() override
+    {
+        _value = _defaultValue;
+        _dirtyValue = _defaultValue;
+    }
 
     bool isDirty() override { return _value != _dirtyValue; }
-
-    CREATE_BIND_METHOD(bool)
 
 private:
     void imguiRender() override;
@@ -45,7 +41,23 @@ private:
 
     void setupCallbackData(ConfigCallbackData& callbackData) override
     {
-        callbackData.insert(_bindingStructFieldOffset, _value);
+        callbackData.insert(_bindingFieldOffset, _value);
+    }
+};
+
+class BoolFieldBuilder : public ConfigFieldBuilderBase<BoolField, BoolFieldBuilder, bool>
+{
+public:
+    BoolFieldBuilder() = default;
+
+protected:
+    BoolField* create() const override
+    {
+        auto* boolField = new BoolField();
+        boolField->_defaultValue = _defaultValue;
+        boolField->_value = _defaultValue;
+        boolField->_dirtyValue = _defaultValue;
+        return boolField;
     }
 };
 

@@ -1,6 +1,8 @@
 #pragma once
 
+#include <memory>
 #include <string>
+#include <type_traits>
 #include <utility>
 #include <variant>
 
@@ -15,7 +17,10 @@ HRY_NS_BEGIN
 
 class Config;
 
-class ConfigCallbackData
+template<class, class, typename>
+class ConfigFieldBuilderBase;
+
+class ConfigCallbackData final
 {
     friend Config;
 
@@ -58,27 +63,20 @@ public:
     }
 };
 
-#define CREATE_BIND_METHOD(VALUE_TYPE)                                                             \
-    template<typename ObjectType>                                                                  \
-    void bind(VALUE_TYPE ObjectType::*member)                                                      \
-    {                                                                                              \
-        if (_bindingStructHash == TypeID<ObjectType>())                                            \
-        {                                                                                          \
-            setBind(member);                                                                       \
-        }                                                                                          \
-    }
-
 class ConfigFieldBase
 {
+    template<class, class, typename>
+    friend class ConfigFieldBuilderBase;
+
     friend Config;
 
 protected:
-    size_t _bindingStructFieldOffset = -1;
-    Hash64_t _bindingStructHash{};
-
+    std::string _id;
     std::string _label;
-    std::string _configFieldName;
     std::string _description;
+
+    size_t _bindingFieldOffset = -1;
+    Hash64_t _bindingStructHash{};
 
 protected:
     ConfigFieldBase() = default;
@@ -89,8 +87,6 @@ public:
     ConfigFieldBase& operator=(ConfigFieldBase&&) = default;
     ConfigFieldBase& operator=(const ConfigFieldBase&) = default;
     virtual ~ConfigFieldBase() = default;
-
-    void setDescription(const std::string& desc) { _description = desc; }
 
     virtual void applyChanges() = 0;
     virtual void cancelChanges() = 0;
@@ -104,11 +100,87 @@ protected:
     virtual void fromJson(const nlohmann::json& json) = 0;
 
     virtual void setupCallbackData(ConfigCallbackData& callbackData) = 0;
+};
 
-    template<typename ValueType, typename ObjectType>
-    void setBind(ValueType ObjectType::*member)
+template<class ConfigField, class ConfigFieldBuilder, typename ValueType>
+class ConfigFieldBuilderBase
+{
+    friend Config;
+
+    using Value_t = std::conditional_t<
+        std::is_trivial_v<ValueType>,
+        ValueType,
+        std::add_const_t<std::add_lvalue_reference_t<const ValueType>>>;
+
+protected:
+    std::string _id;
+    std::string _label;
+    std::string _description;
+
+    ValueType _defaultValue;
+
+    // offset of field in binding struct
+    size_t _bindingFieldOffset = -1;
+
+public:
+    ConfigFieldBuilderBase() = default;
+    ConfigFieldBuilderBase(const ConfigFieldBuilderBase&) = delete;
+    ConfigFieldBuilderBase(ConfigFieldBuilderBase&&) = delete;
+    ConfigFieldBuilderBase& operator=(const ConfigFieldBuilderBase&) = delete;
+    ConfigFieldBuilderBase& operator=(ConfigFieldBuilderBase&&) = delete;
+    virtual ~ConfigFieldBuilderBase() = default;
+
+    // set identifier of field (this will be saved to file)
+    ConfigFieldBuilder& setID(std::string id)
     {
-        _bindingStructFieldOffset = OffsetOf(member);
+        _id = std::move(id);
+        return *static_cast<ConfigFieldBuilder*>(this);
+    }
+
+    // set display label
+    ConfigFieldBuilder& setLabel(std::string label)
+    {
+        _label = std::move(label);
+        return *static_cast<ConfigFieldBuilder*>(this);
+    }
+
+    // optional
+    // Description will be shown in tooltip
+    ConfigFieldBuilder& setDescription(std::string description)
+    {
+        _description = std::move(description);
+        return *static_cast<ConfigFieldBuilder*>(this);
+    }
+
+    // set default value
+    ConfigFieldBuilder& setDefaultValue(ValueType value)
+    {
+        _defaultValue = value;
+        return *static_cast<ConfigFieldBuilder*>(this);
+    }
+
+    // bind structure field with config field
+    template<typename ObjectType>
+    ConfigFieldBuilder& bind(ValueType ObjectType::*member)
+    {
+        _bindingFieldOffset = OffsetOf(member);
+        return *static_cast<ConfigFieldBuilder*>(this);
+    }
+
+protected:
+    virtual ConfigField* create() const = 0;
+
+    [[nodiscard]] std::unique_ptr<ConfigFieldBase> build(Hash64_t bindingStructHash) const
+    {
+        auto field = create();
+
+        field->_bindingStructHash = bindingStructHash;
+        field->_bindingFieldOffset = _bindingFieldOffset;
+        field->_id = _id;
+        field->_label = _label;
+        field->_description = _description;
+
+        return std::unique_ptr<ConfigFieldBase>(field);
     }
 };
 

@@ -33,12 +33,12 @@ void SelectionField::imguiRender()
 
 void SelectionField::toJson(nlohmann::json& json)
 {
-    json[_configFieldName] = _options[_selectedIndex];
+    json[_id] = _options[_selectedIndex];
 }
 
 void SelectionField::fromJson(const nlohmann::json& json)
 {
-    auto it = json.find(_configFieldName);
+    auto it = json.find(_id);
 
     if (it != json.end())
     {
@@ -65,7 +65,6 @@ void SelectionField::renderWidget(ComboType& /*unused*/, int size)
             if (ImGui::Selectable(option.c_str(), isSelected))
             {
                 _dirtySelectedIndex = i;
-                onPreviewChange(_dirtySelectedIndex);
             }
 
             if (isSelected)
@@ -86,7 +85,6 @@ void SelectionField::renderWidget(RadioType& radio, int size)
         if (ImGui::RadioButton(option.c_str(), i == _dirtySelectedIndex))
         {
             _dirtySelectedIndex = i;
-            onPreviewChange(_dirtySelectedIndex);
         }
 
         if (radio.sameLine && i != size - 1)

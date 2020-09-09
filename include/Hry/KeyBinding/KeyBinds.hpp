@@ -44,7 +44,7 @@ public:
     };
 
 private:
-    std::string _configFieldName;
+    std::string _id;
     std::string _label;
 
     const BindableKey* _defaultKey = nullptr; // if null not set
@@ -113,7 +113,7 @@ public:
     {
         auto* keyBind = new KeyBind();
         keyBind->_label = std::move(label);
-        keyBind->_configFieldName = std::move(configFieldName);
+        keyBind->_id = std::move(configFieldName);
         _keyBinds.push_back(std::unique_ptr<KeyBind>(keyBind));
 
         return keyBind;
@@ -135,7 +135,7 @@ private:
 
 inline auto KeyBind::getConfigFieldName() const -> const std::string&
 {
-    return _configFieldName;
+    return _id;
 }
 
 inline auto KeyBind::getName() const -> const std::string&

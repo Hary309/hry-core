@@ -16,6 +16,11 @@
 #include <Hry/System/Keyboard.hpp>
 #include <Hry/Utils/Delegate.hpp>
 
+struct ExampleConfigData
+{
+    int value;
+};
+
 class ExamplePlugin : public hry::Plugin
 {
 private:
@@ -50,13 +55,18 @@ public:
         return Result::Ok;
     }
 
-    void initEvents(hry::EventHandler* eventHandler) override {}
+    void initEvents(hry::EventHandler* /*eventHandler*/) override {}
 
     void initConfig(hry::Config* config) override
     {
-        auto* intField = config->createField<hry::NumericField<int>>("Test", "test");
-        intField->useDrag();
-        intField->setDefaultValue(23);
+        config->setBindingType<ExampleConfigData>();
+
+        config->add(hry::NumericFieldBuilder<int>()
+                        .bind(&ExampleConfigData::value)
+                        .setID("test")
+                        .setLabel("Test")
+                        .useDrag()
+                        .setDefaultValue(23));
     }
 
     void initKeyBinds(hry::KeyBinds* keyBinds) override

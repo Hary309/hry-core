@@ -60,17 +60,10 @@ public:
         };
     }
 
-    template<typename T, typename = std::enable_if_t<std::is_base_of_v<ConfigFieldBase, T>>>
-    [[nodiscard]] T* createField(std::string label, std::string configFieldName)
+    template<class ConfigField, class ConfigFieldBuilder, typename ValueType>
+    void add(ConfigFieldBuilderBase<ConfigField, ConfigFieldBuilder, ValueType>& configFieldBuilder)
     {
-        T* field = new T();
-        field->_bindingStructHash = _bindingStructHash;
-        field->_label = std::move(label);
-        field->_configFieldName = std::move(configFieldName);
-
-        _fields.push_back(std::unique_ptr<T>(field));
-
-        return field;
+        _fields.push_back(configFieldBuilder.build(_bindingStructHash));
     }
 
     void saveToFile() const;

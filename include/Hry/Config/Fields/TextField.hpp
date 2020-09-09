@@ -7,8 +7,11 @@
 
 HRY_NS_BEGIN
 
+class TextFieldBuilder;
+
 class HRY_API TextField : public ConfigFieldBase
 {
+    friend TextFieldBuilder;
     friend Config;
 
 private:
@@ -18,19 +21,10 @@ private:
 
     bool _isDirty = false;
 
-public:
-    Delegate<void(const std::string&)> onPreviewChange;
-
 private:
     TextField() = default;
 
 public:
-    void setDefaultValue(const std::string& value)
-    {
-        _dirtyValue = value;
-        _value = value;
-    }
-
     void applyChanges() override
     {
         _value = _dirtyValue;
@@ -43,13 +37,11 @@ public:
     }
     void resetToDefault() override
     {
-        setDefaultValue(_defaultValue);
+        _value = _defaultValue;
         _isDirty = false;
     }
 
     bool isDirty() override { return _isDirty; }
-
-    CREATE_BIND_METHOD(std::string)
 
 private:
     void imguiRender() override;
@@ -58,7 +50,23 @@ private:
 
     void setupCallbackData(ConfigCallbackData& callbackData) override
     {
-        callbackData.insert(_bindingStructFieldOffset, _value);
+        callbackData.insert(_bindingFieldOffset, _value);
+    }
+};
+
+class TextFieldBuilder : public ConfigFieldBuilderBase<TextField, TextFieldBuilder, std::string>
+{
+public:
+    TextFieldBuilder() = default;
+
+protected:
+    TextField* create() const override
+    {
+        auto* textField = new TextField();
+        textField->_defaultValue = _defaultValue;
+        textField->_value = _defaultValue;
+        textField->_dirtyValue = _defaultValue;
+        return textField;
     }
 };
 

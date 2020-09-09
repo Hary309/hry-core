@@ -10,8 +10,11 @@
 
 HRY_NS_BEGIN
 
+class SelectionFieldBuilder;
+
 class HRY_API SelectionField : public ConfigFieldBase
 {
+    friend SelectionFieldBuilder;
     friend Config;
 
 private:
@@ -25,6 +28,8 @@ private:
         bool sameLine;
     };
 
+    using Variant_t = std::variant<ComboType, RadioType>;
+
 private:
     int _dirtySelectedIndex = 0;
     int _selectedIndex = 0;
@@ -32,28 +37,33 @@ private:
 
     int _defaultIndex = 0;
 
-    std::variant<ComboType, RadioType> _type;
-
-public:
-    Delegate<void(int)> onPreviewChange;
+    Variant_t _type;
 
 private:
     SelectionField() = default;
 
 public:
-    void addOption(const std::string& arg) { _options.push_back(arg); }
-
-    template<typename... Args>
-    void addOptions(Args&&... args)
+    void applyChanges() override { _selectedIndex = _dirtySelectedIndex; }
+    void cancelChanges() override { _dirtySelectedIndex = _selectedIndex; }
+    void resetToDefault() override
     {
-        (addOption(std::forward<Args>(args)), ...);
+        _selectedIndex = _defaultIndex;
+        _dirtySelectedIndex = _defaultIndex;
     }
 
-    [[nodiscard]] const auto& getOptions() const { return _options; }
+    bool isDirty() override { return _dirtySelectedIndex != _selectedIndex; }
 
-    void useCombo() { _type = ComboType{}; }
-    void useRadio(bool sameLine = true) { _type = RadioType{ sameLine }; }
+protected:
+    void imguiRender() override;
+    void toJson(nlohmann::json& json) override;
+    void fromJson(const nlohmann::json& json) override;
 
+    void setupCallbackData(ConfigCallbackData& callbackData) override
+    {
+        callbackData.insert(_bindingFieldOffset, _options[_selectedIndex]);
+    }
+
+private:
     void setDefaultValue(const std::string& value)
     {
         auto index = getIndex(value);
@@ -66,29 +76,6 @@ public:
         }
     }
 
-    void applyChanges() override { _selectedIndex = _dirtySelectedIndex; }
-    void cancelChanges() override { _dirtySelectedIndex = _selectedIndex; }
-    void resetToDefault() override
-    {
-        _selectedIndex = _defaultIndex;
-        _dirtySelectedIndex = _defaultIndex;
-    }
-
-    bool isDirty() override { return _dirtySelectedIndex != _selectedIndex; }
-
-    CREATE_BIND_METHOD(std::string)
-
-protected:
-    void imguiRender() override;
-    void toJson(nlohmann::json& json) override;
-    void fromJson(const nlohmann::json& json) override;
-
-    void setupCallbackData(ConfigCallbackData& callbackData) override
-    {
-        callbackData.insert(_bindingStructFieldOffset, _options[_selectedIndex]);
-    }
-
-private:
     void renderWidget(ComboType& combo, int size);
     void renderWidget(RadioType& radio, int size);
 
@@ -102,6 +89,52 @@ private:
         }
 
         return -1;
+    }
+};
+
+class SelectionFieldBuilder
+    : public ConfigFieldBuilderBase<SelectionField, SelectionFieldBuilder, std::string>
+{
+private:
+    std::vector<std::string> _options;
+
+    SelectionField::Variant_t _type;
+
+public:
+    SelectionFieldBuilder() = default;
+
+    SelectionFieldBuilder& addOption(const std::string& arg)
+    {
+        _options.push_back(arg);
+        return *this;
+    }
+
+    template<typename... Args>
+    SelectionFieldBuilder& addOptions(Args&&... args)
+    {
+        (addOption(std::forward<Args>(args)), ...);
+        return *this;
+    }
+
+    SelectionFieldBuilder& useCombo()
+    {
+        _type = SelectionField::ComboType{};
+        return *this;
+    }
+    SelectionFieldBuilder& useRadio(bool sameLine = true)
+    {
+        _type = SelectionField::RadioType{ sameLine };
+        return *this;
+    }
+
+protected:
+    SelectionField* create() const override
+    {
+        auto* selectionField = new SelectionField();
+        selectionField->_options = _options;
+        selectionField->_type = _type;
+        selectionField->setDefaultValue(_defaultValue);
+        return selectionField;
     }
 };
 
