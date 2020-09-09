@@ -85,7 +85,7 @@ private:
     auto getDefaultKey() const -> const BindableKey*;
     auto getActivator() const -> Activator;
 
-    void setJoystickGUID(GUID guid);
+    void setJoystickGUID(const GUID& guid);
     auto getJoystickGUID() const -> std::optional<GUID>;
 
     void setKeyPressTimePoint(std::chrono::system_clock::time_point timePoint);
@@ -109,11 +109,11 @@ private:
 public:
     explicit KeyBinds(std::string name);
 
-    KeyBind* createKeyBind(std::string label, std::string configFieldName)
+    KeyBind* createKeyBind(const std::string& label, const std::string& configFieldName)
     {
         auto* keyBind = new KeyBind();
-        keyBind->_label = std::move(label);
-        keyBind->_id = std::move(configFieldName);
+        keyBind->_label = label;
+        keyBind->_id = configFieldName;
         _keyBinds.push_back(std::unique_ptr<KeyBind>(keyBind));
 
         return keyBind;
@@ -195,9 +195,9 @@ inline auto KeyBind::getActivator() const -> Activator
     return _activator;
 }
 
-inline void KeyBind::setJoystickGUID(GUID guid)
+inline void KeyBind::setJoystickGUID(const GUID& guid)
 {
-    _joystickGUID = std::move(guid);
+    _joystickGUID = guid;
 }
 
 inline auto KeyBind::getJoystickGUID() const -> std::optional<GUID>

@@ -114,12 +114,12 @@ void LoggerWindow::renderLine(const Line& line)
     ImGui::PopID();
 }
 
-void LoggerWindow::onLog(std::string msg, Logger::Level level)
+void LoggerWindow::onLog(const std::string& msg, Logger::Level level)
 {
     // don't waste memory
     if (_enabled)
     {
-        _lines.emplace_back(Line{ std::move(msg), level });
+        _lines.emplace_back(Line{ msg, level });
     }
 }
 

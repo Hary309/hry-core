@@ -128,24 +128,24 @@ public:
     virtual ~ConfigFieldBuilderBase() = default;
 
     // set identifier of field (this will be saved to file)
-    ConfigFieldBuilder& setID(std::string id)
+    ConfigFieldBuilder& setID(const std::string& id)
     {
-        _id = std::move(id);
+        _id = id;
         return *static_cast<ConfigFieldBuilder*>(this);
     }
 
     // set display label
-    ConfigFieldBuilder& setLabel(std::string label)
+    ConfigFieldBuilder& setLabel(const std::string& label)
     {
-        _label = std::move(label);
+        _label = label;
         return *static_cast<ConfigFieldBuilder*>(this);
     }
 
     // optional
     // Description will be shown in tooltip
-    ConfigFieldBuilder& setDescription(std::string description)
+    ConfigFieldBuilder& setDescription(const std::string& description)
     {
-        _description = std::move(description);
+        _description = description;
         return *static_cast<ConfigFieldBuilder*>(this);
     }
 

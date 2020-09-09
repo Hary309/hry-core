@@ -13,10 +13,10 @@
 
 HRY_NS_BEGIN
 
-void LoggerFactory::Init(std::string logFilePath, EventManager& eventMgr)
+void LoggerFactory::Init(const std::string& logFilePath, EventManager& eventMgr)
 {
     _eventMgr = &eventMgr;
-    _logFilePath = std::move(logFilePath);
+    _logFilePath = logFilePath;
 
     if (std::filesystem::exists(_logFilePath))
     {

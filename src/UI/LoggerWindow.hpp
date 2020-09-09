@@ -36,7 +36,7 @@ public:
 
 private:
     static void renderLine(const Line& line);
-    void onLog(std::string msg, Logger::Level level);
+    void onLog(const std::string& msg, Logger::Level level);
 };
 
 HRY_NS_END
