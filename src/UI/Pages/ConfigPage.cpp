@@ -44,7 +44,7 @@ void ConfigPage::imguiRender()
 
     ImGui::EndChild();
 
-    if (ImGui::Button("Save##ConfigPage"))
+    if (ImGui::Button("Apply##ConfigPage"))
     {
         for (auto* config : configs)
         {
