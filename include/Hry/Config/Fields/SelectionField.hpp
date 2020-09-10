@@ -125,14 +125,16 @@ public:
         return *this;
     }
 
-protected:
-    SelectionField* create() const override
+    std::unique_ptr<ConfigFieldBase> build() const
     {
         auto* selectionField = new SelectionField();
         selectionField->_options = _options;
         selectionField->_type = _type;
         selectionField->setDefaultValue(_defaultValue);
-        return selectionField;
+
+        buildBase(*selectionField);
+
+        return std::unique_ptr<ConfigFieldBase>(selectionField);
     }
 };
 

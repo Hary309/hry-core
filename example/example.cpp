@@ -66,7 +66,8 @@ public:
                         .setID("test")
                         .setLabel("Test")
                         .useDrag()
-                        .setDefaultValue(23));
+                        .setDefaultValue(23)
+                        .build());
     }
 
     void initKeyBinds(hry::KeyBinds* keyBinds) override

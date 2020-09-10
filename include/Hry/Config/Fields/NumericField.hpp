@@ -226,15 +226,17 @@ public:
         return *this;
     }
 
-protected:
-    NumericField<T>* create() const override
+    std::unique_ptr<ConfigFieldBase> build() const
     {
         auto* numericField = new NumericField<T>();
         numericField->_defaultValue = this->_defaultValue;
         numericField->_dirtyValue = this->_defaultValue;
         numericField->_value = this->_defaultValue;
         numericField->_widgetType = this->_widgetType;
-        return numericField;
+
+        this->buildBase(*numericField);
+
+        return std::unique_ptr<ConfigFieldBase>(numericField);
     }
 };
 

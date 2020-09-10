@@ -60,10 +60,13 @@ public:
         };
     }
 
-    template<class ConfigField, class ConfigFieldBuilder, typename ValueType>
-    void add(ConfigFieldBuilderBase<ConfigField, ConfigFieldBuilder, ValueType>& configFieldBuilder)
+    void add(std::unique_ptr<ConfigFieldBase>&& configField)
     {
-        _fields.push_back(configFieldBuilder.build(_bindingStructHash));
+        if (configField != nullptr)
+        {
+            configField->_bindingStructHash = _bindingStructHash;
+            _fields.push_back(std::move(configField));
+        }
     }
 
     void saveToFile() const;

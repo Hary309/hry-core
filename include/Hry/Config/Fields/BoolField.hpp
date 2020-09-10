@@ -48,14 +48,16 @@ class BoolFieldBuilder : public ConfigFieldBuilderBase<BoolField, BoolFieldBuild
 public:
     BoolFieldBuilder() = default;
 
-protected:
-    BoolField* create() const override
+    std::unique_ptr<ConfigFieldBase> build() const
     {
         auto* boolField = new BoolField();
         boolField->_defaultValue = _defaultValue;
         boolField->_value = _defaultValue;
         boolField->_dirtyValue = _defaultValue;
-        return boolField;
+
+        buildBase(*boolField);
+
+        return std::unique_ptr<ConfigFieldBase>(boolField);
     }
 };
 

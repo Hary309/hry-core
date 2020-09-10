@@ -57,14 +57,16 @@ class TextFieldBuilder : public ConfigFieldBuilderBase<TextField, TextFieldBuild
 public:
     TextFieldBuilder() = default;
 
-protected:
-    TextField* create() const override
+    std::unique_ptr<ConfigFieldBase> build() const
     {
         auto* textField = new TextField();
         textField->_defaultValue = _defaultValue;
         textField->_value = _defaultValue;
         textField->_dirtyValue = _defaultValue;
-        return textField;
+
+        buildBase(*textField);
+
+        return std::unique_ptr<ConfigFieldBase>(textField);
     }
 };
 

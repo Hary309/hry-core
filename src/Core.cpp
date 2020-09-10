@@ -112,20 +112,23 @@ void Core::initConfig()
                          .setID("show_log_window")
                          .setLabel("Show log window")
                          .bind(&CoreConfig::showLogWindow)
-                         .setDefaultValue(false));
+                         .setDefaultValue(false)
+                         .build());
 
     _coreConfig->add(BoolFieldBuilder()
                          .setID("show_imgui_demo")
                          .setLabel("Show ImGui Demo")
                          .bind(&CoreConfig::showImGuiDemo)
-                         .setDefaultValue(false));
+                         .setDefaultValue(false)
+                         .build());
 
     _coreConfig->add(NumericFieldBuilder<float>()
                          .setID("window_opacity")
                          .setLabel("Window opacity")
                          .bind(&CoreConfig::windowOpacity)
                          .setDefaultValue(0.94f)
-                         .useSlider(0, 1, "%.2f"));
+                         .useSlider(0, 1, "%.2f")
+                         .build());
 
     if (!_coreConfig->loadFromFile())
     {

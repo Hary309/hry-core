@@ -68,6 +68,8 @@ class ConfigFieldBase
     template<class, class, typename>
     friend class ConfigFieldBuilderBase;
 
+    friend Config;
+
 protected:
     std::string _id;
     std::string _label;
@@ -165,19 +167,12 @@ public:
     }
 
 protected:
-    virtual ConfigField* create() const = 0;
-
-    [[nodiscard]] std::unique_ptr<ConfigFieldBase> build(Hash64_t bindingStructHash) const
+    void buildBase(ConfigField& field) const
     {
-        auto field = create();
-
-        field->_bindingStructHash = bindingStructHash;
-        field->_bindingFieldOffset = _bindingFieldOffset;
-        field->_id = _id;
-        field->_label = _label;
-        field->_description = _description;
-
-        return std::unique_ptr<ConfigFieldBase>(field);
+        field._bindingFieldOffset = _bindingFieldOffset;
+        field._id = _id;
+        field._label = _label;
+        field._description = _description;
     }
 };
 
