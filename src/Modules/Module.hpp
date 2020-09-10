@@ -24,8 +24,8 @@ struct Module
     {
         std::unique_ptr<Logger> logger;
         std::unique_ptr<EventHandler> eventHandler;
-        DelegateDeleterUniquePtr_t<KeyBinds> keyBinds;
-        DelegateDeleterUniquePtr_t<Config> config;
+        HryPtr<KeyBinds> keyBinds;
+        HryPtr<Config> config;
     } data;
 
     bool loadAtStart = true;

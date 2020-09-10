@@ -18,7 +18,7 @@ HRY_NS_BEGIN
 #endif // !UNICODE
 
 template<typename T>
-using DelegateDeleterUniquePtr_t = std::unique_ptr<T, Delegate<void(T*)>>;
+using HryPtr = std::unique_ptr<T, Delegate<void(T*)>>;
 
 HRY_API std::string FormatGUID(const GUID& guid);
 

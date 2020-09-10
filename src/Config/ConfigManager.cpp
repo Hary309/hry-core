@@ -9,7 +9,7 @@
 
 HRY_NS_BEGIN
 
-DelegateDeleterUniquePtr_t<Config> ConfigManager::createConfig(const std::string& name)
+HryPtr<Config> ConfigManager::createConfig(const std::string& name)
 {
     auto* config = new Config(name);
     _configs.push_back(config);

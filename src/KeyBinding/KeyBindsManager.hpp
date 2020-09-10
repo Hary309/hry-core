@@ -31,7 +31,7 @@ private:
 public:
     explicit KeyBindsManager(EventHandler& eventHandler);
 
-    DelegateDeleterUniquePtr_t<KeyBinds> createKeyBinds(const std::string& name);
+    HryPtr<KeyBinds> createKeyBinds(const std::string& name);
     void remove(const KeyBinds* keyBind);
 
     void update();

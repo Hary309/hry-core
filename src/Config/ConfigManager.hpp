@@ -14,7 +14,7 @@ private:
     std::vector<Config*> _configs;
 
 public:
-    DelegateDeleterUniquePtr_t<Config> createConfig(const std::string& name);
+    HryPtr<Config> createConfig(const std::string& name);
     void removeConfig(Config* config);
 
     auto& getConfigs() { return _configs; }

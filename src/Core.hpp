@@ -61,8 +61,8 @@ private:
 
     ImGuiImplEvents _imguiImplEvents;
 
-    DelegateDeleterUniquePtr_t<Config> _coreConfig;
-    DelegateDeleterUniquePtr_t<KeyBinds> _coreKeyBinds;
+    HryPtr<Config> _coreConfig;
+    HryPtr<KeyBinds> _coreKeyBinds;
 
     bool _showImGuiDemo{};
 

@@ -35,7 +35,7 @@ KeyBindsManager::KeyBindsManager(EventHandler& eventHandler)
     eventHandler.onFrameEnd.connect<&KeyBindsManager::update>(this);
 }
 
-DelegateDeleterUniquePtr_t<KeyBinds> KeyBindsManager::createKeyBinds(const std::string& name)
+HryPtr<KeyBinds> KeyBindsManager::createKeyBinds(const std::string& name)
 {
     auto* keyBinds = new KeyBinds(name);
     _keyBinds.push_back(keyBinds);
