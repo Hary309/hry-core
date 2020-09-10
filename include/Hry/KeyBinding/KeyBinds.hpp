@@ -79,7 +79,7 @@ private:
 public:
     explicit KeyBinds(std::string name);
 
-    void add(std::unique_ptr<KeyBind>&& keyBind);
+    HRY_API void add(std::unique_ptr<KeyBind>&& keyBind);
 
     void saveToFile() const;
     // return false if cannot save
