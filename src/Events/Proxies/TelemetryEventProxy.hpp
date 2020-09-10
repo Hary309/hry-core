@@ -10,9 +10,6 @@ HRY_NS_BEGIN
 
 class TelemetryEventProxy : public EventProxyBase
 {
-private:
-    scs_telemetry_init_params_v100_t* _scsTelemetry;
-
 public:
     TelemetryEventProxy(EventManager& eventMgr, scs_telemetry_init_params_v100_t* scsTelemetry);
 

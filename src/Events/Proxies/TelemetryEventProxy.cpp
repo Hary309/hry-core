@@ -11,15 +11,15 @@ HRY_NS_BEGIN
 
 TelemetryEventProxy::TelemetryEventProxy(
     EventManager& eventMgr, scs_telemetry_init_params_v100_t* scsTelemetry)
-    : EventProxyBase(eventMgr), _scsTelemetry(scsTelemetry)
+    : EventProxyBase(eventMgr)
 {
-    _scsTelemetry->register_for_event(
+    scsTelemetry->register_for_event(
         SCS_TELEMETRY_EVENT_frame_start, TelemetryEventProxy::FrameStart, &eventMgr);
-    _scsTelemetry->register_for_event(
+    scsTelemetry->register_for_event(
         SCS_TELEMETRY_EVENT_frame_end, TelemetryEventProxy::FrameEnd, &eventMgr);
-    _scsTelemetry->register_for_event(
+    scsTelemetry->register_for_event(
         SCS_TELEMETRY_EVENT_paused, TelemetryEventProxy::ChangedState, &eventMgr);
-    _scsTelemetry->register_for_event(
+    scsTelemetry->register_for_event(
         SCS_TELEMETRY_EVENT_started, TelemetryEventProxy::ChangedState, &eventMgr);
 
     // TODO: Add SCS_TELEMETRY_EVENT_configuration and SCS_TELEMETRY_EVENT_gameplay
