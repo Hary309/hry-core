@@ -44,11 +44,7 @@ private:
 public:
     void applyChanges() override { _selectedIndex = _dirtySelectedIndex; }
     void cancelChanges() override { _dirtySelectedIndex = _selectedIndex; }
-    void resetToDefault() override
-    {
-        _selectedIndex = _defaultIndex;
-        _dirtySelectedIndex = _defaultIndex;
-    }
+    void resetToDefault() override { _dirtySelectedIndex = _defaultIndex; }
 
     bool isDirty() const override { return _dirtySelectedIndex != _selectedIndex; }
 

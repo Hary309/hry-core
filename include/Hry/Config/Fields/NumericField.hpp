@@ -75,8 +75,7 @@ public:
     void resetToDefault() override
     {
         _dirtyValue = _defaultValue;
-        _value = _defaultValue;
-        _isDirty = false;
+        _isDirty = true;
     }
 
     bool isDirty() const override { return _isDirty; }
