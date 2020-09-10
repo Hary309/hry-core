@@ -5,6 +5,8 @@
 
 #include "Hry/Namespace.hpp"
 
+#include "fmt/core.h"
+
 HRY_NS_BEGIN
 
 template<typename T>
@@ -91,3 +93,22 @@ using Vec2i = Vec2<int>;
 using Vec2u = Vec2<unsigned int>;
 
 HRY_NS_END
+
+namespace fmt
+{
+template<typename T>
+struct formatter<hry::Vec2<T>>
+{
+    template<typename ParseContext>
+    constexpr auto parse(ParseContext& ctx)
+    {
+        return ctx.begin();
+    }
+
+    template<typename FormatContext>
+    auto format(hry::Vec2<T> const& vec, FormatContext& ctx)
+    {
+        return format_to(ctx.out(), "{{{},{}}}", vec.x, vec.y);
+    }
+};
+} // namespace fmt
