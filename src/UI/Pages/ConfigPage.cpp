@@ -13,7 +13,7 @@ void ConfigPage::imguiRender()
     bool isAnyDirty = false;
     auto& configs = _configMgr.getConfigs();
 
-    ImGui::BeginChild("ConfigPage", { 0, -24 });
+    ImGui::BeginChild("ConfigPage", { 0, -26 });
 
     for (auto* config : configs)
     {

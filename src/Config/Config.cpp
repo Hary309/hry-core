@@ -28,6 +28,12 @@ void Config::saveToFile() const
         fs::create_directories(Paths::ConfigsPath);
     }
 
+    // if file exists and nothing has changed then there is no reason to save it
+    if (fs::exists(_configFilePath) && !isDirty())
+    {
+        return;
+    }
+
     std::ofstream f(_configFilePath);
 
     if (f.is_open())
@@ -104,12 +110,35 @@ void Config::resetToDefault()
 
 void Config::imguiRender()
 {
+    ImGui::Columns(2, nullptr, false);
+    ImGui::SetColumnOffset(1, ImGui::GetWindowContentRegionWidth() - 32);
+
     for (auto& field : _fields)
     {
         ImGui::PushID(&field);
+
         field->imguiRender();
+
+        ImGui::NextColumn();
+
+        if (ImGui::Button("D"))
+        {
+            field->resetToDefault();
+        }
+
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::BeginTooltip();
+            ImGui::TextUnformatted("Set default value");
+            ImGui::EndTooltip();
+        }
+
+        ImGui::NextColumn();
+
         ImGui::PopID();
     }
+
+    ImGui::Columns(1);
 }
 
 void Config::toJson(nlohmann::json& json) const
