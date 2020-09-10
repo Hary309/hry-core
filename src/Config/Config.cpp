@@ -61,11 +61,11 @@ bool Config::loadFromFile()
     return false;
 }
 
-bool Config::isDirty()
+bool Config::isDirty() const
 {
     bool isDirty = false;
 
-    for (auto& field : _fields)
+    for (const auto& field : _fields)
     {
         isDirty |= field->isDirty();
     }

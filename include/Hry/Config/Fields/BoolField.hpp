@@ -31,7 +31,7 @@ public:
         _dirtyValue = _defaultValue;
     }
 
-    bool isDirty() override { return _value != _dirtyValue; }
+    bool isDirty() const override { return _value != _dirtyValue; }
 
     void imguiRender() override;
     void toJson(nlohmann::json& json) override;

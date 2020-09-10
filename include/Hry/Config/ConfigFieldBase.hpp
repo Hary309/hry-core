@@ -92,7 +92,7 @@ public:
     virtual void cancelChanges() = 0;
     virtual void resetToDefault() = 0;
 
-    virtual bool isDirty() = 0;
+    virtual bool isDirty() const = 0;
 
     virtual void imguiRender() = 0;
     virtual void toJson(nlohmann::json& json) = 0;

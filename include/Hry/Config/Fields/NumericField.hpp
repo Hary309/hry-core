@@ -79,7 +79,7 @@ public:
         _isDirty = false;
     }
 
-    bool isDirty() override { return _isDirty; }
+    bool isDirty() const override { return _isDirty; }
 
     void imguiRender() override
     {

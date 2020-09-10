@@ -76,7 +76,7 @@ public:
 private:
     [[nodiscard]] const std::string& getName() const { return _name; }
 
-    bool isDirty();
+    bool isDirty() const;
     [[nodiscard]] bool isEmpty() const { return _fields.empty(); }
 
     void applyChanges();

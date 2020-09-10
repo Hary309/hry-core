@@ -50,7 +50,7 @@ public:
         _dirtySelectedIndex = _defaultIndex;
     }
 
-    bool isDirty() override { return _dirtySelectedIndex != _selectedIndex; }
+    bool isDirty() const override { return _dirtySelectedIndex != _selectedIndex; }
 
     void imguiRender() override;
     void toJson(nlohmann::json& json) override;
