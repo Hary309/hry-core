@@ -5,6 +5,7 @@
 
 #include <nlohmann/json.hpp>
 
+#include "Hry/KeyBinding/BindableKeys.hpp"
 #include "Hry/System/Joystick.hpp"
 #include "Hry/System/Mouse.hpp"
 #include "Hry/Utils/Paths.hpp"
@@ -18,6 +19,11 @@ HRY_NS_BEGIN
 KeyBinds::KeyBinds(std::string name) : _name(std::move(name))
 {
     _keyBindsFilePath = fmt::format("{}/{}.json", Paths::KeyBindsPath, _name);
+}
+
+void KeyBinds::add(std::unique_ptr<KeyBind>&& keyBind)
+{
+    _keyBinds.push_back(std::move(keyBind));
 }
 
 void KeyBinds::saveToFile() const
@@ -65,16 +71,16 @@ void KeyBinds::toJson(nlohmann::json& json) const
 {
     for (const auto& keyBind : _keyBinds)
     {
-        const auto* key = keyBind->getKey();
+        const auto* key = keyBind->key;
 
         if (key == nullptr)
         {
             continue;
         }
 
-        const auto& configFieldName = keyBind->getConfigFieldName();
-        auto& jObject = json[configFieldName];
-        jObject["trigger"] = static_cast<int>(keyBind->getActivator());
+        const auto& id = keyBind->id;
+        auto& jObject = json[id];
+        jObject["trigger"] = static_cast<int>(keyBind->activator);
 
         if (key->has<Keyboard::Key>())
         {
@@ -91,7 +97,7 @@ void KeyBinds::toJson(nlohmann::json& json) const
             jObject["device"] = "joystick";
             jObject["key"] = static_cast<int>(std::get<Joystick::Button>(key->key));
 
-            auto& guid = keyBind->_joystickGUID;
+            auto& guid = keyBind->joystickGUID;
             jObject["guid"] = { { "data1", guid->Data1 },
                                 { "data2", guid->Data2 },
                                 { "data3", guid->Data3 },
@@ -104,7 +110,7 @@ void KeyBinds::fromJson(const nlohmann::json& json)
 {
     for (auto& keyBind : _keyBinds)
     {
-        auto jKeyBind = json.find(keyBind->getConfigFieldName());
+        auto jKeyBind = json.find(keyBind->id);
 
         if (jKeyBind != json.end())
         {
@@ -128,23 +134,23 @@ void KeyBinds::fromJson(const nlohmann::json& json)
 
             if (auto jTrigger = jKeyBind->find("trigger"); jTrigger != jKeyBind->end())
             {
-                keyBind->_activator = static_cast<KeyBind::Activator>(jTrigger->get<int>());
+                keyBind->activator = static_cast<KeyBind::Activator>(jTrigger->get<int>());
             }
 
             if (deviceType == "keyboard")
             {
                 auto key = static_cast<Keyboard::Key>(keyId);
-                keyBind->setKey(key);
+                keyBind->key = GetBindableKey(key);
             }
             else if (deviceType == "mouse")
             {
                 auto key = static_cast<Mouse::Button>(keyId);
-                keyBind->setKey(key);
+                keyBind->key = GetBindableKey(key);
             }
             else if (deviceType == "joystick")
             {
                 auto key = static_cast<Joystick::Button>(keyId);
-                keyBind->setKey(key);
+                keyBind->key = GetBindableKey(key);
 
                 auto jGUID = jKeyBind->find("guid");
 
@@ -161,7 +167,7 @@ void KeyBinds::fromJson(const nlohmann::json& json)
 
                 memcpy(guid.Data4, &data4, sizeof(uint64_t));
 
-                keyBind->setJoystickGUID(guid);
+                keyBind->joystickGUID = guid;
             }
         }
     }

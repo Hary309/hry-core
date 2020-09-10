@@ -47,9 +47,12 @@ MainWindow::MainWindow(
 
 void MainWindow::initKeyBinds(KeyBinds& keyBinds)
 {
-    auto* showMainWindowBind = keyBinds.createKeyBind("Show main window", "show_main_window");
-    showMainWindowBind->setDefaultKey(Keyboard::Key::F9);
-    showMainWindowBind->pressAction.connect<&MainWindow::showMainWindowKeyBind>(this);
+    keyBinds.add(KeyBindBuilder()
+                     .setLabel("Show main window")
+                     .setID("show_main_window")
+                     .setDefaultKey(Keyboard::Key::F9)
+                     .setPressCallback(Dlg<&MainWindow::showMainWindowKeyBind>(this))
+                     .build());
 }
 
 void MainWindow::imguiRender()

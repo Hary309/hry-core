@@ -27,12 +27,11 @@ HRY_NS_BEGIN
 class KeyBinds;
 class KeyBindsManager;
 class KeyBindsPage;
+class KeyBindBuilder;
 
 class KeyBind
 {
-    friend KeyBinds;
-    friend KeyBindsManager;
-    friend KeyBindsPage;
+    friend KeyBindBuilder;
 
 public:
     using Delegate_t = Delegate<void(ButtonState)>;
@@ -43,56 +42,27 @@ public:
         Hold
     };
 
-private:
-    std::string _id;
-    std::string _label;
+public:
+    std::string id;
+    std::string label;
 
-    const BindableKey* _defaultKey = nullptr; // if null not set
-    const BindableKey* _key = nullptr;        // if null no set
+    const BindableKey* defaultKey = nullptr; // if null, not set
+    const BindableKey* key = nullptr;        // if null, not set
 
-    Activator _defaultActivator = Activator::Click;
-    Activator _activator = Activator::Click;
+    Activator activator = Activator::Click;
 
-    std::optional<GUID> _joystickGUID;
+    std::optional<GUID> joystickGUID;
 
     // time point when key was pressed
-    std::chrono::system_clock::time_point _keyPressTimePoint;
+    std::chrono::system_clock::time_point keyPressTimePoint;
 
-    ButtonState _state = ButtonState::Released;
+    ButtonState state = ButtonState::Released;
 
-public:
     Delegate_t pressAction;
     Delegate_t releaseAction;
 
-public:
-    KeyBind() = default;
-    explicit KeyBind(Activator activator) : _defaultActivator(activator), _activator(activator) {}
-
-    void setDefaultKey(const BindableKey* key);
-    void setDefaultKey(BindableKey::Key_t key);
-
-    // default value is Activator::Click
-    void setActivator(Activator activator);
-
 private:
-    auto getConfigFieldName() const -> const std::string&;
-    auto getName() const -> const std::string&;
-
-    void setKey(const BindableKey* key);
-    void setKey(BindableKey::Key_t key);
-    auto getKey() const -> const BindableKey*;
-
-    auto getDefaultKey() const -> const BindableKey*;
-    auto getActivator() const -> Activator;
-
-    void setJoystickGUID(const GUID& guid);
-    auto getJoystickGUID() const -> std::optional<GUID>;
-
-    void setKeyPressTimePoint(std::chrono::system_clock::time_point timePoint);
-    auto getKeyPressTimePoint() const -> std::chrono::system_clock::time_point;
-
-    auto setState(ButtonState state);
-    auto getState() const -> ButtonState;
+    KeyBind() = default;
 };
 
 class KeyBinds
@@ -109,15 +79,7 @@ private:
 public:
     explicit KeyBinds(std::string name);
 
-    KeyBind* createKeyBind(const std::string& label, const std::string& configFieldName)
-    {
-        auto* keyBind = new KeyBind();
-        keyBind->_label = label;
-        keyBind->_id = configFieldName;
-        _keyBinds.push_back(std::unique_ptr<KeyBind>(keyBind));
-
-        return keyBind;
-    }
+    void add(std::unique_ptr<KeyBind>&& keyBind);
 
     void saveToFile() const;
     // return false if cannot save
@@ -133,96 +95,79 @@ private:
     void fromJson(const nlohmann::json& json);
 };
 
-inline auto KeyBind::getConfigFieldName() const -> const std::string&
+class KeyBindBuilder
 {
-    return _id;
-}
+    friend KeyBinds;
 
-inline auto KeyBind::getName() const -> const std::string&
-{
-    return _label;
-}
+private:
+    std::string _id;
+    std::string _label;
 
-inline void KeyBind::setDefaultKey(const BindableKey* key)
-{
-    _key = key;
-    _defaultKey = key;
-}
+    BindableKey::Key_t _defaultKey{};
 
-inline auto KeyBind::getDefaultKey() const -> const BindableKey*
-{
-    return _defaultKey;
-}
+    KeyBind::Activator _activator;
 
-inline void KeyBind::setDefaultKey(BindableKey::Key_t key)
-{
-    const auto* bindableKey = GetBindableKey(key);
+    KeyBind::Delegate_t _pressAction;
+    KeyBind::Delegate_t _releaseAction;
 
-    if (bindableKey != nullptr)
+public:
+    KeyBindBuilder() = default;
+
+    // set identifier of keybind (this will be saved to file)
+    KeyBindBuilder& setID(const std::string& id)
     {
-        setDefaultKey(bindableKey);
+        _id = id;
+        return *this;
     }
-}
 
-inline auto KeyBind::getKey() const -> const BindableKey*
-{
-    return _key;
-}
-
-inline auto KeyBind::setKey(const BindableKey* key) -> void
-{
-    _key = key;
-}
-
-inline void KeyBind::setKey(BindableKey::Key_t key)
-{
-    const auto* bindableKey = GetBindableKey(key);
-
-    if (bindableKey != nullptr)
+    // set display label
+    KeyBindBuilder& setLabel(const std::string& label)
     {
-        setKey(bindableKey);
+        _label = label;
+        return *this;
     }
-}
 
-inline void KeyBind::setActivator(Activator activator)
-{
-    _defaultActivator = activator;
-    _activator = activator;
-}
+    KeyBindBuilder& setDefaultKey(BindableKey::Key_t key)
+    {
+        _defaultKey = key;
+        return *this;
+    }
 
-inline auto KeyBind::getActivator() const -> Activator
-{
-    return _activator;
-}
+    // set how this keybind can be triggered, by default is Activator::Click
+    KeyBindBuilder& setActivator(KeyBind::Activator activator)
+    {
+        _activator = activator;
+        return *this;
+    }
 
-inline void KeyBind::setJoystickGUID(const GUID& guid)
-{
-    _joystickGUID = guid;
-}
+    KeyBindBuilder& setPressCallback(KeyBind::Delegate_t&& callback)
+    {
+        _pressAction = callback;
+        return *this;
+    }
 
-inline auto KeyBind::getJoystickGUID() const -> std::optional<GUID>
-{
-    return _joystickGUID;
-}
+    KeyBindBuilder& setReleaseCallback(KeyBind::Delegate_t&& callback)
+    {
+        _releaseAction = callback;
+        return *this;
+    }
 
-inline void KeyBind::setKeyPressTimePoint(std::chrono::system_clock::time_point timePoint)
-{
-    _keyPressTimePoint = timePoint;
-}
+    std::unique_ptr<KeyBind> build()
+    {
+        auto* keyBind = new KeyBind();
 
-inline auto KeyBind::getKeyPressTimePoint() const -> std::chrono::system_clock::time_point
-{
-    return _keyPressTimePoint;
-}
+        const auto* bindableKey = GetBindableKey(_defaultKey);
 
-inline auto KeyBind::setState(ButtonState state)
-{
-    _state = state;
-}
+        keyBind->id = _id;
+        keyBind->label = _label;
+        keyBind->defaultKey = bindableKey;
+        keyBind->key = bindableKey;
+        keyBind->activator = _activator;
+        keyBind->pressAction = _pressAction;
+        keyBind->releaseAction = _releaseAction;
 
-inline auto KeyBind::getState() const -> ButtonState
-{
-    return _state;
-}
+        return std::unique_ptr<KeyBind>(keyBind);
+    }
+};
 
 HRY_NS_END

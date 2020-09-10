@@ -132,4 +132,20 @@ template<auto CtxFuncAddr, typename T>
 Delegate(ConnectArg<CtxFuncAddr>, T* context)
     -> Delegate<std::remove_pointer_t<FunctionPtr_t<decltype(CtxFuncAddr), T>>>;
 
+template<auto FuncAddr>
+auto Dlg() noexcept
+{
+    return Delegate<std::remove_pointer_t<FunctionPtr_t<decltype(FuncAddr)>>>{
+        ConnectArg_v<FuncAddr>
+    };
+}
+
+template<auto CtxFuncAddr, typename T>
+auto Dlg(T* content) noexcept
+{
+    return Delegate<std::remove_pointer_t<FunctionPtr_t<decltype(CtxFuncAddr), T>>>{
+        ConnectArg_v<CtxFuncAddr>, content
+    };
+}
+
 HRY_NS_END

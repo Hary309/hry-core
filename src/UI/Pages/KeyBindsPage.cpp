@@ -2,6 +2,7 @@
 
 #include <imgui.h>
 
+#include "Hry/KeyBinding/BindableKeys.hpp"
 #include "Hry/KeyBinding/KeyBinds.hpp"
 
 #include "Utils/InternalImGuiUtils.hpp"
@@ -38,11 +39,11 @@ void KeyBindsPage::imguiRender()
             {
                 ImGui::PushID(&keyBind);
 
-                ImGui::Text("%s", keyBind->getName().c_str());
+                ImGui::Text("%s", keyBind->label.c_str());
 
                 ImGui::NextColumn();
 
-                const auto* key = keyBind->getKey();
+                const auto* key = keyBind->key;
 
                 if (_keyToSetBind == keyBind.get())
                 {
@@ -72,7 +73,7 @@ void KeyBindsPage::imguiRender()
 
                 if (ImGui::Button("Default##KeyBinds"))
                 {
-                    keyBind->setKey(keyBind->getDefaultKey());
+                    keyBind->key = keyBind->defaultKey;
                     keyBindsSection->saveToFile();
                 }
 
@@ -80,7 +81,7 @@ void KeyBindsPage::imguiRender()
 
                 if (ImGui::Button("Unset##KeyBinds"))
                 {
-                    keyBind->setKey(nullptr);
+                    keyBind->key = nullptr;
                     keyBindsSection->saveToFile();
                 }
 
@@ -99,8 +100,8 @@ void KeyBindsPage::handleKeyPress(const KeyboardEvent&& keyboardEvent)
     {
         if (keyboardEvent.key != Keyboard::Key::Escape)
         {
-            _keyToSetBind->setKey(keyboardEvent.key);
-            _keyToSetBind->_joystickGUID.reset();
+            _keyToSetBind->key = GetBindableKey(keyboardEvent.key);
+            _keyToSetBind->joystickGUID.reset();
         }
 
         applyChanges();
@@ -111,8 +112,8 @@ void KeyBindsPage::handleMouseButtonPress(const MouseButtonEvent&& buttonEvent)
 {
     if (_keyToSetBind != nullptr)
     {
-        _keyToSetBind->setKey(buttonEvent.button);
-        _keyToSetBind->_joystickGUID.reset();
+        _keyToSetBind->key = GetBindableKey(buttonEvent.button);
+        _keyToSetBind->joystickGUID.reset();
 
         applyChanges();
     }
@@ -122,8 +123,8 @@ void KeyBindsPage::handleJoystickButtonPress(const JoystickButtonEvent&& buttonE
 {
     if (_keyToSetBind != nullptr)
     {
-        _keyToSetBind->setKey(buttonEvent.button);
-        _keyToSetBind->_joystickGUID = buttonEvent.deviceGUID;
+        _keyToSetBind->key = GetBindableKey(buttonEvent.button);
+        _keyToSetBind->joystickGUID = buttonEvent.deviceGUID;
 
         applyChanges();
     }

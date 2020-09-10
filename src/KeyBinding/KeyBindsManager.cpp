@@ -84,13 +84,13 @@ void KeyBindsManager::processKey(
 
         for (auto& keyBind : keyBinds)
         {
-            if (keyBind->getKey() == nullptr || keyBind->getState() == buttonState ||
-                keyBind->getKey()->key != key || keyBind->getJoystickGUID() != guid)
+            if (keyBind->key == nullptr || keyBind->state == buttonState ||
+                keyBind->key->key != key || keyBind->joystickGUID != guid)
             {
                 continue;
             }
 
-            switch (keyBind->getActivator())
+            switch (keyBind->activator)
             {
                 case KeyBind::Activator::Click:
                     handleClickActivator(buttonState, keyBind.get());
@@ -100,7 +100,7 @@ void KeyBindsManager::processKey(
                     break;
             }
 
-            keyBind->setState(buttonState);
+            keyBind->state = buttonState;
         }
     }
 }
@@ -126,12 +126,12 @@ void KeyBindsManager::handleHoldActivator(ButtonState buttonState, KeyBind* keyB
                 LongPressTimeout, { ConnectArg_v<&KeyBindsManager::onTaskHold>, this }, keyBind,
                 endTimePoint);
 
-            keyBind->setKeyPressTimePoint(endTimePoint);
+            keyBind->keyPressTimePoint = endTimePoint;
         }
         break;
         case ButtonState::Released:
         {
-            if (keyBind->getKeyPressTimePoint() - system_clock::now() <
+            if (keyBind->keyPressTimePoint - system_clock::now() <
                 system_clock::time_point::duration::zero())
             {
                 keyBind->releaseAction(ButtonState::Released);
@@ -143,7 +143,7 @@ void KeyBindsManager::handleHoldActivator(ButtonState buttonState, KeyBind* keyB
 
 void KeyBindsManager::onTaskHold(KeyBind* keyBind, system_clock::time_point timePoint)
 {
-    if (keyBind->getState() == ButtonState::Pressed && keyBind->getKeyPressTimePoint() == timePoint)
+    if (keyBind->state == ButtonState::Pressed && keyBind->keyPressTimePoint == timePoint)
     {
         keyBind->pressAction(ButtonState::Pressed);
     }

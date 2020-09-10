@@ -71,8 +71,11 @@ public:
 
     void initKeyBinds(hry::KeyBinds* keyBinds) override
     {
-        auto* kb = keyBinds->createKeyBind("Do sth", "do_sth");
-        kb->setDefaultKey(hry::Keyboard::Key::Q);
+        keyBinds->add(hry::KeyBindBuilder()
+                          .setID("do_sth")
+                          .setLabel("Do sth")
+                          .setDefaultKey(hry::Keyboard::Key::Q)
+                          .build());
     }
 
     void imguiPage() override { ImGui::Text("Test asdf"); }
