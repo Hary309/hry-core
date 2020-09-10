@@ -110,12 +110,24 @@ void Config::resetToDefault()
 
 void Config::imguiRender()
 {
-    ImGui::Columns(2, nullptr, false);
-    ImGui::SetColumnOffset(1, ImGui::GetWindowContentRegionWidth() - 32);
+    ImGui::Columns(3, nullptr, false);
+    ImGui::SetColumnOffset(1, 10);
+    ImGui::SetColumnOffset(2, ImGui::GetWindowContentRegionWidth() - 32);
 
     for (auto& field : _fields)
     {
         ImGui::PushID(&field);
+
+        if (field->isDirty())
+        {
+            ImGui::PushStyleColor(ImGuiCol_Button, ImColor(50, 200, 50).Value);
+            ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImColor(50, 200, 50).Value);
+            ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImColor(50, 200, 50).Value);
+            ImGui::Button("", { 1, 0 });
+            ImGui::PopStyleColor(3);
+        }
+
+        ImGui::NextColumn();
 
         field->imguiRender();
 
