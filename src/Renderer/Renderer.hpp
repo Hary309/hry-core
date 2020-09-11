@@ -24,6 +24,11 @@ private:
 
 public:
     explicit Renderer(Core& core, EventManager& eventMgr);
+    Renderer(Renderer&&) = delete;
+    Renderer(const Renderer&) = delete;
+    Renderer& operator=(Renderer&&) = delete;
+    Renderer& operator=(const Renderer&) = delete;
+    ~Renderer();
 
     void init();
 

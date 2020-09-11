@@ -28,12 +28,6 @@ void Config::saveToFile() const
         fs::create_directories(Paths::ConfigsPath);
     }
 
-    // if file exists and nothing has changed then there is no reason to save it
-    if (fs::exists(_configFilePath) && !isDirty())
-    {
-        return;
-    }
-
     std::ofstream f(_configFilePath);
 
     if (f.is_open())

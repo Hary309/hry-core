@@ -22,11 +22,21 @@ void ConfigManager::removeConfig(Config* config)
     _configs.erase(std::remove(_configs.begin(), _configs.end(), config));
 }
 
-void ConfigManager::saveAll() const
+void ConfigManager::saveAll(SaveType saveType)
 {
     for (const auto& config : _configs)
     {
-        config->saveToFile();
+        bool isDirty = config->isDirty();
+
+        if (isDirty)
+        {
+            config->applyChanges();
+        }
+
+        if ((isDirty && saveType == SaveType::SaveOnlyDirty) || saveType == SaveType::SaveAll)
+        {
+            config->saveToFile();
+        }
     }
 }
 

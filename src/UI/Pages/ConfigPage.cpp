@@ -46,12 +46,7 @@ void ConfigPage::imguiRender()
 
     if (ImGui::Button("Apply##ConfigPage"))
     {
-        for (auto* config : configs)
-        {
-            config->applyChanges();
-        }
-
-        _configMgr.saveAll();
+        _configMgr.saveAll(ConfigManager::SaveType::SaveOnlyDirty);
     }
 
     ImGui::SameLine();

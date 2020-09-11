@@ -24,8 +24,6 @@ D3D11RendererImpl::~D3D11RendererImpl()
 {
     ImGui_ImplDX11_Shutdown();
     ImGui_ImplWin32_Shutdown();
-
-    ImGui::DestroyContext();
 }
 
 void D3D11RendererImpl::init()
@@ -75,8 +73,6 @@ void D3D11RendererImpl::onInit(IDXGISwapChain* swapChain, ID3D11Device* device)
     _hWnd = sd.OutputWindow;
 
     resize();
-
-    ImGui::CreateContext();
 
     ImGui_ImplWin32_Init(_hWnd);
     ImGui_ImplDX11_Init(_device, _context);
