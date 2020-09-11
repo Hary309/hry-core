@@ -11,7 +11,7 @@ HRY_NS_BEGIN
 
 TelemetryEventProxy::TelemetryEventProxy(
     EventManager& eventMgr, scs_telemetry_init_params_v100_t* scsTelemetry)
-    : EventProxyBase(eventMgr)
+    : EventProxyBase(eventMgr), _configuration(eventMgr, scsTelemetry)
 {
     scsTelemetry->register_for_event(
         SCS_TELEMETRY_EVENT_frame_start, TelemetryEventProxy::FrameStart, &eventMgr);
