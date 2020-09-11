@@ -10,6 +10,13 @@ HRY_NS_BEGIN
 
 class ConfigManager
 {
+public:
+    enum class SaveType
+    {
+        SaveAll,
+        SaveOnlyDirty
+    };
+
 private:
     std::vector<Config*> _configs;
 
@@ -19,7 +26,7 @@ public:
 
     auto& getConfigs() { return _configs; }
 
-    void saveAll() const;
+    void saveAll(SaveType saveType);
 
 private:
     void configDeleter(Config* ptr);
