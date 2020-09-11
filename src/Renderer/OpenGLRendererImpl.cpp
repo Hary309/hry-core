@@ -23,8 +23,6 @@ OpenGLRendererImpl::~OpenGLRendererImpl()
 {
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplWin32_Shutdown();
-
-    ImGui::DestroyContext();
 }
 
 void OpenGLRendererImpl::init()
@@ -45,8 +43,6 @@ void OpenGLRendererImpl::onInit(HWND hWnd)
     {
         Core::Logger->error("Cannot initialize glad loader!");
     }
-
-    ImGui::CreateContext();
 
     ImGui_ImplWin32_Init(hWnd);
     ImGui_ImplOpenGL3_Init();

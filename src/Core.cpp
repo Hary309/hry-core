@@ -81,6 +81,11 @@ bool Core::init(scs_telemetry_init_params_v100_t* scsTelemetry)
     _renderer.init();
     _eventMgr.init(scsTelemetry);
 
+    initConfig();
+    initKeyBinds();
+
+    _moduleMgr.init();
+
     _isInited = true;
 
     scsTelemetry->common.log(SCS_LOG_TYPE_message, "[hry-core] Initialized!");
@@ -93,11 +98,6 @@ void Core::lateInit()
     InternalImGuiUtils::LoadFonts();
     InternalImGuiUtils::ApplyDarkTheme();
     InternalImGuiUtils::EnableCursor(false);
-
-    initConfig();
-    initKeyBinds();
-
-    _moduleMgr.init();
 
     Logger->info("Core successfully initialized!");
 }

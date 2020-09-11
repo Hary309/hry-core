@@ -16,6 +16,8 @@ HRY_NS_BEGIN
 
 Renderer::Renderer(Core& core, EventManager& eventMgr) : _core(core)
 {
+    ImGui::CreateContext();
+
     if (GetModuleHandle(HRY_TEXT("d3d11.dll")) != nullptr)
     {
         _impl = std::make_unique<D3D11RendererImpl>(*this, eventMgr);
@@ -28,6 +30,12 @@ Renderer::Renderer(Core& core, EventManager& eventMgr) : _core(core)
     {
         Core::Logger->error("Cannot find supported renderer!");
     }
+}
+
+Renderer::~Renderer()
+{
+    _impl.reset();
+    ImGui::DestroyContext();
 }
 
 void Renderer::init()
