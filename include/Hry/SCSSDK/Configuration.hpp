@@ -20,6 +20,12 @@ namespace scs
         HShifter
     };
 
+    enum class MarketType
+    {
+        CargoMarket,
+        QuickJob,
+    };
+
     struct LicencePlate
     {
         std::string text;
@@ -76,7 +82,7 @@ namespace scs
         };
 
         uint32_t selectorCount;
-        std::vector<Slot> slots:
+        std::vector<Slot> slots;
     };
 
     struct Truck
@@ -108,6 +114,18 @@ namespace scs
         std::vector<float> reverseRatio;
     };
 
+    struct Trailer
+    {
+        int32_t index;
+        std::string id;
+        std::string cargoAccessoryID;
+        Vec3<float> hookPosition;
+        std::string chainType;
+        std::string bodyType;
+        LicencePlate licensePlate;
+        std::vector<Wheel> wheels;
+    };
+
     struct Job
     {
         std::string cargoID;
@@ -118,6 +136,11 @@ namespace scs
         Company sourceCompany;
         City destinationCity;
         City sourceCity;
+        uint64_t income;
+        uint32_t deliveryTime; // TODO: change to chrono::system_clock?
+        uint32_t plannedDistanceKM;
+        bool cargoLoaded;
+        std::string jobMarket;
     };
 } // namespace scs
 
