@@ -79,8 +79,6 @@ public:
                           .build());
     }
 
-    void imguiPage() override { ImGui::Text("Test asdf"); }
-
     const hry::PluginInfo& getPluginInfo() const override { return _pluginInfo; }
 };
 
