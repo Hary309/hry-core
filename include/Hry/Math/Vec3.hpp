@@ -1,6 +1,3 @@
-// Original code: https://github.com/SFML/SFML
-// This is a part of SFML under https://github.com/SFML/SFML/blob/master/license.md
-
 #pragma once
 
 #include "Hry/Math/Vec3.hpp"
