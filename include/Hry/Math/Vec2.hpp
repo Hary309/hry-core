@@ -1,6 +1,3 @@
-// Original code: https://github.com/SFML/SFML
-// This is a part of SFML under https://github.com/SFML/SFML/blob/master/license.md
-
 #pragma once
 
 #include "Hry/Namespace.hpp"
@@ -96,19 +93,19 @@ HRY_NS_END
 
 namespace fmt
 {
-template<typename T>
-struct formatter<hry::Vec2<T>>
-{
-    template<typename ParseContext>
-    constexpr auto parse(ParseContext& ctx)
+    template<typename T>
+    struct formatter<hry::Vec2<T>>
     {
-        return ctx.begin();
-    }
+        template<typename ParseContext>
+        constexpr auto parse(ParseContext& ctx)
+        {
+            return ctx.begin();
+        }
 
-    template<typename FormatContext>
-    auto format(hry::Vec2<T> const& vec, FormatContext& ctx)
-    {
-        return format_to(ctx.out(), "{{{},{}}}", vec.x, vec.y);
-    }
-};
+        template<typename FormatContext>
+        auto format(hry::Vec2<T> const& vec, FormatContext& ctx)
+        {
+            return format_to(ctx.out(), "{{{},{}}}", vec.x, vec.y);
+        }
+    };
 } // namespace fmt

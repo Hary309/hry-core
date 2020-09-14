@@ -13,6 +13,8 @@
 
 #include "Events/EventProxyBase.hpp"
 
+#include "InternalEventHandler.hpp"
+
 struct scs_telemetry_init_params_v100_t;
 
 HRY_NS_BEGIN
@@ -57,6 +59,7 @@ public:
     void init(scs_telemetry_init_params_v100_t* scsTelemetry);
 
     [[nodiscard]] EventHandler createEventHandler();
+    [[nodiscard]] InternalEventHandler createInternalEventHandler();
 };
 
 HRY_NS_END

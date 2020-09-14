@@ -6,7 +6,7 @@
 
 #include "Hry/Namespace.hpp"
 
-#include "Events/EventManager.hpp"
+#include "Events/InternalEventHandler.hpp"
 
 HRY_NS_BEGIN
 
@@ -20,7 +20,6 @@ class LoggerWindow
 
 private:
     bool _enabled = false;
-    Sink<void(std::string msg, Logger::Level)> _onLog;
 
     ImGuiTextFilter _filter;
     std::vector<int> _filteredLines;
@@ -28,7 +27,7 @@ private:
     std::vector<Line> _lines;
 
 public:
-    LoggerWindow(EventManager& eventMgr);
+    LoggerWindow(InternalEventHandler& eventMgr);
 
     void imguiRender();
 

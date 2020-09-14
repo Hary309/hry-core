@@ -8,11 +8,11 @@
 
 HRY_NS_BEGIN
 
-ImGuiImplEvents::ImGuiImplEvents(EventHandler& eventHandler)
+ImGuiImplEvents::ImGuiImplEvents(InternalEventHandler& eventHandler)
 {
-    eventHandler.onMouseButtonPress.connect<OnMouseButtonPress>();
-    eventHandler.onMouseButtonRelease.connect<OnMouseButtonRelease>();
-    eventHandler.onMouseWheelScroll.connect<OnMouseWheelScroll>();
+    eventHandler.system.onMouseButtonPress.connect<OnMouseButtonPress>();
+    eventHandler.system.onMouseButtonRelease.connect<OnMouseButtonRelease>();
+    eventHandler.system.onMouseWheelScroll.connect<OnMouseWheelScroll>();
 }
 
 void ImGuiImplEvents::OnMouseButtonPress(const MouseButtonEvent&& buttonEvent)

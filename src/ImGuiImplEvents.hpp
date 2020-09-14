@@ -13,7 +13,7 @@ HRY_NS_BEGIN
 class ImGuiImplEvents
 {
 public:
-    ImGuiImplEvents(EventHandler& eventHandler);
+    ImGuiImplEvents(InternalEventHandler& eventHandler);
 
 private:
     static void OnMouseButtonPress(const MouseButtonEvent&&);

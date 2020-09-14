@@ -18,8 +18,6 @@ IMGUI_IMPL_API LRESULT
 
 HRY_NS_BEGIN
 
-// source: https://github.com/SFML/SFML
-// This is a part of SFML under https://github.com/SFML/SFML/blob/master/license.md
 Keyboard::Key vkKeyCodeToEnum(WPARAM key, LPARAM flags)
 {
     using Key = Keyboard::Key;

@@ -1,12 +1,15 @@
 #pragma once
+
+#include <Windows.h>
+
+#include "Hry/Events/Event.hpp"
+#include "Hry/Logger/Logger.hpp"
 #include "Hry/Namespace.hpp"
 #include "Hry/Utils/Signal.hpp"
 
-#include "Event.hpp"
-
 HRY_NS_BEGIN
 
-struct EventHandler
+struct InternalEventHandler
 {
     // system events
     struct
@@ -28,6 +31,9 @@ struct EventHandler
         Sink<void(const JoystickButtonEvent&&)> onJoystickButtonRelease;
 
         Sink<void()> onImGuiRender;
+
+        Sink<void(std::string msg, Logger::Level)> onLog;
+        Sink<void(HWND, UINT, WPARAM, LPARAM)> onWndProc;
     } system;
 
     // game events

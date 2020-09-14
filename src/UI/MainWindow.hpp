@@ -33,7 +33,7 @@ public:
         ModuleManager& moduleMgr,
         ConfigManager& configMgr,
         KeyBindsManager& keyBindsMgr,
-        EventHandler& eventHandler);
+        InternalEventHandler& eventHandler);
 
     void initKeyBinds(KeyBinds& keyBinds);
 

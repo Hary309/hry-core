@@ -4,9 +4,9 @@ hry-core is utility library which provides many useful tools for creating plugin
 
 ## Motivation
 
-The idea was to create a simple tool (only for me) which provides simple API for rendering and inputs. In the process of developing it, I was feeling that I can do better so I started adding more and more features. Now I am in a point where I'm satisfied with the API, and I'm ready to publish first alpha.
+The idea was to create a simple tool (only for me) which provides simple API for rendering and inputs. In the process of developing it, I was feeling that I can do better so I started adding more and more features. Now I am in a point where I'm almost satisfied with the API, and I'm ready to publish first alpha.
 
-Unfortunately, the documentation isn't there yet so you have to learn from example plugins. Check out the [hry-sic]()
+Unfortunately, the documentation isn't there yet so you have to learn from example plugins. Check out the [hry-sic](https://github.com/Hary309/hry-sic)
 
 ## Features
 
@@ -14,7 +14,7 @@ Unfortunately, the documentation isn't there yet so you have to learn from examp
 
 - Easy API for creating settings and keybinds
 
-- SCS telemetry wrapped with modern C++
+- SCS telemetry wrapped with modern C++ (WIP)
 
 - Logger
 
@@ -22,8 +22,8 @@ Unfortunately, the documentation isn't there yet so you have to learn from examp
 
 - API for creating detour and hooks
 
-- And many more!
+- And much more!
 
 ## This isn't binding of game
 
-This mod isn't like FiveM or MTA:SA where you have API for the whole game, you still have to decode and hook the game on your own, to help you with that, the library provides some useful tools which may help you with hooking the game (Detour, Pattern scanning, vtable hooks)
+This mod isn't like FiveM or MTA:SA, you still have to decode and hook the game on your own, to help you with that, **hry-core** provides some useful tools (Detour, Pattern scanning, vtable hooks)

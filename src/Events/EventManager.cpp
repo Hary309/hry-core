@@ -24,27 +24,65 @@ EventHandler EventManager::createEventHandler()
 {
     // clang-format off
     return {
-        windowResizeSignal,
-        windowGainFocusSignal,
-        windowLoseFocusSignal,
+        {
+            windowResizeSignal,
+            windowGainFocusSignal,
+            windowLoseFocusSignal,
 
-        keyPressSignal,
-        keyReleaseSignal,
+            keyPressSignal,
+            keyReleaseSignal,
 
-        mouseButtonPressSignal,
-        mouseButtonReleaseSignal,
-        mouseMoveSignal,
-        mouseWheelScrollSignal,
+            mouseButtonPressSignal,
+            mouseButtonReleaseSignal,
+            mouseMoveSignal,
+            mouseWheelScrollSignal,
 
-        joystickMoveSignal,
-        joystickButtonPressSignal,
-        joystickButtonReleaseSignal,
+            joystickMoveSignal,
+            joystickButtonPressSignal,
+            joystickButtonReleaseSignal,
 
-        imguiRenderSignal,
+            imguiRenderSignal,
+        },
+        {
+            frameStartSignal,
+            frameEndSignal,
+            stateChangeSignal,
+        }
+    };
+    // clang-format on
+}
 
-        frameStartSignal,
-        frameEndSignal,
-        stateChangeSignal,
+InternalEventHandler EventManager::createInternalEventHandler()
+{
+    // clang-format off
+    return {
+        {
+            windowResizeSignal,
+            windowGainFocusSignal,
+            windowLoseFocusSignal,
+
+            keyPressSignal,
+            keyReleaseSignal,
+
+            mouseButtonPressSignal,
+            mouseButtonReleaseSignal,
+            mouseMoveSignal,
+            mouseWheelScrollSignal,
+
+            joystickMoveSignal,
+            joystickButtonPressSignal,
+            joystickButtonReleaseSignal,
+
+            imguiRenderSignal,
+
+            logSignal,
+            wndProcSignal,
+        },
+        {
+            frameStartSignal,
+            frameEndSignal,
+            stateChangeSignal,
+        }
     };
     // clang-format on
 }
