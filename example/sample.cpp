@@ -52,8 +52,6 @@ public:
     void initConfig(hry::Config* /*config*/) override {}
     void initKeyBinds(hry::KeyBinds* /*keyBinds*/) override {}
 
-    void imguiPage() override { ImGui::Text("Settings tab"); }
-
     const hry::PluginInfo& getPluginInfo() const override { return _pluginInfo; }
 
 private:

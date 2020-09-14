@@ -48,8 +48,6 @@ public:
     virtual void initKeyBinds(KeyBinds* keyBinds) = 0;
     virtual void initEvents(EventHandler* eventHandler) = 0;
 
-    virtual void imguiPage() = 0;
-
     // replace with manifest.json
     [[nodiscard]] virtual const PluginInfo& getPluginInfo() const = 0;
 };
