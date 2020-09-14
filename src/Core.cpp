@@ -35,10 +35,10 @@
 HRY_NS_BEGIN
 
 Core::Core(HINSTANCE hInst)
-    : _eventHandler(_eventMgr.createEventHandler()), _renderer(*this, _eventMgr),
+    : _eventHandler(_eventMgr.createInternalEventHandler()), _renderer(*this, _eventMgr),
       _keyBindsMgr(_eventHandler), _moduleMgr(_eventMgr, _configMgr, _keyBindsMgr),
-      _mainWindow(_moduleMgr, _configMgr, _keyBindsMgr, _eventHandler), _loggerWindow(_eventMgr),
-      _imguiImplEvents(_eventHandler)
+      _mainWindow(_moduleMgr, _configMgr, _keyBindsMgr, _eventHandler),
+      _loggerWindow(_eventHandler), _imguiImplEvents(_eventHandler)
 {
     hInstance = hInst;
 }

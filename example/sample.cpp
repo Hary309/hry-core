@@ -47,7 +47,7 @@ public:
 
     void initEvents(hry::EventHandler* eventHandler) override
     {
-        eventHandler->onMouseButtonPress.connect<&SamplePlugin::onKeyPressed>(this);
+        eventHandler->system.onMouseButtonPress.connect<&SamplePlugin::onKeyPressed>(this);
     }
     void initConfig(hry::Config* /*config*/) override {}
     void initKeyBinds(hry::KeyBinds* /*keyBinds*/) override {}

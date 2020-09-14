@@ -40,7 +40,7 @@ MainWindow::MainWindow(
     ModuleManager& moduleMgr,
     ConfigManager& configMgr,
     KeyBindsManager& keyBindsMgr,
-    EventHandler& eventHandler)
+    InternalEventHandler& eventHandler)
     : _pluginsPage(moduleMgr), _configPage(configMgr), _keyBindsPage(keyBindsMgr, eventHandler)
 {
 }

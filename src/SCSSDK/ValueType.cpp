@@ -55,4 +55,5 @@ namespace scs
         }
     }
 } // namespace scs
-HRY_NS_BEGIN
+
+HRY_NS_END

@@ -29,7 +29,7 @@ private:
     TaskScheduler<void(KeyBind*, std::chrono::system_clock::time_point)> _taskScheduler;
 
 public:
-    explicit KeyBindsManager(EventHandler& eventHandler);
+    explicit KeyBindsManager(InternalEventHandler& eventHandler);
 
     HryPtr<KeyBinds> createKeyBinds(const std::string& name);
     void remove(const KeyBinds* keyBind);
