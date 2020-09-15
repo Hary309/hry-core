@@ -6,10 +6,11 @@
  */
 
 #pragma once
-
 #include <cassert>
 #include <string>
 #include <vector>
+
+#include "Hry/Export.hpp"
 
 #pragma warning(push)
 #pragma warning(disable : 4201)
@@ -33,7 +34,7 @@ namespace hry
             baseAddressDifference = *(ptrdiff_t*)&addressDiff;
         }
 
-        void set_base();
+        HRY_API void set_base();
 
         template<typename T>
         inline T* getRVA(uintptr_t rva)
@@ -47,7 +48,7 @@ namespace hry
 
     } // namespace detail
 
-    class pattern_match
+    class HRY_API pattern_match
     {
     private:
         void* m_pointer;
@@ -63,7 +64,7 @@ namespace hry
         }
     };
 
-    class pattern
+    class HRY_API pattern
     {
     private:
         std::string m_bytes;
@@ -181,7 +182,7 @@ namespace hry
         }
     };
 
-    class module_pattern : public pattern
+    class HRY_API module_pattern : public pattern
     {
     public:
         template<size_t Len>
@@ -191,7 +192,7 @@ namespace hry
         }
     };
 
-    class range_pattern : public pattern
+    class HRY_API range_pattern : public pattern
     {
     public:
         template<size_t Len>
