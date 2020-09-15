@@ -25,20 +25,24 @@ class ConfigCallbackData final
     friend Config;
 
 private:
-    std::vector<uint8_t> _data;
+    uint8_t* _data{};
+    size_t _dataSize{};
 
 private:
-    explicit ConfigCallbackData(size_t size) : _data(size) {}
+    explicit ConfigCallbackData(void* data, size_t dataSize)
+        : _data(static_cast<uint8_t*>(data)), _dataSize(dataSize)
+    {
+    }
 
 public:
     template<typename T>
-    void insert(size_t offset, const T& value)
+    void insert(int64_t offset, const T& value)
     {
         static_assert(std::is_copy_constructible_v<T>, "T must be copyable!");
 
-        if (offset >= 0 && offset + sizeof(T) <= _data.size())
+        if (offset >= 0 && offset + sizeof(T) <= _dataSize)
         {
-            auto* ptr = reinterpret_cast<T*>(_data.data() + offset);
+            auto* ptr = reinterpret_cast<T*>(_data + offset);
 
             if constexpr (std::is_trivial_v<T>)
             {
@@ -54,12 +58,12 @@ public:
     template<typename T>
     const T* getData() const
     {
-        if (sizeof(T) != _data.size())
+        if (sizeof(T) != _dataSize)
         {
             return nullptr;
         }
 
-        return reinterpret_cast<const T*>(_data.data());
+        return reinterpret_cast<const T*>(_data);
     }
 };
 
@@ -75,7 +79,7 @@ protected:
     std::string _label;
     std::string _description;
 
-    size_t _bindingFieldOffset = -1;
+    int64_t _bindingFieldOffset = -1;
     Hash64_t _bindingStructHash{};
 
 protected:
@@ -119,7 +123,7 @@ protected:
     ValueType _defaultValue;
 
     // offset of field in binding struct
-    size_t _bindingFieldOffset = -1;
+    int64_t _bindingFieldOffset = -1;
 
 public:
     ConfigFieldBuilderBase() = default;
@@ -162,7 +166,7 @@ public:
     template<typename ObjectType>
     ConfigFieldBuilder& bind(ValueType ObjectType::*member)
     {
-        _bindingFieldOffset = OffsetOf(member);
+        _bindingFieldOffset = static_cast<int64_t>(OffsetOf(member));
         return *static_cast<ConfigFieldBuilder*>(this);
     }
 

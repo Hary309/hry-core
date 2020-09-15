@@ -176,7 +176,9 @@ void Config::invokeCallback()
 {
     if (_bindingStructSize > 0)
     {
-        ConfigCallbackData callbackData{ _bindingStructSize };
+        HryPtr<void> data{ _bindingStructCtor(), { _bindingStructDtor, nullptr } };
+
+        ConfigCallbackData callbackData{ data.get(), _bindingStructSize };
 
         for (auto& field : _fields)
         {
@@ -184,7 +186,6 @@ void Config::invokeCallback()
         }
 
         onChangesApplied(callbackData);
-        _bindingStructDtor(callbackData._data.data());
     }
 }
 
