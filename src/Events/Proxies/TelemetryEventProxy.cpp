@@ -31,9 +31,9 @@ void TelemetryEventProxy::FrameStart(
 {
     static Timer timer;
 
-    timer.reset();
     auto* eventMgr = reinterpret_cast<EventManager*>(context);
     eventMgr->frameStartSignal.call({ timer.asSeconds() });
+    timer.reset();
 }
 
 void TelemetryEventProxy::FrameEnd(
@@ -41,9 +41,9 @@ void TelemetryEventProxy::FrameEnd(
 {
     static Timer timer;
 
-    timer.reset();
     auto* eventMgr = reinterpret_cast<EventManager*>(context);
     eventMgr->frameEndSignal.call({ timer.asSeconds() });
+    timer.reset();
 }
 
 void TelemetryEventProxy::ChangedState(
