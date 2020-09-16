@@ -20,9 +20,12 @@ void LoggerWindow::imguiRender()
 
     ImGui::SetNextWindowBgAlpha(_opacity);
 
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0);
+
     if (!ImGui::Begin("Logs"))
     {
         ImGui::End();
+        ImGui::PopStyleVar();
         return;
     }
 
@@ -86,6 +89,7 @@ void LoggerWindow::imguiRender()
 
     ImGui::EndChild();
     ImGui::End();
+    ImGui::PopStyleVar();
 }
 
 void LoggerWindow::renderLine(const Line& line)
