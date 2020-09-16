@@ -122,7 +122,7 @@ bool DInput8Hook::Install()
     detour = std::make_unique<Detour>(
         DIMouse->lpVtbl->GetDeviceData, new_DirectInputDevice_GetDeviceData);
 
-    if (auto err = detour->hook(); err != Detour::Status::Ok)
+    if (auto err = detour->create(); err != Detour::Status::Ok)
     {
         Core::Logger->error(
             "Cannot hook DirectInputDevice::GetDeviceData [{}]", static_cast<int>(err));

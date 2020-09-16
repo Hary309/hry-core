@@ -106,7 +106,7 @@ bool OpenGLHook::Install()
         reinterpret_cast<uintptr_t>(wglSwapBuffers_addr),
         reinterpret_cast<uintptr_t>(new_wglSwapBuffers));
 
-    if (auto res = wglSwapBuffer_Detour->hook(); res != Detour::Status::Ok)
+    if (auto res = wglSwapBuffer_Detour->create(); res != Detour::Status::Ok)
     {
         Core::Logger->error("Cannot hook wglSwapBuffers!");
         return false;
@@ -124,7 +124,7 @@ bool OpenGLHook::Install()
 
     // glViewPort_Detour = std::make_unique<Detour>(glViewport_addr, new_glViewport);
 
-    // if (auto res = glViewPort_Detour->hook(); res != Detour::Status::Ok)
+    // if (auto res = glViewPort_Detour->create(); res != Detour::Status::Ok)
     // {
     //     Core::Logger->error("Cannot hook glViewport!");
     //     return false;
