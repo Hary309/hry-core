@@ -13,12 +13,16 @@ struct Vec3
     T x;
     T y;
     T z;
+
+    Vec3() = default;
+    Vec3(T x, T y, T z) : x(x), y(y), z(z) {}
+    explicit Vec3(T value) : x(value), y(value), z(value) {}
 };
 
 template<typename T>
 constexpr Vec3<T> operator-(const Vec3<T>& right)
 {
-    return Vec3<T>(-right.x, -right.y, -right.z);
+    return { -right.x, -right.y, -right.z };
 }
 
 template<typename T>
@@ -44,25 +48,37 @@ constexpr Vec3<T>& operator-=(Vec3<T>& left, const Vec3<T>& right)
 template<typename T>
 constexpr Vec3<T> operator+(const Vec3<T>& left, const Vec3<T>& right)
 {
-    return Vec3<T>(left.x + right.x, left.y + right.y, left.z + right.z);
+    return { left.x + right.x, left.y + right.y, left.z + right.z };
+}
+
+template<typename T>
+constexpr Vec3<T> operator+(const Vec3<T>& left, T right)
+{
+    return { left.x + right, left.y + right, left.z + right };
 }
 
 template<typename T>
 constexpr Vec3<T> operator-(const Vec3<T>& left, const Vec3<T>& right)
 {
-    return Vec3<T>(left.x - right.x, left.y - right.y, left.z - right.z);
+    return { left.x - right.x, left.y - right.y, left.z - right.z };
 }
 
 template<typename T>
 constexpr Vec3<T> operator*(const Vec3<T>& left, T right)
 {
-    return Vec3<T>(left.x * right, left.y * right, left.z * right);
+    return { left.x * right, left.y * right, left.z * right };
+}
+
+template<typename T>
+constexpr Vec3<T> operator-(const Vec3<T>& left, T right)
+{
+    return { left.x - right, left.y - right, left.z - right };
 }
 
 template<typename T>
 constexpr Vec3<T> operator*(T left, const Vec3<T>& right)
 {
-    return Vec3<T>(left.x * right, left.y * right, left.z * right);
+    return { left.x * right, left.y * right, left.z * right };
 }
 
 template<typename T>
@@ -78,7 +94,7 @@ constexpr Vec3<T>& operator*=(Vec3<T>& left, T right)
 template<typename T>
 constexpr Vec3<T> operator/(const Vec3<T>& left, T right)
 {
-    return Vec3<T>(left.x / right, left.y / right, left.z / right);
+    return { left.x / right, left.y / right, left.z / right };
 }
 
 template<typename T>
@@ -90,6 +106,24 @@ constexpr Vec3<T>& operator/=(Vec3<T>& left, T right)
 
     return left;
 }
+
+template<typename T>
+constexpr Vec3<T>& operator/=(Vec3<T>& left, const Vec3<T>& right)
+{
+    left.x /= right.x;
+    left.y /= right.y;
+    left.z /= right.z;
+
+    return left;
+}
+
+template<typename T>
+constexpr bool operator==(const Vec3<T>& left, const Vec3<T>& right)
+{
+    return left.x == right.x && left.y == right.y && left.z == right.z;
+}
+
+// TODO: add spaceship operator
 
 using Vec3f = Vec3<double>;
 using Vec3i = Vec3<int>;
