@@ -188,6 +188,14 @@ bool ModuleManager::load(Module* mod)
 
     const auto* name = mod->plugin->getPluginInfo().name.c_str();
 
+    if (!IsApiCompatible(mod->plugin->ApiVersion))
+    {
+        Core::Logger->error("{} is compiled on unsupported API", dllName);
+        unload(mod);
+        mod->loadResult = Plugin::Result::ApiNotSupported;
+        return false;
+    }
+
     mod->data.config = _configMgr.createConfig(name);
     mod->data.keyBinds = _keyBindsMgr.createKeyBinds(name);
     mod->data.logger = LoggerFactory::GetLogger(name);
