@@ -17,12 +17,18 @@ Detour::Detour(uintptr_t target, uintptr_t detour) : Detour((uintptr_t*)target, 
 Detour::~Detour()
 {
     disable();
+    unhook();
 }
 
 Detour::Status Detour::hook()
 {
     return static_cast<Detour::Status>(
         MH_CreateHook(static_cast<void*>(_target), _detour, reinterpret_cast<void**>(&_original)));
+}
+
+Detour::Status Detour::unhook()
+{
+    return static_cast<Detour::Status>(MH_RemoveHook(static_cast<void*>(_target)));
 }
 
 Detour::Status Detour::enable()

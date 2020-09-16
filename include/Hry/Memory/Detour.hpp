@@ -54,6 +54,7 @@ public:
     Status hook();
     Status enable();
     Status disable();
+    Status unhook();
 
     // remove pointer from T (if exists) and than cast to pointer, it will prevent double pointer
     template<typename T, typename U = std::remove_pointer_t<T>>
