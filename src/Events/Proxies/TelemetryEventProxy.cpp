@@ -4,6 +4,7 @@
 
 #include "Hry/Events/Event.hpp"
 #include "Hry/Namespace.hpp"
+#include "Hry/Utils/Timer.hpp"
 
 #include "Events/EventManager.hpp"
 
@@ -28,15 +29,21 @@ TelemetryEventProxy::TelemetryEventProxy(
 void TelemetryEventProxy::FrameStart(
     scs_event_t /*unused*/, const void* /*unused*/, scs_context_t context)
 {
+    static Timer timer;
+
+    timer.reset();
     auto* eventMgr = reinterpret_cast<EventManager*>(context);
-    eventMgr->frameStartSignal.call();
+    eventMgr->frameStartSignal.call({ timer.asSeconds() });
 }
 
 void TelemetryEventProxy::FrameEnd(
     scs_event_t /*unused*/, const void* /*unused*/, scs_context_t context)
 {
+    static Timer timer;
+
+    timer.reset();
     auto* eventMgr = reinterpret_cast<EventManager*>(context);
-    eventMgr->frameEndSignal.call();
+    eventMgr->frameEndSignal.call({ timer.asSeconds() });
 }
 
 void TelemetryEventProxy::ChangedState(
