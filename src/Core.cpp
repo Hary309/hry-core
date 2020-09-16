@@ -123,9 +123,9 @@ void Core::initConfig()
                          .build());
 
     _coreConfig->add(NumericFieldBuilder<float>()
-                         .setID("window_opacity")
-                         .setLabel("Window opacity")
-                         .bind(&CoreConfig::windowOpacity)
+                         .setID("log_window_opacity")
+                         .setLabel("Log window opacity")
+                         .bind(&CoreConfig::logWindowOpacity)
                          .setDefaultValue(0.94f)
                          .useSlider(0, 1, "%.2f")
                          .build());
@@ -165,11 +165,9 @@ void Core::onConfigChangesApplied(const ConfigCallbackData& data)
     const auto* coreConfigData = data.getData<CoreConfig>();
 
     _loggerWindow.setEnabled(coreConfigData->showLogWindow);
+    _loggerWindow.setOpacity(coreConfigData->logWindowOpacity);
+    
     _showImGuiDemo = coreConfigData->showImGuiDemo;
-
-    auto& colors = ImGui::GetStyle().Colors;
-
-    colors[ImGuiCol_WindowBg].w = coreConfigData->windowOpacity;
 }
 
 bool Core::InstallHooks()

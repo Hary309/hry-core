@@ -18,6 +18,8 @@ void LoggerWindow::imguiRender()
         return;
     }
 
+    ImGui::SetNextWindowBgAlpha(_opacity);
+
     if (!ImGui::Begin("Logs"))
     {
         ImGui::End();
