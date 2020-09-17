@@ -119,9 +119,18 @@ struct ParamConverterCreator<Truck>
         obj.bind(SCS_TELEMETRY_CONFIG_ATTRIBUTE_cabin_position, &Truck::cabinPosition);
         obj.bind(SCS_TELEMETRY_CONFIG_ATTRIBUTE_head_position, &Truck::headPosition);
         obj.bind(SCS_TELEMETRY_CONFIG_ATTRIBUTE_hook_position, &Truck::hookPosition);
-        // obj.bind(SCS_TELEMETRY_CONFIG_ATTRIBUTE_license_plate, &Truck::licensePlate, &LicencePlate::text);
-        // obj.bind(SCS_TELEMETRY_CONFIG_ATTRIBUTE_license_plate_country_id, &Truck::licensePlate, &LicencePlate::countryID);
-        // obj.bind(SCS_TELEMETRY_CONFIG_ATTRIBUTE_license_plate_country, &Truck::licensePlate, &LicencePlate::country);
+
+        // license plate
+        obj.bind(
+            SCS_TELEMETRY_CONFIG_ATTRIBUTE_license_plate, &Truck::licensePlate,
+            &LicencePlate::text);
+        obj.bind(
+            SCS_TELEMETRY_CONFIG_ATTRIBUTE_license_plate_country_id, &Truck::licensePlate,
+            &LicencePlate::countryID);
+        obj.bind(
+            SCS_TELEMETRY_CONFIG_ATTRIBUTE_license_plate_country, &Truck::licensePlate,
+            &LicencePlate::country);
+
         obj.bindIndexed(SCS_TELEMETRY_CONFIG_ATTRIBUTE_wheel_count, &Truck::wheels);
         return obj;
     }
@@ -137,7 +146,18 @@ struct ParamConverterCreator<Trailer>
         obj.bind(SCS_TELEMETRY_CONFIG_ATTRIBUTE_hook_position, &Trailer::hookPosition);
         obj.bind(SCS_TELEMETRY_CONFIG_ATTRIBUTE_chain_type, &Trailer::chainType);
         obj.bind(SCS_TELEMETRY_CONFIG_ATTRIBUTE_body_type, &Trailer::bodyType);
-        // obj.bind(SCS_TELEMETRY_CONFIG_ATTRIBUTE_hook_position, &Trailer::licensePlate);
+
+        // license plate
+        obj.bind(
+            SCS_TELEMETRY_CONFIG_ATTRIBUTE_license_plate, &Trailer::licensePlate,
+            &LicencePlate::text);
+        obj.bind(
+            SCS_TELEMETRY_CONFIG_ATTRIBUTE_license_plate_country_id, &Trailer::licensePlate,
+            &LicencePlate::countryID);
+        obj.bind(
+            SCS_TELEMETRY_CONFIG_ATTRIBUTE_license_plate_country, &Trailer::licensePlate,
+            &LicencePlate::country);
+
         obj.bindIndexed(SCS_TELEMETRY_CONFIG_ATTRIBUTE_wheel_count, &Trailer::wheels);
         return obj;
     }
@@ -152,7 +172,35 @@ struct ParamConverterCreator<Job>
         obj.bind(SCS_TELEMETRY_CONFIG_ATTRIBUTE_cargo_id, &Job::cargoID);
         obj.bind(SCS_TELEMETRY_CONFIG_ATTRIBUTE_cargo, &Job::cargo);
         obj.bind(SCS_TELEMETRY_CONFIG_ATTRIBUTE_cargo_mass, &Job::cargoMass);
-        // obj.bind(SCS_TELEMETRY_CONFIG_ATTRIBUTE_cargo_unit_mass, &Job::cargoUnit);
+
+        // cargo unit
+        obj.bind(SCS_TELEMETRY_CONFIG_ATTRIBUTE_cargo_unit_mass, &Job::cargoUnit, &CargoUnit::mass);
+        obj.bind(
+            SCS_TELEMETRY_CONFIG_ATTRIBUTE_cargo_unit_count, &Job::cargoUnit, &CargoUnit::count);
+
+        // destination company
+        obj.bind(
+            SCS_TELEMETRY_CONFIG_ATTRIBUTE_destination_company_id, &Job::destinationCompany,
+            &Company::id);
+        obj.bind(
+            SCS_TELEMETRY_CONFIG_ATTRIBUTE_destination_company, &Job::destinationCompany,
+            &Company::name);
+
+        // source company
+        obj.bind(
+            SCS_TELEMETRY_CONFIG_ATTRIBUTE_source_company_id, &Job::sourceCompany, &Company::id);
+        obj.bind(
+            SCS_TELEMETRY_CONFIG_ATTRIBUTE_source_company, &Job::sourceCompany, &Company::name);
+
+        // destination city
+        obj.bind(SCS_TELEMETRY_CONFIG_ATTRIBUTE_destination_city_id, &Job::destinationCity, &City::id);
+        obj.bind(
+            SCS_TELEMETRY_CONFIG_ATTRIBUTE_destination_city, &Job::destinationCity, &City::name);
+
+        // source city
+        obj.bind(SCS_TELEMETRY_CONFIG_ATTRIBUTE_source_city_id, &Job::sourceCity, &City::id);
+        obj.bind(SCS_TELEMETRY_CONFIG_ATTRIBUTE_source_city, &Job::sourceCity, &City::name);
+
         obj.bind(SCS_TELEMETRY_CONFIG_ATTRIBUTE_income, &Job::income);
         obj.bind(SCS_TELEMETRY_CONFIG_ATTRIBUTE_delivery_time, &Job::deliveryTime);
         obj.bind(SCS_TELEMETRY_CONFIG_ATTRIBUTE_planned_distance_km, &Job::plannedDistanceKM);

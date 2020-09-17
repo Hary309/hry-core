@@ -49,7 +49,14 @@ public:
     template<typename ValueType>
     void bind(std::string_view id, ValueType ClassType::*member)
     {
-        add(id, member, CreateBasicAdapter<ValueType>());
+        addSimple(id, member, CreateBasicAdapter<ValueType>());
+    }
+
+    template<typename ValueType, typename InnerValueType>
+    void bind(
+        std::string_view id, ValueType ClassType::*member, InnerValueType ValueType::*innerMember)
+    {
+        addComplex(id, member, innerMember, CreateBasicAdapter<InnerValueType>());
     }
 
     template<typename ValueType>
@@ -79,9 +86,9 @@ public:
             addIndexedSize(countID.value(), member, CreateBasicAdapter<uint32_t>());
         }
 
-        auto converter = std::make_shared<ParamConverter<ValueType>>(CreateConverter<ValueType>());
+        auto converter = CreateConverter<ValueType>();
 
-        for (const auto& field : converter->getFields())
+        for (const auto& field : converter.getFields())
         {
             addComplexIndexed(member, field);
         }
@@ -89,6 +96,11 @@ public:
 
     ClassType process(const scs_named_value_t* params) const
     {
+        for (const auto& field : _fields)
+        {
+            field->used = false;
+        }
+
         ClassType type;
 
         const auto* it = params;
@@ -128,12 +140,12 @@ public:
 
 private:
     template<typename MemberPtr, typename AdapterType>
-    struct NormalField : public FieldBase
+    struct SimpleField : public FieldBase
     {
         MemberPtr member;
         AdapterType adapter;
 
-        NormalField(std::string_view id, MemberPtr member, AdapterType&& adapter)
+        SimpleField(std::string_view id, MemberPtr member, AdapterType&& adapter)
             : FieldBase(id), member(member), adapter(std::move(adapter))
         {
         }
@@ -142,6 +154,30 @@ private:
         {
             auto& typedData = *static_cast<ClassType*>(data);
             typedData.*member = adapter.get(param.value);
+        }
+    };
+
+    template<typename MemberPtr, typename InnerMemberPtr, typename AdapterType>
+    struct ComplexField : public FieldBase
+    {
+        MemberPtr member;
+        InnerMemberPtr innerMember;
+        AdapterType adapter;
+
+        ComplexField(
+            std::string_view id,
+            MemberPtr member,
+            InnerMemberPtr innerMember,
+            AdapterType&& adapter)
+            : FieldBase(id), member(member), innerMember(innerMember), adapter(std::move(adapter))
+        {
+        }
+
+        void process(const scs_named_value_t& param, void* data) override
+        {
+            auto& typedData = *static_cast<ClassType*>(data);
+            auto& innerClass = typedData.*member;
+            innerClass.*innerMember = adapter.get(param.value);
         }
     };
 
@@ -226,13 +262,29 @@ private:
 
 private:
     template<typename ValueType, typename AdapterType>
-    void add(std::string_view id, ValueType ClassType::*member, AdapterType&& adapter)
+    void addSimple(std::string_view id, ValueType ClassType::*member, AdapterType&& adapter)
     {
         using MemberPtr_t = ValueType(ClassType::*);
-        using Field_t = NormalField<MemberPtr_t, typename std::decay_t<AdapterType>>;
+        using Field_t = SimpleField<MemberPtr_t, typename std::decay_t<AdapterType>>;
 
         _fields.push_back(std::shared_ptr<FieldBase>(
             new Field_t(id, member, std::forward<AdapterType>(adapter))));
+    }
+
+    template<typename ValueType, typename InnerValueType, typename AdapterType>
+    void addComplex(
+        std::string_view id,
+        ValueType ClassType::*member,
+        InnerValueType ValueType::*innerMember,
+        AdapterType&& adapter)
+    {
+        using MemberPtr_t = ValueType(ClassType::*);
+        using InnerMemberPtr_t = InnerValueType(ValueType::*);
+        using Field_t =
+            ComplexField<MemberPtr_t, InnerMemberPtr_t, typename std::decay_t<AdapterType>>;
+
+        _fields.push_back(std::shared_ptr<FieldBase>(
+            new Field_t(id, member, innerMember, std::forward<AdapterType>(adapter))));
     }
 
     template<typename ValueType, typename AdapterType>
