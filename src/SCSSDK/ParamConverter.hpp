@@ -28,15 +28,50 @@ struct FieldBase
     virtual void process(const scs_named_value_t& param, void* data) = 0;
 };
 
+template<typename EnumType>
+struct EnumDeserializer
+{
+private:
+    std::vector<std::pair<std::string_view, EnumType>> _fields;
+
+public:
+    void add(std::string_view id, EnumType value) { _fields.emplace_back(std::pair { id, value }); }
+
+    EnumType getValue(std::string_view id) const
+    {
+        auto field = std::find_if(
+            _fields.begin(), _fields.end(), [&id](const auto& v) { return v.first == id; });
+
+        if (field != _fields.end())
+        {
+            return field->second;
+        }
+
+        return EnumType();
+    }
+};
+
 template<typename>
-struct ParamConverterCreator
+struct EnumDeserializerCreator;
+
+template<typename, typename = std::void_t<>>
+struct HasEnumDeserializer : std::false_type
 {
 };
 
 template<typename T>
-auto CreateConverter()
+struct HasEnumDeserializer<T, std::void_t<decltype(EnumDeserializerCreator<T>::create())>>
+    : std::true_type
 {
-    return ParamConverterCreator<T>::create();
+};
+
+template<typename T>
+inline constexpr auto HasEnumDeserializer_v = HasEnumDeserializer<T>::value;
+
+template<typename T>
+auto CreateEnumDeserializer()
+{
+    return EnumDeserializerCreator<T>::create();
 }
 
 template<typename ClassType>
@@ -49,7 +84,14 @@ public:
     template<typename ValueType>
     void bind(std::string_view id, ValueType ClassType::*member)
     {
-        addSimple(id, member, CreateBasicAdapter<ValueType>());
+        if constexpr (!HasEnumDeserializer_v<ValueType>)
+        {
+            addSimple(id, member, CreateBasicAdapter<ValueType>());
+        }
+        else
+        {
+            addEnum(id, member, CreateEnumDeserializer<ValueType>());
+        }
     }
 
     template<typename ValueType, typename InnerValueType>
@@ -154,6 +196,27 @@ private:
         {
             auto& typedData = *static_cast<ClassType*>(data);
             typedData.*member = adapter.get(param.value);
+        }
+    };
+
+    template<typename MemberPtr, typename EnumDeserializer>
+    struct EnumField : public FieldBase
+    {
+        MemberPtr member;
+        EnumDeserializer deserializer;
+        StringAdapter adapter;
+
+        EnumField(std::string_view id, MemberPtr member, EnumDeserializer&& deserializer)
+            : FieldBase(id), member(member), deserializer(std::move(deserializer))
+        {
+        }
+
+        void process(const scs_named_value_t& param, void* data) override
+        {
+            auto& typedData = *static_cast<ClassType*>(data);
+            auto str = adapter.get(param.value);
+
+            typedData.*member = deserializer.getValue(str);
         }
     };
 
@@ -271,6 +334,17 @@ private:
             new Field_t(id, member, std::forward<AdapterType>(adapter))));
     }
 
+    template<typename ValueType, typename EnumDeserializerType>
+    void addEnum(
+        std::string_view id, ValueType ClassType::*member, EnumDeserializerType&& deserializer)
+    {
+        using MemberPtr_t = ValueType(ClassType::*);
+        using Field_t = EnumField<MemberPtr_t, typename std::decay_t<EnumDeserializerType>>;
+
+        _fields.push_back(std::shared_ptr<FieldBase>(
+            new Field_t(id, member, std::forward<EnumDeserializerType>(deserializer))));
+    }
+
     template<typename ValueType, typename InnerValueType, typename AdapterType>
     void addComplex(
         std::string_view id,
@@ -318,4 +392,14 @@ private:
             std::shared_ptr<FieldBase>(new Field_t(converter->id, member, converter)));
     }
 };
+
+template<typename>
+struct ParamConverterCreator;
+
+template<typename T>
+auto CreateConverter()
+{
+    return ParamConverterCreator<T>::create();
+}
+
 HRY_NS_END
