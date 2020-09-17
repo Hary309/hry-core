@@ -21,7 +21,7 @@ HRY_NS_BEGIN
 TelemetryConfigurationProxy::TelemetryConfigurationProxy(
     EventManager& eventMgr, scs_telemetry_init_params_v100_t* scsTelemetry)
     : _substances(CreateConverter<scs::Substances>()),
-      _controls(CreateConverter<scs::ControlsStr>()), _hshifter(CreateConverter<scs::HShifter>()),
+      _controls(CreateConverter<scs::Controls>()), _hshifter(CreateConverter<scs::HShifter>()),
       _truck(CreateConverter<scs::Truck>()), _trailer(CreateConverter<scs::Trailer>()),
       _job(CreateConverter<scs::Job>())
 {
@@ -72,26 +72,7 @@ void TelemetryConfigurationProxy::HandleSubstances(const scs_named_value_t* cons
 
 void TelemetryConfigurationProxy::HandleControls(const scs_named_value_t* const attributes) const
 {
-    scs::ControlsStr controlsStr = _controls.process(attributes);
-
-    scs::Controls controls{};
-
-    if (controlsStr.shifterType == SCS_SHIFTER_TYPE_arcade)
-    {
-        controls.shifterType = scs::ShifterType::Arcade;
-    }
-    else if (controlsStr.shifterType == SCS_SHIFTER_TYPE_automatic)
-    {
-        controls.shifterType = scs::ShifterType::Automatic;
-    }
-    else if (controlsStr.shifterType == SCS_SHIFTER_TYPE_manual)
-    {
-        controls.shifterType = scs::ShifterType::Manual;
-    }
-    else if (controlsStr.shifterType == SCS_SHIFTER_TYPE_hshifter)
-    {
-        controls.shifterType = scs::ShifterType::HShifter;
-    }
+    scs::Controls controls = _controls.process(attributes);
 
     // eventMgr.configuration.onControls(std::move(controls));
 }

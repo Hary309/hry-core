@@ -11,7 +11,7 @@
 #include "Events/EventManager.hpp"
 #include "SCSSDK/ParamConverter.hpp"
 
-#include "ConfigurationConverters.hpp"
+#include "ConfigurationDataConverters.hpp"
 
 HRY_NS_BEGIN
 
@@ -19,7 +19,7 @@ class TelemetryConfigurationProxy
 {
 private:
     ParamConverter<scs::Substances> _substances;
-    ParamConverter<scs::ControlsStr> _controls;
+    ParamConverter<scs::Controls> _controls;
     ParamConverter<scs::HShifter> _hshifter;
     ParamConverter<scs::Truck> _truck;
     ParamConverter<scs::Trailer> _trailer;

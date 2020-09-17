@@ -3,21 +3,26 @@
 #include <common/scssdk_telemetry_common_configs.h>
 
 #include "Hry/SCSSDK/ConfigurationData.hpp"
-#include "Hry/SCSSDK/GameplayData.hpp"
 
 #include "SCSSDK/ParamConverter.hpp"
 
 HRY_NS_BEGIN
 
-namespace scs
-{
-    struct ControlsStr
-    {
-        std::string shifterType;
-    };
-} // namespace scs
-
 using namespace scs;
+
+template<>
+struct EnumDeserializerCreator<ShifterType>
+{
+    static auto create()
+    {
+        EnumDeserializer<ShifterType> obj;
+        obj.add(SCS_SHIFTER_TYPE_arcade, ShifterType::Arcade);
+        obj.add(SCS_SHIFTER_TYPE_automatic, ShifterType::Automatic);
+        obj.add(SCS_SHIFTER_TYPE_manual, ShifterType::Manual);
+        obj.add(SCS_SHIFTER_TYPE_hshifter, ShifterType::HShifter);
+        return obj;
+    }
+};
 
 template<>
 struct ParamConverterCreator<Substances>
@@ -31,12 +36,12 @@ struct ParamConverterCreator<Substances>
 };
 
 template<>
-struct ParamConverterCreator<ControlsStr>
+struct ParamConverterCreator<Controls>
 {
     static auto create()
     {
-        ParamConverter<ControlsStr> obj;
-        obj.bind(SCS_TELEMETRY_CONFIG_ATTRIBUTE_shifter_type, &ControlsStr::shifterType);
+        ParamConverter<Controls> obj;
+        obj.bind(SCS_TELEMETRY_CONFIG_ATTRIBUTE_shifter_type, &Controls::shifterType);
         return obj;
     }
 };
