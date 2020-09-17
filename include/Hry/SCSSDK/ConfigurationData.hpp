@@ -103,15 +103,15 @@ namespace scs
         float rpmLimit;
         uint32_t gearsForward;
         uint32_t gearsReverse;
+        float differentialRatio;
         uint32_t retarderSteps;
+        std::vector<float> forwardRatio;
+        std::vector<float> reverseRatio;
         Vec3<float> cabinPosition;
         Vec3<float> headPosition;
         Vec3<float> hookPosition;
         LicencePlate licensePlate;
         std::vector<Wheel> wheels;
-        float differentialRatio;
-        std::vector<float> forwardRatio;
-        std::vector<float> reverseRatio;
     };
 
     struct Trailer
@@ -141,6 +141,7 @@ namespace scs
         uint32_t plannedDistanceKM;
         bool cargoLoaded;
         std::string jobMarket;
+        bool isSpecialJob;
     };
 } // namespace scs
 
