@@ -51,7 +51,8 @@ public:
     Detour& operator=(const Detour&) = delete;
     ~Detour();
 
-    Status hook();
+    Status create();
+    Status remove();
     Status enable();
     Status disable();
 

@@ -33,8 +33,8 @@ struct EventHandler
     // game events
     struct
     {
-        Sink<void()> onFrameStart;
-        Sink<void()> onFrameEnd;
+        Sink<void(const FrameEvent&&)> onFrameStart;
+        Sink<void(const FrameEvent&&)> onFrameEnd;
         Sink<void(const GameStateEvent&&)> onStateChange;
     } game;
 };

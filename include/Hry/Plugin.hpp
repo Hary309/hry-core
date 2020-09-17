@@ -35,6 +35,8 @@ public:
         GameType gameType;
     };
 
+    inline static Version ApiVersion = hry::ApiVersion;
+
 public:
     Plugin() = default;
     Plugin(Plugin&&) = delete;

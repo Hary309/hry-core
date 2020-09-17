@@ -51,8 +51,8 @@ public:
     Signal<void()> imguiRenderSignal;
 
     // game events
-    Signal<void()> frameStartSignal;
-    Signal<void()> frameEndSignal;
+    Signal<void(const FrameEvent&&)> frameStartSignal;
+    Signal<void(const FrameEvent&&)> frameEndSignal;
     Signal<void(const GameStateEvent&&)> stateChangeSignal;
 
 public:

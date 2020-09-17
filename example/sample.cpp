@@ -34,11 +34,6 @@ public:
 
     Result init(const InitParams&& initParams) override
     {
-        if (!hry::IsApiCompatible(initParams.apiVersion))
-        {
-            return Result::ApiNotSupported;
-        }
-
         Logger = initParams.logger;
         Logger->info("Created!");
 

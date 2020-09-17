@@ -25,7 +25,8 @@ class Config
     friend ConfigManager;
     friend ConfigPage;
 
-    using BindingStructDtor_t = void (*)(void*);
+    using BindingStructCtor_t = void* (*)();
+    using BindingStructDtor_t = void (*)(void*, void*);
 
 private:
     std::string _name;
@@ -35,6 +36,7 @@ private:
 
     size_t _bindingStructSize{};
     Hash64_t _bindingStructHash{};
+    BindingStructCtor_t _bindingStructCtor{};
     BindingStructDtor_t _bindingStructDtor{};
 
 public:
@@ -55,8 +57,11 @@ public:
     {
         _bindingStructSize = sizeof(T);
         _bindingStructHash = TypeID<T>();
-        _bindingStructDtor = +[](void* data) {
-            static_cast<T*>(data)->~T();
+        _bindingStructCtor = +[]() -> void* {
+            return new T();
+        };
+        _bindingStructDtor = +[](void* /*nth*/, void* data) {
+            delete static_cast<T*>(data);
         };
     }
 

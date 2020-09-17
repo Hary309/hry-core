@@ -26,12 +26,15 @@ private:
 
     std::vector<Line> _lines;
 
+    float _opacity = 1.f;
+
 public:
     LoggerWindow(InternalEventHandler& eventMgr);
 
     void imguiRender();
 
     void setEnabled(bool enabled) { _enabled = enabled; }
+    void setOpacity(float opacity) { _opacity = opacity; }
 
 private:
     static void renderLine(const Line& line);

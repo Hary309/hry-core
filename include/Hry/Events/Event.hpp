@@ -67,4 +67,9 @@ struct JoystickButtonEvent
     ButtonState state;
 };
 
+struct FrameEvent
+{
+    double deltaTime;
+};
+
 HRY_NS_END

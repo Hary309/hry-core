@@ -6,10 +6,11 @@
  */
 
 #pragma once
-
 #include <cassert>
 #include <string>
 #include <vector>
+
+#include "Hry/Export.hpp"
 
 #pragma warning(push)
 #pragma warning(disable : 4201)
@@ -33,11 +34,12 @@ namespace hry
             baseAddressDifference = *(ptrdiff_t*)&addressDiff;
         }
 
-        void set_base();
+        HRY_API void set_base();
 
         template<typename T>
         inline T* getRVA(uintptr_t rva)
         {
+            set_base();
 #ifdef _M_IX86
             return (T*)(baseAddressDifference + 0x400000 + rva);
 #elif defined(_M_AMD64)
@@ -47,7 +49,7 @@ namespace hry
 
     } // namespace detail
 
-    class pattern_match
+    class HRY_API pattern_match
     {
     private:
         void* m_pointer;
@@ -63,7 +65,7 @@ namespace hry
         }
     };
 
-    class pattern
+    class HRY_API pattern
     {
     private:
         std::string m_bytes;
@@ -85,12 +87,12 @@ namespace hry
 
     protected:
         inline pattern(void* module)
-            : m_rangeStart((uintptr_t)module), m_matched(false), m_rangeEnd(0)
+            : m_matched(false), m_rangeStart((uintptr_t)module), m_rangeEnd(0)
         {
         }
 
         inline pattern(uintptr_t begin, uintptr_t end)
-            : m_rangeStart(begin), m_rangeEnd(end), m_matched(false)
+            :  m_matched(false), m_rangeStart(begin), m_rangeEnd(end)
         {
         }
 
@@ -181,7 +183,7 @@ namespace hry
         }
     };
 
-    class module_pattern : public pattern
+    class HRY_API module_pattern : public pattern
     {
     public:
         template<size_t Len>
@@ -191,7 +193,7 @@ namespace hry
         }
     };
 
-    class range_pattern : public pattern
+    class HRY_API range_pattern : public pattern
     {
     public:
         template<size_t Len>

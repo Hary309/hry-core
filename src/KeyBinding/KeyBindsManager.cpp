@@ -51,7 +51,7 @@ void KeyBindsManager::remove(const KeyBinds* keyBinds)
     _keyBinds.erase(std::remove(_keyBinds.begin(), _keyBinds.end(), keyBinds));
 }
 
-void KeyBindsManager::update()
+void KeyBindsManager::update(const FrameEvent&& /*unused*/)
 {
     _taskScheduler.update();
 }

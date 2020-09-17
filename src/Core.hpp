@@ -34,7 +34,7 @@ struct CoreConfig
 {
     bool showLogWindow;
     bool showImGuiDemo;
-    float windowOpacity;
+    float logWindowOpacity;
 };
 
 class Core
