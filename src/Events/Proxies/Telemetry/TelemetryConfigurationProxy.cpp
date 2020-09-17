@@ -20,10 +20,9 @@ HRY_NS_BEGIN
 
 TelemetryConfigurationProxy::TelemetryConfigurationProxy(
     EventManager& eventMgr, scs_telemetry_init_params_v100_t* scsTelemetry)
-    : _substances(CreateConverter<scs::Substances>()),
-      _controls(CreateConverter<scs::Controls>()), _hshifter(CreateConverter<scs::HShifter>()),
-      _truck(CreateConverter<scs::Truck>()), _trailer(CreateConverter<scs::Trailer>()),
-      _job(CreateConverter<scs::Job>())
+    : _substances(CreateConverter<scs::Substances>()), _controls(CreateConverter<scs::Controls>()),
+      _hshifter(CreateConverter<scs::HShifter>()), _truck(CreateConverter<scs::Truck>()),
+      _trailer(CreateConverter<scs::Trailer>()), _job(CreateConverter<scs::Job>())
 {
     scsTelemetry->register_for_event(
         SCS_TELEMETRY_EVENT_configuration, TelemetryConfigurationProxy::Configuration, this);
@@ -39,70 +38,28 @@ void TelemetryConfigurationProxy::Configuration(
 
     if (strcmp(conf->id, SCS_TELEMETRY_CONFIG_substances) == 0)
     {
-        self->HandleSubstances(conf->attributes);
+        scs::Substances substances = self->_substances.process(conf->attributes);
     }
     else if (strcmp(conf->id, SCS_TELEMETRY_CONFIG_controls) == 0)
     {
-        self->HandleControls(conf->attributes);
+        scs::Controls controls = self->_controls.process(conf->attributes);
     }
     else if (strcmp(conf->id, SCS_TELEMETRY_CONFIG_hshifter) == 0)
     {
-        self->HandleHShifter(conf->attributes);
+        scs::HShifter hShifter = self->_hshifter.process(conf->attributes);
     }
     else if (strcmp(conf->id, SCS_TELEMETRY_CONFIG_truck) == 0)
     {
-        self->HandleTruck(conf->attributes);
+        scs::Truck truck = self->_truck.process(conf->attributes);
     }
     else if (strncmp(conf->id, SCS_TELEMETRY_CONFIG_trailer, trailerWordLength) == 0)
     {
-        self->HandleTrailer(conf->attributes);
+        scs::Trailer trailer = self->_trailer.process(conf->attributes);
     }
     else if (strcmp(conf->id, SCS_TELEMETRY_CONFIG_job) == 0)
     {
-        self->HandleJob(conf->attributes);
+        scs::Job job = self->_job.process(conf->attributes);
     }
-}
-
-void TelemetryConfigurationProxy::HandleSubstances(const scs_named_value_t* const attributes) const
-{
-    scs::Substances substances = _substances.process(attributes);
-
-    // eventMgr.configuration.onSubstances(std::move(substances));
-}
-
-void TelemetryConfigurationProxy::HandleControls(const scs_named_value_t* const attributes) const
-{
-    scs::Controls controls = _controls.process(attributes);
-
-    // eventMgr.configuration.onControls(std::move(controls));
-}
-
-void TelemetryConfigurationProxy::HandleHShifter(const scs_named_value_t* const attributes) const
-{
-    scs::HShifter hShifter = _hshifter.process(attributes);
-
-    // eventMgr.configuration.onHShifter(std::move(hShifter));
-}
-
-void TelemetryConfigurationProxy::HandleTruck(const scs_named_value_t* const attributes) const
-{
-    scs::Truck truck = _truck.process(attributes);
-
-    // eventMgr.configuration.onTruck(std::move(truck));
-}
-
-void TelemetryConfigurationProxy::HandleTrailer(const scs_named_value_t* const attributes) const
-{
-    scs::Trailer trailer = _trailer.process(attributes);
-
-    // eventMgr.configuration.onTrailer(std::move(trailer));
-}
-
-void TelemetryConfigurationProxy::HandleJob(const scs_named_value_t* const attributes) const
-{
-    scs::Job job = _job.process(attributes);
-
-    // eventMgr.configuration.onJob(std::move(job));
 }
 
 HRY_NS_END

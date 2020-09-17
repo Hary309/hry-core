@@ -31,16 +31,6 @@ public:
 
 private:
     static void Configuration(scs_event_t event, const void* event_info, scs_context_t context);
-
-    void HandleSubstances(const scs_named_value_t* const attributes) const;
-    void HandleControls(const scs_named_value_t* const attributes) const;
-    void HandleHShifter(const scs_named_value_t* const attributes) const;
-    void HandleTruck(const scs_named_value_t* const attributes) const;
-    void HandleTrailer(const scs_named_value_t* const attributes) const;
-    void HandleJob(const scs_named_value_t* const attributes) const;
-
-    static size_t CountAttributes(const scs_named_value_t* const attributes);
-    static uint32_t GetMaxIndex(const scs_named_value_t* const attributes, const char* name);
 };
 
 HRY_NS_END

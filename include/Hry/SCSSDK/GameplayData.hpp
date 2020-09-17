@@ -65,7 +65,6 @@ namespace scs
     struct PlayerUseFerry
     {
         int64_t payAmount;
-        std::string sourceName;
         Place source;
         Place target;
     };
@@ -73,7 +72,6 @@ namespace scs
     struct PlayerUseTrain
     {
         int64_t payAmount;
-        std::string sourceName;
         Place source;
         Place target;
     };
