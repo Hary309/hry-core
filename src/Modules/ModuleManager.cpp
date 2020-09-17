@@ -82,11 +82,15 @@ void ModuleManager::scan()
         if (!item.is_directory())
         {
             const auto& path = item.path();
-            auto filename = path.filename().string();
+
+            if (path.extension() != "dll")
+            {
+                continue;
+            }
 
             if (tryAdd(path) != nullptr)
             {
-                Core::Logger->info("Added {} to list", filename);
+                Core::Logger->info("Added {}", path.filename().string());
             }
         }
     }
@@ -314,7 +318,7 @@ void ModuleManager::loadListFromFile()
 
         if (mod != nullptr)
         {
-            Core::Logger->info("Added {} to list from saved file", mod->dllName);
+            Core::Logger->info("Added {}", mod->dllName);
 
             mod->loadAtStart = loadAtStart;
         }
