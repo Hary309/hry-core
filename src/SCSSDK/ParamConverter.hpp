@@ -226,10 +226,10 @@ private:
 
             if (field.size() <= param.index)
             {
-                field.resize(param.index);
+                field.resize(param.index + 1);
             }
 
-            field.insert(field.begin() + param.index, value);
+            field[param.index] = value;
         }
     };
 
