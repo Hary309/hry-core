@@ -142,7 +142,7 @@ Keyboard::Key vkKeyCodeToEnum(WPARAM key, LPARAM flags)
 }
 
 WndProcEventProxy::WndProcEventProxy(EventManager& eventMgr)
-    : EventProxyBase(eventMgr), _onWndProc(eventMgr.wndProcSignal)
+    : EventProxyBase(eventMgr), _onWndProc(eventMgr.system.wndProcSignal)
 {
     _onWndProc.connect<&WndProcEventProxy::onWndProc>(this);
 }
@@ -181,7 +181,7 @@ void WndProcEventProxy::onWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lPa
             resizeEvent.size.y = HIWORD(lParam);
             resizeEvent.type = resizeType;
 
-            _eventMgr.windowResizeSignal.call(std::move(resizeEvent));
+            _eventMgr.system.windowResizeSignal.call(std::move(resizeEvent));
         }
         break;
 
@@ -190,7 +190,7 @@ void WndProcEventProxy::onWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lPa
         {
             if ((HIWORD(lParam) & KF_REPEAT) == 0)
             {
-                _eventMgr.keyPressSignal.call(
+                _eventMgr.system.keyPressSignal.call(
                     KeyboardEvent{ vkKeyCodeToEnum(wParam, lParam), ButtonState::Pressed });
             }
         }
@@ -199,7 +199,7 @@ void WndProcEventProxy::onWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lPa
         case WM_KEYUP:
         case WM_SYSKEYUP:
         {
-            _eventMgr.keyReleaseSignal.call(
+            _eventMgr.system.keyReleaseSignal.call(
                 KeyboardEvent{ vkKeyCodeToEnum(wParam, lParam), ButtonState::Released });
         }
         break;
@@ -210,7 +210,7 @@ void WndProcEventProxy::onWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lPa
             wheelEvent.wheel = Mouse::Wheel::Vertical;
             wheelEvent.delta = GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA;
 
-            _eventMgr.mouseWheelScrollSignal.call(std::move(wheelEvent));
+            _eventMgr.system.mouseWheelScrollSignal.call(std::move(wheelEvent));
         }
         break;
 
@@ -221,7 +221,7 @@ void WndProcEventProxy::onWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lPa
             wheelEvent.wheel = Mouse::Wheel::Horizontal;
             wheelEvent.delta = GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA;
 
-            _eventMgr.mouseWheelScrollSignal.call(std::move(wheelEvent));
+            _eventMgr.system.mouseWheelScrollSignal.call(std::move(wheelEvent));
         }
         break;
 
@@ -236,31 +236,31 @@ void WndProcEventProxy::onWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lPa
 
             _lastMousePos = { x, y };
 
-            _eventMgr.mouseMoveSignal.call(std::move(moveEvent));
+            _eventMgr.system.mouseMoveSignal.call(std::move(moveEvent));
         }
         break;
 
         // Left mouse button
         case WM_LBUTTONDOWN:
         {
-            _eventMgr.mouseButtonPressSignal.call({ Mouse::Button::Left, ButtonState::Pressed });
+            _eventMgr.system.mouseButtonPressSignal.call({ Mouse::Button::Left, ButtonState::Pressed });
         }
         break;
         case WM_LBUTTONUP:
         {
-            _eventMgr.mouseButtonReleaseSignal.call({ Mouse::Button::Left, ButtonState::Released });
+            _eventMgr.system.mouseButtonReleaseSignal.call({ Mouse::Button::Left, ButtonState::Released });
         }
         break;
 
         // Right mouse button
         case WM_RBUTTONDOWN:
         {
-            _eventMgr.mouseButtonPressSignal.call({ Mouse::Button::Right, ButtonState::Pressed });
+            _eventMgr.system.mouseButtonPressSignal.call({ Mouse::Button::Right, ButtonState::Pressed });
         }
         break;
         case WM_RBUTTONUP:
         {
-            _eventMgr.mouseButtonReleaseSignal.call(
+            _eventMgr.system.mouseButtonReleaseSignal.call(
                 { Mouse::Button::Right, ButtonState::Released });
         }
         break;
@@ -268,12 +268,12 @@ void WndProcEventProxy::onWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lPa
         // Middle mouse button
         case WM_MBUTTONDOWN:
         {
-            _eventMgr.mouseButtonPressSignal.call({ Mouse::Button::Middle, ButtonState::Pressed });
+            _eventMgr.system.mouseButtonPressSignal.call({ Mouse::Button::Middle, ButtonState::Pressed });
         }
         break;
         case WM_MBUTTONUP:
         {
-            _eventMgr.mouseButtonReleaseSignal.call(
+            _eventMgr.system.mouseButtonReleaseSignal.call(
                 { Mouse::Button::Middle, ButtonState::Released });
         }
         break;
@@ -284,7 +284,7 @@ void WndProcEventProxy::onWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lPa
             Mouse::Button button = GET_XBUTTON_WPARAM(wParam) == XBUTTON1 ? Mouse::Button::Button4 :
                                                                             Mouse::Button::Button5;
 
-            _eventMgr.mouseButtonPressSignal.call({ button, ButtonState::Pressed });
+            _eventMgr.system.mouseButtonPressSignal.call({ button, ButtonState::Pressed });
         }
         break;
         case WM_XBUTTONUP:
@@ -292,7 +292,7 @@ void WndProcEventProxy::onWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lPa
             Mouse::Button button = GET_XBUTTON_WPARAM(wParam) == XBUTTON1 ? Mouse::Button::Button4 :
                                                                             Mouse::Button::Button5;
 
-            _eventMgr.mouseButtonReleaseSignal.call({ button, ButtonState::Released });
+            _eventMgr.system.mouseButtonReleaseSignal.call({ button, ButtonState::Released });
         }
         break;
     }

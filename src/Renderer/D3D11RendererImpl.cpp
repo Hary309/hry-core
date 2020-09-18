@@ -110,7 +110,7 @@ void D3D11RendererImpl::onBeforeResize(
 
 void D3D11RendererImpl::onWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-    _eventMgr.wndProcSignal.call(hWnd, uMsg, wParam, lParam);
+    _eventMgr.system.wndProcSignal.call(hWnd, uMsg, wParam, lParam);
 }
 
 void D3D11RendererImpl::onResize(IDXGISwapChain* /*unused*/)

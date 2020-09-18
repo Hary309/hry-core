@@ -157,7 +157,7 @@ void Core::imguiRender()
     _mainWindow.imguiRender();
     _loggerWindow.imguiRender();
 
-    _eventMgr.imguiRenderSignal.call();
+    _eventMgr.system.imguiRenderSignal.call();
 }
 
 void Core::onConfigChangesApplied(const ConfigCallbackData& data)

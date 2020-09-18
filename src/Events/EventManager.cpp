@@ -25,28 +25,28 @@ EventHandler EventManager::createEventHandler()
     // clang-format off
     return {
         {
-            windowResizeSignal,
-            windowGainFocusSignal,
-            windowLoseFocusSignal,
+            system.windowResizeSignal,
+            system.windowGainFocusSignal,
+            system.windowLoseFocusSignal,
 
-            keyPressSignal,
-            keyReleaseSignal,
+            system.keyPressSignal,
+            system.keyReleaseSignal,
 
-            mouseButtonPressSignal,
-            mouseButtonReleaseSignal,
-            mouseMoveSignal,
-            mouseWheelScrollSignal,
+            system.mouseButtonPressSignal,
+            system.mouseButtonReleaseSignal,
+            system.mouseMoveSignal,
+            system.mouseWheelScrollSignal,
 
-            joystickMoveSignal,
-            joystickButtonPressSignal,
-            joystickButtonReleaseSignal,
+            system.joystickMoveSignal,
+            system.joystickButtonPressSignal,
+            system.joystickButtonReleaseSignal,
 
-            imguiRenderSignal,
+            system.imguiRenderSignal,
         },
         {
-            frameStartSignal,
-            frameEndSignal,
-            stateChangeSignal,
+            game.frameStartSignal,
+            game.frameEndSignal,
+            game.stateChangeSignal,
         }
     };
     // clang-format on
@@ -57,31 +57,31 @@ InternalEventHandler EventManager::createInternalEventHandler()
     // clang-format off
     return {
         {
-            windowResizeSignal,
-            windowGainFocusSignal,
-            windowLoseFocusSignal,
+            system.windowResizeSignal,
+            system.windowGainFocusSignal,
+            system.windowLoseFocusSignal,
 
-            keyPressSignal,
-            keyReleaseSignal,
+            system.keyPressSignal,
+            system.keyReleaseSignal,
 
-            mouseButtonPressSignal,
-            mouseButtonReleaseSignal,
-            mouseMoveSignal,
-            mouseWheelScrollSignal,
+            system.mouseButtonPressSignal,
+            system.mouseButtonReleaseSignal,
+            system.mouseMoveSignal,
+            system.mouseWheelScrollSignal,
 
-            joystickMoveSignal,
-            joystickButtonPressSignal,
-            joystickButtonReleaseSignal,
+            system.joystickMoveSignal,
+            system.joystickButtonPressSignal,
+            system.joystickButtonReleaseSignal,
 
-            imguiRenderSignal,
+            system.imguiRenderSignal,
 
-            logSignal,
-            wndProcSignal,
+            system.logSignal,
+            system.wndProcSignal,
         },
         {
-            frameStartSignal,
-            frameEndSignal,
-            stateChangeSignal,
+            game.frameStartSignal,
+            game.frameEndSignal,
+            game.stateChangeSignal,
         }
     };
     // clang-format on

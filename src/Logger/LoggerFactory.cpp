@@ -53,7 +53,7 @@ void LoggerFactory::WriteLine(Logger::Level level, std::string_view module, std:
 
     logFile << buffer << std::endl;
 
-    _eventMgr->logSignal.call(buffer, level);
+    _eventMgr->system.logSignal.call(buffer, level);
 }
 
 std::unique_ptr<Logger> LoggerFactory::GetLogger(const char* moduleName)

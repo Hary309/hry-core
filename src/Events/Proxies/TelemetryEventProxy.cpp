@@ -24,7 +24,7 @@ TelemetryEventProxy::TelemetryEventProxy(
     scsTelemetry->register_for_event(
         SCS_TELEMETRY_EVENT_started, TelemetryEventProxy::ChangedState, &eventMgr);
 
-    // TODO: Add SCS_TELEMETRY_EVENT_configuration and SCS_TELEMETRY_EVENT_gameplay
+    
 }
 
 void TelemetryEventProxy::FrameStart(
@@ -33,7 +33,7 @@ void TelemetryEventProxy::FrameStart(
     static Timer timer;
 
     auto* eventMgr = reinterpret_cast<EventManager*>(context);
-    eventMgr->frameStartSignal.call({ timer.asSeconds() });
+    eventMgr->game.frameStartSignal.call({ timer.asSeconds() });
     timer.reset();
 }
 
@@ -43,7 +43,7 @@ void TelemetryEventProxy::FrameEnd(
     static Timer timer;
 
     auto* eventMgr = reinterpret_cast<EventManager*>(context);
-    eventMgr->frameEndSignal.call({ timer.asSeconds() });
+    eventMgr->game.frameEndSignal.call({ timer.asSeconds() });
     timer.reset();
 }
 
@@ -62,7 +62,7 @@ void TelemetryEventProxy::ChangedState(
     {
         type = GameStateEvent::Type::Resumed;
     }
-    eventMgr->stateChangeSignal.call(GameStateEvent{ type });
+    eventMgr->game.stateChangeSignal.call(GameStateEvent{ type });
 }
 
 HRY_NS_END

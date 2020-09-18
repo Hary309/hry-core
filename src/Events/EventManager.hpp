@@ -27,33 +27,51 @@ private:
     std::vector<std::unique_ptr<EventProxyBase>> _eventProxies;
 
 public:
-    // internal signals
-    Signal<void(std::string msg, Logger::Level)> logSignal;
-    Signal<void(HWND, UINT, WPARAM, LPARAM)> wndProcSignal;
+    struct
+    {
+        // internal signals
+        Signal<void(std::string msg, Logger::Level)> logSignal;
+        Signal<void(HWND, UINT, WPARAM, LPARAM)> wndProcSignal;
 
-    // system events
-    Signal<void(const ResizeEvent&&)> windowResizeSignal;
-    Signal<void()> windowGainFocusSignal;
-    Signal<void()> windowLoseFocusSignal;
+        // system events
+        Signal<void(const ResizeEvent&&)> windowResizeSignal;
+        Signal<void()> windowGainFocusSignal;
+        Signal<void()> windowLoseFocusSignal;
 
-    Signal<void(const KeyboardEvent&&)> keyPressSignal;
-    Signal<void(const KeyboardEvent&&)> keyReleaseSignal;
+        Signal<void(const KeyboardEvent&&)> keyPressSignal;
+        Signal<void(const KeyboardEvent&&)> keyReleaseSignal;
 
-    Signal<void(const MouseButtonEvent&&)> mouseButtonPressSignal;
-    Signal<void(const MouseButtonEvent&&)> mouseButtonReleaseSignal;
-    Signal<void(const MouseMoveEvent&&)> mouseMoveSignal;
-    Signal<void(const MouseWheelEvent&&)> mouseWheelScrollSignal;
+        Signal<void(const MouseButtonEvent&&)> mouseButtonPressSignal;
+        Signal<void(const MouseButtonEvent&&)> mouseButtonReleaseSignal;
+        Signal<void(const MouseMoveEvent&&)> mouseMoveSignal;
+        Signal<void(const MouseWheelEvent&&)> mouseWheelScrollSignal;
 
-    Signal<void(const JoystickMoveEvent&&)> joystickMoveSignal;
-    Signal<void(const JoystickButtonEvent&&)> joystickButtonPressSignal;
-    Signal<void(const JoystickButtonEvent&&)> joystickButtonReleaseSignal;
+        Signal<void(const JoystickMoveEvent&&)> joystickMoveSignal;
+        Signal<void(const JoystickButtonEvent&&)> joystickButtonPressSignal;
+        Signal<void(const JoystickButtonEvent&&)> joystickButtonReleaseSignal;
 
-    Signal<void()> imguiRenderSignal;
+        Signal<void()> imguiRenderSignal;
+    } system;
 
     // game events
-    Signal<void(const FrameEvent&&)> frameStartSignal;
-    Signal<void(const FrameEvent&&)> frameEndSignal;
-    Signal<void(const GameStateEvent&&)> stateChangeSignal;
+    struct
+    {
+        Signal<void(const FrameEvent&&)> frameStartSignal;
+        Signal<void(const FrameEvent&&)> frameEndSignal;
+        Signal<void(const GameStateEvent&&)> stateChangeSignal;
+
+        // gameplay events
+        struct
+        {
+
+        } gameplay;
+
+        // configuration callbacks
+        struct
+        {
+
+        } config;
+    } game;
 
 public:
     void init(scs_telemetry_init_params_v100_t* scsTelemetry);

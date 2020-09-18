@@ -53,7 +53,7 @@ void DInput8EventProxy::onMouseData(const std::vector<DIDEVICEOBJECTDATA>&& even
                 _mouseOffset.x = event.dwData;
 
                 MouseMoveEvent moveEvent{ _mouseOffset };
-                _eventMgr.mouseMoveSignal.call(std::move(moveEvent));
+                _eventMgr.system.mouseMoveSignal.call(std::move(moveEvent));
             }
             break;
             case DI_MOUSE_Y:
@@ -61,7 +61,7 @@ void DInput8EventProxy::onMouseData(const std::vector<DIDEVICEOBJECTDATA>&& even
                 _mouseOffset.y = event.dwData;
 
                 MouseMoveEvent moveEvent{ _mouseOffset };
-                _eventMgr.mouseMoveSignal.call(std::move(moveEvent));
+                _eventMgr.system.mouseMoveSignal.call(std::move(moveEvent));
             }
             break;
 
@@ -73,7 +73,7 @@ void DInput8EventProxy::onMouseData(const std::vector<DIDEVICEOBJECTDATA>&& even
                 wheelEvent.delta =
                     static_cast<short>(static_cast<short>(event.dwData) / WHEEL_DELTA);
 
-                _eventMgr.mouseWheelScrollSignal.call(std::move(wheelEvent));
+                _eventMgr.system.mouseWheelScrollSignal.call(std::move(wheelEvent));
             }
 
             default:
@@ -97,12 +97,12 @@ void DInput8EventProxy::sendMouseButtonEvent(int pressData, Mouse::Button button
     if (pressData == 0x80)
     {
         mouseButtonEvent.state = ButtonState::Pressed;
-        _eventMgr.mouseButtonPressSignal.call(std::move(mouseButtonEvent));
+        _eventMgr.system.mouseButtonPressSignal.call(std::move(mouseButtonEvent));
     }
     else
     {
         mouseButtonEvent.state = ButtonState::Released;
-        _eventMgr.mouseButtonReleaseSignal.call(std::move(mouseButtonEvent));
+        _eventMgr.system.mouseButtonReleaseSignal.call(std::move(mouseButtonEvent));
     }
 }
 
@@ -123,12 +123,12 @@ void DInput8EventProxy::onJoystickData(
             if (event.dwData != 0)
             {
                 e.state = ButtonState::Pressed;
-                _eventMgr.joystickButtonPressSignal.call(std::move(e));
+                _eventMgr.system.joystickButtonPressSignal.call(std::move(e));
             }
             else
             {
                 e.state = ButtonState::Released;
-                _eventMgr.joystickButtonReleaseSignal.call(std::move(e));
+                _eventMgr.system.joystickButtonReleaseSignal.call(std::move(e));
             }
         }
         else
@@ -169,7 +169,7 @@ void DInput8EventProxy::onJoystickData(
             e.axis = static_cast<Joystick::Axis>(offset / sizeof(DI_JOYSTICK_X));
             e.value = result;
 
-            _eventMgr.joystickMoveSignal.call(std::move(e));
+            _eventMgr.system.joystickMoveSignal.call(std::move(e));
         }
     }
 }

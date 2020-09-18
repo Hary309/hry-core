@@ -64,7 +64,7 @@ void OpenGLRendererImpl::onSwapBuffers()
 
 void OpenGLRendererImpl::onWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-    _eventMgr.wndProcSignal.call(hWnd, uMsg, wParam, lParam);
+    _eventMgr.system.wndProcSignal.call(hWnd, uMsg, wParam, lParam);
 }
 
 void* OpenGLRendererImpl::gladLoader(const char* name)
