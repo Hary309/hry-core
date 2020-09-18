@@ -39,28 +39,49 @@ void TelemetryConfigurationProxy::Configuration(
 
     if (strcmp(conf->id, SCS_TELEMETRY_CONFIG_substances) == 0)
     {
-        self->_eventMgr.game.config.substancesSignal.call(
-            self->_substances.process(conf->attributes));
+        if (conf->attributes->name == nullptr)
+            self->_eventMgr.game.config.controlsSignal.call({});
+        else
+            self->_eventMgr.game.config.substancesSignal.call(
+                self->_substances.process(conf->attributes));
     }
     else if (strcmp(conf->id, SCS_TELEMETRY_CONFIG_controls) == 0)
     {
-        self->_eventMgr.game.config.controlsSignal.call(self->_controls.process(conf->attributes));
+        if (conf->attributes->name == nullptr)
+            self->_eventMgr.game.config.controlsSignal.call({});
+        else
+            self->_eventMgr.game.config.controlsSignal.call(
+                self->_controls.process(conf->attributes));
     }
     else if (strcmp(conf->id, SCS_TELEMETRY_CONFIG_hshifter) == 0)
     {
-        self->_eventMgr.game.config.hshifterSignal.call(self->_hshifter.process(conf->attributes));
+        if (conf->attributes->name == nullptr)
+            self->_eventMgr.game.config.hshifterSignal.call({});
+        else
+            self->_eventMgr.game.config.hshifterSignal.call(
+                self->_hshifter.process(conf->attributes));
     }
     else if (strcmp(conf->id, SCS_TELEMETRY_CONFIG_truck) == 0)
     {
-        self->_eventMgr.game.config.truckSignal.call(self->_truck.process(conf->attributes));
+        if (conf->attributes->name == nullptr)
+            self->_eventMgr.game.config.truckSignal.call({});
+        else
+            self->_eventMgr.game.config.truckSignal.call(self->_truck.process(conf->attributes));
     }
     else if (strncmp(conf->id, SCS_TELEMETRY_CONFIG_trailer, trailerWordLength) == 0)
     {
-        self->_eventMgr.game.config.trailerSignal.call(self->_trailer.process(conf->attributes));
+        if (conf->attributes->name == nullptr)
+            self->_eventMgr.game.config.trailerSignal.call({});
+        else
+            self->_eventMgr.game.config.trailerSignal.call(
+                self->_trailer.process(conf->attributes));
     }
     else if (strcmp(conf->id, SCS_TELEMETRY_CONFIG_job) == 0)
     {
-        self->_eventMgr.game.config.jobSignal.call(self->_job.process(conf->attributes));
+        if (conf->attributes->name == nullptr)
+            self->_eventMgr.game.config.jobSignal.call({});
+        else
+            self->_eventMgr.game.config.jobSignal.call(self->_job.process(conf->attributes));
     }
 }
 

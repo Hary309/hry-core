@@ -65,23 +65,23 @@ public:
         // gameplay events
         struct
         {
-            Signal<void(const scs::JobCancelled&&)> jobCancelledSignal;
-            Signal<void(const scs::JobDelivered&&)> jobDeliveredSignal;
-            Signal<void(const scs::PlayerFined&&)> playerFinedSignal;
-            Signal<void(const scs::PlayerTollgatePaid&&)> playerTollgatePaidSignal;
-            Signal<void(const scs::PlayerUseFerry&&)> playerUseFerrySignal;
-            Signal<void(const scs::PlayerUseTrain&&)> playerUseTrainSignal;
+            Signal<void(const std::optional<scs::JobCancelled>&&)> jobCancelledSignal;
+            Signal<void(const std::optional<scs::JobDelivered>&&)> jobDeliveredSignal;
+            Signal<void(const std::optional<scs::PlayerFined>&&)> playerFinedSignal;
+            Signal<void(const std::optional<scs::PlayerTollgatePaid>&&)> playerTollgatePaidSignal;
+            Signal<void(const std::optional<scs::PlayerUseFerry>&&)> playerUseFerrySignal;
+            Signal<void(const std::optional<scs::PlayerUseTrain>&&)> playerUseTrainSignal;
         } gameplay;
 
         // configuration callbacks
         struct
         {
-            Signal<void(const scs::Substances&&)> substancesSignal;
-            Signal<void(const scs::Controls&&)> controlsSignal;
-            Signal<void(const scs::HShifter&&)> hshifterSignal;
-            Signal<void(const scs::Truck&&)> truckSignal;
-            Signal<void(const scs::Trailer&&)> trailerSignal;
-            Signal<void(const scs::Job&&)> jobSignal;
+            Signal<void(const std::optional<scs::Substances>&&)> substancesSignal;
+            Signal<void(const std::optional<scs::Controls>&&)> controlsSignal;
+            Signal<void(const std::optional<scs::HShifter>&&)> hshifterSignal;
+            Signal<void(const std::optional<scs::Truck>&&)> truckSignal;
+            Signal<void(const std::optional<scs::Trailer>&&)> trailerSignal;
+            Signal<void(const std::optional<scs::Job>&&)> jobSignal;
         } config;
     } game;
 

@@ -35,33 +35,51 @@ void TelemetryGameplayProxy::Gameplay(
 
     if (strcmp(gameplay->id, SCS_TELEMETRY_GAMEPLAY_EVENT_job_cancelled) == 0)
     {
-        self->_eventMgr.game.gameplay.jobCancelledSignal.call(
-            self->_jobCancelled.process(gameplay->attributes));
+        if (gameplay->attributes->name == nullptr)
+            self->_eventMgr.game.gameplay.jobCancelledSignal.call({});
+        else
+            self->_eventMgr.game.gameplay.jobCancelledSignal.call(
+                self->_jobCancelled.process(gameplay->attributes));
     }
     else if (strcmp(gameplay->id, SCS_TELEMETRY_GAMEPLAY_EVENT_job_delivered) == 0)
     {
-        self->_eventMgr.game.gameplay.jobDeliveredSignal.call(
-            self->_jobDelivered.process(gameplay->attributes));
+        if (gameplay->attributes->name == nullptr)
+            self->_eventMgr.game.gameplay.jobDeliveredSignal.call({});
+        else
+            self->_eventMgr.game.gameplay.jobDeliveredSignal.call(
+                self->_jobDelivered.process(gameplay->attributes));
     }
     else if (strcmp(gameplay->id, SCS_TELEMETRY_GAMEPLAY_EVENT_player_fined) == 0)
     {
-        self->_eventMgr.game.gameplay.playerFinedSignal.call(
-            self->_playerFined.process(gameplay->attributes));
+        if (gameplay->attributes->name == nullptr)
+            self->_eventMgr.game.gameplay.playerFinedSignal.call({});
+        else
+            self->_eventMgr.game.gameplay.playerFinedSignal.call(
+                self->_playerFined.process(gameplay->attributes));
     }
     else if (strcmp(gameplay->id, SCS_TELEMETRY_GAMEPLAY_EVENT_player_tollgate_paid) == 0)
     {
-        self->_eventMgr.game.gameplay.playerTollgatePaidSignal.call(
-            self->_playerTollgatePaid.process(gameplay->attributes));
+        if (gameplay->attributes->name == nullptr)
+            self->_eventMgr.game.gameplay.playerTollgatePaidSignal.call({});
+        else
+            self->_eventMgr.game.gameplay.playerTollgatePaidSignal.call(
+                self->_playerTollgatePaid.process(gameplay->attributes));
     }
     else if (strcmp(gameplay->id, SCS_TELEMETRY_GAMEPLAY_EVENT_player_use_ferry) == 0)
     {
-        self->_eventMgr.game.gameplay.playerUseFerrySignal.call(
-            self->_playerUseFerry.process(gameplay->attributes));
+        if (gameplay->attributes->name == nullptr)
+            self->_eventMgr.game.gameplay.playerUseFerrySignal.call({});
+        else
+            self->_eventMgr.game.gameplay.playerUseFerrySignal.call(
+                self->_playerUseFerry.process(gameplay->attributes));
     }
     else if (strcmp(gameplay->id, SCS_TELEMETRY_GAMEPLAY_EVENT_player_use_train) == 0)
     {
-        self->_eventMgr.game.gameplay.playerUseTrainSignal.call(
-            self->_playerUseTrain.process(gameplay->attributes));
+        if (gameplay->attributes->name == nullptr)
+            self->_eventMgr.game.gameplay.playerUseTrainSignal.call({});
+        else
+            self->_eventMgr.game.gameplay.playerUseTrainSignal.call(
+                self->_playerUseTrain.process(gameplay->attributes));
     }
 }
 
