@@ -20,9 +20,10 @@ HRY_NS_BEGIN
 
 TelemetryConfigurationProxy::TelemetryConfigurationProxy(
     EventManager& eventMgr, scs_telemetry_init_params_v100_t* scsTelemetry)
-    : _substances(CreateConverter<scs::Substances>()), _controls(CreateConverter<scs::Controls>()),
-      _hshifter(CreateConverter<scs::HShifter>()), _truck(CreateConverter<scs::Truck>()),
-      _trailer(CreateConverter<scs::Trailer>()), _job(CreateConverter<scs::Job>())
+    : _eventMgr(eventMgr), _substances(CreateConverter<scs::Substances>()),
+      _controls(CreateConverter<scs::Controls>()), _hshifter(CreateConverter<scs::HShifter>()),
+      _truck(CreateConverter<scs::Truck>()), _trailer(CreateConverter<scs::Trailer>()),
+      _job(CreateConverter<scs::Job>())
 {
     scsTelemetry->register_for_event(
         SCS_TELEMETRY_EVENT_configuration, TelemetryConfigurationProxy::Configuration, this);
@@ -38,27 +39,28 @@ void TelemetryConfigurationProxy::Configuration(
 
     if (strcmp(conf->id, SCS_TELEMETRY_CONFIG_substances) == 0)
     {
-        scs::Substances substances = self->_substances.process(conf->attributes);
+        self->_eventMgr.game.config.substancesSignal.call(
+            self->_substances.process(conf->attributes));
     }
     else if (strcmp(conf->id, SCS_TELEMETRY_CONFIG_controls) == 0)
     {
-        scs::Controls controls = self->_controls.process(conf->attributes);
+        self->_eventMgr.game.config.controlsSignal.call(self->_controls.process(conf->attributes));
     }
     else if (strcmp(conf->id, SCS_TELEMETRY_CONFIG_hshifter) == 0)
     {
-        scs::HShifter hShifter = self->_hshifter.process(conf->attributes);
+        self->_eventMgr.game.config.hshifterSignal.call(self->_hshifter.process(conf->attributes));
     }
     else if (strcmp(conf->id, SCS_TELEMETRY_CONFIG_truck) == 0)
     {
-        scs::Truck truck = self->_truck.process(conf->attributes);
+        self->_eventMgr.game.config.truckSignal.call(self->_truck.process(conf->attributes));
     }
     else if (strncmp(conf->id, SCS_TELEMETRY_CONFIG_trailer, trailerWordLength) == 0)
     {
-        scs::Trailer trailer = self->_trailer.process(conf->attributes);
+        self->_eventMgr.game.config.trailerSignal.call(self->_trailer.process(conf->attributes));
     }
     else if (strcmp(conf->id, SCS_TELEMETRY_CONFIG_job) == 0)
     {
-        scs::Job job = self->_job.process(conf->attributes);
+        self->_eventMgr.game.config.jobSignal.call(self->_job.process(conf->attributes));
     }
 }
 

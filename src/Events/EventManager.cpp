@@ -47,6 +47,22 @@ EventHandler EventManager::createEventHandler()
             game.frameStartSignal,
             game.frameEndSignal,
             game.stateChangeSignal,
+            {
+                game.gameplay.jobCancelledSignal,
+                game.gameplay.jobDeliveredSignal,
+                game.gameplay.playerFinedSignal,
+                game.gameplay.playerTollgatePaidSignal,
+                game.gameplay.playerUseFerrySignal,
+                game.gameplay.playerUseTrainSignal
+            },
+            {
+                game.config.substancesSignal,
+                game.config.controlsSignal,
+                game.config.hshifterSignal,
+                game.config.truckSignal,
+                game.config.trailerSignal,
+                game.config.jobSignal
+            }
         }
     };
     // clang-format on

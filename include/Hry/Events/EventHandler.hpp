@@ -1,5 +1,8 @@
 #pragma once
+
 #include "Hry/Namespace.hpp"
+#include "Hry/SCSSDK/ConfigurationData.hpp"
+#include "Hry/SCSSDK/GameplayData.hpp"
 #include "Hry/Utils/Signal.hpp"
 
 #include "Event.hpp"
@@ -36,6 +39,28 @@ struct EventHandler
         Sink<void(const FrameEvent&&)> onFrameStart;
         Sink<void(const FrameEvent&&)> onFrameEnd;
         Sink<void(const GameStateEvent&&)> onStateChange;
+
+        // gameplay events
+        struct
+        {
+            Sink<void(const scs::JobCancelled&&)> jobCancelledSignal;
+            Sink<void(const scs::JobDelivered&&)> jobDeliveredSignal;
+            Sink<void(const scs::PlayerFined&&)> playerFinedSignal;
+            Sink<void(const scs::PlayerTollgatePaid&&)> playerTollgatePaidSignal;
+            Sink<void(const scs::PlayerUseFerry&&)> playerUseFerrySignal;
+            Sink<void(const scs::PlayerUseTrain&&)> playerUseTrainSignal;
+        } gameplay;
+
+        // configuration callbacks
+        struct
+        {
+            Sink<void(const scs::Substances&&)> substancesSignal;
+            Sink<void(const scs::Controls&&)> controlsSignal;
+            Sink<void(const scs::HShifter&&)> hshifterSignal;
+            Sink<void(const scs::Truck&&)> truckSignal;
+            Sink<void(const scs::Trailer&&)> trailerSignal;
+            Sink<void(const scs::Job&&)> jobSignal;
+        } config;
     } game;
 };
 

@@ -18,6 +18,8 @@ HRY_NS_BEGIN
 class TelemetryConfigurationProxy
 {
 private:
+    EventManager& _eventMgr;
+
     ParamConverter<scs::Substances> _substances;
     ParamConverter<scs::Controls> _controls;
     ParamConverter<scs::HShifter> _hshifter;

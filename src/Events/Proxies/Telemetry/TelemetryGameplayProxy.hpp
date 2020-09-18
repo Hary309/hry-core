@@ -13,6 +13,8 @@ HRY_NS_BEGIN
 class TelemetryGameplayProxy
 {
 private:
+    EventManager& _eventMgr;
+
     ParamConverter<JobCancelled> _jobCancelled;
     ParamConverter<JobDelivered> _jobDelivered;
     ParamConverter<PlayerFined> _playerFined;
@@ -25,7 +27,6 @@ public:
 
 private:
     static void Gameplay(scs_event_t event, const void* event_info, scs_context_t context);
-
 };
 
 HRY_NS_END
