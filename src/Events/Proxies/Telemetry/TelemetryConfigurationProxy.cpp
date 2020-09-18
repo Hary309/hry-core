@@ -1,6 +1,7 @@
 #include "TelemetryConfigurationProxy.hpp"
 
 #include <algorithm>
+#include <charconv>
 #include <iterator>
 #include <string>
 
@@ -73,8 +74,20 @@ void TelemetryConfigurationProxy::Configuration(
         if (conf->attributes->name == nullptr)
             self->_eventMgr.game.config.trailerSignal.call({});
         else
-            self->_eventMgr.game.config.trailerSignal.call(
-                self->_trailer.process(conf->attributes));
+        {
+            auto trailer = self->_trailer.process(conf->attributes);
+            trailer.index = -1;
+
+            if (*(conf->id + trailerWordLength) != 0)
+            {
+                // trailer id
+                std::from_chars(
+                    conf->id + trailerWordLength + 1, conf->id + trailerWordLength + 2,
+                    trailer.index);
+            }
+
+            self->_eventMgr.game.config.trailerSignal.call(std::move(trailer));
+        }
     }
     else if (strcmp(conf->id, SCS_TELEMETRY_CONFIG_job) == 0)
     {
