@@ -35,7 +35,7 @@ private:
     std::vector<std::pair<std::string_view, EnumType>> _fields;
 
 public:
-    void add(std::string_view id, EnumType value) { _fields.emplace_back(std::pair { id, value }); }
+    void add(std::string_view id, EnumType value) { _fields.emplace_back(std::pair{ id, value }); }
 
     EnumType getValue(std::string_view id) const
     {
@@ -261,8 +261,6 @@ private:
             auto& vector = typedData.*member;
 
             auto value = adapter.get(param.value);
-
-            printf("Resize to: %d\n", value);
 
             vector.resize(value);
         }
