@@ -41,7 +41,7 @@ void TelemetryConfigurationProxy::Configuration(
     if (strcmp(conf->id, SCS_TELEMETRY_CONFIG_substances) == 0)
     {
         if (conf->attributes->name == nullptr)
-            self->_eventMgr.game.config.controlsSignal.call({});
+            self->_eventMgr.game.config.substancesSignal.call({});
         else
             self->_eventMgr.game.config.substancesSignal.call(
                 self->_substances.process(conf->attributes));
