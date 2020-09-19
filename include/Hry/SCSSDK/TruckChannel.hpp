@@ -35,7 +35,7 @@ struct TruckChannel
     float effectiveClutch;
     float cruiseControl;
     uint32_t hshifterSlot;
-    // std::vector<bool> hshifterSelect;
+    std::vector<bool> hshifterSelect;
 
     bool brakeParking;
     bool brakeMotor;
