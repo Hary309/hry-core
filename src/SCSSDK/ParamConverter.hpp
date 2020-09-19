@@ -181,13 +181,13 @@ public:
     const auto& getFields() const { return _fields; }
 
 private:
-    template<typename MemberPtr, typename AdapterType>
+    template<typename MemberPtr, typename AdapterPtr>
     struct SimpleField : public FieldBase
     {
         MemberPtr member;
-        AdapterType adapter;
+        AdapterPtr adapter;
 
-        SimpleField(std::string_view id, MemberPtr member, AdapterType&& adapter)
+        SimpleField(std::string_view id, MemberPtr member, AdapterPtr adapter)
             : FieldBase(id), member(member), adapter(std::move(adapter))
         {
         }
@@ -195,7 +195,7 @@ private:
         void process(const scs_named_value_t& param, void* data) override
         {
             auto& typedData = *static_cast<ClassType*>(data);
-            typedData.*member = adapter.get(param.value);
+            typedData.*member = adapter(param.value);
         }
     };
 
@@ -204,7 +204,7 @@ private:
     {
         MemberPtr member;
         EnumDeserializer deserializer;
-        StringAdapter adapter;
+        ValueAdapter_t<std::string> adapter{ &valueAdapter<std::string> };
 
         EnumField(std::string_view id, MemberPtr member, EnumDeserializer&& deserializer)
             : FieldBase(id), member(member), deserializer(std::move(deserializer))
@@ -214,24 +214,21 @@ private:
         void process(const scs_named_value_t& param, void* data) override
         {
             auto& typedData = *static_cast<ClassType*>(data);
-            auto str = adapter.get(param.value);
+            auto str = adapter(param.value);
 
             typedData.*member = deserializer.getValue(str);
         }
     };
 
-    template<typename MemberPtr, typename InnerMemberPtr, typename AdapterType>
+    template<typename MemberPtr, typename InnerMemberPtr, typename AdapterPtr>
     struct ComplexField : public FieldBase
     {
         MemberPtr member;
         InnerMemberPtr innerMember;
-        AdapterType adapter;
+        AdapterPtr adapter;
 
         ComplexField(
-            std::string_view id,
-            MemberPtr member,
-            InnerMemberPtr innerMember,
-            AdapterType&& adapter)
+            std::string_view id, MemberPtr member, InnerMemberPtr innerMember, AdapterPtr adapter)
             : FieldBase(id), member(member), innerMember(innerMember), adapter(std::move(adapter))
         {
         }
@@ -240,17 +237,17 @@ private:
         {
             auto& typedData = *static_cast<ClassType*>(data);
             auto& innerClass = typedData.*member;
-            innerClass.*innerMember = adapter.get(param.value);
+            innerClass.*innerMember = adapter(param.value);
         }
     };
 
-    template<typename MemberPtr, typename AdapterType>
+    template<typename MemberPtr, typename AdapterPtr>
     struct IndexedSizeField : public FieldBase
     {
         MemberPtr member;
-        AdapterType adapter;
+        AdapterPtr adapter;
 
-        IndexedSizeField(std::string_view id, MemberPtr member, AdapterType&& adapter)
+        IndexedSizeField(std::string_view id, MemberPtr member, AdapterPtr adapter)
             : FieldBase(id), member(member), adapter(std::move(adapter))
         {
         }
@@ -260,19 +257,19 @@ private:
             auto& typedData = *static_cast<ClassType*>(data);
             auto& vector = typedData.*member;
 
-            auto value = adapter.get(param.value);
+            auto value = adapter(param.value);
 
             vector.resize(value);
         }
     };
 
-    template<typename VectorPtr, typename AdapterType>
+    template<typename VectorPtr, typename AdapterPtr>
     struct SimpleIndexedField : public FieldBase
     {
         VectorPtr vector;
-        AdapterType adapter;
+        AdapterPtr adapter;
 
-        SimpleIndexedField(std::string_view id, VectorPtr vector, AdapterType&& adapter)
+        SimpleIndexedField(std::string_view id, VectorPtr vector, AdapterPtr adapter)
             : FieldBase(id), vector(vector), adapter(std::move(adapter))
         {
             isIndexed = true;
@@ -283,7 +280,7 @@ private:
             auto& typedData = *static_cast<ClassType*>(data);
             auto& field = typedData.*vector;
 
-            auto value = adapter.get(param.value);
+            auto value = adapter(param.value);
 
             if (field.size() <= param.index)
             {
@@ -322,14 +319,13 @@ private:
     };
 
 private:
-    template<typename ValueType, typename AdapterType>
-    void addSimple(std::string_view id, ValueType ClassType::*member, AdapterType&& adapter)
+    template<typename ValueType, typename AdapterPtr>
+    void addSimple(std::string_view id, ValueType ClassType::*member, AdapterPtr adapter)
     {
         using MemberPtr_t = ValueType(ClassType::*);
-        using Field_t = SimpleField<MemberPtr_t, typename std::decay_t<AdapterType>>;
+        using Field_t = SimpleField<MemberPtr_t, AdapterPtr>;
 
-        _fields.push_back(std::shared_ptr<FieldBase>(
-            new Field_t(id, member, std::forward<AdapterType>(adapter))));
+        _fields.push_back(std::shared_ptr<FieldBase>(new Field_t(id, member, adapter)));
     }
 
     template<typename ValueType, typename EnumDeserializerType>
@@ -343,40 +339,37 @@ private:
             new Field_t(id, member, std::forward<EnumDeserializerType>(deserializer))));
     }
 
-    template<typename ValueType, typename InnerValueType, typename AdapterType>
+    template<typename ValueType, typename InnerValueType, typename AdapterPtr>
     void addComplex(
         std::string_view id,
         ValueType ClassType::*member,
         InnerValueType ValueType::*innerMember,
-        AdapterType&& adapter)
+        AdapterPtr adapter)
     {
         using MemberPtr_t = ValueType(ClassType::*);
         using InnerMemberPtr_t = InnerValueType(ValueType::*);
-        using Field_t =
-            ComplexField<MemberPtr_t, InnerMemberPtr_t, typename std::decay_t<AdapterType>>;
+        using Field_t = ComplexField<MemberPtr_t, InnerMemberPtr_t, AdapterPtr>;
 
-        _fields.push_back(std::shared_ptr<FieldBase>(
-            new Field_t(id, member, innerMember, std::forward<AdapterType>(adapter))));
+        _fields.push_back(
+            std::shared_ptr<FieldBase>(new Field_t(id, member, innerMember, adapter)));
     }
 
-    template<typename ValueType, typename AdapterType>
-    void addIndexedSize(std::string_view id, ValueType ClassType::*member, AdapterType&& adapter)
+    template<typename ValueType, typename AdapterPtr>
+    void addIndexedSize(std::string_view id, ValueType ClassType::*member, AdapterPtr adapter)
     {
         using VectorPtr_t = ValueType(ClassType::*);
-        using Field_t = IndexedSizeField<VectorPtr_t, typename std::decay_t<AdapterType>>;
+        using Field_t = IndexedSizeField<VectorPtr_t, AdapterPtr>;
 
-        _fields.push_back(std::shared_ptr<FieldBase>(
-            new Field_t(id, member, std::forward<AdapterType>(adapter))));
+        _fields.push_back(std::shared_ptr<FieldBase>(new Field_t(id, member, adapter)));
     }
 
-    template<typename ValueType, typename AdapterType>
-    void addSimpleIndexed(std::string_view id, ValueType ClassType::*member, AdapterType&& adapter)
+    template<typename ValueType, typename AdapterPtr>
+    void addSimpleIndexed(std::string_view id, ValueType ClassType::*member, AdapterPtr adapter)
     {
         using VectorPtr_t = ValueType(ClassType::*);
-        using Field_t = SimpleIndexedField<VectorPtr_t, typename std::decay_t<AdapterType>>;
+        using Field_t = SimpleIndexedField<VectorPtr_t, AdapterPtr>;
 
-        _fields.push_back(std::shared_ptr<FieldBase>(
-            new Field_t(id, member, std::forward<AdapterType>(adapter))));
+        _fields.push_back(std::shared_ptr<FieldBase>(new Field_t(id, member, adapter)));
     }
 
     template<typename ValueType>
