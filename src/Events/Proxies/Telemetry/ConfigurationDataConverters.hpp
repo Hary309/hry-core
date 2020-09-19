@@ -198,7 +198,8 @@ struct ParamConverterCreator<Job>
             SCS_TELEMETRY_CONFIG_ATTRIBUTE_source_company, &Job::sourceCompany, &Company::name);
 
         // destination city
-        obj.bind(SCS_TELEMETRY_CONFIG_ATTRIBUTE_destination_city_id, &Job::destinationCity, &City::id);
+        obj.bind(
+            SCS_TELEMETRY_CONFIG_ATTRIBUTE_destination_city_id, &Job::destinationCity, &City::id);
         obj.bind(
             SCS_TELEMETRY_CONFIG_ATTRIBUTE_destination_city, &Job::destinationCity, &City::name);
 

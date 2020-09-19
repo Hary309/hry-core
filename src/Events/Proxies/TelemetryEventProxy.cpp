@@ -23,8 +23,6 @@ TelemetryEventProxy::TelemetryEventProxy(
         SCS_TELEMETRY_EVENT_paused, TelemetryEventProxy::ChangedState, &eventMgr);
     scsTelemetry->register_for_event(
         SCS_TELEMETRY_EVENT_started, TelemetryEventProxy::ChangedState, &eventMgr);
-
-    
 }
 
 void TelemetryEventProxy::FrameStart(

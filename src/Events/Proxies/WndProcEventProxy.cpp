@@ -243,19 +243,22 @@ void WndProcEventProxy::onWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lPa
         // Left mouse button
         case WM_LBUTTONDOWN:
         {
-            _eventMgr.system.mouseButtonPressSignal.call({ Mouse::Button::Left, ButtonState::Pressed });
+            _eventMgr.system.mouseButtonPressSignal.call(
+                { Mouse::Button::Left, ButtonState::Pressed });
         }
         break;
         case WM_LBUTTONUP:
         {
-            _eventMgr.system.mouseButtonReleaseSignal.call({ Mouse::Button::Left, ButtonState::Released });
+            _eventMgr.system.mouseButtonReleaseSignal.call(
+                { Mouse::Button::Left, ButtonState::Released });
         }
         break;
 
         // Right mouse button
         case WM_RBUTTONDOWN:
         {
-            _eventMgr.system.mouseButtonPressSignal.call({ Mouse::Button::Right, ButtonState::Pressed });
+            _eventMgr.system.mouseButtonPressSignal.call(
+                { Mouse::Button::Right, ButtonState::Pressed });
         }
         break;
         case WM_RBUTTONUP:
@@ -268,7 +271,8 @@ void WndProcEventProxy::onWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lPa
         // Middle mouse button
         case WM_MBUTTONDOWN:
         {
-            _eventMgr.system.mouseButtonPressSignal.call({ Mouse::Button::Middle, ButtonState::Pressed });
+            _eventMgr.system.mouseButtonPressSignal.call(
+                { Mouse::Button::Middle, ButtonState::Pressed });
         }
         break;
         case WM_MBUTTONUP:
