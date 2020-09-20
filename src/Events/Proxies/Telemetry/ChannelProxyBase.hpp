@@ -16,8 +16,8 @@ HRY_NS_BEGIN
 
 template<typename T>
 void storeValue(
-    const scs_string_t name,
-    const scs_u32_t index,
+    const scs_string_t, /*unused*/
+    const scs_u32_t,
     const scs_value_t* const value,
     const scs_context_t context)
 {
@@ -35,7 +35,7 @@ void storeValue(
 
 template<typename T>
 void storeValueIndexed(
-    const scs_string_t name,
+    const scs_string_t /*unused*/,
     const scs_u32_t index,
     const scs_value_t* const value,
     const scs_context_t context)
@@ -99,7 +99,7 @@ protected:
 
     template<typename ValueType>
     void unregisterIndexedChannel(
-        const char* id, uint32_t beginIndex, uint32_t count, std::vector<ValueType>& member)
+        const char* id, uint32_t beginIndex, uint32_t count, std::vector<ValueType>& /*unused*/)
     {
         for (uint32_t i = beginIndex; i < beginIndex + count; i++)
         {
