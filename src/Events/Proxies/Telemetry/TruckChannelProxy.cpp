@@ -10,8 +10,12 @@ HRY_NS_BEGIN
 
 TruckChannelProxy::TruckChannelProxy(
     EventManager& eventMgr, scs_telemetry_init_params_v100_t* scsTelemetry)
-    : ChannelProxyBase(scsTelemetry)
+    : ChannelProxyBase(scsTelemetry), _onTruckConfig(eventMgr.game.config.truckSignal),
+      _onHShifterConfig(eventMgr.game.config.hshifterSignal)
 {
+    _onTruckConfig.connect<&TruckChannelProxy::onTruckConfig>(this);
+    _onHShifterConfig.connect<&TruckChannelProxy::onHShifterConfig>(this);
+
     registerChannel(SCS_TELEMETRY_TRUCK_CHANNEL_world_placement, _truck.worldPlacement);
     registerChannel(SCS_TELEMETRY_TRUCK_CHANNEL_local_linear_velocity, _truck.localVelocityLinear);
     registerChannel(
@@ -40,7 +44,6 @@ TruckChannelProxy::TruckChannelProxy(
     registerChannel(SCS_TELEMETRY_TRUCK_CHANNEL_effective_clutch, _truck.effectiveClutch);
     registerChannel(SCS_TELEMETRY_TRUCK_CHANNEL_cruise_control, _truck.cruiseControl);
     registerChannel(SCS_TELEMETRY_TRUCK_CHANNEL_hshifter_slot, _truck.hshifterSlot);
-    // registerChannel(SCS_TELEMETRY_TRUCK_CHANNEL_hshifter_selector, _truck.hshifterSelect);
     registerChannel(SCS_TELEMETRY_TRUCK_CHANNEL_parking_brake, _truck.brakeParking);
     registerChannel(SCS_TELEMETRY_TRUCK_CHANNEL_motor_brake, _truck.brakeMotor);
     registerChannel(SCS_TELEMETRY_TRUCK_CHANNEL_retarder_level, _truck.brakeRetarder);
@@ -94,15 +97,110 @@ TruckChannelProxy::TruckChannelProxy(
     registerChannel(SCS_TELEMETRY_TRUCK_CHANNEL_navigation_time, _truck.navigationTime);
     registerChannel(
         SCS_TELEMETRY_TRUCK_CHANNEL_navigation_speed_limit, _truck.navigationSpeedLimit);
-    // registerChannel(
-    //     SCS_TELEMETRY_TRUCK_CHANNEL_wheel_susp_deflection, _truck.wheelSuspensionDeflection);
-    // registerChannel(SCS_TELEMETRY_TRUCK_CHANNEL_wheel_on_ground, _truck.wheelOnGround);
-    // registerChannel(SCS_TELEMETRY_TRUCK_CHANNEL_wheel_substance, _truck.wheelSubstance);
-    // registerChannel(SCS_TELEMETRY_TRUCK_CHANNEL_wheel_velocity, _truck.wheelAngularVelocity);
-    // registerChannel(SCS_TELEMETRY_TRUCK_CHANNEL_wheel_steering, _truck.wheelSteering);
-    // registerChannel(SCS_TELEMETRY_TRUCK_CHANNEL_wheel_rotation, _truck.wheelRotation);
-    // registerChannel(SCS_TELEMETRY_TRUCK_CHANNEL_wheel_lift, _truck.wheelLift);
-    // registerChannel(SCS_TELEMETRY_TRUCK_CHANNEL_wheel_lift_offset, _truck.wheelLiftOffset);
+}
+
+void TruckChannelProxy::onTruckConfig(const std::optional<scs::Truck>&& truck)
+{
+    if (!truck.has_value())
+    {
+        Core::Logger->warning("Truck no value");
+        return;
+    }
+
+    uint32_t newCount = truck->wheels.size();
+
+    Core::Logger->info("Resize truck to: {} from {}", newCount, _wheelCount);
+
+    _truck.wheelSuspensionDeflection.resize(newCount);
+    _truck.wheelOnGround.resize(newCount);
+    _truck.wheelSubstance.resize(newCount);
+    _truck.wheelAngularVelocity.resize(newCount);
+    _truck.wheelSteering.resize(newCount);
+    _truck.wheelRotation.resize(newCount);
+    _truck.wheelLift.resize(newCount);
+    _truck.wheelLiftOffset.resize(newCount);
+
+    if (newCount > _wheelCount)
+    {
+        registerWheels(_wheelCount, newCount - _wheelCount);
+    }
+    else if (newCount < _wheelCount)
+    {
+        unregisterWheels(newCount, _wheelCount - newCount);
+    }
+
+    _wheelCount = newCount;
+}
+
+void TruckChannelProxy::onHShifterConfig(const std::optional<scs::HShifter>&& hshifter)
+{
+    if (!hshifter.has_value())
+    {
+        Core::Logger->warning("HShifter no value");
+        return;
+    }
+
+    auto newCount = hshifter->selectorCount;
+    Core::Logger->info("Resize hshifter to: {} from {}", newCount, _selectorCount);
+
+    _truck.hshifterSelect.resize(newCount);
+
+    if (newCount > _selectorCount)
+    {
+        registerIndexedChannel(
+            SCS_TELEMETRY_TRUCK_CHANNEL_hshifter_selector, _selectorCount,
+            newCount - _selectorCount, _truck.hshifterSelect);
+    }
+    else if (newCount < _selectorCount)
+    {
+        unregisterIndexedChannel(
+            SCS_TELEMETRY_TRUCK_CHANNEL_hshifter_selector, newCount, _selectorCount - newCount,
+            _truck.hshifterSelect);
+    }
+
+    _selectorCount = newCount;
+}
+
+void TruckChannelProxy::registerWheels(int beginIndex, int count)
+{
+    registerIndexedChannel(
+        SCS_TELEMETRY_TRUCK_CHANNEL_wheel_susp_deflection, beginIndex, count,
+        _truck.wheelSuspensionDeflection);
+    registerIndexedChannel(
+        SCS_TELEMETRY_TRUCK_CHANNEL_wheel_on_ground, beginIndex, count, _truck.wheelOnGround);
+    registerIndexedChannel(
+        SCS_TELEMETRY_TRUCK_CHANNEL_wheel_substance, beginIndex, count, _truck.wheelSubstance);
+    registerIndexedChannel(
+        SCS_TELEMETRY_TRUCK_CHANNEL_wheel_velocity, beginIndex, count, _truck.wheelAngularVelocity);
+    registerIndexedChannel(
+        SCS_TELEMETRY_TRUCK_CHANNEL_wheel_steering, beginIndex, count, _truck.wheelSteering);
+    registerIndexedChannel(
+        SCS_TELEMETRY_TRUCK_CHANNEL_wheel_rotation, beginIndex, count, _truck.wheelRotation);
+    registerIndexedChannel(
+        SCS_TELEMETRY_TRUCK_CHANNEL_wheel_lift, beginIndex, count, _truck.wheelLift);
+    registerIndexedChannel(
+        SCS_TELEMETRY_TRUCK_CHANNEL_wheel_lift_offset, beginIndex, count, _truck.wheelLiftOffset);
+}
+
+void TruckChannelProxy::unregisterWheels(int beginIndex, int count)
+{
+    unregisterIndexedChannel(
+        SCS_TELEMETRY_TRUCK_CHANNEL_wheel_susp_deflection, beginIndex, count,
+        _truck.wheelSuspensionDeflection);
+    unregisterIndexedChannel(
+        SCS_TELEMETRY_TRUCK_CHANNEL_wheel_on_ground, beginIndex, count, _truck.wheelOnGround);
+    unregisterIndexedChannel(
+        SCS_TELEMETRY_TRUCK_CHANNEL_wheel_substance, beginIndex, count, _truck.wheelSubstance);
+    unregisterIndexedChannel(
+        SCS_TELEMETRY_TRUCK_CHANNEL_wheel_velocity, beginIndex, count, _truck.wheelAngularVelocity);
+    unregisterIndexedChannel(
+        SCS_TELEMETRY_TRUCK_CHANNEL_wheel_steering, beginIndex, count, _truck.wheelSteering);
+    unregisterIndexedChannel(
+        SCS_TELEMETRY_TRUCK_CHANNEL_wheel_rotation, beginIndex, count, _truck.wheelRotation);
+    unregisterIndexedChannel(
+        SCS_TELEMETRY_TRUCK_CHANNEL_wheel_lift, beginIndex, count, _truck.wheelLift);
+    unregisterIndexedChannel(
+        SCS_TELEMETRY_TRUCK_CHANNEL_wheel_lift_offset, beginIndex, count, _truck.wheelLiftOffset);
 }
 
 HRY_NS_END

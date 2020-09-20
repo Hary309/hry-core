@@ -8,6 +8,7 @@
 #include "Hry/GameType.hpp"
 #include "Hry/KeyBinding/KeyBinds.hpp"
 #include "Hry/Logger/Logger.hpp"
+#include "Hry/Namespace.hpp"
 #include "Hry/Utils/Timer.hpp"
 #include "Hry/Utils/Utils.hpp"
 #include "Hry/Version.hpp"
@@ -22,9 +23,6 @@
 
 #include "ImGuiImplEvents.hpp"
 
-struct scs_telemetry_init_params_v100_t;
-
-#include "Hry/Namespace.hpp"
 
 HRY_NS_BEGIN
 
@@ -46,8 +44,6 @@ public:
 
 private:
     bool _isInited = false;
-
-    scs_telemetry_init_params_v100_t* _scsTelemetry = nullptr;
 
     EventManager _eventMgr;
     InternalEventHandler _eventHandler;

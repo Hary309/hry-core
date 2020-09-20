@@ -75,8 +75,8 @@ struct TruckChannel
     bool lightParking;
     bool lightBeamLow;
     bool lightBeamHigh;
-    bool lightAuxFront;
-    bool lightAuxRoof;
+    uint32_t lightAuxFront;
+    uint32_t lightAuxRoof;
     bool lightBeacon;
     bool lightBrake;
     bool lightReverse;

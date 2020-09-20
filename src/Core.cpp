@@ -51,11 +51,9 @@ Core::~Core()
 
 bool Core::init(scs_telemetry_init_params_v100_t* scsTelemetry)
 {
-    _scsTelemetry = scsTelemetry;
-
     Paths::Init();
 
-    Core::GameType = DetermineGameType(_scsTelemetry->common.game_id);
+    Core::GameType = DetermineGameType(scsTelemetry->common.game_id);
 
     LoggerFactory::Init(Paths::HomePath + "/hry_core.log", _eventMgr);
     Logger = LoggerFactory::GetLogger("core");
@@ -166,7 +164,7 @@ void Core::onConfigChangesApplied(const ConfigCallbackData& data)
 
     _loggerWindow.setEnabled(coreConfigData->showLogWindow);
     _loggerWindow.setOpacity(coreConfigData->logWindowOpacity);
-    
+
     _showImGuiDemo = coreConfigData->showImGuiDemo;
 }
 
