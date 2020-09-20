@@ -4,9 +4,12 @@
 
 HRY_NS_BEGIN
 
-struct JobChannel
+namespace scs
 {
-    float cargoDamage;
-};
+    struct JobChannel
+    {
+        float cargoDamage;
+    };
+} // namespace scs
 
 HRY_NS_END

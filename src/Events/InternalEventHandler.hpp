@@ -39,8 +39,8 @@ struct InternalEventHandler
     // game events
     struct
     {
-        Sink<void(const FrameEvent&&)> onFrameStart;
-        Sink<void(const FrameEvent&&)> onFrameEnd;
+        Sink<void(const FrameStartEvent&&)> onFrameStart;
+        Sink<void(const FrameEndEvent&&)> onFrameEnd;
         Sink<void(const GameStateEvent&&)> onStateChange;
     } game;
 };

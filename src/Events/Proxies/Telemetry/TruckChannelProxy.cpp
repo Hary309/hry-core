@@ -2,6 +2,7 @@
 
 #include <common/scssdk_telemetry_truck_common_channels.h>
 
+#include "Hry/Events/Event.hpp"
 #include "Hry/Namespace.hpp"
 
 #include "Events/Proxies/Telemetry/ChannelProxyBase.hpp"
@@ -10,9 +11,12 @@ HRY_NS_BEGIN
 
 TruckChannelProxy::TruckChannelProxy(
     EventManager& eventMgr, scs_telemetry_init_params_v100_t* scsTelemetry)
-    : ChannelProxyBase(scsTelemetry), _onTruckConfig(eventMgr.game.config.truckSignal),
+    : ChannelProxyBase(scsTelemetry), _eventMgr(eventMgr),
+      _onFrameStart(eventMgr.game.frameStartSignal),
+      _onTruckConfig(eventMgr.game.config.truckSignal),
       _onHShifterConfig(eventMgr.game.config.hshifterSignal)
 {
+    _onFrameStart.connect<&TruckChannelProxy::frameStart>(this);
     _onTruckConfig.connect<&TruckChannelProxy::onTruckConfig>(this);
     _onHShifterConfig.connect<&TruckChannelProxy::onHShifterConfig>(this);
 
@@ -97,6 +101,14 @@ TruckChannelProxy::TruckChannelProxy(
     registerChannel(SCS_TELEMETRY_TRUCK_CHANNEL_navigation_time, _truck.navigationTime);
     registerChannel(
         SCS_TELEMETRY_TRUCK_CHANNEL_navigation_speed_limit, _truck.navigationSpeedLimit);
+}
+
+void TruckChannelProxy::frameStart(const FrameStartEvent&& event)
+{
+    if (!event.isGamePaused)
+    {
+        _eventMgr.game.truckChannelSignal.call(_truck);
+    }
 }
 
 void TruckChannelProxy::onTruckConfig(const std::optional<scs::Truck>&& truck)

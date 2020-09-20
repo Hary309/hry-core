@@ -6,11 +6,13 @@
 
 HRY_NS_BEGIN
 
-struct CommonChannel
+namespace scs
 {
-    float localScale;
-    uint32_t gameTime;
-    int32_t restStop;
-};
-
+    struct CommonChannel
+    {
+        float localScale;
+        uint32_t gameTime;
+        int32_t restStop;
+    };
+} // namespace scs
 HRY_NS_END

@@ -8,6 +8,8 @@
 
 #include "Events/EventManager.hpp"
 
+#include "scssdk.h"
+
 HRY_NS_BEGIN
 
 TelemetryEventProxy::TelemetryEventProxy(
@@ -26,13 +28,19 @@ TelemetryEventProxy::TelemetryEventProxy(
 }
 
 void TelemetryEventProxy::FrameStart(
-    scs_event_t /*unused*/, const void* /*unused*/, scs_context_t context)
+    scs_event_t /*unused*/, const void* data, scs_context_t context)
 {
     static Timer timer;
+    static scs_timestamp_t lastSimulationTime;
+
+    const auto& frameStartData = *reinterpret_cast<const scs_telemetry_frame_start_t*>(data);
 
     auto* eventMgr = reinterpret_cast<EventManager*>(context);
-    eventMgr->game.frameStartSignal.call({ timer.asSeconds() });
+    eventMgr->game.frameStartSignal.call(
+        { timer.asSeconds(), frameStartData.paused_simulation_time == lastSimulationTime });
     timer.reset();
+
+    lastSimulationTime = frameStartData.paused_simulation_time;
 }
 
 void TelemetryEventProxy::FrameEnd(

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Hry/Events/Event.hpp"
 #include "Hry/Namespace.hpp"
 #include "Hry/SCSSDK/ConfigurationData.hpp"
 #include "Hry/SCSSDK/TruckChannel.hpp"
@@ -13,8 +14,11 @@ HRY_NS_BEGIN
 class TruckChannelProxy : public ChannelProxyBase
 {
 private:
-    TruckChannel _truck{};
+    scs::TruckChannel _truck{};
 
+    EventManager& _eventMgr;
+
+    Sink<void(const FrameStartEvent&&)> _onFrameStart;
     Sink<void(const std::optional<scs::Truck>&&)> _onTruckConfig;
     Sink<void(const std::optional<scs::HShifter>&&)> _onHShifterConfig;
 
@@ -23,14 +27,10 @@ private:
 
 public:
     TruckChannelProxy(EventManager& eventMgr, scs_telemetry_init_params_v100_t* scsTelemetry);
-    ~TruckChannelProxy() { Core::Logger->info("Umieram se"); }
-
-    TruckChannelProxy(TruckChannelProxy&&) = delete;
-    TruckChannelProxy(const TruckChannelProxy&) = delete;
-    TruckChannelProxy& operator=(TruckChannelProxy&&) = delete;
-    TruckChannelProxy& operator=(const TruckChannelProxy&) = delete;
 
 private:
+    void frameStart(const FrameStartEvent&&);
+
     void onTruckConfig(const std::optional<scs::Truck>&& truck);
     void onHShifterConfig(const std::optional<scs::HShifter>&& hshifter);
 

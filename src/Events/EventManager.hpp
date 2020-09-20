@@ -11,6 +11,7 @@
 #include "Hry/Logger/Logger.hpp"
 #include "Hry/SCSSDK/ConfigurationData.hpp"
 #include "Hry/SCSSDK/GameplayData.hpp"
+#include "Hry/SCSSDK/TruckChannel.hpp"
 #include "Hry/Utils/Signal.hpp"
 
 #include "Events/EventProxyBase.hpp"
@@ -58,9 +59,10 @@ public:
     // game events
     struct
     {
-        Signal<void(const FrameEvent&&)> frameStartSignal;
-        Signal<void(const FrameEvent&&)> frameEndSignal;
+        Signal<void(const FrameStartEvent&&)> frameStartSignal;
+        Signal<void(const FrameEndEvent&&)> frameEndSignal;
         Signal<void(const GameStateEvent&&)> stateChangeSignal;
+        Signal<void(const scs::TruckChannel&)> truckChannelSignal;
 
         // gameplay events
         struct

@@ -67,7 +67,13 @@ struct JoystickButtonEvent
     ButtonState state;
 };
 
-struct FrameEvent
+struct FrameStartEvent
+{
+    double deltaTime;
+    bool isGamePaused;
+};
+
+struct FrameEndEvent
 {
     double deltaTime;
 };

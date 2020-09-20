@@ -34,7 +34,7 @@ public:
     HryPtr<KeyBinds> createKeyBinds(const std::string& name);
     void remove(const KeyBinds* keyBind);
 
-    void update(const FrameEvent&&);
+    void update(const FrameEndEvent&&);
 
     [[nodiscard]] const auto& getKeyBinds() const { return _keyBinds; }
 
