@@ -122,11 +122,11 @@ void TruckChannelProxy::onTruckConfig(const std::optional<scs::Truck>&& truck)
 
     if (newCount > _wheelCount)
     {
-        registerWheels(_wheelCount, newCount - _wheelCount);
+        registerWheels(_wheelCount, newCount);
     }
     else if (newCount < _wheelCount)
     {
-        unregisterWheels(newCount, _wheelCount - newCount);
+        unregisterWheels(newCount, _wheelCount);
     }
 
     _wheelCount = newCount;
@@ -148,59 +148,63 @@ void TruckChannelProxy::onHShifterConfig(const std::optional<scs::HShifter>&& hs
     if (newCount > _selectorCount)
     {
         registerIndexedChannel(
-            SCS_TELEMETRY_TRUCK_CHANNEL_hshifter_selector, _selectorCount,
-            newCount - _selectorCount, _truck.hshifterSelect);
+            SCS_TELEMETRY_TRUCK_CHANNEL_hshifter_selector, _selectorCount, newCount,
+            _truck.hshifterSelect);
     }
     else if (newCount < _selectorCount)
     {
         unregisterIndexedChannel(
-            SCS_TELEMETRY_TRUCK_CHANNEL_hshifter_selector, newCount, _selectorCount - newCount,
+            SCS_TELEMETRY_TRUCK_CHANNEL_hshifter_selector, newCount, _selectorCount,
             _truck.hshifterSelect);
     }
 
     _selectorCount = newCount;
 }
 
-void TruckChannelProxy::registerWheels(int beginIndex, int count)
+void TruckChannelProxy::registerWheels(int startIndex, int endIndex)
 {
     registerIndexedChannel(
-        SCS_TELEMETRY_TRUCK_CHANNEL_wheel_susp_deflection, beginIndex, count,
+        SCS_TELEMETRY_TRUCK_CHANNEL_wheel_susp_deflection, startIndex, endIndex,
         _truck.wheelSuspensionDeflection);
     registerIndexedChannel(
-        SCS_TELEMETRY_TRUCK_CHANNEL_wheel_on_ground, beginIndex, count, _truck.wheelOnGround);
+        SCS_TELEMETRY_TRUCK_CHANNEL_wheel_on_ground, startIndex, endIndex, _truck.wheelOnGround);
     registerIndexedChannel(
-        SCS_TELEMETRY_TRUCK_CHANNEL_wheel_substance, beginIndex, count, _truck.wheelSubstance);
+        SCS_TELEMETRY_TRUCK_CHANNEL_wheel_substance, startIndex, endIndex, _truck.wheelSubstance);
     registerIndexedChannel(
-        SCS_TELEMETRY_TRUCK_CHANNEL_wheel_velocity, beginIndex, count, _truck.wheelAngularVelocity);
+        SCS_TELEMETRY_TRUCK_CHANNEL_wheel_velocity, startIndex, endIndex,
+        _truck.wheelAngularVelocity);
     registerIndexedChannel(
-        SCS_TELEMETRY_TRUCK_CHANNEL_wheel_steering, beginIndex, count, _truck.wheelSteering);
+        SCS_TELEMETRY_TRUCK_CHANNEL_wheel_steering, startIndex, endIndex, _truck.wheelSteering);
     registerIndexedChannel(
-        SCS_TELEMETRY_TRUCK_CHANNEL_wheel_rotation, beginIndex, count, _truck.wheelRotation);
+        SCS_TELEMETRY_TRUCK_CHANNEL_wheel_rotation, startIndex, endIndex, _truck.wheelRotation);
     registerIndexedChannel(
-        SCS_TELEMETRY_TRUCK_CHANNEL_wheel_lift, beginIndex, count, _truck.wheelLift);
+        SCS_TELEMETRY_TRUCK_CHANNEL_wheel_lift, startIndex, endIndex, _truck.wheelLift);
     registerIndexedChannel(
-        SCS_TELEMETRY_TRUCK_CHANNEL_wheel_lift_offset, beginIndex, count, _truck.wheelLiftOffset);
+        SCS_TELEMETRY_TRUCK_CHANNEL_wheel_lift_offset, startIndex, endIndex,
+        _truck.wheelLiftOffset);
 }
 
-void TruckChannelProxy::unregisterWheels(int beginIndex, int count)
+void TruckChannelProxy::unregisterWheels(int startIndex, int endIndex)
 {
     unregisterIndexedChannel(
-        SCS_TELEMETRY_TRUCK_CHANNEL_wheel_susp_deflection, beginIndex, count,
+        SCS_TELEMETRY_TRUCK_CHANNEL_wheel_susp_deflection, startIndex, endIndex,
         _truck.wheelSuspensionDeflection);
     unregisterIndexedChannel(
-        SCS_TELEMETRY_TRUCK_CHANNEL_wheel_on_ground, beginIndex, count, _truck.wheelOnGround);
+        SCS_TELEMETRY_TRUCK_CHANNEL_wheel_on_ground, startIndex, endIndex, _truck.wheelOnGround);
     unregisterIndexedChannel(
-        SCS_TELEMETRY_TRUCK_CHANNEL_wheel_substance, beginIndex, count, _truck.wheelSubstance);
+        SCS_TELEMETRY_TRUCK_CHANNEL_wheel_substance, startIndex, endIndex, _truck.wheelSubstance);
     unregisterIndexedChannel(
-        SCS_TELEMETRY_TRUCK_CHANNEL_wheel_velocity, beginIndex, count, _truck.wheelAngularVelocity);
+        SCS_TELEMETRY_TRUCK_CHANNEL_wheel_velocity, startIndex, endIndex,
+        _truck.wheelAngularVelocity);
     unregisterIndexedChannel(
-        SCS_TELEMETRY_TRUCK_CHANNEL_wheel_steering, beginIndex, count, _truck.wheelSteering);
+        SCS_TELEMETRY_TRUCK_CHANNEL_wheel_steering, startIndex, endIndex, _truck.wheelSteering);
     unregisterIndexedChannel(
-        SCS_TELEMETRY_TRUCK_CHANNEL_wheel_rotation, beginIndex, count, _truck.wheelRotation);
+        SCS_TELEMETRY_TRUCK_CHANNEL_wheel_rotation, startIndex, endIndex, _truck.wheelRotation);
     unregisterIndexedChannel(
-        SCS_TELEMETRY_TRUCK_CHANNEL_wheel_lift, beginIndex, count, _truck.wheelLift);
+        SCS_TELEMETRY_TRUCK_CHANNEL_wheel_lift, startIndex, endIndex, _truck.wheelLift);
     unregisterIndexedChannel(
-        SCS_TELEMETRY_TRUCK_CHANNEL_wheel_lift_offset, beginIndex, count, _truck.wheelLiftOffset);
+        SCS_TELEMETRY_TRUCK_CHANNEL_wheel_lift_offset, startIndex, endIndex,
+        _truck.wheelLiftOffset);
 }
 
 HRY_NS_END

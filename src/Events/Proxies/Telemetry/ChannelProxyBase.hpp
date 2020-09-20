@@ -99,9 +99,9 @@ protected:
 
     template<typename ValueType>
     void unregisterIndexedChannel(
-        const char* id, uint32_t beginIndex, uint32_t count, std::vector<ValueType>& /*unused*/)
+        const char* id, uint32_t startIndex, uint32_t endIndex, std::vector<ValueType>& /*unused*/)
     {
-        for (uint32_t i = beginIndex; i < beginIndex + count; i++)
+        for (uint32_t i = startIndex; i < endIndex; i++)
         {
             auto err = unregister_from_channel(id, i, SCSValueType_v<ValueType>);
 

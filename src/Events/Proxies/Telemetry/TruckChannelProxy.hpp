@@ -34,8 +34,8 @@ private:
     void onTruckConfig(const std::optional<scs::Truck>&& truck);
     void onHShifterConfig(const std::optional<scs::HShifter>&& hshifter);
 
-    void registerWheels(int beginIndex, int count);
-    void unregisterWheels(int beginIndex, int count);
+    void registerWheels(int startIndex, int endIndex);
+    void unregisterWheels(int startIndex, int endIndex);
 };
 
 HRY_NS_END
