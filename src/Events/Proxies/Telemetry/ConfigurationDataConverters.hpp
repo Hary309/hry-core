@@ -54,9 +54,9 @@ struct ParamConverterCreator<HShifter::Slot>
         using Slot = HShifter::Slot;
 
         ParamConverter<Slot> obj;
-        obj.bind(SCS_TELEMETRY_CONFIG_ATTRIBUTE_slot_gear, &Slot::gear);
         obj.bind(SCS_TELEMETRY_CONFIG_ATTRIBUTE_slot_handle_position, &Slot::handlePosition);
         obj.bind(SCS_TELEMETRY_CONFIG_ATTRIBUTE_slot_selectors, &Slot::selectors);
+        obj.bind(SCS_TELEMETRY_CONFIG_ATTRIBUTE_slot_gear, &Slot::gear);
         return obj;
     }
 };
@@ -67,7 +67,7 @@ struct ParamConverterCreator<HShifter>
     static auto create()
     {
         ParamConverter<HShifter> obj;
-        obj.bind(SCS_TELEMETRY_CONFIG_ATTRIBUTE_shifter_type, &HShifter::selectorCount);
+        obj.bind(SCS_TELEMETRY_CONFIG_ATTRIBUTE_selector_count, &HShifter::selectorCount);
         obj.bindIndexed({}, &HShifter::slots);
         return obj;
     }
