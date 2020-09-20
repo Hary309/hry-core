@@ -104,6 +104,12 @@ public:
         }
     }
 
+    void reset() noexcept
+    {
+        _function = nullptr;
+        _content = nullptr;
+    }
+
     Return operator()(Args... args) const { return call(std::forward<Args>(args)...); }
 
     bool operator==(const Delegate<Return(Args...)>& b) const noexcept
