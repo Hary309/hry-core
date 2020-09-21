@@ -35,8 +35,9 @@
 HRY_NS_BEGIN
 
 Core::Core(HINSTANCE hInst)
-    : _eventHandler(_eventMgr.createInternalEventHandler()), _renderer(*this, _eventMgr),
-      _keyBindsMgr(_eventHandler), _moduleMgr(_eventMgr, _configMgr, _keyBindsMgr),
+    : _eventHandler(_eventMgr.createInternalEventHandler()), _channelAggregator(_eventHandler),
+      _renderer(*this, _eventMgr), _keyBindsMgr(_eventHandler),
+      _moduleMgr(_eventMgr, _configMgr, _keyBindsMgr),
       _mainWindow(_moduleMgr, _configMgr, _keyBindsMgr, _eventHandler),
       _loggerWindow(_eventHandler), _imguiImplEvents(_eventHandler)
 {
@@ -78,6 +79,7 @@ bool Core::init(scs_telemetry_init_params_v100_t* scsTelemetry)
 
     _renderer.init();
     _eventMgr.init(scsTelemetry);
+    _channelAggregator.init(scsTelemetry);
 
     initConfig();
     initKeyBinds();

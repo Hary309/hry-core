@@ -7,30 +7,25 @@
 
 #include "Events/EventManager.hpp"
 
-#include "ChannelProxyBase.hpp"
+#include "ChannelAggregatorBase.hpp"
 
 HRY_NS_BEGIN
 
-class TruckChannelProxy : public ChannelProxyBase
+class TruckChannelAggregator : public ChannelAggregatorBase
 {
 private:
-    scs::TruckChannel _truck{};
-
-    EventManager& _eventMgr;
-
-    Sink<void(const FrameStartEvent&&)> _onFrameStart;
-    Sink<void(const std::optional<scs::Truck>&&)> _onTruckConfig;
-    Sink<void(const std::optional<scs::HShifter>&&)> _onHShifterConfig;
+    scs::TruckChannel& _truck;
 
     uint32_t _selectorCount = 0;
     uint32_t _wheelCount = 0;
 
 public:
-    TruckChannelProxy(EventManager& eventMgr, scs_telemetry_init_params_v100_t* scsTelemetry);
+    TruckChannelAggregator(
+        scs::TruckChannel& truckChannel,
+        scs_telemetry_init_params_v100_t* scsTelemetry,
+        InternalEventHandler& eventHandler);
 
 private:
-    void frameStart(const FrameStartEvent&&);
-
     void onTruckConfig(const std::optional<scs::Truck>&& truck);
     void onHShifterConfig(const std::optional<scs::HShifter>&& hshifter);
 

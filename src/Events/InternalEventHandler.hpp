@@ -5,6 +5,7 @@
 #include "Hry/Events/Event.hpp"
 #include "Hry/Logger/Logger.hpp"
 #include "Hry/Namespace.hpp"
+#include "Hry/SCSSDK/ConfigurationData.hpp"
 #include "Hry/Utils/Signal.hpp"
 
 HRY_NS_BEGIN
@@ -42,6 +43,17 @@ struct InternalEventHandler
         Sink<void(const FrameStartEvent&&)> onFrameStart;
         Sink<void(const FrameEndEvent&&)> onFrameEnd;
         Sink<void(const GameStateEvent&&)> onStateChange;
+
+        // configuration callbacks
+        struct
+        {
+            Sink<void(const std::optional<scs::Substances>&&)> substancesSignal;
+            Sink<void(const std::optional<scs::Controls>&&)> controlsSignal;
+            Sink<void(const std::optional<scs::HShifter>&&)> hshifterSignal;
+            Sink<void(const std::optional<scs::Truck>&&)> truckSignal;
+            Sink<void(const std::optional<scs::Trailer>&&)> trailerSignal;
+            Sink<void(const std::optional<scs::Job>&&)> jobSignal;
+        } config;
     } game;
 };
 

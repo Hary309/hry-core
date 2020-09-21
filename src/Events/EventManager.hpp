@@ -62,7 +62,6 @@ public:
         Signal<void(const FrameStartEvent&&)> frameStartSignal;
         Signal<void(const FrameEndEvent&&)> frameEndSignal;
         Signal<void(const GameStateEvent&&)> stateChangeSignal;
-        Signal<void(const scs::TruckChannel&)> truckChannelSignal;
 
         // gameplay events
         struct

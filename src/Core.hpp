@@ -18,11 +18,11 @@
 #include "KeyBinding/KeyBindsManager.hpp"
 #include "Modules/ModuleManager.hpp"
 #include "Renderer/Renderer.hpp"
+#include "SCSSDK/ChannelAggregator.hpp"
 #include "UI/LoggerWindow.hpp"
 #include "UI/MainWindow.hpp"
 
 #include "ImGuiImplEvents.hpp"
-
 
 HRY_NS_BEGIN
 
@@ -47,6 +47,7 @@ private:
 
     EventManager _eventMgr;
     InternalEventHandler _eventHandler;
+    ChannelAggregator _channelAggregator;
     Renderer _renderer;
     ConfigManager _configMgr;
     KeyBindsManager _keyBindsMgr;

@@ -1,24 +1,23 @@
-#include "TruckChannelProxy.hpp"
+#include "TruckChannelAggregator.hpp"
 
 #include <common/scssdk_telemetry_truck_common_channels.h>
 
 #include "Hry/Events/Event.hpp"
 #include "Hry/Namespace.hpp"
 
-#include "Events/Proxies/Telemetry/ChannelProxyBase.hpp"
+#include "Core.hpp"
 
 HRY_NS_BEGIN
 
-TruckChannelProxy::TruckChannelProxy(
-    EventManager& eventMgr, scs_telemetry_init_params_v100_t* scsTelemetry)
-    : ChannelProxyBase(scsTelemetry), _eventMgr(eventMgr),
-      _onFrameStart(eventMgr.game.frameStartSignal),
-      _onTruckConfig(eventMgr.game.config.truckSignal),
-      _onHShifterConfig(eventMgr.game.config.hshifterSignal)
+TruckChannelAggregator::TruckChannelAggregator(
+    scs::TruckChannel& truckChannel,
+    scs_telemetry_init_params_v100_t* scsTelemetry,
+    InternalEventHandler& eventHandler)
+    : ChannelAggregatorBase(scsTelemetry), _truck(truckChannel)
 {
-    _onFrameStart.connect<&TruckChannelProxy::frameStart>(this);
-    _onTruckConfig.connect<&TruckChannelProxy::onTruckConfig>(this);
-    _onHShifterConfig.connect<&TruckChannelProxy::onHShifterConfig>(this);
+    eventHandler.game.config.truckSignal.connect<&TruckChannelAggregator::onTruckConfig>(this);
+    eventHandler.game.config.hshifterSignal.connect<&TruckChannelAggregator::onHShifterConfig>(
+        this);
 
     registerChannel(SCS_TELEMETRY_TRUCK_CHANNEL_world_placement, _truck.worldPlacement);
     registerChannel(SCS_TELEMETRY_TRUCK_CHANNEL_local_linear_velocity, _truck.localVelocityLinear);
@@ -103,25 +102,14 @@ TruckChannelProxy::TruckChannelProxy(
         SCS_TELEMETRY_TRUCK_CHANNEL_navigation_speed_limit, _truck.navigationSpeedLimit);
 }
 
-void TruckChannelProxy::frameStart(const FrameStartEvent&& event)
-{
-    if (!event.isGamePaused)
-    {
-        _eventMgr.game.truckChannelSignal.call(_truck);
-    }
-}
-
-void TruckChannelProxy::onTruckConfig(const std::optional<scs::Truck>&& truck)
+void TruckChannelAggregator::onTruckConfig(const std::optional<scs::Truck>&& truck)
 {
     if (!truck.has_value())
     {
-        Core::Logger->warning("Truck no value");
         return;
     }
 
-    uint32_t newCount = truck->wheels.size();
-
-    Core::Logger->info("Resize truck to: {} from {}", newCount, _wheelCount);
+    const uint32_t newCount = truck->wheels.size();
 
     _truck.wheelSuspensionDeflection.resize(newCount);
     _truck.wheelOnGround.resize(newCount);
@@ -144,16 +132,14 @@ void TruckChannelProxy::onTruckConfig(const std::optional<scs::Truck>&& truck)
     _wheelCount = newCount;
 }
 
-void TruckChannelProxy::onHShifterConfig(const std::optional<scs::HShifter>&& hshifter)
+void TruckChannelAggregator::onHShifterConfig(const std::optional<scs::HShifter>&& hshifter)
 {
     if (!hshifter.has_value())
     {
-        Core::Logger->warning("HShifter no value");
         return;
     }
 
-    auto newCount = hshifter->selectorCount;
-    Core::Logger->info("Resize hshifter to: {} from {}", newCount, _selectorCount);
+    const auto newCount = hshifter->selectorCount;
 
     _truck.hshifterSelect.resize(newCount);
 
@@ -173,7 +159,7 @@ void TruckChannelProxy::onHShifterConfig(const std::optional<scs::HShifter>&& hs
     _selectorCount = newCount;
 }
 
-void TruckChannelProxy::registerWheels(int startIndex, int endIndex)
+void TruckChannelAggregator::registerWheels(int startIndex, int endIndex)
 {
     registerIndexedChannel(
         SCS_TELEMETRY_TRUCK_CHANNEL_wheel_susp_deflection, startIndex, endIndex,
@@ -196,7 +182,7 @@ void TruckChannelProxy::registerWheels(int startIndex, int endIndex)
         _truck.wheelLiftOffset);
 }
 
-void TruckChannelProxy::unregisterWheels(int startIndex, int endIndex)
+void TruckChannelAggregator::unregisterWheels(int startIndex, int endIndex)
 {
     unregisterIndexedChannel(
         SCS_TELEMETRY_TRUCK_CHANNEL_wheel_susp_deflection, startIndex, endIndex,

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <optional>
 #include <type_traits>
 
 #include <scssdk_telemetry.h>
@@ -9,15 +10,14 @@
 #include "SCSSDK/Adapters.hpp"
 #include "SCSSDK/ValueType.hpp"
 
-#include "Core.hpp"
-#include "scssdk_telemetry_channel.h"
+#include "scssdk.h"
 
 HRY_NS_BEGIN
 
 template<typename T>
-void storeValue(
-    const scs_string_t, /*unused*/
-    const scs_u32_t,
+inline void storeValue(
+    const scs_string_t /*unused*/,
+    const scs_u32_t /*unused*/,
     const scs_value_t* const value,
     const scs_context_t context)
 {
@@ -34,7 +34,7 @@ void storeValue(
 }
 
 template<typename T>
-void storeValueIndexed(
+inline void storeIndexedValue(
     const scs_string_t /*unused*/,
     const scs_u32_t index,
     const scs_value_t* const value,
@@ -57,27 +57,24 @@ void storeValueIndexed(
     }
 }
 
-class ChannelProxyBase
+class ChannelAggregatorBase
 {
 private:
     scs_telemetry_register_for_channel_t register_for_channel;
     scs_telemetry_unregister_from_channel_t unregister_from_channel;
 
 public:
-    ChannelProxyBase(scs_telemetry_init_params_v100_t* scsTelemetry)
-        : register_for_channel(scsTelemetry->register_for_channel),
-          unregister_from_channel(scsTelemetry->unregister_from_channel)
-    {
-    }
+    ChannelAggregatorBase(scs_telemetry_init_params_v100_t* scsTelemetry);
 
 protected:
-    // add support for indexed
     template<typename ValueType>
     void registerChannel(const char* id, ValueType& member)
     {
-        register_for_channel(
+        auto result = register_for_channel(
             id, SCS_U32_NIL, SCSValueType_v<ValueType>, SCS_TELEMETRY_CHANNEL_FLAG_no_value,
             &storeValue<ValueType>, &member);
+
+        checkForError(id, {}, result);
     }
 
     template<typename ValueType>
@@ -86,14 +83,11 @@ protected:
     {
         for (uint32_t i = beginIndex; i < beginIndex + count; i++)
         {
-            auto err = register_for_channel(
+            auto result = register_for_channel(
                 id, i, SCSValueType_v<ValueType>, SCS_TELEMETRY_CHANNEL_FLAG_no_value,
-                &storeValueIndexed<ValueType>, &member);
+                &storeIndexedValue<ValueType>, &member);
 
-            if (err != SCS_RESULT_ok)
-            {
-                Core::Logger->warning("Cannot register {}[] Error id: {}", id, i, err);
-            }
+            checkForError(id, i, result);
         }
     }
 
@@ -103,14 +97,14 @@ protected:
     {
         for (uint32_t i = startIndex; i < endIndex; i++)
         {
-            auto err = unregister_from_channel(id, i, SCSValueType_v<ValueType>);
+            auto result = unregister_from_channel(id, i, SCSValueType_v<ValueType>);
 
-            if (err != SCS_RESULT_ok)
-            {
-                Core::Logger->warning("Cannot unregister {}[] Error id: {}", id, i, err);
-            }
+            checkForError(id, i, result);
         }
     }
+
+private:
+    static void checkForError(const char* id, std::optional<uint32_t> index, scs_result_t result);
 };
 
 HRY_NS_END

@@ -98,6 +98,14 @@ InternalEventHandler EventManager::createInternalEventHandler()
             game.frameStartSignal,
             game.frameEndSignal,
             game.stateChangeSignal,
+            {
+                game.config.substancesSignal,
+                game.config.controlsSignal,
+                game.config.hshifterSignal,
+                game.config.truckSignal,
+                game.config.trailerSignal,
+                game.config.jobSignal
+            }
         }
     };
     // clang-format on
