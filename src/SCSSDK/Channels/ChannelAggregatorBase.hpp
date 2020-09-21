@@ -74,20 +74,20 @@ protected:
             id, SCS_U32_NIL, SCSValueType_v<ValueType>, SCS_TELEMETRY_CHANNEL_FLAG_no_value,
             &storeValue<ValueType>, &member);
 
-        checkForError(id, {}, result);
+        CheckForError(id, {}, result);
     }
 
     template<typename ValueType>
     void registerIndexedChannel(
-        const char* id, uint32_t beginIndex, uint32_t count, std::vector<ValueType>& member)
+        const char* id, uint32_t beginIndex, uint32_t endIndex, std::vector<ValueType>& member)
     {
-        for (uint32_t i = beginIndex; i < beginIndex + count; i++)
+        for (uint32_t i = beginIndex; i < endIndex; i++)
         {
             auto result = register_for_channel(
                 id, i, SCSValueType_v<ValueType>, SCS_TELEMETRY_CHANNEL_FLAG_no_value,
                 &storeIndexedValue<ValueType>, &member);
 
-            checkForError(id, i, result);
+            CheckForError(id, i, result);
         }
     }
 
@@ -99,12 +99,12 @@ protected:
         {
             auto result = unregister_from_channel(id, i, SCSValueType_v<ValueType>);
 
-            checkForError(id, i, result);
+            CheckForError(id, i, result);
         }
     }
 
 private:
-    static void checkForError(const char* id, std::optional<uint32_t> index, scs_result_t result);
+    static void CheckForError(const char* id, std::optional<uint32_t> index, scs_result_t result);
 };
 
 HRY_NS_END

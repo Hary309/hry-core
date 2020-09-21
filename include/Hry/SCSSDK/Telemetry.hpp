@@ -1,6 +1,9 @@
 #pragma once
 
+#include <array>
 #include <memory>
+
+#include <common/scssdk_telemetry_common_configs.h>
 
 #include "Hry/Namespace.hpp"
 #include "Hry/SCSSDK/CommonChannel.hpp"
@@ -19,17 +22,19 @@ struct Telemetry final
 private:
     // use pointers to avoid wrong offsets when more fields are added
     std::unique_ptr<scs::TruckChannel> _truck;
-    std::unique_ptr<scs::TrailerChannel> _trailer; // TODO: make it array or sth
+    std::array<std::unique_ptr<scs::TrailerChannel>, SCS_TELEMETRY_trailers_count> _trailers;
     std::unique_ptr<scs::JobChannel> _job;
     std::unique_ptr<scs::CommonChannel> _common;
 
 private:
     Telemetry()
-        : _truck(std::make_unique<scs::TruckChannel>()),
-          _trailer(std::make_unique<scs::TrailerChannel>()),
-          _job(std::make_unique<scs::JobChannel>()), _common(std::make_unique<scs::CommonChannel>())
-
+        : _truck(std::make_unique<scs::TruckChannel>()), _job(std::make_unique<scs::JobChannel>()),
+          _common(std::make_unique<scs::CommonChannel>())
     {
+        for (int i = 0; i < SCS_TELEMETRY_trailers_count; ++i)
+        {
+            _trailers[i] = std::make_unique<scs::TrailerChannel>();
+        }
     }
     ~Telemetry() = default;
 
@@ -41,7 +46,15 @@ public:
 
 public:
     const scs::TruckChannel* getTruck() const { return _truck.get(); }
-    const scs::TrailerChannel* getTrailer() const { return _trailer.get(); }
+    const scs::TrailerChannel* getTrailer(int index) const
+    {
+        if (index >= 0 && index <= SCS_TELEMETRY_trailers_count)
+        {
+            return _trailers[index].get();
+        }
+
+        return nullptr;
+    }
     const scs::JobChannel* getJob() const { return _job.get(); }
     const scs::CommonChannel* getCommon() const { return _common.get(); }
 };

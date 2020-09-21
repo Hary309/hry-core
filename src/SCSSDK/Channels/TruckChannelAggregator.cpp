@@ -111,6 +111,11 @@ void TruckChannelAggregator::onTruckConfig(const std::optional<scs::Truck>&& tru
 
     const uint32_t newCount = truck->wheels.size();
 
+    if (newCount == _wheelCount)
+    {
+        return;
+    }
+
     _truck.wheelSuspensionDeflection.resize(newCount);
     _truck.wheelOnGround.resize(newCount);
     _truck.wheelSubstance.resize(newCount);
@@ -140,6 +145,11 @@ void TruckChannelAggregator::onHShifterConfig(const std::optional<scs::HShifter>
     }
 
     const auto newCount = hshifter->selectorCount;
+
+    if (newCount == _selectorCount)
+    {
+        return;
+    }
 
     _truck.hshifterSelect.resize(newCount);
 

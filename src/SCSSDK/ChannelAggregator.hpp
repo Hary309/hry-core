@@ -16,16 +16,18 @@ class ChannelAggregatorBase;
 class ChannelAggregator
 {
 private:
+    std::vector<std::unique_ptr<ChannelAggregatorBase>> _channelAggregators;
+
     Telemetry _telemetry;
 
     InternalEventHandler& _eventHandler;
-
-    std::vector<std::unique_ptr<ChannelAggregatorBase>> _channelAggregators;
 
 public:
     ChannelAggregator(InternalEventHandler& eventHandler);
 
     void init(scs_telemetry_init_params_v100_t* scsTelemetry);
+
+    const Telemetry& getTelemetry() const { return _telemetry; }
 };
 
 HRY_NS_END

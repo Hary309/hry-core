@@ -17,7 +17,7 @@ ChannelAggregatorBase::ChannelAggregatorBase(scs_telemetry_init_params_v100_t* s
 {
 }
 
-void ChannelAggregatorBase::checkForError(
+void ChannelAggregatorBase::CheckForError(
     const char* id, std::optional<uint32_t> index, scs_result_t result)
 {
     if (result != SCS_RESULT_ok)
