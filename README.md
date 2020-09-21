@@ -14,7 +14,13 @@ Unfortunately, the documentation isn't there yet so you have to learn from examp
 
 - Easy API for creating settings and keybinds
 
-- SCS telemetry wrapped with modern C++ (WIP)
+- SCS telemetry wrapped with modern C++
+
+  - Access to channels for truck, multiple trailer and job
+
+  - Gameplay events
+
+  - Configuation callback for truck, multiple trailers and more
 
 - Logger
 
