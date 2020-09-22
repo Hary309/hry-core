@@ -7,7 +7,7 @@
 #include "Hry/SCSSDK/GameplayData.hpp"
 
 #include "SCSSDK/ParamConverter.hpp"
-#include "SCSSDK/ValueType.hpp"
+#include "SCSSDK/SCSValueType.hpp"
 
 #include "Core.hpp"
 #include "GameplayDataConverters.hpp"

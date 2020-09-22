@@ -8,7 +8,7 @@
 #include "Hry/Namespace.hpp"
 
 #include "SCSSDK/Adapters.hpp"
-#include "SCSSDK/ValueType.hpp"
+#include "SCSSDK/SCSValueType.hpp"
 
 #include "scssdk.h"
 
