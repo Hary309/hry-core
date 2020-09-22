@@ -70,6 +70,11 @@ void PluginsPage::renderList()
 
     ImGui::SetColumnOffset(2, ImGui::GetWindowContentRegionWidth() - 32);
 
+    if (_moduleMgr.getModules().empty())
+    {
+        ImGui::Text("No modules");
+    }
+
     for (const auto& module : _moduleMgr.getModules())
     {
         bool isLoaded = module->isLoaded();
