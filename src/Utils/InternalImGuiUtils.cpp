@@ -74,8 +74,14 @@ void InternalImGuiUtils::LoadFonts()
     auto& io = ImGui::GetIO();
     Fonts::OpenSans_16 =
         io.Fonts->AddFontFromFileTTF("plugins\\hry_assets\\OpenSans-Regular.ttf", 16.f);
+    Fonts::OpenSans_Bold_26 =
+        io.Fonts->AddFontFromFileTTF("plugins\\hry_assets\\OpenSans-Bold.ttf", 26.f);
     Fonts::OpenSans_Bold_20 =
         io.Fonts->AddFontFromFileTTF("plugins\\hry_assets\\OpenSans-Bold.ttf", 20.f);
+    Fonts::OpenSans_Bold_19 =
+        io.Fonts->AddFontFromFileTTF("plugins\\hry_assets\\OpenSans-Bold.ttf", 19.f);
+    Fonts::OpenSans_Bold_18 =
+        io.Fonts->AddFontFromFileTTF("plugins\\hry_assets\\OpenSans-Bold.ttf", 18.f);
 }
 
 HRY_NS_END
