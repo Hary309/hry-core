@@ -133,36 +133,35 @@ public:
     ConfigFieldBuilderBase& operator=(ConfigFieldBuilderBase&&) = delete;
     virtual ~ConfigFieldBuilderBase() = default;
 
-    // set identifier of field (this will be saved to file)
+    // [required] set identifier of field (this will be saved to file)
     ConfigFieldBuilder& setID(const std::string& id)
     {
         _id = id;
         return *static_cast<ConfigFieldBuilder*>(this);
     }
 
-    // set display label
+    // [required] set display label
     ConfigFieldBuilder& setLabel(const std::string& label)
     {
         _label = label;
         return *static_cast<ConfigFieldBuilder*>(this);
     }
 
-    // optional
-    // Description will be shown in tooltip
+    // [optional] Description will be shown in tooltip
     ConfigFieldBuilder& setDescription(const std::string& description)
     {
         _description = description;
         return *static_cast<ConfigFieldBuilder*>(this);
     }
 
-    // set default value
+    // [required] set default value
     ConfigFieldBuilder& setDefaultValue(ValueType value)
     {
         _defaultValue = value;
         return *static_cast<ConfigFieldBuilder*>(this);
     }
 
-    // bind structure field with config field
+    // [required] bind structure field with config field
     template<typename ObjectType>
     ConfigFieldBuilder& bind(ValueType ObjectType::*member)
     {

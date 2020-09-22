@@ -13,12 +13,17 @@ class HRY_API TextField : public ConfigFieldBase
 {
     friend TextFieldBuilder;
 
+public:
+    using PreviewCallback_t = Delegate<void(const std::string&)>;
+
 private:
     std::string _value;
     std::string _dirtyValue;
     std::string _defaultValue;
 
     bool _isDirty = false;
+
+    PreviewCallback_t _previewCallback;
 
 private:
     TextField() = default;
@@ -54,8 +59,17 @@ public:
 
 class TextFieldBuilder : public ConfigFieldBuilderBase<TextField, TextFieldBuilder, std::string>
 {
+private:
+    TextField::PreviewCallback_t _previewCallback;
+
 public:
     TextFieldBuilder() = default;
+
+    // [optional] Use only to preview changes, don't treat is as applied value
+    void setPreviewCallback(TextField::PreviewCallback_t previewCallback)
+    {
+        _previewCallback = previewCallback;
+    }
 
     std::unique_ptr<ConfigFieldBase> build() const
     {
@@ -63,6 +77,7 @@ public:
         textField->_defaultValue = _defaultValue;
         textField->_value = _defaultValue;
         textField->_dirtyValue = _defaultValue;
+        textField->_previewCallback = _previewCallback;
 
         buildBase(*textField);
 

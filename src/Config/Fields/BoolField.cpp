@@ -12,6 +12,7 @@ void BoolField::imguiRender()
 {
     if (ImGui::Checkbox(_label.c_str(), &_dirtyValue))
     {
+        _previewCallback(_dirtyValue);
     }
 
     if (!_description.empty())

@@ -16,6 +16,9 @@ class HRY_API SelectionField : public ConfigFieldBase
 {
     friend SelectionFieldBuilder;
 
+public:
+    using PreviewCallback_t = Delegate<void(const std::string&)>;
+
 private:
     struct ComboType
     {
@@ -37,6 +40,8 @@ private:
     int _defaultIndex = 0;
 
     Variant_t _type;
+
+    PreviewCallback_t _previewCallback;
 
 private:
     SelectionField() = default;
@@ -94,6 +99,8 @@ private:
 
     SelectionField::Variant_t _type;
 
+    SelectionField::PreviewCallback_t _previewCallback;
+
 public:
     SelectionFieldBuilder() = default;
 
@@ -121,11 +128,18 @@ public:
         return *this;
     }
 
+    // [optional] Use only to preview changes, don't treat is as applied value
+    void setPreviewCallback(SelectionField::PreviewCallback_t previewCallback)
+    {
+        _previewCallback = previewCallback;
+    }
+
     std::unique_ptr<ConfigFieldBase> build() const
     {
         auto* selectionField = new SelectionField();
         selectionField->_options = _options;
         selectionField->_type = _type;
+        selectionField->_previewCallback = _previewCallback;
         selectionField->setDefaultValue(_defaultValue);
 
         buildBase(*selectionField);

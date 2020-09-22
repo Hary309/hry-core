@@ -14,6 +14,7 @@ void TextField::imguiRender()
     if (ImGui::InputText(_label.c_str(), &_dirtyValue))
     {
         _isDirty = _value != _dirtyValue;
+        _previewCallback(_value);
     }
 }
 

@@ -22,6 +22,9 @@ class NumericField : public ConfigFieldBase
     template<typename, typename>
     friend class NumericFieldBuilder;
 
+public:
+    using PreviewCallback_t = Delegate<void(T)>;
+
 protected:
     struct InputType
     {
@@ -48,6 +51,8 @@ protected:
     };
 
     using Variant_t = std::variant<InputType, DragType, SliderType>;
+
+    PreviewCallback_t _previewCallback;
 
 private:
     T _value{};
@@ -116,6 +121,7 @@ private:
                 input.format.c_str()))
         {
             _isDirty = _value != _dirtyValue;
+            _previewCallback(_dirtyValue);
         }
     }
 
@@ -127,6 +133,7 @@ private:
                 drag.format.c_str(), drag.power))
         {
             _isDirty = _value != _dirtyValue;
+            _previewCallback(_dirtyValue);
         }
     }
 
@@ -138,6 +145,7 @@ private:
                 slider.format.c_str(), slider.power))
         {
             _isDirty = _value != _dirtyValue;
+            _previewCallback(_dirtyValue);
         }
     }
 
@@ -164,6 +172,7 @@ class NumericFieldBuilder
 {
 private:
     typename NumericField<T>::Variant_t _widgetType;
+    typename NumericField<T>::PreviewCallback_t _previewCallback;
 
 public:
     NumericFieldBuilder() = default;
@@ -225,6 +234,12 @@ public:
         return *this;
     }
 
+    // [optional] Use only to preview changes, don't treat is as applied value
+    void setPreviewCallback(typename NumericField<T>::PreviewCallback_t previewCallback)
+    {
+        _previewCallback = previewCallback;
+    }
+
     std::unique_ptr<ConfigFieldBase> build() const
     {
         auto* numericField = new NumericField<T>();
@@ -232,6 +247,7 @@ public:
         numericField->_dirtyValue = this->_defaultValue;
         numericField->_value = this->_defaultValue;
         numericField->_widgetType = this->_widgetType;
+        numericField->_previewCallback = this->_previewCallback;
 
         this->buildBase(*numericField);
 

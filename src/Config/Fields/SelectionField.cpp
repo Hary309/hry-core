@@ -65,6 +65,7 @@ void SelectionField::renderWidget(ComboType& /*unused*/, int size)
             if (ImGui::Selectable(option.c_str(), isSelected))
             {
                 _dirtySelectedIndex = i;
+                _previewCallback(_options[i]);
             }
 
             if (isSelected)
@@ -85,6 +86,7 @@ void SelectionField::renderWidget(RadioType& radio, int size)
         if (ImGui::RadioButton(option.c_str(), i == _dirtySelectedIndex))
         {
             _dirtySelectedIndex = i;
+            _previewCallback(_options[i]);
         }
 
         if (radio.sameLine && i != size - 1)

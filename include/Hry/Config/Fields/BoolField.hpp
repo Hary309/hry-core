@@ -5,6 +5,7 @@
 
 #include "Hry/Config/ConfigFieldBase.hpp"
 #include "Hry/Export.hpp"
+#include "Hry/Utils/Delegate.hpp"
 
 HRY_NS_BEGIN
 
@@ -14,10 +15,15 @@ class HRY_API BoolField : public ConfigFieldBase
 {
     friend BoolFieldBuilder;
 
+public:
+    using PreviewCallback_t = Delegate<void(bool)>;
+
 private:
     bool _value{};
     bool _defaultValue{};
     bool _dirtyValue{};
+
+    PreviewCallback_t _previewCallback;
 
 private:
     BoolField() = default;
@@ -41,8 +47,17 @@ public:
 
 class BoolFieldBuilder : public ConfigFieldBuilderBase<BoolField, BoolFieldBuilder, bool>
 {
+private:
+    BoolField::PreviewCallback_t _previewCallback;
+
 public:
     BoolFieldBuilder() = default;
+
+    // [optional] Use only to preview changes, don't treat is as applied value
+    void setPreviewCallback(BoolField::PreviewCallback_t previewCallback)
+    {
+        _previewCallback = previewCallback;
+    }
 
     std::unique_ptr<ConfigFieldBase> build() const
     {
@@ -50,6 +65,7 @@ public:
         boolField->_defaultValue = _defaultValue;
         boolField->_value = _defaultValue;
         boolField->_dirtyValue = _defaultValue;
+        boolField->_previewCallback = _previewCallback;
 
         buildBase(*boolField);
 
