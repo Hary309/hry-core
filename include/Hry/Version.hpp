@@ -20,7 +20,7 @@ struct Version
     }
 };
 
-constexpr inline Version ApiVersion{ 1, 0, 0 };
+constexpr inline Version ApiVersion{ 0, 1, 0 };
 
 inline bool IsApiCompatible(Version version)
 {
