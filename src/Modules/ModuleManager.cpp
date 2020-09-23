@@ -83,7 +83,7 @@ void ModuleManager::scan()
         {
             const auto& path = item.path();
 
-            if (path.extension() != "dll")
+            if (path.extension() != ".dll")
             {
                 continue;
             }
