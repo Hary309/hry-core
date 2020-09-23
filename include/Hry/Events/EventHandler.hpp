@@ -31,6 +31,7 @@ struct EventHandler
         Sink<void(const JoystickButtonEvent&&)> onJoystickButtonRelease;
 
         Sink<void()> onImGuiRender;
+        Signal<void(const OverlayStateEvent&&)> onOverlayStateChange;
     } system;
 
     // game events

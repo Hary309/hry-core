@@ -54,6 +54,7 @@ public:
         Signal<void(const JoystickButtonEvent&&)> joystickButtonReleaseSignal;
 
         Signal<void()> imguiRenderSignal;
+        Signal<void(const OverlayStateEvent&&)> overlayStateChangeSignal;
     } system;
 
     // game events

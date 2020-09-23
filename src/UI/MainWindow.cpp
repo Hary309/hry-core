@@ -40,8 +40,10 @@ MainWindow::MainWindow(
     ModuleManager& moduleMgr,
     ConfigManager& configMgr,
     KeyBindsManager& keyBindsMgr,
+    EventManager& eventMgr,
     InternalEventHandler& eventHandler)
-    : _pluginsPage(moduleMgr), _configPage(configMgr), _keyBindsPage(keyBindsMgr, eventHandler)
+    : _pluginsPage(moduleMgr), _configPage(configMgr), _keyBindsPage(keyBindsMgr, eventHandler),
+      _eventMgr(eventMgr)
 {
 }
 
@@ -110,6 +112,8 @@ void MainWindow::showMainWindowKeyBind(hry::ButtonState /*unused*/)
     Mouse::DisableInGameMouse(_isWindowEnabled);
 
     InternalImGuiUtils::EnableCursor(_isWindowEnabled);
+
+    _eventMgr.system.overlayStateChangeSignal.call({ _isWindowEnabled });
 }
 
 HRY_NS_END

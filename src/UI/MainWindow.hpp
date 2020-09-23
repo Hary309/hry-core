@@ -7,6 +7,7 @@
 #include "Hry/System/System.hpp"
 #include "Hry/Utils/Signal.hpp"
 
+#include "Events/EventManager.hpp"
 #include "KeyBinding/KeyBindsManager.hpp"
 #include "Modules/ModuleManager.hpp"
 #include "UI/Pages/AboutPage.hpp"
@@ -28,11 +29,14 @@ private:
 
     PageBase* _currentPage{ &_pluginsPage };
 
+    EventManager& _eventMgr;
+
 public:
     MainWindow(
         ModuleManager& moduleMgr,
         ConfigManager& configMgr,
         KeyBindsManager& keyBindsMgr,
+        EventManager& eventMgr,
         InternalEventHandler& eventHandler);
 
     void initKeyBinds(KeyBinds& keyBinds);
