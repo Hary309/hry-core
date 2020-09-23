@@ -42,6 +42,7 @@ EventHandler EventManager::createEventHandler()
             system.joystickButtonReleaseSignal,
 
             system.imguiRenderSignal,
+            system.overlayStateChangeSignal
         },
         {
             game.frameStartSignal,

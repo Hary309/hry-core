@@ -67,6 +67,11 @@ struct JoystickButtonEvent
     ButtonState state;
 };
 
+struct OverlayStateEvent
+{
+    bool isEnabled;
+};
+
 struct FrameStartEvent
 {
     double deltaTime;
