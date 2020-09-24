@@ -235,9 +235,11 @@ public:
     }
 
     // [optional] Use only to preview changes, don't treat is as applied value
-    void setPreviewCallback(typename NumericField<T>::PreviewCallback_t previewCallback)
+    NumericFieldBuilder& setPreviewCallback(
+        typename NumericField<T>::PreviewCallback_t previewCallback)
     {
         _previewCallback = previewCallback;
+        return *this;
     }
 
     std::unique_ptr<ConfigFieldBase> build() const

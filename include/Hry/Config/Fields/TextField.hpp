@@ -66,9 +66,10 @@ public:
     TextFieldBuilder() = default;
 
     // [optional] Use only to preview changes, don't treat is as applied value
-    void setPreviewCallback(TextField::PreviewCallback_t previewCallback)
+    TextFieldBuilder& setPreviewCallback(TextField::PreviewCallback_t previewCallback)
     {
         _previewCallback = previewCallback;
+        return *this;
     }
 
     std::unique_ptr<ConfigFieldBase> build() const
