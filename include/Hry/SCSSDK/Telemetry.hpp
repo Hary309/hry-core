@@ -7,6 +7,7 @@
 
 #include "Hry/Namespace.hpp"
 #include "Hry/SCSSDK/CommonChannel.hpp"
+#include "Hry/SCSSDK/ConfigurationData.hpp"
 #include "Hry/SCSSDK/JobChannel.hpp"
 #include "Hry/SCSSDK/TrailerChannel.hpp"
 #include "Hry/SCSSDK/TruckChannel.hpp"
@@ -25,6 +26,8 @@ private:
     std::array<std::unique_ptr<scs::TrailerChannel>, SCS_TELEMETRY_trailers_count> _trailers;
     std::unique_ptr<scs::JobChannel> _job;
     std::unique_ptr<scs::CommonChannel> _common;
+
+    scs::Substances _substances;
 
 private:
     Telemetry()
@@ -57,6 +60,8 @@ public:
     }
     const scs::JobChannel* getJob() const { return _job.get(); }
     const scs::CommonChannel* getCommon() const { return _common.get(); }
+
+    const scs::Substances* getSubstances() const { return &_substances; }
 };
 
 HRY_NS_END

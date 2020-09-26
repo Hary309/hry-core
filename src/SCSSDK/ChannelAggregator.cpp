@@ -10,6 +10,7 @@ HRY_NS_BEGIN
 ChannelAggregator::ChannelAggregator(InternalEventHandler& eventHandler)
     : _eventHandler(eventHandler)
 {
+    _eventHandler.game.config.substancesSignal.connect<&ChannelAggregator::onSubstances>(this);
 }
 
 void ChannelAggregator::init(scs_telemetry_init_params_v100_t* scsTelemetry)
@@ -22,6 +23,14 @@ void ChannelAggregator::init(scs_telemetry_init_params_v100_t* scsTelemetry)
         new JobChannelAggregator(*_telemetry._job, scsTelemetry)));
     _channelAggregators.push_back(std::unique_ptr<ChannelAggregatorBase>(
         new CommonChannelAggregator(*_telemetry._common, scsTelemetry)));
+}
+
+void ChannelAggregator::onSubstances(const std::optional<scs::Substances>&& substances)
+{
+    if (substances.has_value())
+    {
+        _telemetry._substances = substances.value();
+    }
 }
 
 HRY_NS_END

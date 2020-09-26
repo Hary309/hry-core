@@ -28,6 +28,9 @@ public:
     void init(scs_telemetry_init_params_v100_t* scsTelemetry);
 
     const Telemetry& getTelemetry() const { return _telemetry; }
+
+private:
+    void onSubstances(const std::optional<scs::Substances>&&);
 };
 
 HRY_NS_END
