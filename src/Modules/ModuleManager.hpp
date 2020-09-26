@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "Hry/Namespace.hpp"
+#include "Hry/SCSSDK/Telemetry.hpp"
 
 #include "Config/ConfigManager.hpp"
 #include "Events/EventManager.hpp"
@@ -28,11 +29,16 @@ private:
     EventManager& _eventMgr;
     ConfigManager& _configMgr;
     KeyBindsManager& _keyBindsMgr;
+    const Telemetry& _telemetry;
 
     std::string _pluginListFilePath;
 
 public:
-    ModuleManager(EventManager& eventMgr, ConfigManager& configMgr, KeyBindsManager& keyBindsMgr);
+    ModuleManager(
+        EventManager& eventMgr,
+        ConfigManager& configMgr,
+        KeyBindsManager& keyBindsMgr,
+        const Telemetry& telemetry);
 
     ~ModuleManager();
 

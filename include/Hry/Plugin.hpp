@@ -7,6 +7,7 @@
 #include "Hry/GameType.hpp"
 #include "Hry/Logger/Logger.hpp"
 #include "Hry/Namespace.hpp"
+#include "Hry/SCSSDK/Telemetry.hpp"
 #include "Hry/Utils/Delegate.hpp"
 #include "Hry/Utils/Utils.hpp"
 
@@ -31,6 +32,7 @@ public:
     struct InitParams
     {
         Logger* logger;
+        const Telemetry* telemetry;
         Version apiVersion;
         GameType gameType;
     };

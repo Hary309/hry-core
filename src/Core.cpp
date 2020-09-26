@@ -37,7 +37,7 @@ HRY_NS_BEGIN
 Core::Core(HINSTANCE hInst)
     : _eventHandler(_eventMgr.createInternalEventHandler()), _channelAggregator(_eventHandler),
       _renderer(*this, _eventMgr), _keyBindsMgr(_eventHandler),
-      _moduleMgr(_eventMgr, _configMgr, _keyBindsMgr),
+      _moduleMgr(_eventMgr, _configMgr, _keyBindsMgr, _channelAggregator.getTelemetry()),
       _mainWindow(_moduleMgr, _configMgr, _keyBindsMgr, _eventMgr, _eventHandler),
       _loggerWindow(_eventHandler), _imguiImplEvents(_eventHandler)
 {

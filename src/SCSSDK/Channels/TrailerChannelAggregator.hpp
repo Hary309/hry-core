@@ -4,6 +4,7 @@
 
 #include <common/scssdk_telemetry_common_configs.h>
 
+#include "Hry/SCSSDK/Telemetry.hpp"
 #include "Hry/SCSSDK/TrailerChannel.hpp"
 
 #include "Events/EventProxyBase.hpp"
@@ -16,13 +17,12 @@ HRY_NS_BEGIN
 class TrailerChannelAggregator : public ChannelAggregatorBase
 {
 public:
-    using Trailers_t =
-        std::array<std::unique_ptr<scs::TrailerChannel>, SCS_TELEMETRY_trailers_count>;
+    using Trailers_t = std::array<std::unique_ptr<scs::TrailerChannel>, Telemetry::MaxTrailerCount>;
 
 private:
     Trailers_t& _trailers;
 
-    std::array<uint32_t, SCS_TELEMETRY_trailers_count> _wheelCount{};
+    std::array<uint32_t, Telemetry::MaxTrailerCount> _wheelCount{};
 
 public:
     TrailerChannelAggregator(

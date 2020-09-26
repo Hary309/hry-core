@@ -26,8 +26,11 @@ using CreatePlugin_t = Plugin*();
 using InitImGui_t = void(ImGuiContext*);
 
 ModuleManager::ModuleManager(
-    EventManager& eventMgr, ConfigManager& configMgr, KeyBindsManager& keyBindsMgr)
-    : _eventMgr(eventMgr), _configMgr(configMgr), _keyBindsMgr(keyBindsMgr)
+    EventManager& eventMgr,
+    ConfigManager& configMgr,
+    KeyBindsManager& keyBindsMgr,
+    const Telemetry& telemetry)
+    : _eventMgr(eventMgr), _configMgr(configMgr), _keyBindsMgr(keyBindsMgr), _telemetry(telemetry)
 {
 }
 
@@ -205,8 +208,8 @@ bool ModuleManager::load(Module* mod)
     mod->data.logger = LoggerFactory::GetLogger(name);
     mod->data.eventHandler = std::make_unique<EventHandler>(_eventMgr.createEventHandler());
 
-    mod->loadResult =
-        mod->plugin->init(Plugin::InitParams{ mod->data.logger.get(), ApiVersion, Core::GameType });
+    mod->loadResult = mod->plugin->init(
+        Plugin::InitParams{ mod->data.logger.get(), &_telemetry, ApiVersion, Core::GameType });
 
     if (mod->loadResult == Plugin::Result::Ok)
     {

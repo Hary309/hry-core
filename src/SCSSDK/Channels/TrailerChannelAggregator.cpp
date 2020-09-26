@@ -19,7 +19,7 @@ TrailerChannelAggregator::TrailerChannelAggregator(
     eventHandler.game.config.trailerSignal.connect<&TrailerChannelAggregator::onTrailerConfig>(
         this);
 
-    for (auto i = 0; i < SCS_TELEMETRY_trailers_count; i++)
+    for (auto i = 0; i < Telemetry::MaxTrailerCount; i++)
     {
         registerTrailer(i);
     }
