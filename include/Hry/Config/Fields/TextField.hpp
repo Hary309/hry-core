@@ -42,7 +42,7 @@ public:
     void resetToDefault() override
     {
         _value = _defaultValue;
-        _isDirty = true;
+        _isDirty = _value != _dirtyValue;
     }
 
     bool isDirty() const override { return _isDirty; }
