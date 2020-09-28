@@ -105,7 +105,7 @@ private:
 
     BindableKey::Key_t _defaultKey{};
 
-    KeyBind::Activator _activator;
+    KeyBind::Activator _activator = KeyBind::Activator::Click;
 
     KeyBind::Delegate_t _pressAction;
     KeyBind::Delegate_t _releaseAction;
@@ -140,13 +140,13 @@ public:
         return *this;
     }
 
-    KeyBindBuilder& setPressCallback(KeyBind::Delegate_t&& callback)
+    KeyBindBuilder& setPressCallback(KeyBind::Delegate_t callback)
     {
         _pressAction = callback;
         return *this;
     }
 
-    KeyBindBuilder& setReleaseCallback(KeyBind::Delegate_t&& callback)
+    KeyBindBuilder& setReleaseCallback(KeyBind::Delegate_t callback)
     {
         _releaseAction = callback;
         return *this;
