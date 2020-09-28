@@ -7,10 +7,10 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 # core
 project(hry-core VERSION 0.1.0)
 
-if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC" OR CMAKE_CXX_COMPILER_ID STREQUAL
+                                            "Clang")
   set(STATIC_FLAG /MT)
-elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL
-                                                 "GNU")
+elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
   set(STATIC_FLAG -static)
 endif()
 
@@ -43,7 +43,7 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL
            -Wdouble-promotion
            -Wformat=2
            -Wmisleading-indentation
-           -Wmost
+           -Wmost          
            -Wparentheses
            -Wswitch
            -Wswitch-bool
