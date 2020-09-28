@@ -9,7 +9,7 @@
 #include "Hry/SCSSDK/ConfigurationData.hpp"
 
 #include "Events/EventManager.hpp"
-#include "SCSSDK/ParamConverter.hpp"
+#include "SCSSDK/AttribConverter.hpp"
 
 #include "ConfigurationDataConverters.hpp"
 
@@ -20,12 +20,12 @@ class TelemetryConfigurationProxy
 private:
     EventManager& _eventMgr;
 
-    ParamConverter<scs::Substances> _substances;
-    ParamConverter<scs::Controls> _controls;
-    ParamConverter<scs::HShifter> _hshifter;
-    ParamConverter<scs::Truck> _truck;
-    ParamConverter<scs::Trailer> _trailer;
-    ParamConverter<scs::Job> _job;
+    AttribConverter<scs::Substances> _substances;
+    AttribConverter<scs::Controls> _controls;
+    AttribConverter<scs::HShifter> _hshifter;
+    AttribConverter<scs::Truck> _truck;
+    AttribConverter<scs::Trailer> _trailer;
+    AttribConverter<scs::Job> _job;
 
 public:
     TelemetryConfigurationProxy(

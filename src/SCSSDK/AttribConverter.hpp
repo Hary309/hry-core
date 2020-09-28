@@ -75,7 +75,7 @@ auto CreateEnumDeserializer()
 }
 
 template<typename ClassType>
-struct ParamConverter
+struct AttribConverter
 {
 private:
     std::vector<std::shared_ptr<FieldBase>> _fields;
@@ -385,12 +385,12 @@ private:
 };
 
 template<typename>
-struct ParamConverterCreator;
+struct AttribConverterCreator;
 
 template<typename T>
 auto CreateConverter()
 {
-    return ParamConverterCreator<T>::create();
+    return AttribConverterCreator<T>::create();
 }
 
 HRY_NS_END

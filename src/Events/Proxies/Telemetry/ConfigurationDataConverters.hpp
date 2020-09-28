@@ -4,7 +4,7 @@
 
 #include "Hry/SCSSDK/ConfigurationData.hpp"
 
-#include "SCSSDK/ParamConverter.hpp"
+#include "SCSSDK/AttribConverter.hpp"
 
 HRY_NS_BEGIN
 
@@ -25,35 +25,35 @@ struct EnumDeserializerCreator<ShifterType>
 };
 
 template<>
-struct ParamConverterCreator<Substances>
+struct AttribConverterCreator<Substances>
 {
     static auto create()
     {
-        ParamConverter<Substances> obj;
+        AttribConverter<Substances> obj;
         obj.bindIndexed(SCS_TELEMETRY_CONFIG_ATTRIBUTE_id, {}, &Substances::substances);
         return obj;
     }
 };
 
 template<>
-struct ParamConverterCreator<Controls>
+struct AttribConverterCreator<Controls>
 {
     static auto create()
     {
-        ParamConverter<Controls> obj;
+        AttribConverter<Controls> obj;
         obj.bind(SCS_TELEMETRY_CONFIG_ATTRIBUTE_shifter_type, &Controls::shifterType);
         return obj;
     }
 };
 
 template<>
-struct ParamConverterCreator<HShifter::Slot>
+struct AttribConverterCreator<HShifter::Slot>
 {
     static auto create()
     {
         using Slot = HShifter::Slot;
 
-        ParamConverter<Slot> obj;
+        AttribConverter<Slot> obj;
         obj.bind(SCS_TELEMETRY_CONFIG_ATTRIBUTE_slot_handle_position, &Slot::handlePosition);
         obj.bind(SCS_TELEMETRY_CONFIG_ATTRIBUTE_slot_selectors, &Slot::selectors);
         obj.bind(SCS_TELEMETRY_CONFIG_ATTRIBUTE_slot_gear, &Slot::gear);
@@ -62,11 +62,11 @@ struct ParamConverterCreator<HShifter::Slot>
 };
 
 template<>
-struct ParamConverterCreator<HShifter>
+struct AttribConverterCreator<HShifter>
 {
     static auto create()
     {
-        ParamConverter<HShifter> obj;
+        AttribConverter<HShifter> obj;
         obj.bind(SCS_TELEMETRY_CONFIG_ATTRIBUTE_selector_count, &HShifter::selectorCount);
         obj.bindIndexed({}, &HShifter::slots);
         return obj;
@@ -74,11 +74,11 @@ struct ParamConverterCreator<HShifter>
 };
 
 template<>
-struct ParamConverterCreator<Wheel>
+struct AttribConverterCreator<Wheel>
 {
     static auto create()
     {
-        ParamConverter<Wheel> obj;
+        AttribConverter<Wheel> obj;
         obj.bind(SCS_TELEMETRY_CONFIG_ATTRIBUTE_wheel_position, &Wheel::position);
         obj.bind(SCS_TELEMETRY_CONFIG_ATTRIBUTE_wheel_steerable, &Wheel::steerable);
         obj.bind(SCS_TELEMETRY_CONFIG_ATTRIBUTE_wheel_simulated, &Wheel::simulated);
@@ -90,11 +90,11 @@ struct ParamConverterCreator<Wheel>
 };
 
 template<>
-struct ParamConverterCreator<Truck>
+struct AttribConverterCreator<Truck>
 {
     static auto create()
     {
-        ParamConverter<Truck> obj;
+        AttribConverter<Truck> obj;
         obj.bind(SCS_TELEMETRY_CONFIG_ATTRIBUTE_brand_id, &Truck::brandID);
         obj.bind(SCS_TELEMETRY_CONFIG_ATTRIBUTE_brand, &Truck::brand);
         obj.bind(SCS_TELEMETRY_CONFIG_ATTRIBUTE_id, &Truck::id);
@@ -142,11 +142,11 @@ struct ParamConverterCreator<Truck>
 };
 
 template<>
-struct ParamConverterCreator<Trailer>
+struct AttribConverterCreator<Trailer>
 {
     static auto create()
     {
-        ParamConverter<Trailer> obj;
+        AttribConverter<Trailer> obj;
         obj.bind(SCS_TELEMETRY_CONFIG_ATTRIBUTE_cargo_accessory_id, &Trailer::cargoAccessoryID);
         obj.bind(SCS_TELEMETRY_CONFIG_ATTRIBUTE_hook_position, &Trailer::hookPosition);
         obj.bind(SCS_TELEMETRY_CONFIG_ATTRIBUTE_chain_type, &Trailer::chainType);
@@ -169,11 +169,11 @@ struct ParamConverterCreator<Trailer>
 };
 
 template<>
-struct ParamConverterCreator<Job>
+struct AttribConverterCreator<Job>
 {
     static auto create()
     {
-        ParamConverter<Job> obj;
+        AttribConverter<Job> obj;
         obj.bind(SCS_TELEMETRY_CONFIG_ATTRIBUTE_cargo_id, &Job::cargoID);
         obj.bind(SCS_TELEMETRY_CONFIG_ATTRIBUTE_cargo, &Job::cargo);
         obj.bind(SCS_TELEMETRY_CONFIG_ATTRIBUTE_cargo_mass, &Job::cargoMass);

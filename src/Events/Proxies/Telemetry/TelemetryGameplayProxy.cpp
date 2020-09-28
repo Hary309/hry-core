@@ -6,7 +6,7 @@
 #include "Hry/Namespace.hpp"
 #include "Hry/SCSSDK/GameplayData.hpp"
 
-#include "SCSSDK/ParamConverter.hpp"
+#include "SCSSDK/AttribConverter.hpp"
 #include "SCSSDK/SCSValueType.hpp"
 
 #include "Core.hpp"

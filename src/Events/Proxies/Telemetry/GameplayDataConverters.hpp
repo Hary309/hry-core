@@ -4,7 +4,7 @@
 
 #include "Hry/SCSSDK/GameplayData.hpp"
 
-#include "SCSSDK/ParamConverter.hpp"
+#include "SCSSDK/AttribConverter.hpp"
 
 HRY_NS_BEGIN
 
@@ -35,11 +35,11 @@ struct EnumDeserializerCreator<FineOffenceType>
 };
 
 template<>
-struct ParamConverterCreator<JobCancelled>
+struct AttribConverterCreator<JobCancelled>
 {
     static auto create()
     {
-        ParamConverter<JobCancelled> obj;
+        AttribConverter<JobCancelled> obj;
         obj.bind(
             SCS_TELEMETRY_GAMEPLAY_EVENT_ATTRIBUTE_cancel_penalty, &JobCancelled::cancelPenalty);
         return obj;
@@ -47,11 +47,11 @@ struct ParamConverterCreator<JobCancelled>
 };
 
 template<>
-struct ParamConverterCreator<JobDelivered>
+struct AttribConverterCreator<JobDelivered>
 {
     static auto create()
     {
-        ParamConverter<JobDelivered> obj;
+        AttribConverter<JobDelivered> obj;
         obj.bind(SCS_TELEMETRY_GAMEPLAY_EVENT_ATTRIBUTE_revenue, &JobDelivered::revenue);
         obj.bind(SCS_TELEMETRY_GAMEPLAY_EVENT_ATTRIBUTE_earned_xp, &JobDelivered::earnedXP);
         obj.bind(SCS_TELEMETRY_GAMEPLAY_EVENT_ATTRIBUTE_cargo_damage, &JobDelivered::cargoDamage);
@@ -66,11 +66,11 @@ struct ParamConverterCreator<JobDelivered>
 };
 
 template<>
-struct ParamConverterCreator<PlayerFined>
+struct AttribConverterCreator<PlayerFined>
 {
     static auto create()
     {
-        ParamConverter<PlayerFined> obj;
+        AttribConverter<PlayerFined> obj;
         obj.bind(SCS_TELEMETRY_GAMEPLAY_EVENT_ATTRIBUTE_fine_offence, &PlayerFined::fineOffence);
         obj.bind(SCS_TELEMETRY_GAMEPLAY_EVENT_ATTRIBUTE_fine_amount, &PlayerFined::fineAmount);
         return obj;
@@ -78,11 +78,11 @@ struct ParamConverterCreator<PlayerFined>
 };
 
 template<>
-struct ParamConverterCreator<PlayerTollgatePaid>
+struct AttribConverterCreator<PlayerTollgatePaid>
 {
     static auto create()
     {
-        ParamConverter<PlayerTollgatePaid> obj;
+        AttribConverter<PlayerTollgatePaid> obj;
         obj.bind(SCS_TELEMETRY_GAMEPLAY_EVENT_ATTRIBUTE_pay_amount, &PlayerTollgatePaid::payAmount);
 
         return obj;
@@ -90,11 +90,11 @@ struct ParamConverterCreator<PlayerTollgatePaid>
 };
 
 template<>
-struct ParamConverterCreator<PlayerUseFerry>
+struct AttribConverterCreator<PlayerUseFerry>
 {
     static auto create()
     {
-        ParamConverter<PlayerUseFerry> obj;
+        AttribConverter<PlayerUseFerry> obj;
         obj.bind(SCS_TELEMETRY_GAMEPLAY_EVENT_ATTRIBUTE_pay_amount, &PlayerUseFerry::payAmount);
 
         obj.bind(
@@ -113,11 +113,11 @@ struct ParamConverterCreator<PlayerUseFerry>
 };
 
 template<>
-struct ParamConverterCreator<PlayerUseTrain>
+struct AttribConverterCreator<PlayerUseTrain>
 {
     static auto create()
     {
-        ParamConverter<PlayerUseTrain> obj;
+        AttribConverter<PlayerUseTrain> obj;
         obj.bind(SCS_TELEMETRY_GAMEPLAY_EVENT_ATTRIBUTE_pay_amount, &PlayerUseTrain::payAmount);
 
         obj.bind(

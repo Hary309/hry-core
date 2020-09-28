@@ -15,12 +15,12 @@ class TelemetryGameplayProxy
 private:
     EventManager& _eventMgr;
 
-    ParamConverter<JobCancelled> _jobCancelled;
-    ParamConverter<JobDelivered> _jobDelivered;
-    ParamConverter<PlayerFined> _playerFined;
-    ParamConverter<PlayerTollgatePaid> _playerTollgatePaid;
-    ParamConverter<PlayerUseFerry> _playerUseFerry;
-    ParamConverter<PlayerUseTrain> _playerUseTrain;
+    AttribConverter<JobCancelled> _jobCancelled;
+    AttribConverter<JobDelivered> _jobDelivered;
+    AttribConverter<PlayerFined> _playerFined;
+    AttribConverter<PlayerTollgatePaid> _playerTollgatePaid;
+    AttribConverter<PlayerUseFerry> _playerUseFerry;
+    AttribConverter<PlayerUseTrain> _playerUseTrain;
 
 public:
     TelemetryGameplayProxy(EventManager& eventMgr, scs_telemetry_init_params_v100_t* scsTelemetry);
