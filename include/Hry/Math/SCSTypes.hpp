@@ -74,7 +74,7 @@ namespace fmt
         template<typename FormatContext>
         auto format(hry::Euler const& vec, FormatContext& ctx)
         {
-            return format_to(ctx.out(), "Euler: {{{},{},{}}}", vec.heading, vec.pitch, vec.roll);
+            return format_to(ctx.out(), "Euler: {{{}, {}, {}}}", vec.heading, vec.pitch, vec.roll);
         }
     };
 

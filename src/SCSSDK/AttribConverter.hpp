@@ -86,7 +86,7 @@ public:
     {
         if constexpr (!HasEnumDeserializer_v<ValueType>)
         {
-            addSimple(id, member, CreateBasicAdapter<ValueType>());
+            addSimple(id, member, CreateAdapter<ValueType>());
         }
         else
         {
@@ -98,7 +98,7 @@ public:
     void bind(
         std::string_view id, ValueType ClassType::*member, InnerValueType ValueType::*innerMember)
     {
-        addComplex(id, member, innerMember, CreateBasicAdapter<InnerValueType>());
+        addComplex(id, member, innerMember, CreateAdapter<InnerValueType>());
     }
 
     template<typename ValueType>
@@ -111,10 +111,10 @@ public:
 
         if (countID.has_value())
         {
-            addIndexedSize(countID.value(), member, CreateBasicAdapter<uint32_t>());
+            addIndexedSize(countID.value(), member, CreateAdapter<uint32_t>());
         }
 
-        addSimpleIndexed(fieldID, member, CreateBasicAdapter<ValueType>());
+        addSimpleIndexed(fieldID, member, CreateAdapter<ValueType>());
     }
 
     template<typename ValueType>
@@ -125,7 +125,7 @@ public:
 
         if (countID.has_value())
         {
-            addIndexedSize(countID.value(), member, CreateBasicAdapter<uint32_t>());
+            addIndexedSize(countID.value(), member, CreateAdapter<uint32_t>());
         }
 
         auto converter = CreateConverter<ValueType>();

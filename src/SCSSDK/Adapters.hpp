@@ -8,18 +8,14 @@
 #include "Hry/Math/SCSTypes.hpp"
 #include "Hry/Namespace.hpp"
 
-#include "SCSSDK/Adapters.hpp"
-#include "SCSSDK/SCSValueType.hpp"
-
 HRY_NS_BEGIN
 
 template<typename T>
 using ValueAdapter_t = T (*)(const scs_value_t& param);
 
 template<typename T>
-inline T valueAdapter(const scs_value_t& param);
+inline T valueAdapter(const scs_value_t& param) = delete;
 
-/////////// -- bool -- ///////////
 template<>
 inline bool valueAdapter<bool>(const scs_value_t& param)
 {
@@ -30,7 +26,6 @@ inline bool valueAdapter<bool>(const scs_value_t& param)
     return false;
 }
 
-/////////// -- int32 -- ///////////
 template<>
 inline int32_t valueAdapter<int32_t>(const scs_value_t& param)
 {
@@ -41,7 +36,6 @@ inline int32_t valueAdapter<int32_t>(const scs_value_t& param)
     return 0;
 }
 
-/////////// -- unsigned int32 -- ///////////
 template<>
 inline uint32_t valueAdapter<uint32_t>(const scs_value_t& param)
 {
@@ -52,7 +46,6 @@ inline uint32_t valueAdapter<uint32_t>(const scs_value_t& param)
     return 0;
 }
 
-/////////// -- int64 -- ///////////
 template<>
 inline int64_t valueAdapter<int64_t>(const scs_value_t& param)
 {
@@ -63,7 +56,6 @@ inline int64_t valueAdapter<int64_t>(const scs_value_t& param)
     return 0;
 }
 
-/////////// -- unsigned int64 -- ///////////
 template<>
 inline uint64_t valueAdapter<uint64_t>(const scs_value_t& param)
 {
@@ -74,7 +66,6 @@ inline uint64_t valueAdapter<uint64_t>(const scs_value_t& param)
     return 0;
 }
 
-/////////// -- Float -- ///////////
 template<>
 inline float valueAdapter<float>(const scs_value_t& param)
 {
@@ -85,7 +76,6 @@ inline float valueAdapter<float>(const scs_value_t& param)
     return 0;
 }
 
-/////////// -- Double -- ///////////
 template<>
 inline double valueAdapter<double>(const scs_value_t& param)
 {
@@ -96,9 +86,8 @@ inline double valueAdapter<double>(const scs_value_t& param)
     return 0;
 }
 
-/////////// -- Vec3<float> -- ///////////
 template<>
-inline hry::Vec3<float> valueAdapter<hry::Vec3<float>>(const scs_value_t& param)
+inline Vec3<float> valueAdapter<Vec3<float>>(const scs_value_t& param)
 {
     if (param.type == SCS_VALUE_TYPE_fvector)
     {
@@ -108,9 +97,8 @@ inline hry::Vec3<float> valueAdapter<hry::Vec3<float>>(const scs_value_t& param)
     return {};
 }
 
-/////////// -- Vec3Double -- ///////////
 template<>
-inline hry::Vec3<double> valueAdapter<hry::Vec3<double>>(const scs_value_t& param)
+inline Vec3<double> valueAdapter<Vec3<double>>(const scs_value_t& param)
 {
     if (param.type == SCS_VALUE_TYPE_dvector)
     {
@@ -120,9 +108,8 @@ inline hry::Vec3<double> valueAdapter<hry::Vec3<double>>(const scs_value_t& para
     return {};
 }
 
-/////////// -- Euler -- ///////////
 template<>
-inline hry::Euler valueAdapter<hry::Euler>(const scs_value_t& param)
+inline Euler valueAdapter<Euler>(const scs_value_t& param)
 {
     if (param.type == SCS_VALUE_TYPE_euler)
     {
@@ -132,9 +119,8 @@ inline hry::Euler valueAdapter<hry::Euler>(const scs_value_t& param)
     return {};
 }
 
-/////////// -- PlacementF -- ///////////
 template<>
-inline hry::PlacementF valueAdapter<hry::PlacementF>(const scs_value_t& param)
+inline PlacementF valueAdapter<PlacementF>(const scs_value_t& param)
 {
     if (param.type == SCS_VALUE_TYPE_fplacement)
     {
@@ -145,9 +131,8 @@ inline hry::PlacementF valueAdapter<hry::PlacementF>(const scs_value_t& param)
     return {};
 }
 
-/////////// -- PlacementF -- ///////////
 template<>
-inline hry::PlacementD valueAdapter<hry::PlacementD>(const scs_value_t& param)
+inline PlacementD valueAdapter<PlacementD>(const scs_value_t& param)
 {
     if (param.type == SCS_VALUE_TYPE_dplacement)
     {
@@ -158,7 +143,6 @@ inline hry::PlacementD valueAdapter<hry::PlacementD>(const scs_value_t& param)
     return {};
 }
 
-/////////// -- Strign -- ///////////
 template<>
 inline std::string valueAdapter<std::string>(const scs_value_t& param)
 {
@@ -170,12 +154,22 @@ inline std::string valueAdapter<std::string>(const scs_value_t& param)
 }
 
 template<typename T>
-auto CreateBasicAdapter()
+auto CreateAdapter()
 {
     return &valueAdapter<T>;
 }
 
+template<typename, typename = std::void_t<>>
+struct HasAdapter : std::false_type
+{
+};
+
 template<typename T>
-inline constexpr auto HasAdapter_v = SCSValueType_v<T> != SCS_VALUE_TYPE_INVALID;
+struct HasAdapter<T, std::void_t<decltype(valueAdapter<T>)>> : std::true_type
+{
+};
+
+template<typename T>
+inline constexpr auto HasAdapter_v = HasAdapter<T>::value;
 
 HRY_NS_END
