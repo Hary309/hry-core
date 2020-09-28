@@ -80,7 +80,7 @@ public:
     void resetToDefault() override
     {
         _dirtyValue = _defaultValue;
-        _isDirty = true;
+        _isDirty = _value != _dirtyValue;
     }
 
     bool isDirty() const override { return _isDirty; }
