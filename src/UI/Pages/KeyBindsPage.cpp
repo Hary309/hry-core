@@ -4,6 +4,7 @@
 
 #include "Hry/KeyBinding/BindableKeys.hpp"
 #include "Hry/KeyBinding/KeyBinds.hpp"
+#include "Hry/Utils/ImGuiUtils.hpp"
 
 #include "Utils/InternalImGuiUtils.hpp"
 
@@ -41,6 +42,12 @@ void KeyBindsPage::imguiRender()
                 ImGui::PushID(&keyBind);
 
                 ImGui::Text("%s", keyBind->label.c_str());
+
+                if (!keyBind->desc.empty())
+                {
+                    ImGui::SameLine();
+                    ImGuiHelpMarker(keyBind->desc.c_str());
+                }
 
                 ImGui::NextColumn();
 

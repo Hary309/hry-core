@@ -45,6 +45,7 @@ public:
 public:
     std::string id;
     std::string label;
+    std::string desc;
 
     const BindableKey* defaultKey = nullptr; // if null, not set
     const BindableKey* key = nullptr;        // if null, not set
@@ -102,6 +103,7 @@ class KeyBindBuilder
 private:
     std::string _id;
     std::string _label;
+    std::string _desc;
 
     BindableKey::Key_t _defaultKey{};
 
@@ -124,6 +126,13 @@ public:
     KeyBindBuilder& setLabel(const std::string& label)
     {
         _label = label;
+        return *this;
+    }
+
+    // set descrption, will be shown next to label
+    KeyBindBuilder& setDescription(const std::string& desc)
+    {
+        _desc = desc;
         return *this;
     }
 
@@ -160,6 +169,7 @@ public:
 
         keyBind->id = _id;
         keyBind->label = _label;
+        keyBind->desc = _desc;
         keyBind->defaultKey = bindableKey;
         keyBind->key = bindableKey;
         keyBind->activator = _activator;
