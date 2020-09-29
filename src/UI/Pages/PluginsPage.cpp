@@ -7,6 +7,8 @@
 #include "Hry/Plugin.hpp"
 #include "Hry/Utils/ImGuiUtils.hpp"
 
+#include "UI/Markdown.hpp"
+
 HRY_NS_BEGIN
 
 bool ButtonColored(const char* txt, ImVec4 color, bool enabled = true)
@@ -174,9 +176,7 @@ void PluginsPage::renderDetail()
     ImGui::Text("by %s <%s>", authorInfo.name.c_str(), authorInfo.email.c_str());
     ImGui::PopStyleColor();
 
-    ImGui::Dummy({ 0, 4 });
-
-    ImGui::TextWrapped("%s", _selectedPlugin->desc.c_str());
+    Markdown::Render(_selectedPlugin->desc);
 }
 
 HRY_NS_END

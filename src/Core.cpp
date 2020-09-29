@@ -108,16 +108,16 @@ void Core::initConfig()
     _coreConfig->onChangesApplied.connect<&Core::onConfigChangesApplied>(this);
 
     _coreConfig->add(BoolFieldBuilder()
-                         .setID("show_log_window")
-                         .setLabel("Show log window")
-                         .bind(&CoreConfig::showLogWindow)
+                         .setID("show_imgui_demo")
+                         .setLabel("Show ImGui Demo")
+                         .bind(&CoreConfig::showImGuiDemo)
                          .setDefaultValue(false)
                          .build());
 
     _coreConfig->add(BoolFieldBuilder()
-                         .setID("show_imgui_demo")
-                         .setLabel("Show ImGui Demo")
-                         .bind(&CoreConfig::showImGuiDemo)
+                         .setID("show_log_window")
+                         .setLabel("Show log window")
+                         .bind(&CoreConfig::showLogWindow)
                          .setDefaultValue(false)
                          .build());
 
