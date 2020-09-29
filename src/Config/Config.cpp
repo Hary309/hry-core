@@ -58,6 +58,9 @@ bool Config::loadFromFile()
         return true;
     }
 
+    // load default configs
+    invokeCallback();
+
     return false;
 }
 
