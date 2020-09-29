@@ -36,10 +36,10 @@ void AboutPage::imguiRender()
 
     ImGui::Columns(3, "AboutPage##Columns", false);
 
-    if (ImGui::Button("Donate", { -1, 24 }))
+    if (ImGui::Button("Buy me a Coffee", { -1, 24 }))
     {
         ShellExecuteA(
-            nullptr, "open", "http://paypal.me/PiotrKrupa/1usd", nullptr, nullptr, SW_SHOWNORMAL);
+            nullptr, "open", "https://ko-fi.com/hary309", nullptr, nullptr, SW_SHOWNORMAL);
     }
 
     ImGui::NextColumn();
