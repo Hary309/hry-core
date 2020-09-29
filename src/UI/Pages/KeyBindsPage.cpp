@@ -41,6 +41,8 @@ void KeyBindsPage::imguiRender()
             {
                 ImGui::PushID(&keyBind);
 
+                ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 2);
+
                 ImGui::Text("%s", keyBind->label.c_str());
 
                 if (!keyBind->desc.empty())
