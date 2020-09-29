@@ -18,7 +18,7 @@ IMGUI_IMPL_API LRESULT
 
 HRY_NS_BEGIN
 
-Keyboard::Key vkKeyCodeToEnum(WPARAM key, LPARAM flags)
+Keyboard::Key vkKeyCodeToEnum(WPARAM key, LPARAM flags) noexcept
 {
     using Key = Keyboard::Key;
 

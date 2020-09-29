@@ -31,7 +31,7 @@ TelemetryConfigurationProxy::TelemetryConfigurationProxy(
 }
 
 void TelemetryConfigurationProxy::Configuration(
-    scs_event_t /*event*/, const void* event_info, scs_context_t context)
+    scs_event_t /*event*/, const void* event_info, scs_context_t context) noexcept
 {
     const auto* conf = reinterpret_cast<const scs_telemetry_configuration_t*>(event_info);
     auto* self = reinterpret_cast<TelemetryConfigurationProxy*>(context);

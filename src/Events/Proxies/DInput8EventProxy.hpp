@@ -24,9 +24,9 @@ public:
     explicit DInput8EventProxy(EventManager& eventMgr);
 
 private:
-    void onMouseData(const std::vector<DIDEVICEOBJECTDATA>&& events);
-    void onJoystickData(const std::vector<DIDEVICEOBJECTDATA>&& events, const GUID& guid);
-    void sendMouseButtonEvent(int pressData, Mouse::Button button);
+    void onMouseData(const std::vector<DIDEVICEOBJECTDATA>&& events) noexcept;
+    void onJoystickData(const std::vector<DIDEVICEOBJECTDATA>&& events, const GUID& guid) noexcept;
+    void sendMouseButtonEvent(int pressData, Mouse::Button button) noexcept;
 };
 
 HRY_NS_END

@@ -11,13 +11,13 @@
 HRY_NS_BEGIN
 
 template<typename T>
-using ValueAdapter_t = T (*)(const scs_value_t& param);
+using ValueAdapter_t = T (*)(const scs_value_t& param) noexcept;
 
 template<typename T>
-inline T valueAdapter(const scs_value_t& param) = delete;
+inline T valueAdapter(const scs_value_t& param) noexcept = delete;
 
 template<>
-inline bool valueAdapter<bool>(const scs_value_t& param)
+inline bool valueAdapter<bool>(const scs_value_t& param) noexcept
 {
     if (param.type == SCS_VALUE_TYPE_bool)
     {
@@ -27,7 +27,7 @@ inline bool valueAdapter<bool>(const scs_value_t& param)
 }
 
 template<>
-inline int32_t valueAdapter<int32_t>(const scs_value_t& param)
+inline int32_t valueAdapter<int32_t>(const scs_value_t& param) noexcept
 {
     if (param.type == SCS_VALUE_TYPE_s32)
     {
@@ -37,7 +37,7 @@ inline int32_t valueAdapter<int32_t>(const scs_value_t& param)
 }
 
 template<>
-inline uint32_t valueAdapter<uint32_t>(const scs_value_t& param)
+inline uint32_t valueAdapter<uint32_t>(const scs_value_t& param) noexcept
 {
     if (param.type == SCS_VALUE_TYPE_u32)
     {
@@ -47,7 +47,7 @@ inline uint32_t valueAdapter<uint32_t>(const scs_value_t& param)
 }
 
 template<>
-inline int64_t valueAdapter<int64_t>(const scs_value_t& param)
+inline int64_t valueAdapter<int64_t>(const scs_value_t& param) noexcept
 {
     if (param.type == SCS_VALUE_TYPE_s64)
     {
@@ -57,7 +57,7 @@ inline int64_t valueAdapter<int64_t>(const scs_value_t& param)
 }
 
 template<>
-inline uint64_t valueAdapter<uint64_t>(const scs_value_t& param)
+inline uint64_t valueAdapter<uint64_t>(const scs_value_t& param) noexcept
 {
     if (param.type == SCS_VALUE_TYPE_u64)
     {
@@ -67,7 +67,7 @@ inline uint64_t valueAdapter<uint64_t>(const scs_value_t& param)
 }
 
 template<>
-inline float valueAdapter<float>(const scs_value_t& param)
+inline float valueAdapter<float>(const scs_value_t& param) noexcept
 {
     if (param.type == SCS_VALUE_TYPE_float)
     {
@@ -77,7 +77,7 @@ inline float valueAdapter<float>(const scs_value_t& param)
 }
 
 template<>
-inline double valueAdapter<double>(const scs_value_t& param)
+inline double valueAdapter<double>(const scs_value_t& param) noexcept
 {
     if (param.type == SCS_VALUE_TYPE_double)
     {
@@ -87,7 +87,7 @@ inline double valueAdapter<double>(const scs_value_t& param)
 }
 
 template<>
-inline Vec3<float> valueAdapter<Vec3<float>>(const scs_value_t& param)
+inline Vec3<float> valueAdapter<Vec3<float>>(const scs_value_t& param) noexcept
 {
     if (param.type == SCS_VALUE_TYPE_fvector)
     {
@@ -98,7 +98,7 @@ inline Vec3<float> valueAdapter<Vec3<float>>(const scs_value_t& param)
 }
 
 template<>
-inline Vec3<double> valueAdapter<Vec3<double>>(const scs_value_t& param)
+inline Vec3<double> valueAdapter<Vec3<double>>(const scs_value_t& param) noexcept
 {
     if (param.type == SCS_VALUE_TYPE_dvector)
     {
@@ -109,7 +109,7 @@ inline Vec3<double> valueAdapter<Vec3<double>>(const scs_value_t& param)
 }
 
 template<>
-inline Euler valueAdapter<Euler>(const scs_value_t& param)
+inline Euler valueAdapter<Euler>(const scs_value_t& param) noexcept
 {
     if (param.type == SCS_VALUE_TYPE_euler)
     {
@@ -120,7 +120,7 @@ inline Euler valueAdapter<Euler>(const scs_value_t& param)
 }
 
 template<>
-inline PlacementF valueAdapter<PlacementF>(const scs_value_t& param)
+inline PlacementF valueAdapter<PlacementF>(const scs_value_t& param) noexcept
 {
     if (param.type == SCS_VALUE_TYPE_fplacement)
     {
@@ -132,7 +132,7 @@ inline PlacementF valueAdapter<PlacementF>(const scs_value_t& param)
 }
 
 template<>
-inline PlacementD valueAdapter<PlacementD>(const scs_value_t& param)
+inline PlacementD valueAdapter<PlacementD>(const scs_value_t& param) noexcept
 {
     if (param.type == SCS_VALUE_TYPE_dplacement)
     {
@@ -144,7 +144,7 @@ inline PlacementD valueAdapter<PlacementD>(const scs_value_t& param)
 }
 
 template<>
-inline std::string valueAdapter<std::string>(const scs_value_t& param)
+inline std::string valueAdapter<std::string>(const scs_value_t& param) noexcept
 {
     if (param.type == SCS_VALUE_TYPE_string)
     {

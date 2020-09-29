@@ -20,7 +20,7 @@ public:
     explicit WndProcEventProxy(EventManager& eventMgr);
 
 private:
-    void onWndProc(HWND, UINT, WPARAM, LPARAM);
+    void onWndProc(HWND, UINT, WPARAM, LPARAM) noexcept;
 };
 
 HRY_NS_END

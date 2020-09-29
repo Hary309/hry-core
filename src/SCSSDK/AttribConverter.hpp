@@ -25,7 +25,7 @@ struct FieldBase
     explicit FieldBase(std::string_view id) : id(id) {}
     virtual ~FieldBase() = default;
 
-    virtual void process(const scs_named_value_t& param, void* data) = 0;
+    virtual void process(const scs_named_value_t& param, void* data) noexcept = 0;
 };
 
 template<typename EnumType>
@@ -37,7 +37,7 @@ private:
 public:
     void add(std::string_view id, EnumType value) { _fields.emplace_back(std::pair{ id, value }); }
 
-    EnumType getValue(std::string_view id) const
+    EnumType getValue(std::string_view id) const noexcept
     {
         auto field = std::find_if(
             _fields.begin(), _fields.end(), [&id](const auto& v) { return v.first == id; });
@@ -136,7 +136,7 @@ public:
         }
     }
 
-    ClassType process(const scs_named_value_t* params) const
+    ClassType process(const scs_named_value_t* params) const noexcept
     {
         for (const auto& field : _fields)
         {
@@ -192,7 +192,7 @@ private:
         {
         }
 
-        void process(const scs_named_value_t& param, void* data) override
+        void process(const scs_named_value_t& param, void* data) noexcept override
         {
             auto& typedData = *static_cast<ClassType*>(data);
             typedData.*member = adapter(param.value);
@@ -211,7 +211,7 @@ private:
         {
         }
 
-        void process(const scs_named_value_t& param, void* data) override
+        void process(const scs_named_value_t& param, void* data) noexcept override
         {
             auto& typedData = *static_cast<ClassType*>(data);
             auto str = adapter(param.value);
@@ -233,7 +233,7 @@ private:
         {
         }
 
-        void process(const scs_named_value_t& param, void* data) override
+        void process(const scs_named_value_t& param, void* data) noexcept override
         {
             auto& typedData = *static_cast<ClassType*>(data);
             auto& innerClass = typedData.*member;
@@ -252,7 +252,7 @@ private:
         {
         }
 
-        void process(const scs_named_value_t& param, void* data) override
+        void process(const scs_named_value_t& param, void* data) noexcept override
         {
             auto& typedData = *static_cast<ClassType*>(data);
             auto& vector = typedData.*member;
@@ -275,7 +275,7 @@ private:
             isIndexed = true;
         }
 
-        void process(const scs_named_value_t& param, void* data) override
+        void process(const scs_named_value_t& param, void* data) noexcept override
         {
             auto& typedData = *static_cast<ClassType*>(data);
             auto& field = typedData.*vector;
@@ -304,7 +304,7 @@ private:
             isIndexed = true;
         }
 
-        void process(const scs_named_value_t& param, void* data) override
+        void process(const scs_named_value_t& param, void* data) noexcept override
         {
             auto& typedData = *static_cast<ClassType*>(data);
             auto& field = typedData.*vector;

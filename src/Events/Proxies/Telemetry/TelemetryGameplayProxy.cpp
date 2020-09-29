@@ -27,7 +27,7 @@ TelemetryGameplayProxy::TelemetryGameplayProxy(
 }
 
 void TelemetryGameplayProxy::Gameplay(
-    scs_event_t /*event*/, const void* event_info, scs_context_t context)
+    scs_event_t /*event*/, const void* event_info, scs_context_t context) noexcept
 {
     const auto* gameplay = reinterpret_cast<const scs_telemetry_gameplay_event_t*>(event_info);
 

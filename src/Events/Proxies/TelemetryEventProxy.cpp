@@ -28,7 +28,7 @@ TelemetryEventProxy::TelemetryEventProxy(
 }
 
 void TelemetryEventProxy::FrameStart(
-    scs_event_t /*unused*/, const void* data, scs_context_t context)
+    scs_event_t /*unused*/, const void* data, scs_context_t context) noexcept
 {
     static Timer timer;
     static scs_timestamp_t lastSimulationTime;
@@ -44,7 +44,7 @@ void TelemetryEventProxy::FrameStart(
 }
 
 void TelemetryEventProxy::FrameEnd(
-    scs_event_t /*unused*/, const void* /*unused*/, scs_context_t context)
+    scs_event_t /*unused*/, const void* /*unused*/, scs_context_t context) noexcept
 {
     static Timer timer;
 
@@ -54,7 +54,7 @@ void TelemetryEventProxy::FrameEnd(
 }
 
 void TelemetryEventProxy::ChangedState(
-    scs_event_t event, const void* /*unused*/, scs_context_t context)
+    scs_event_t event, const void* /*unused*/, scs_context_t context) noexcept
 {
     auto* eventMgr = reinterpret_cast<EventManager*>(context);
 

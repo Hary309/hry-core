@@ -20,9 +20,11 @@ public:
     TelemetryEventProxy(EventManager& eventMgr, scs_telemetry_init_params_v100_t* scsTelemetry);
 
 private:
-    static void FrameStart(scs_event_t event, const void* event_info, scs_context_t context);
-    static void FrameEnd(scs_event_t event, const void* event_info, scs_context_t context);
-    static void ChangedState(scs_event_t event, const void* event_info, scs_context_t context);
+    static void FrameStart(
+        scs_event_t event, const void* event_info, scs_context_t context) noexcept;
+    static void FrameEnd(scs_event_t event, const void* event_info, scs_context_t context) noexcept;
+    static void ChangedState(
+        scs_event_t event, const void* event_info, scs_context_t context) noexcept;
 };
 
 HRY_NS_END

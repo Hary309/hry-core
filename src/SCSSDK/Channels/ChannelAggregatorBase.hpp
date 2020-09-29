@@ -19,7 +19,7 @@ inline void storeValue(
     const scs_string_t /*unused*/,
     const scs_u32_t /*unused*/,
     const scs_value_t* const value,
-    const scs_context_t context)
+    const scs_context_t context) noexcept
 {
     T& ctx = *static_cast<T*>(context);
 
@@ -38,7 +38,7 @@ inline void storeIndexedValue(
     const scs_string_t /*unused*/,
     const scs_u32_t index,
     const scs_value_t* const value,
-    const scs_context_t context)
+    const scs_context_t context) noexcept
 {
     auto& ctx = *static_cast<std::vector<T>*>(context);
 

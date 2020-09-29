@@ -32,7 +32,8 @@ public:
         EventManager& eventMgr, scs_telemetry_init_params_v100_t* scsTelemetry);
 
 private:
-    static void Configuration(scs_event_t event, const void* event_info, scs_context_t context);
+    static void Configuration(
+        scs_event_t event, const void* event_info, scs_context_t context) noexcept;
 };
 
 HRY_NS_END

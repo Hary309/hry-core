@@ -39,7 +39,7 @@ DInput8EventProxy::DInput8EventProxy(EventManager& eventMgr) : EventProxyBase(ev
     DInput8Hook::OnJoystickData.connect<&DInput8EventProxy::onJoystickData>(this);
 }
 
-void DInput8EventProxy::onMouseData(const std::vector<DIDEVICEOBJECTDATA>&& events)
+void DInput8EventProxy::onMouseData(const std::vector<DIDEVICEOBJECTDATA>&& events) noexcept
 {
     for (const auto& event : events)
     {
@@ -88,7 +88,7 @@ void DInput8EventProxy::onMouseData(const std::vector<DIDEVICEOBJECTDATA>&& even
     }
 }
 
-void DInput8EventProxy::sendMouseButtonEvent(int pressData, Mouse::Button button)
+void DInput8EventProxy::sendMouseButtonEvent(int pressData, Mouse::Button button) noexcept
 {
     MouseButtonEvent mouseButtonEvent{};
     mouseButtonEvent.button = button;
@@ -107,7 +107,7 @@ void DInput8EventProxy::sendMouseButtonEvent(int pressData, Mouse::Button button
 }
 
 void DInput8EventProxy::onJoystickData(
-    const std::vector<DIDEVICEOBJECTDATA>&& events, const GUID& guid)
+    const std::vector<DIDEVICEOBJECTDATA>&& events, const GUID& guid) noexcept
 {
     for (const auto& event : events)
     {
