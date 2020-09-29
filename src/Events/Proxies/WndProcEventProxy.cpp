@@ -134,7 +134,7 @@ Keyboard::Key vkKeyCodeToEnum(WPARAM key, LPARAM flags) noexcept
         case VK_BROWSER_REFRESH: return Key::BrowserRefresh;
         case VK_BROWSER_STOP: return Key::BrowserStop;
         case VK_BROWSER_SEARCH: return Key::BrowserSearch;
-        case VK_BROWSER_FAVORITES: return Key::BrowserFavourites;
+        case VK_BROWSER_FAVORITES: return Key::BrowserFavorites;
         case VK_BROWSER_HOME: return Key::BrowserHome;
     }
 

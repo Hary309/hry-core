@@ -115,7 +115,7 @@ struct Keyboard
         BrowserRefresh,
         BrowserStop,
         BrowserSearch,
-        BrowserFavourites,
+        BrowserFavorites,
         BrowserHome,
 
         KeyCount
