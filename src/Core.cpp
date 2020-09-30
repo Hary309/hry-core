@@ -58,6 +58,7 @@ Core::~Core()
 bool Core::init(scs_telemetry_init_params_v100_t* scsTelemetry)
 {
     Paths::Init();
+    ImGui::GetIO().IniFilename = _strdup((Paths::HomePath + "\\imgui.ini").c_str());
 
     Core::GameType = DetermineGameType(scsTelemetry->common.game_id);
 
