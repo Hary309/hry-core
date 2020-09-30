@@ -4,9 +4,9 @@ hry-core is utility library which provides many useful tools for creating plugin
 
 ## Motivation
 
-The idea was to create a simple tool (only for me) which provides simple API for rendering and inputs. In the process of developing it, I was feeling that I can do better so I started adding more and more features. Now I am in a point where I'm almost satisfied with the API, and I'm ready to publish first alpha.
+The idea was to create a simple tool (only for me) which provides simple API for rendering and inputs. In the process of developing it, I was feeling that I can do better so I keep adding more and more features. Now I am in a point where I'm almost satisfied with the API, and I'm ready to publish first alpha.
 
-Unfortunately, the documentation isn't there yet so you have to learn from example plugins. Check out the [hry-sic](https://github.com/Hary309/hry-sic)
+Unfortunately, the documentation isn't there yet so you have to learn from examples. Check out the [hry-sic](https://github.com/Hary309/hry-sic)
 
 ## Features
 
@@ -20,7 +20,7 @@ Unfortunately, the documentation isn't there yet so you have to learn from examp
 
   - Gameplay events
 
-  - Configuation callback for truck, multiple trailers and more
+  - Configuration callback for truck, multiple trailers and more
 
 - Logger
 
@@ -32,4 +32,4 @@ Unfortunately, the documentation isn't there yet so you have to learn from examp
 
 ## This isn't binding of game
 
-This mod isn't like FiveM or MTA:SA, you still have to decode and hook the game on your own, to help you with that, **hry-core** provides some useful tools (Detour, Pattern scanning, vtable hooks)
+This mod isn't like FiveM or MTA:SA, you still have to reverse engineer and hook the game on your own, to help you with that, **hry-core** provides some useful tools (Detour, Pattern scanning, vtable hooks)
