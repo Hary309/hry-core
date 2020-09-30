@@ -14,12 +14,7 @@ HryPtr<Config> ConfigManager::createConfig(const std::string& name)
     auto* config = new Config(name);
     _configs.push_back(config);
 
-    return { config, { ConnectArg_v<&ConfigManager::configDeleter>, this } };
-}
-
-void ConfigManager::removeConfig(Config* config)
-{
-    _configs.erase(std::remove(_configs.begin(), _configs.end(), config));
+    return { config, Dlg<&ConfigManager::configDeleter>(this) };
 }
 
 void ConfigManager::saveAll(SaveType saveType)
@@ -38,6 +33,11 @@ void ConfigManager::saveAll(SaveType saveType)
             config->saveToFile();
         }
     }
+}
+
+void ConfigManager::removeConfig(Config* config)
+{
+    _configs.erase(std::remove(_configs.begin(), _configs.end(), config));
 }
 
 void ConfigManager::configDeleter(Config* ptr)

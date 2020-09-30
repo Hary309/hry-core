@@ -43,7 +43,7 @@ HryPtr<KeyBinds> KeyBindsManager::createKeyBinds(const std::string& name)
     _keyBinds.push_back(keyBinds);
 
     // use custom deleter to remove from list when KeyBinds is removing
-    return { keyBinds, { ConnectArg_v<&KeyBindsManager::keyBindsDeleter>, this } };
+    return { keyBinds, Dlg<&KeyBindsManager::keyBindsDeleter>(this) };
 }
 
 void KeyBindsManager::remove(const KeyBinds* keyBinds)

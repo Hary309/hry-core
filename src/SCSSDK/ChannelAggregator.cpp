@@ -31,6 +31,10 @@ void ChannelAggregator::onSubstances(const std::optional<scs::Substances>&& subs
     {
         _telemetry._substances = substances.value();
     }
+    else
+    {
+        _telemetry._substances.substances.clear();
+    }
 }
 
 HRY_NS_END

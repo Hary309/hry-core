@@ -22,13 +22,13 @@ private:
 
 public:
     HryPtr<Config> createConfig(const std::string& name);
-    void removeConfig(Config* config);
 
     auto& getConfigs() { return _configs; }
 
     void saveAll(SaveType saveType);
 
 private:
+    void removeConfig(Config* config);
     void configDeleter(Config* ptr);
 };
 

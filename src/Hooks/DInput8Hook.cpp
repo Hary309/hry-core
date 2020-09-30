@@ -113,6 +113,7 @@ bool DInput8Hook::Install()
 
     if (FAILED(hr))
     {
+        IDirectInput8_Release(DI);
         Core::Logger->error("Cannot create DInput device");
         return false;
     }
@@ -124,6 +125,8 @@ bool DInput8Hook::Install()
 
     if (auto err = detour->create(); err != Detour::Status::Ok)
     {
+        IDirectInputDevice8_Release(DIMouse);
+        IDirectInput8_Release(DI);
         Core::Logger->error(
             "Cannot hook DirectInputDevice::GetDeviceData [{}]", static_cast<int>(err));
         return false;
@@ -131,6 +134,8 @@ bool DInput8Hook::Install()
 
     if (auto err = detour->enable(); err != Detour::Status::Ok)
     {
+        IDirectInputDevice8_Release(DIMouse);
+        IDirectInput8_Release(DI);
         Core::Logger->error(
             "Cannot enable hook DirectInputDevice::GetDeviceData [{}]", static_cast<int>(err));
         return false;
