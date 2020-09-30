@@ -28,6 +28,8 @@ void LoggerWindow::imguiRender()
 
     ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0);
 
+    ImGui::SetNextWindowSize({ 400.f, 300.f }, ImGuiCond_FirstUseEver);
+
     if (!ImGui::Begin("Logs"))
     {
         ImGui::End();
