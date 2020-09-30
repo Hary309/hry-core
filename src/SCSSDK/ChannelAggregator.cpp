@@ -1,3 +1,9 @@
+/**
+ * This file is part of the hry-core project
+ * @ Author: Piotr Krupa <piotrkrupa06@gmail.com>
+ * @ License: MIT License
+ */
+
 #include "ChannelAggregator.hpp"
 
 #include "SCSSDK/Channels/CommonChannelAggregator.hpp"

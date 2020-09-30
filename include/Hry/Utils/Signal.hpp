@@ -1,3 +1,9 @@
+/**
+ * This file is part of the hry-core project
+ * @ Author: Piotr Krupa <piotrkrupa06@gmail.com>
+ * @ License: MIT License
+ */
+
 // original code: https://github.com/skypjack/entt
 // This is a part of ENTT under MIT License
 

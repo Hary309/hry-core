@@ -1,3 +1,9 @@
+/**
+ * This file is part of the hry-core project
+ * @ Author: Piotr Krupa <piotrkrupa06@gmail.com>
+ * @ License: MIT License
+ */
+
 #include "JobChannelAggregator.hpp"
 
 #include <common/scssdk_telemetry_job_common_channels.h>

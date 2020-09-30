@@ -1,3 +1,9 @@
+/**
+ * This file is part of the hry-core project
+ * @ Author: Piotr Krupa <piotrkrupa06@gmail.com>
+ * @ License: MIT License
+ */
+
 /*
  * This file is part of the CitizenFX project - http://citizen.re/
  *
