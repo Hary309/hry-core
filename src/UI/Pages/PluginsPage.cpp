@@ -109,6 +109,8 @@ void PluginsPage::renderList()
 
         ImGui::NextColumn();
 
+        ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 2);
+
         ImGui::Text("%s", module->dllName.c_str());
 
         ImGui::SameLine();
