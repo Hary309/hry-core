@@ -115,7 +115,7 @@ void PluginsPage::renderList()
 
         if (isLoaded)
         {
-            const auto version = module->plugin->getPluginInfo().version.toString();
+            const auto version = module->info.version.toString();
             ImGui::TextColored(Colors::Gray.Value, "v%s", version.c_str());
         }
         else if (module->loadResult != Plugin::Result::Ok)
@@ -144,7 +144,7 @@ void PluginsPage::renderList()
         {
             if (ImGui::Button("..."))
             {
-                _selectedPlugin = &module->plugin->getPluginInfo();
+                _selectedPlugin = &module->info;
             }
         }
 

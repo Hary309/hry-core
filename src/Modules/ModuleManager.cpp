@@ -199,7 +199,9 @@ bool ModuleManager::load(Module* mod)
         return false;
     }
 
-    const auto* name = mod->plugin->getPluginInfo().name.c_str();
+    mod->info = mod->plugin->getPluginInfo();
+
+    const auto* name = mod->info.name.c_str();
 
     if (!IsApiCompatible(mod->plugin->ApiVersion))
     {

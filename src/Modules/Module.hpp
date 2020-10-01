@@ -25,6 +25,8 @@ struct Module
 
     Plugin::Result loadResult{ Plugin::Result::Ok };
 
+    PluginInfo info{};
+
     // can be nulls
     struct
     {

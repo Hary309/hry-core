@@ -21,14 +21,14 @@ struct AuthorInfo
 
 struct PluginInfo
 {
-    const std::string name;
-    const std::string fullName;
+    std::string name;
+    std::string fullName;
 
-    const AuthorInfo authorInfo;
+    AuthorInfo authorInfo;
 
-    const std::string desc;
+    std::string desc;
 
-    const Version version;
+    Version version;
 };
 
 HRY_NS_END
