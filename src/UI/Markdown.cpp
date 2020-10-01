@@ -8,11 +8,12 @@
 
 #include <string>
 
-#include <Windows.h>
 #include <imgui.h>
 #include <imgui_markdown.h>
 
 #include "Hry/Fonts.hpp"
+
+#include "Utils/Windows.hpp"
 
 HRY_NS_BEGIN
 
@@ -21,7 +22,7 @@ void LinkCallback(ImGui::MarkdownLinkCallbackData linkData)
     std::string url(linkData.link, linkData.linkLength);
     if (!linkData.isImage)
     {
-        ShellExecuteA(nullptr, "open", url.c_str(), nullptr, nullptr, SW_SHOWNORMAL);
+        Windows::OpenWebsite(url);
     }
 }
 
