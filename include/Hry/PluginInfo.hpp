@@ -26,6 +26,8 @@ struct PluginInfo
 
     AuthorInfo authorInfo;
 
+    std::string website;
+
     std::string desc;
 
     Version version;

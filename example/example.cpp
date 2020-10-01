@@ -27,6 +27,7 @@ private:
     hry::PluginInfo _pluginInfo{ "hry-example",
                                  "Example plugin",
                                  { "Hary309", "piotrkrupa06@gmail.com" },
+                                 "",
                                  "This is a example of plugin based on hry-core.",
                                  hry::Version{ 1, 0, 0 } };
 

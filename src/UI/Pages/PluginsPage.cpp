@@ -14,6 +14,7 @@
 #include "Hry/Utils/ImGuiUtils.hpp"
 
 #include "UI/Markdown.hpp"
+#include "Utils/Windows.hpp"
 
 HRY_NS_BEGIN
 
@@ -134,6 +135,17 @@ void PluginsPage::renderList()
                     }
                 }(module->loadResult),
                 module->loadResult);
+
+            if (module->info.website.length() > 0)
+            {
+                ImGui::SameLine();
+
+                ImGui::SetCursorPosY(ImGui::GetCursorPosY() - 2);
+                if (ImGui::Button("Check for update"))
+                {
+                    Windows::OpenWebsite(module->info.website);
+                }
+            }
         }
         else
         {
