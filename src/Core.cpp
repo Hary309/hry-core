@@ -65,7 +65,7 @@ bool Core::init(scs_telemetry_init_params_v100_t* scsTelemetry)
     LoggerFactory::Init(Paths::HomePath + "/hry_core.log", _eventMgr);
     Logger = LoggerFactory::GetLogger("core");
 
-    Logger->info("Base address: {0:#x}", GetBaseAddress());
+    Logger->info("Base address: 0x{:X}", GetBaseAddress());
     Logger->info("API version {}.{}.{}", ApiVersion.major, ApiVersion.minor, ApiVersion.patch);
     Logger->info("Game name: {}", GameTypeToString(Core::GameType));
     Logger->info("Module's path: {}", Paths::ModulePath);
