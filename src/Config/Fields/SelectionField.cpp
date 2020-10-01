@@ -27,7 +27,28 @@ void SelectionField::imguiRender()
             _dirtySelectedIndex = 0;
         }
 
-        std::visit([this, &size](auto&& arg) { renderWidget(arg, size); }, _type);
+        if (ImGui::BeginCombo(_label.c_str(), _options[_dirtySelectedIndex].c_str()))
+        {
+            for (int i = 0; i < size; i++)
+            {
+                auto& option = _options[i];
+
+                bool isSelected = _dirtySelectedIndex == i;
+
+                if (ImGui::Selectable(option.c_str(), isSelected))
+                {
+                    _dirtySelectedIndex = i;
+                    _previewCallback(_options[i]);
+                }
+
+                if (isSelected)
+                {
+                    ImGui::SetItemDefaultFocus();
+                }
+            }
+
+            ImGui::EndCombo();
+        }
 
         if (!_description.empty())
         {
@@ -54,50 +75,6 @@ void SelectionField::fromJson(const nlohmann::json& json)
         {
             _selectedIndex = index;
             _dirtySelectedIndex = index;
-        }
-    }
-}
-
-void SelectionField::renderWidget(ComboType& /*unused*/, int size)
-{
-    if (ImGui::BeginCombo(_label.c_str(), _options[_dirtySelectedIndex].c_str()))
-    {
-        for (int i = 0; i < size; i++)
-        {
-            auto& option = _options[i];
-
-            bool isSelected = _dirtySelectedIndex == i;
-
-            if (ImGui::Selectable(option.c_str(), isSelected))
-            {
-                _dirtySelectedIndex = i;
-                _previewCallback(_options[i]);
-            }
-
-            if (isSelected)
-            {
-                ImGui::SetItemDefaultFocus();
-            }
-        }
-
-        ImGui::EndCombo();
-    }
-}
-
-void SelectionField::renderWidget(RadioType& radio, int size)
-{
-    for (int i = 0; i < size; i++)
-    {
-        auto& option = _options[i];
-        if (ImGui::RadioButton(option.c_str(), i == _dirtySelectedIndex))
-        {
-            _dirtySelectedIndex = i;
-            _previewCallback(_options[i]);
-        }
-
-        if (radio.sameLine && i != size - 1)
-        {
-            ImGui::SameLine();
         }
     }
 }

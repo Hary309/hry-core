@@ -26,26 +26,11 @@ public:
     using PreviewCallback_t = Delegate<void(const std::string&)>;
 
 private:
-    struct ComboType
-    {
-        // TODO
-    };
-
-    struct RadioType
-    {
-        bool sameLine;
-    };
-
-    using Variant_t = std::variant<ComboType, RadioType>;
-
-private:
     int _dirtySelectedIndex = 0;
     int _selectedIndex = 0;
     std::vector<std::string> _options;
 
     int _defaultIndex = 0;
-
-    Variant_t _type;
 
     PreviewCallback_t _previewCallback;
 
@@ -81,9 +66,6 @@ private:
         }
     }
 
-    void renderWidget(ComboType& combo, int size);
-    void renderWidget(RadioType& radio, int size);
-
     int getIndex(const std::string& value)
     {
         auto it = std::find(_options.begin(), _options.end(), value);
@@ -103,8 +85,6 @@ class SelectionFieldBuilder
 private:
     std::vector<std::string> _options;
 
-    SelectionField::Variant_t _type;
-
     SelectionField::PreviewCallback_t _previewCallback;
 
 public:
@@ -123,17 +103,6 @@ public:
         return *this;
     }
 
-    SelectionFieldBuilder& useCombo()
-    {
-        _type = SelectionField::ComboType{};
-        return *this;
-    }
-    SelectionFieldBuilder& useRadio(bool sameLine = true)
-    {
-        _type = SelectionField::RadioType{ sameLine };
-        return *this;
-    }
-
     // [optional] Use only to preview changes, don't treat is as applied value
     SelectionFieldBuilder& setPreviewCallback(SelectionField::PreviewCallback_t previewCallback)
     {
@@ -145,7 +114,6 @@ public:
     {
         auto* selectionField = new SelectionField();
         selectionField->_options = _options;
-        selectionField->_type = _type;
         selectionField->_previewCallback = _previewCallback;
         selectionField->setDefaultValue(_defaultValue);
 
