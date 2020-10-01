@@ -191,6 +191,13 @@ void PluginsPage::renderDetail()
 
     ImGui::PopFont();
 
+    ImGui::SameLine(ImGui::GetWindowContentRegionWidth() - 40);
+
+    if (ImGui::Button("Website"))
+    {
+        Windows::OpenWebsite(_selectedPlugin->website);
+    }
+
     ImGui::PushStyleColor(ImGuiCol_Text, Colors::Gray.Value);
     const auto& authorInfo = _selectedPlugin->authorInfo;
     ImGui::Text("by %s <%s>", authorInfo.name.c_str(), authorInfo.email.c_str());
