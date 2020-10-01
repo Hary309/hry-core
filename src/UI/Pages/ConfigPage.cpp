@@ -55,6 +55,14 @@ void ConfigPage::imguiRender()
         _configMgr.saveAll(ConfigManager::SaveType::SaveOnlyDirty);
     }
 
+
+    if (ImGui::IsItemHovered())
+    {
+        ImGui::BeginTooltip();
+        ImGui::Text("Apply the changes");
+        ImGui::EndTooltip();
+    }
+
     ImGui::SameLine();
 
     if (ImGui::Button("Cancel##ConfigPage"))
@@ -65,6 +73,13 @@ void ConfigPage::imguiRender()
         }
     }
 
+    if (ImGui::IsItemHovered())
+    {
+        ImGui::BeginTooltip();
+        ImGui::Text("Cancel the changes");
+        ImGui::EndTooltip();
+    }
+
     ImGui::SameLine();
 
     if (ImGui::Button("Reset to default"))
@@ -73,6 +88,13 @@ void ConfigPage::imguiRender()
         {
             config->resetToDefault();
         }
+    }
+
+    if (ImGui::IsItemHovered())
+    {
+        ImGui::BeginTooltip();
+        ImGui::Text("Reset all fields to default values");
+        ImGui::EndTooltip();
     }
 
     if (isAnyDirty)
