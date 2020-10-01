@@ -43,7 +43,7 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL
            -Wdouble-promotion
            -Wformat=2
            -Wmisleading-indentation
-           -Wmost          
+           -Wmost
            -Wparentheses
            -Wswitch
            -Wswitch-bool
@@ -65,8 +65,3 @@ target_link_libraries(hry-core PRIVATE imgui glad minhook)
 project(hry-example VERSION 0.1.0)
 add_library(hry-example SHARED example/example.cpp)
 target_link_libraries(hry-example PRIVATE hry-core)
-
-# sample
-project(hry-sample VERSION 0.1.0)
-add_library(hry-sample SHARED example/sample.cpp)
-target_link_libraries(hry-sample PRIVATE hry-core)
