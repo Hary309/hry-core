@@ -45,7 +45,6 @@ protected:
         T min;
         T max;
         std::string format;
-        float power{};
     };
 
     struct SliderType
@@ -53,7 +52,6 @@ protected:
         T min;
         T max;
         std::string format;
-        float power{};
     };
 
     using Variant_t = std::variant<InputType, DragType, SliderType>;
@@ -136,7 +134,7 @@ private:
     {
         if (ImGui::DragScalar(
                 _label.c_str(), ImGuiDataType_v<T>, &_dirtyValue, drag.speed, &drag.min, &drag.max,
-                drag.format.c_str(), drag.power))
+                drag.format.c_str()))
         {
             _isDirty = _value != _dirtyValue;
             _previewCallback(_dirtyValue);
@@ -148,7 +146,7 @@ private:
     {
         if (ImGui::SliderScalar(
                 _label.c_str(), ImGuiDataType_v<T>, &_dirtyValue, &slider.min, &slider.max,
-                slider.format.c_str(), slider.power))
+                slider.format.c_str()))
         {
             _isDirty = _value != _dirtyValue;
             _previewCallback(_dirtyValue);
@@ -215,12 +213,7 @@ public:
 
     NumericFieldBuilder& useDrag(T speed, T min, T max, const std::string& format)
     {
-        return useDrag(speed, min, max, format, 1.f);
-    }
-
-    NumericFieldBuilder& useDrag(T speed, T min, T max, const std::string& format, float power)
-    {
-        _widgetType = typename NumericField<T>::DragType{ speed, min, max, format, power };
+        _widgetType = typename NumericField<T>::DragType{ speed, min, max, format };
         return *this;
     }
 
@@ -231,12 +224,7 @@ public:
 
     NumericFieldBuilder& useSlider(T min, T max, const std::string& format)
     {
-        return useSlider(min, max, format, 1.f);
-    }
-
-    NumericFieldBuilder& useSlider(T min, T max, const std::string& format, float power)
-    {
-        _widgetType = typename NumericField<T>::SliderType{ min, max, format, power };
+        _widgetType = typename NumericField<T>::SliderType{ min, max, format };
         return *this;
     }
 
