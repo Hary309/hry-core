@@ -63,7 +63,9 @@ void KeyBindsPage::imguiRender()
 
                 if (_keyToSetBind == keyBind.get())
                 {
+                    ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 2);
                     ImGui::Text("Press key to bind");
+                    ImGui::SetCursorPosY(ImGui::GetCursorPosY() - 2);
                 }
                 else
                 {
