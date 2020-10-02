@@ -6,17 +6,16 @@
 
 #pragma once
 
-#include <Windows.h>
-
-#include "Hry/Events/Event.hpp"
-#include "Hry/Logger/Logger.hpp"
 #include "Hry/Namespace.hpp"
 #include "Hry/SCSSDK/ConfigurationData.hpp"
+#include "Hry/SCSSDK/GameplayData.hpp"
 #include "Hry/Utils/Signal.hpp"
+
+#include "Event.hpp"
 
 HRY_NS_BEGIN
 
-struct InternalEventHandler
+struct EventDispatcher
 {
     // system events
     struct
@@ -38,9 +37,7 @@ struct InternalEventHandler
         Sink<void(const JoystickButtonEvent&&)> onJoystickButtonRelease;
 
         Sink<void()> onImGuiRender;
-
-        Sink<void(std::string msg, Logger::Level)> onLog;
-        Sink<void(HWND, UINT, WPARAM, LPARAM)> onWndProc;
+        Signal<void(const OverlayStateEvent&&)> onOverlayStateChange;
     } system;
 
     // game events
@@ -49,6 +46,17 @@ struct InternalEventHandler
         Sink<void(const FrameStartEvent&&)> onFrameStart;
         Sink<void(const FrameEndEvent&&)> onFrameEnd;
         Sink<void(const GameStateEvent&&)> onStateChange;
+
+        // gameplay events
+        struct
+        {
+            Sink<void(const std::optional<scs::JobCancelled>&&)> jobCancelledSignal;
+            Sink<void(const std::optional<scs::JobDelivered>&&)> jobDeliveredSignal;
+            Sink<void(const std::optional<scs::PlayerFined>&&)> playerFinedSignal;
+            Sink<void(const std::optional<scs::PlayerTollgatePaid>&&)> playerTollgatePaidSignal;
+            Sink<void(const std::optional<scs::PlayerUseFerry>&&)> playerUseFerrySignal;
+            Sink<void(const std::optional<scs::PlayerUseTrain>&&)> playerUseTrainSignal;
+        } gameplay;
 
         // configuration callbacks
         struct

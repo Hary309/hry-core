@@ -29,7 +29,7 @@ public:
     TruckChannelAggregator(
         scs::TruckChannel& truckChannel,
         scs_telemetry_init_params_v100_t* scsTelemetry,
-        InternalEventHandler& eventHandler);
+        InternalEventDispatcher& dispatcher);
 
 private:
     void onTruckConfig(const std::optional<scs::Truck>&& truck);

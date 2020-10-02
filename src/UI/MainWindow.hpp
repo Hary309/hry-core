@@ -7,7 +7,7 @@
 #pragma once
 
 #include "Hry/Events/Event.hpp"
-#include "Hry/Events/EventHandler.hpp"
+#include "Hry/Events/EventDispatcher.hpp"
 #include "Hry/KeyBinding/KeyBinds.hpp"
 #include "Hry/Namespace.hpp"
 #include "Hry/System/System.hpp"
@@ -43,7 +43,7 @@ public:
         ConfigManager& configMgr,
         KeyBindsManager& keyBindsMgr,
         EventManager& eventMgr,
-        InternalEventHandler& eventHandler);
+        InternalEventDispatcher& eventDispatcher);
 
     void initKeyBinds(KeyBinds& keyBinds);
 

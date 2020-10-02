@@ -17,7 +17,7 @@
 #include "Hry/Utils/Delegate.hpp"
 #include "Hry/Utils/Utils.hpp"
 
-#include "Events/EventHandler.hpp"
+#include "Events/EventDispatcher.hpp"
 #include "KeyBinding/KeyBinds.hpp"
 
 #include "PluginInfo.hpp"
@@ -56,7 +56,7 @@ public:
     virtual Result init(const InitParams&& initParams) = 0;
     virtual void initConfig(Config* config) = 0;
     virtual void initKeyBinds(KeyBinds* keyBinds) = 0;
-    virtual void initEvents(EventHandler* eventHandler) = 0;
+    virtual void initEvents(EventDispatcher* eventDispatcher) = 0;
 
     // replace with manifest.json
     [[nodiscard]] virtual const PluginInfo& getPluginInfo() const = 0;

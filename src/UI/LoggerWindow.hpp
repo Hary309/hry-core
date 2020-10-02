@@ -12,7 +12,7 @@
 
 #include "Hry/Namespace.hpp"
 
-#include "Events/InternalEventHandler.hpp"
+#include "Events/InternalEventDispatcher.hpp"
 
 HRY_NS_BEGIN
 
@@ -35,7 +35,7 @@ private:
     float _opacity = 1.f;
 
 public:
-    LoggerWindow(InternalEventHandler& eventMgr);
+    LoggerWindow(InternalEventDispatcher& dispatcher);
 
     void imguiRender();
 

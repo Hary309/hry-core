@@ -14,7 +14,7 @@
 #include "Hry/SCSSDK/TrailerChannel.hpp"
 
 #include "Events/EventProxyBase.hpp"
-#include "Events/InternalEventHandler.hpp"
+#include "Events/InternalEventDispatcher.hpp"
 
 #include "ChannelAggregatorBase.hpp"
 
@@ -34,7 +34,7 @@ public:
     TrailerChannelAggregator(
         Trailers_t& trailerChannel,
         scs_telemetry_init_params_v100_t* scsTelemetry,
-        InternalEventHandler& eventHandler);
+        InternalEventDispatcher& dispatcher);
 
 private:
     template<typename ValueType>

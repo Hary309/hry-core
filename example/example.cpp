@@ -4,7 +4,7 @@
 #include <imgui.h>
 #include <windows.h>
 
-#include "Hry/Events/EventHandler.hpp"
+#include "Hry/Events/EventDispatcher.hpp"
 #include "Hry/System/System.hpp"
 #include "Hry/Version.hpp"
 #include <Hry/Config/Config.hpp>
@@ -51,7 +51,7 @@ public:
         return Result::Ok;
     }
 
-    void initEvents(hry::EventHandler* /*eventHandler*/) override {}
+    void initEvents(hry::EventDispatcher* /*dispatcher*/) override {}
 
     void initConfig(hry::Config* config) override
     {

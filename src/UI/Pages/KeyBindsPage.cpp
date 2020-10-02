@@ -16,13 +16,12 @@
 
 HRY_NS_BEGIN
 
-KeyBindsPage::KeyBindsPage(KeyBindsManager& keyBindsMgr, InternalEventHandler& eventHandler)
+KeyBindsPage::KeyBindsPage(KeyBindsManager& keyBindsMgr, InternalEventDispatcher& dispatcher)
     : _keyBindsMgr(keyBindsMgr)
 {
-    eventHandler.system.onKeyPress.connect<&KeyBindsPage::handleKeyPress>(this);
-    eventHandler.system.onMouseButtonPress.connect<&KeyBindsPage::handleMouseButtonPress>(this);
-    eventHandler.system.onJoystickButtonPress.connect<&KeyBindsPage::handleJoystickButtonPress>(
-        this);
+    dispatcher.system.onKeyPress.connect<&KeyBindsPage::handleKeyPress>(this);
+    dispatcher.system.onMouseButtonPress.connect<&KeyBindsPage::handleMouseButtonPress>(this);
+    dispatcher.system.onJoystickButtonPress.connect<&KeyBindsPage::handleJoystickButtonPress>(this);
 }
 
 void KeyBindsPage::imguiRender()

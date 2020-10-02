@@ -12,7 +12,7 @@
 #include <vector>
 
 #include "Hry/Events/Event.hpp"
-#include "Hry/Events/EventHandler.hpp"
+#include "Hry/Events/EventDispatcher.hpp"
 #include "Hry/KeyBinding/BindableKeys.hpp"
 #include "Hry/KeyBinding/KeyBinds.hpp"
 #include "Hry/Namespace.hpp"
@@ -35,7 +35,7 @@ private:
     TaskScheduler<void(KeyBind*, std::chrono::system_clock::time_point)> _taskScheduler;
 
 public:
-    explicit KeyBindsManager(InternalEventHandler& eventHandler);
+    explicit KeyBindsManager(InternalEventDispatcher& dispatcher);
 
     HryPtr<KeyBinds> createKeyBinds(const std::string& name);
     void remove(const KeyBinds* keyBind);

@@ -12,9 +12,9 @@
 
 HRY_NS_BEGIN
 
-LoggerWindow::LoggerWindow(InternalEventHandler& eventHandler)
+LoggerWindow::LoggerWindow(InternalEventDispatcher& dispatcher)
 {
-    eventHandler.system.onLog.connect<&LoggerWindow::onLog>(this);
+    dispatcher.system.onLog.connect<&LoggerWindow::onLog>(this);
 }
 
 void LoggerWindow::imguiRender()

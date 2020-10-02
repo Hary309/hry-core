@@ -24,7 +24,7 @@ private:
     KeyBind* _keyToSetBind = nullptr;
 
 public:
-    KeyBindsPage(KeyBindsManager& keyBindsMgr, InternalEventHandler& eventHandler);
+    KeyBindsPage(KeyBindsManager& keyBindsMgr, InternalEventDispatcher& dispatcher);
 
     void imguiRender() override;
 

@@ -13,18 +13,18 @@
 
 HRY_NS_BEGIN
 
-ChannelAggregator::ChannelAggregator(InternalEventHandler& eventHandler)
-    : _eventHandler(eventHandler)
+ChannelAggregator::ChannelAggregator(InternalEventDispatcher& dispatcher)
+    : _eventDispatcher(dispatcher)
 {
-    _eventHandler.game.config.substancesSignal.connect<&ChannelAggregator::onSubstances>(this);
+    _eventDispatcher.game.config.substancesSignal.connect<&ChannelAggregator::onSubstances>(this);
 }
 
 void ChannelAggregator::init(scs_telemetry_init_params_v100_t* scsTelemetry)
 {
     _channelAggregators.push_back(std::unique_ptr<ChannelAggregatorBase>(
-        new TruckChannelAggregator(*_telemetry._truck, scsTelemetry, _eventHandler)));
+        new TruckChannelAggregator(*_telemetry._truck, scsTelemetry, _eventDispatcher)));
     _channelAggregators.push_back(std::unique_ptr<ChannelAggregatorBase>(
-        new TrailerChannelAggregator(_telemetry._trailers, scsTelemetry, _eventHandler)));
+        new TrailerChannelAggregator(_telemetry._trailers, scsTelemetry, _eventDispatcher)));
     _channelAggregators.push_back(std::unique_ptr<ChannelAggregatorBase>(
         new JobChannelAggregator(*_telemetry._job, scsTelemetry)));
     _channelAggregators.push_back(std::unique_ptr<ChannelAggregatorBase>(

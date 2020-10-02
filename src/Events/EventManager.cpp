@@ -26,7 +26,7 @@ void EventManager::init(scs_telemetry_init_params_v100_t* scsTelemetry)
     _eventProxies.push_back(std::make_unique<TelemetryEventProxy>(*this, scsTelemetry));
 }
 
-EventHandler EventManager::createEventHandler()
+EventDispatcher EventManager::createEventDispatcher()
 {
     // clang-format off
     return {
@@ -75,7 +75,7 @@ EventHandler EventManager::createEventHandler()
     // clang-format on
 }
 
-InternalEventHandler EventManager::createInternalEventHandler()
+InternalEventDispatcher EventManager::createInternalEventDispatcher()
 {
     // clang-format off
     return {

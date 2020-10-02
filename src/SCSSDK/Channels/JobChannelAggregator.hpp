@@ -9,8 +9,6 @@
 #include "Hry/Namespace.hpp"
 #include "Hry/SCSSDK/JobChannel.hpp"
 
-#include "Events/InternalEventHandler.hpp"
-
 #include "ChannelAggregatorBase.hpp"
 
 HRY_NS_BEGIN

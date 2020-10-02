@@ -19,11 +19,10 @@ HRY_NS_BEGIN
 TrailerChannelAggregator::TrailerChannelAggregator(
     TrailerChannelAggregator::Trailers_t& trailersChannel,
     scs_telemetry_init_params_v100_t* scsTelemetry,
-    InternalEventHandler& eventHandler)
+    InternalEventDispatcher& dispatcher)
     : ChannelAggregatorBase(scsTelemetry), _trailers(trailersChannel)
 {
-    eventHandler.game.config.trailerSignal.connect<&TrailerChannelAggregator::onTrailerConfig>(
-        this);
+    dispatcher.game.config.trailerSignal.connect<&TrailerChannelAggregator::onTrailerConfig>(this);
 
     for (auto i = 0; i < Telemetry::MaxTrailerCount; i++)
     {

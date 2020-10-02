@@ -12,7 +12,7 @@
 #include "Hry/Namespace.hpp"
 #include "Hry/SCSSDK/Telemetry.hpp"
 
-#include "Events/InternalEventHandler.hpp"
+#include "Events/InternalEventDispatcher.hpp"
 #include "SCSSDK/Channels/ChannelAggregatorBase.hpp"
 
 HRY_NS_BEGIN
@@ -26,10 +26,10 @@ private:
 
     Telemetry _telemetry;
 
-    InternalEventHandler& _eventHandler;
+    InternalEventDispatcher& _eventDispatcher;
 
 public:
-    ChannelAggregator(InternalEventHandler& eventHandler);
+    ChannelAggregator(InternalEventDispatcher& eventDispatcher);
 
     void init(scs_telemetry_init_params_v100_t* scsTelemetry);
 

@@ -15,7 +15,7 @@
 #include <imgui.h>
 #include <nlohmann/json.hpp>
 
-#include "Hry/Events/EventHandler.hpp"
+#include "Hry/Events/EventDispatcher.hpp"
 #include "Hry/Utils/Paths.hpp"
 #include "Hry/Version.hpp"
 
@@ -214,7 +214,7 @@ bool ModuleManager::load(Module* mod)
     mod->data.config = _configMgr.createConfig(name);
     mod->data.keyBinds = _keyBindsMgr.createKeyBinds(name);
     mod->data.logger = LoggerFactory::GetLogger(name);
-    mod->data.eventHandler = std::make_unique<EventHandler>(_eventMgr.createEventHandler());
+    mod->data.eventDispatcher = std::make_unique<EventDispatcher>(_eventMgr.createEventDispatcher());
 
     mod->loadResult = mod->plugin->init(
         Plugin::InitParams{ mod->data.logger.get(), &_telemetry, ApiVersion, Core::GameType });
@@ -223,7 +223,7 @@ bool ModuleManager::load(Module* mod)
     {
         Core::Logger->info("Successfully loaded {}", dllName);
 
-        mod->plugin->initEvents(mod->data.eventHandler.get());
+        mod->plugin->initEvents(mod->data.eventDispatcher.get());
         mod->plugin->initConfig(mod->data.config.get());
         mod->plugin->initKeyBinds(mod->data.keyBinds.get());
 
@@ -256,7 +256,7 @@ void ModuleManager::unload(Module* mod)
     }
 
     mod->plugin.reset();
-    mod->data.eventHandler.reset();
+    mod->data.eventDispatcher.reset();
     mod->data.logger.reset();
     mod->data.config.reset();
     mod->data.keyBinds.reset();

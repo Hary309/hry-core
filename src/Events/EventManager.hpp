@@ -13,7 +13,7 @@
 #include <Windows.h>
 
 #include "Hry/Events/Event.hpp"
-#include "Hry/Events/EventHandler.hpp"
+#include "Hry/Events/EventDispatcher.hpp"
 #include "Hry/Logger/Logger.hpp"
 #include "Hry/SCSSDK/ConfigurationData.hpp"
 #include "Hry/SCSSDK/GameplayData.hpp"
@@ -22,7 +22,7 @@
 
 #include "Events/EventProxyBase.hpp"
 
-#include "InternalEventHandler.hpp"
+#include "InternalEventDispatcher.hpp"
 
 struct scs_telemetry_init_params_v100_t;
 
@@ -96,8 +96,8 @@ public:
 public:
     void init(scs_telemetry_init_params_v100_t* scsTelemetry);
 
-    [[nodiscard]] EventHandler createEventHandler();
-    [[nodiscard]] InternalEventHandler createInternalEventHandler();
+    [[nodiscard]] EventDispatcher createEventDispatcher();
+    [[nodiscard]] InternalEventDispatcher createInternalEventDispatcher();
 };
 
 HRY_NS_END

@@ -14,7 +14,7 @@
 HRY_NS_BEGIN
 
 class Logger;
-struct EventHandler;
+struct EventDispatcher;
 class KeyBinds;
 class Config;
 
@@ -31,7 +31,7 @@ struct Module
     struct
     {
         std::unique_ptr<Logger> logger;
-        std::unique_ptr<EventHandler> eventHandler;
+        std::unique_ptr<EventDispatcher> eventDispatcher;
         HryPtr<KeyBinds> keyBinds;
         HryPtr<Config> config;
     } data;

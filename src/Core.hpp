@@ -10,7 +10,7 @@
 #include <windows.h>
 
 #include "Hry/Events/Event.hpp"
-#include "Hry/Events/EventHandler.hpp"
+#include "Hry/Events/EventDispatcher.hpp"
 #include "Hry/GameType.hpp"
 #include "Hry/KeyBinding/KeyBinds.hpp"
 #include "Hry/Logger/Logger.hpp"
@@ -52,7 +52,7 @@ private:
     bool _isInited = false;
 
     EventManager _eventMgr;
-    InternalEventHandler _eventHandler;
+    InternalEventDispatcher _eventDispatcher;
     ChannelAggregator _channelAggregator;
     Renderer _renderer;
     ConfigManager _configMgr;

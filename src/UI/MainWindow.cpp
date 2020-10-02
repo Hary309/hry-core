@@ -47,8 +47,8 @@ MainWindow::MainWindow(
     ConfigManager& configMgr,
     KeyBindsManager& keyBindsMgr,
     EventManager& eventMgr,
-    InternalEventHandler& eventHandler)
-    : _pluginsPage(moduleMgr), _configPage(configMgr), _keyBindsPage(keyBindsMgr, eventHandler),
+    InternalEventDispatcher& eventDispatcher)
+    : _pluginsPage(moduleMgr), _configPage(configMgr), _keyBindsPage(keyBindsMgr, eventDispatcher),
       _eventMgr(eventMgr)
 {
 }

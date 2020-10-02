@@ -7,7 +7,7 @@
 #pragma once
 
 #include "Hry/Events/Event.hpp"
-#include "Hry/Events/EventHandler.hpp"
+#include "Hry/Events/EventDispatcher.hpp"
 #include "Hry/Namespace.hpp"
 #include "Hry/Utils/Signal.hpp"
 
@@ -19,7 +19,7 @@ HRY_NS_BEGIN
 class ImGuiImplEvents
 {
 public:
-    ImGuiImplEvents(InternalEventHandler& eventHandler);
+    ImGuiImplEvents(InternalEventDispatcher& dispatcher);
 
 private:
     static void OnMouseButtonPress(const MouseButtonEvent&&);

@@ -18,12 +18,11 @@ HRY_NS_BEGIN
 TruckChannelAggregator::TruckChannelAggregator(
     scs::TruckChannel& truckChannel,
     scs_telemetry_init_params_v100_t* scsTelemetry,
-    InternalEventHandler& eventHandler)
+    InternalEventDispatcher& dispatcher)
     : ChannelAggregatorBase(scsTelemetry), _truck(truckChannel)
 {
-    eventHandler.game.config.truckSignal.connect<&TruckChannelAggregator::onTruckConfig>(this);
-    eventHandler.game.config.hshifterSignal.connect<&TruckChannelAggregator::onHShifterConfig>(
-        this);
+    dispatcher.game.config.truckSignal.connect<&TruckChannelAggregator::onTruckConfig>(this);
+    dispatcher.game.config.hshifterSignal.connect<&TruckChannelAggregator::onHShifterConfig>(this);
 
     registerChannel(SCS_TELEMETRY_TRUCK_CHANNEL_world_placement, _truck.worldPlacement);
     registerChannel(SCS_TELEMETRY_TRUCK_CHANNEL_local_linear_velocity, _truck.localVelocityLinear);

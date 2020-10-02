@@ -26,21 +26,21 @@ using system_clock = std::chrono::system_clock;
 
 HRY_NS_BEGIN
 
-KeyBindsManager::KeyBindsManager(InternalEventHandler& eventHandler)
+KeyBindsManager::KeyBindsManager(InternalEventDispatcher& dispatcher)
 {
-    eventHandler.system.onKeyPress.connect<&KeyBindsManager::handleKeyboardEvent>(this);
-    eventHandler.system.onKeyRelease.connect<&KeyBindsManager::handleKeyboardEvent>(this);
+    dispatcher.system.onKeyPress.connect<&KeyBindsManager::handleKeyboardEvent>(this);
+    dispatcher.system.onKeyRelease.connect<&KeyBindsManager::handleKeyboardEvent>(this);
 
-    eventHandler.system.onMouseButtonPress.connect<&KeyBindsManager::handleMouseButtonEvent>(this);
-    eventHandler.system.onMouseButtonRelease.connect<&KeyBindsManager::handleMouseButtonEvent>(
+    dispatcher.system.onMouseButtonPress.connect<&KeyBindsManager::handleMouseButtonEvent>(this);
+    dispatcher.system.onMouseButtonRelease.connect<&KeyBindsManager::handleMouseButtonEvent>(
         this);
-    eventHandler.system.onJoystickButtonPress.connect<&KeyBindsManager::handleJoystickButtonEvent>(
+    dispatcher.system.onJoystickButtonPress.connect<&KeyBindsManager::handleJoystickButtonEvent>(
         this);
 
-    eventHandler.system.onJoystickButtonRelease
+    dispatcher.system.onJoystickButtonRelease
         .connect<&KeyBindsManager::handleJoystickButtonEvent>(this);
 
-    eventHandler.game.onFrameEnd.connect<&KeyBindsManager::update>(this);
+    dispatcher.game.onFrameEnd.connect<&KeyBindsManager::update>(this);
 }
 
 HryPtr<KeyBinds> KeyBindsManager::createKeyBinds(const std::string& name)

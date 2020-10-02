@@ -22,7 +22,7 @@
 #include "Hry/Config/Fields/SelectionField.hpp"
 #include "Hry/Config/Fields/TextField.hpp"
 #include "Hry/Events/Event.hpp"
-#include "Hry/Events/EventHandler.hpp"
+#include "Hry/Events/EventDispatcher.hpp"
 #include "Hry/GameType.hpp"
 #include "Hry/Memory/Memory.hpp"
 #include "Hry/Namespace.hpp"
@@ -40,11 +40,12 @@
 HRY_NS_BEGIN
 
 Core::Core(HINSTANCE hInst)
-    : _eventHandler(_eventMgr.createInternalEventHandler()), _channelAggregator(_eventHandler),
-      _renderer(*this, _eventMgr), _keyBindsMgr(_eventHandler),
+    : _eventDispatcher(_eventMgr.createInternalEventDispatcher()),
+      _channelAggregator(_eventDispatcher), _renderer(*this, _eventMgr),
+      _keyBindsMgr(_eventDispatcher),
       _moduleMgr(_eventMgr, _configMgr, _keyBindsMgr, _channelAggregator.getTelemetry()),
-      _mainWindow(_moduleMgr, _configMgr, _keyBindsMgr, _eventMgr, _eventHandler),
-      _loggerWindow(_eventHandler), _imguiImplEvents(_eventHandler)
+      _mainWindow(_moduleMgr, _configMgr, _keyBindsMgr, _eventMgr, _eventDispatcher),
+      _loggerWindow(_eventDispatcher), _imguiImplEvents(_eventDispatcher)
 {
     hInstance = hInst;
 }
