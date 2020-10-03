@@ -77,7 +77,7 @@ void AboutPage::imguiRender()
 ## Special thanks
   * [OverShifted](https://github.com/OverShifted) - base author of ImGui theme
   * [MetGang](https://github.com/MetGang) - helped me a lot with C++ templates
-  * [Metriko](https://github.com/Metriko) - helped me with UI design
+  * [MetRiko](https://github.com/Metriko) - helped me with UI design
 ## Used libaries
   * [fmt](https://github.com/fmtlib/fmt)
   * [imgui](https://github.com/ocornut/imgui)

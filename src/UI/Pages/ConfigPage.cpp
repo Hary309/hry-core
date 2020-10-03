@@ -19,7 +19,7 @@ void ConfigPage::imguiRender()
     bool isAnyDirty = false;
     auto& configs = _configMgr.getConfigs();
 
-    ImGui::BeginChild("ConfigPage", { 0, -26 });
+    ImGui::BeginChild("ConfigPage", { 0, -30 });
 
     for (auto* config : configs)
     {
@@ -50,11 +50,12 @@ void ConfigPage::imguiRender()
 
     ImGui::EndChild();
 
+    ImGui::Separator();
+
     if (ImGui::Button("Apply##ConfigPage"))
     {
         _configMgr.saveAll(ConfigManager::SaveType::SaveOnlyDirty);
     }
-
 
     if (ImGui::IsItemHovered())
     {
