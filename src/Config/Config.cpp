@@ -137,16 +137,20 @@ void Config::imguiRender()
 
         ImGui::NextColumn();
 
-        if (ImGui::Button(Icons::Undo))
+        // show `Reset to default` button only when dirty value is different from the default
+        if (field->canResetToDefault())
         {
-            field->resetToDefault();
-        }
+            if (ImGui::Button(Icons::Undo))
+            {
+                field->resetToDefault();
+            }
 
-        if (ImGui::IsItemHovered())
-        {
-            ImGui::BeginTooltip();
-            ImGui::TextUnformatted("Set default value");
-            ImGui::EndTooltip();
+            if (ImGui::IsItemHovered())
+            {
+                ImGui::BeginTooltip();
+                ImGui::TextUnformatted("Set default value");
+                ImGui::EndTooltip();
+            }
         }
 
         ImGui::NextColumn();

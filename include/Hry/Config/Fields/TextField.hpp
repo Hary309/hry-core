@@ -50,6 +50,7 @@ public:
         _value = _defaultValue;
         _isDirty = _value != _dirtyValue;
     }
+    bool canResetToDefault() override { return _value != _defaultValue; }
 
     bool isDirty() const override { return _isDirty; }
 

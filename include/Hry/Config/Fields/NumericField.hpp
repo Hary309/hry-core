@@ -65,31 +65,19 @@ private:
     T _defaultValue{};
     T _dirtyValue{};
 
-    bool _isDirty = false;
-
     Variant_t _widgetType;
 
 private:
     NumericField() = default;
 
 public:
-    void applyChanges() override
-    {
-        _value = _dirtyValue;
-        _isDirty = false;
-    }
-    void cancelChanges() override
-    {
-        _dirtyValue = _value;
-        _isDirty = false;
-    }
-    void resetToDefault() override
-    {
-        _dirtyValue = _defaultValue;
-        _isDirty = _value != _dirtyValue;
-    }
+    void applyChanges() override { _value = _dirtyValue; }
+    void cancelChanges() override { _dirtyValue = _value; }
+    void resetToDefault() override { _dirtyValue = _defaultValue; }
 
-    bool isDirty() const override { return _isDirty; }
+    bool canResetToDefault() override { return _dirtyValue != _defaultValue; }
+
+    bool isDirty() const override { return _value != _dirtyValue; }
 
     void imguiRender() override
     {
@@ -126,7 +114,6 @@ private:
                 _label.c_str(), ImGuiDataType_v<T>, &_dirtyValue, &input.step, &input.stepFast,
                 input.format.c_str()))
         {
-            _isDirty = _value != _dirtyValue;
             _previewCallback(_dirtyValue);
         }
     }
@@ -138,7 +125,6 @@ private:
                 _label.c_str(), ImGuiDataType_v<T>, &_dirtyValue, drag.speed, &drag.min, &drag.max,
                 drag.format.c_str(), drag.power))
         {
-            _isDirty = _value != _dirtyValue;
             _previewCallback(_dirtyValue);
         }
     }
@@ -150,7 +136,6 @@ private:
                 _label.c_str(), ImGuiDataType_v<T>, &_dirtyValue, &slider.min, &slider.max,
                 slider.format.c_str(), slider.power))
         {
-            _isDirty = _value != _dirtyValue;
             _previewCallback(_dirtyValue);
         }
     }

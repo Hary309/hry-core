@@ -38,6 +38,7 @@ public:
     void applyChanges() override { _value = _dirtyValue; }
     void cancelChanges() override { _dirtyValue = _value; }
     void resetToDefault() override { _dirtyValue = _defaultValue; }
+    bool canResetToDefault() override { return _dirtyValue != _defaultValue; }
 
     bool isDirty() const override { return _value != _dirtyValue; }
 

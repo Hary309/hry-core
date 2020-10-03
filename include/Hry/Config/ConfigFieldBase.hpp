@@ -101,6 +101,7 @@ public:
     virtual void applyChanges() = 0;
     virtual void cancelChanges() = 0;
     virtual void resetToDefault() = 0;
+    virtual bool canResetToDefault() = 0;
 
     virtual bool isDirty() const = 0;
 
