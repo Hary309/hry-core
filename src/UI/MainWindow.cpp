@@ -58,7 +58,7 @@ void MainWindow::initKeyBinds(KeyBinds& keyBinds)
     keyBinds.add(KeyBindBuilder()
                      .setLabel("Show main window")
                      .setID("show_main_window")
-                     .setDefaultKey(Keyboard::Key::F9)
+                     .setDefaultKey(Keyboard::Key::Delete)
                      .setPressCallback(Dlg<&MainWindow::showMainWindowKeyBind>(this))
                      .build());
 }
