@@ -32,7 +32,7 @@ void AboutPage::imguiRender()
 {
     ImGui::PushFont(Fonts::OpenSans_Bold_20);
     ImGui::PushStyleColor(ImGuiCol_Text, Colors::Orange.Value);
-    TextCentered(fmt::format("hry-core v{}", ApiVersion.toString()).c_str());
+    TextCentered(fmt::format("hry-core v{}", ApiVersion).c_str());
     ImGui::PopStyleColor();
     ImGui::PopFont();
 
@@ -70,8 +70,7 @@ void AboutPage::imguiRender()
 
     ImGui::PushStyleColor(ImGuiCol_ButtonHovered, Colors::Orange.Value);
 
-    Markdown::Render(fmt::format(
-        u8R"(
+    Markdown::Render(u8R"(
 ## Special thanks
   * [OverShifted](https://github.com/OverShifted) - base author of ImGui theme
   * [MetGang](https://github.com/MetGang) - helped me a lot with C++ templates
@@ -85,8 +84,7 @@ void AboutPage::imguiRender()
 ## Changelog
   * 0.1.0
     * First release
-)",
-        ApiVersion.toString()));
+)");
 
     ImGui::PopStyleColor();
 

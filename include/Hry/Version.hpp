@@ -16,7 +16,7 @@ HRY_NS_BEGIN
 
 struct Version
 {
-    uint8_t major; // changes when api have breaking changes
+    uint8_t major; // changes when api has breaking changes
     uint16_t minor;
     uint16_t patch;
 
@@ -34,3 +34,15 @@ inline bool IsApiCompatible(Version version)
 }
 
 HRY_NS_END
+
+template<>
+struct fmt::formatter<hry::Version>
+{
+    constexpr auto parse(format_parse_context& ctx) { return ctx.begin(); }
+
+    template<typename FormatContext>
+    auto format(hry::Version const& version, FormatContext& ctx)
+    {
+        return fmt::format_to(ctx.out(), "{}.{}.{}", version.major, version.minor, version.patch);
+    }
+};
