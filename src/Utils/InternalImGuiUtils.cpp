@@ -80,6 +80,13 @@ void InternalImGuiUtils::LoadFonts()
     auto& io = ImGui::GetIO();
     Fonts::OpenSans_16 =
         io.Fonts->AddFontFromFileTTF("plugins\\hry_assets\\OpenSans-Regular.ttf", 16.f);
+
+    ImFontConfig config;
+    config.MergeMode = true;
+    config.PixelSnapH = true;
+    static const ImWchar range[] = { 0xE800, 0xE801, 0 };
+    io.Fonts->AddFontFromFileTTF("plugins\\hry_assets\\icons.ttf", 13.f, &config, range);
+
     Fonts::OpenSans_Bold_26 =
         io.Fonts->AddFontFromFileTTF("plugins\\hry_assets\\OpenSans-Bold.ttf", 26.f);
     Fonts::OpenSans_Bold_20 =

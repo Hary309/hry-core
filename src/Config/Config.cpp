@@ -15,6 +15,7 @@
 #include "Hry/Utils/Paths.hpp"
 
 #include "Renderer/Renderer.hpp"
+#include "Utils/Icons.hpp"
 
 #include "Core.hpp"
 
@@ -136,7 +137,7 @@ void Config::imguiRender()
 
         ImGui::NextColumn();
 
-        if (ImGui::Button("D"))
+        if (ImGui::Button(Icons::Undo))
         {
             field->resetToDefault();
         }
