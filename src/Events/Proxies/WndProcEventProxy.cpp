@@ -153,7 +153,7 @@ WndProcEventProxy::WndProcEventProxy(EventManager& eventMgr)
     _onWndProc.connect<&WndProcEventProxy::onWndProc>(this);
 }
 
-void WndProcEventProxy::onWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept
+void WndProcEventProxy::onWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
     ImGui_ImplWin32_WndProcHandler(hWnd, msg, wParam, lParam);
 
