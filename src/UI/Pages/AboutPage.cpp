@@ -36,9 +36,7 @@ void AboutPage::imguiRender()
     ImGui::PopStyleColor();
     ImGui::PopFont();
 
-    TextCentered(
-        fmt::format("Piotr 'Hary309' Krupa <piotrkrupa06@gmail.com>", ApiVersion.toString())
-            .c_str());
+    TextCentered("Piotr Krupa <piotrkrupa06@gmail.com>");
 
     ImGui::Columns(3, "AboutPage##Columns", false);
 
@@ -85,7 +83,7 @@ void AboutPage::imguiRender()
   * [json](https://github.com/nlohmann/json)
   * [minhook](https://github.com/TsudaKageyu/minhook)
 ## Changelog
-  * 0.1.0.0
+  * 0.1.0
     * First release
 )",
         ApiVersion.toString()));
