@@ -9,6 +9,7 @@
 #include <filesystem>
 #include <memory>
 
+#include <fmt/format.h>
 #include <guiddef.h>
 
 #include "Hry/Export.hpp"
@@ -28,12 +29,25 @@ using HryPtr = std::unique_ptr<T, Delegate<void(T*)>>;
 
 HRY_API std::string FormatGUID(const GUID& guid);
 
-// Folder where are saved settings, keybinds and logs
-// For ETS2: My Documents/hry_core/ets2
-// For ATS: My Documents/hry_core/ats
-HRY_API std::filesystem::path GetHomePath();
-
-// Folder where hry_core.dll is located
-HRY_API std::filesystem::path GetModulePath();
-
 HRY_NS_END
+
+namespace fmt
+{
+    template<>
+    struct formatter<GUID>
+    {
+        template<typename ParseContext>
+        constexpr auto parse(ParseContext& ctx)
+        {
+            return ctx.begin();
+        }
+
+        template<typename FormatContext>
+        auto format(GUID const& guid, FormatContext& ctx)
+        {
+            return format_to(
+                ctx.out(), "{{{:x}-{:x}-{:x}-{:x}}}", guid.Data1, guid.Data2, guid.Data3,
+                fmt::join(guid.Data4, ""));
+        }
+    };
+} // namespace fmt

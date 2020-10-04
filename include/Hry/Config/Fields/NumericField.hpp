@@ -23,7 +23,7 @@ template<typename, typename>
 class NumericFieldBuilder;
 
 template<typename T, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
-class NumericField : public ConfigFieldBase
+class NumericField final : public ConfigFieldBase
 {
     template<typename, typename>
     friend class NumericFieldBuilder;
@@ -158,7 +158,7 @@ private:
 };
 
 template<typename T, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
-class NumericFieldBuilder
+class NumericFieldBuilder final
     : public ConfigFieldBuilderBase<NumericField<T>, NumericFieldBuilder<T>, T>
 {
 private:

@@ -30,7 +30,7 @@ HRY_NS_BEGIN
 
 // TODO: use concepts
 
-struct Easing
+struct Easing final
 {
     template<typename T>
     using Function_t = T (*)(T);

@@ -14,7 +14,7 @@ HRY_NS_BEGIN
 
 class Core;
 
-class Paths
+class Paths final
 {
     friend Core;
 

@@ -12,7 +12,7 @@
 
 HRY_NS_BEGIN
 
-class Timer
+class Timer final
 {
 public:
     using Clock_t = std::chrono::high_resolution_clock;

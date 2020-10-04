@@ -15,7 +15,7 @@ HRY_NS_BEGIN
 
 class TextFieldBuilder;
 
-class HRY_API TextField : public ConfigFieldBase
+class HRY_API TextField final : public ConfigFieldBase
 {
     friend TextFieldBuilder;
 
@@ -64,7 +64,8 @@ public:
     }
 };
 
-class TextFieldBuilder : public ConfigFieldBuilderBase<TextField, TextFieldBuilder, std::string>
+class TextFieldBuilder final
+    : public ConfigFieldBuilderBase<TextField, TextFieldBuilder, std::string>
 {
 private:
     TextField::PreviewCallback_t _previewCallback;

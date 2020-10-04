@@ -13,13 +13,13 @@
 
 HRY_NS_BEGIN
 
-struct AuthorInfo
+struct AuthorInfo final
 {
     std::string name;
     std::string email;
 };
 
-struct PluginInfo
+struct PluginInfo final
 {
     std::string name;
     std::string fullName;

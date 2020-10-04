@@ -18,7 +18,7 @@ HRY_NS_BEGIN
 
 class SelectionFieldBuilder;
 
-class HRY_API SelectionField : public ConfigFieldBase
+class HRY_API SelectionField final : public ConfigFieldBase
 {
     friend SelectionFieldBuilder;
 
@@ -80,7 +80,7 @@ private:
     }
 };
 
-class SelectionFieldBuilder
+class SelectionFieldBuilder final
     : public ConfigFieldBuilderBase<SelectionField, SelectionFieldBuilder, std::string>
 {
 private:

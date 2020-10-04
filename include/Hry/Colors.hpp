@@ -12,10 +12,10 @@
 
 HRY_NS_BEGIN
 
-struct Colors
+struct Colors final
 {
-    inline static ImColor Orange{ 255, 174, 0 };
-    inline static ImColor Gray{ 100, 100, 100 };
+    const inline static ImColor Orange{ 255, 174, 0 };
+    const inline static ImColor Gray{ 100, 100, 100 };
 };
 
 HRY_NS_END

@@ -29,7 +29,7 @@ template<auto Addr>
 inline static ConnectArg<Addr> ConnectArg_v;
 
 template<typename Return, typename... Args>
-class Delegate<Return(Args...)>
+class Delegate<Return(Args...)> final
 {
 public:
     using Function_t = Return(void*, Args...);

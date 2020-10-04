@@ -24,7 +24,7 @@ template<typename>
 class Sink;
 
 template<typename Return, typename... Args>
-class Signal<Return(Args...)>
+class Signal<Return(Args...)> final
 {
     friend Sink<Return(Args...)>;
 
@@ -70,7 +70,7 @@ private:
 };
 
 template<typename Return, typename... Args>
-class Sink<Return(Args...)>
+class Sink<Return(Args...)> final
 {
 private:
     using Signal_t = Signal<Return(Args...)>;
@@ -112,6 +112,16 @@ public:
 
         _signal.add(delegate);
         _internalCalls.push_back(delegate);
+    }
+
+    void clear()
+    {
+        for (auto& delegate : _internalCalls)
+        {
+            _signal.remove(delegate);
+        }
+
+        _internalCalls.clear();
     }
 };
 

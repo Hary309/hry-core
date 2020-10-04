@@ -31,7 +31,7 @@ public:
     {
         Ok,               // plugin initialized successfully
         ApiNotSupported,  // api version not supported (incompatible, abi breaks)
-        GameNotSupported, // game version not supported
+        GameNotSupported, // game version not supported (e.g. byte pattern don't match)
         Error             // plugin have internal error
     };
 

@@ -26,7 +26,7 @@ HRY_NS_BEGIN
 class ConfigManager;
 class ConfigPage;
 
-class Config
+class Config final
 {
     friend ConfigManager;
     friend ConfigPage;

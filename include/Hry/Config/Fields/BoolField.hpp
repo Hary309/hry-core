@@ -17,7 +17,7 @@ HRY_NS_BEGIN
 
 class BoolFieldBuilder;
 
-class HRY_API BoolField : public ConfigFieldBase
+class HRY_API BoolField final : public ConfigFieldBase
 {
     friend BoolFieldBuilder;
 
@@ -52,7 +52,7 @@ public:
     }
 };
 
-class BoolFieldBuilder : public ConfigFieldBuilderBase<BoolField, BoolFieldBuilder, bool>
+class BoolFieldBuilder final : public ConfigFieldBuilderBase<BoolField, BoolFieldBuilder, bool>
 {
 private:
     BoolField::PreviewCallback_t _previewCallback;

@@ -20,7 +20,7 @@
 
 HRY_NS_BEGIN
 
-class Logger
+class Logger final
 {
 public:
     enum class Level

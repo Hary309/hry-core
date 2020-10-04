@@ -18,7 +18,7 @@
 
 HRY_NS_BEGIN
 
-struct BindableKey
+struct BindableKey final
 {
     using Key_t = std::variant<Keyboard::Key, Mouse::Button, Joystick::Button>;
 

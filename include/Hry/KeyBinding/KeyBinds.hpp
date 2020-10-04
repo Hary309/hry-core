@@ -35,7 +35,7 @@ class KeyBindsManager;
 class KeyBindsPage;
 class KeyBindBuilder;
 
-class KeyBind
+class KeyBind final
 {
     friend KeyBindBuilder;
 
@@ -102,7 +102,7 @@ private:
     void fromJson(const nlohmann::json& json);
 };
 
-class KeyBindBuilder
+class KeyBindBuilder final
 {
     friend KeyBinds;
 
