@@ -1,81 +1,109 @@
-#include <iostream>
-#include <memory>
+#include "example.hpp"
 
-#include <imgui.h>
-#include <windows.h>
-
-#include "Hry/Events/EventDispatcher.hpp"
-#include "Hry/System/System.hpp"
-#include "Hry/Version.hpp"
-#include <Hry/Config/Config.hpp>
+#include <Hry/Config/Fields/BoolField.hpp>
 #include <Hry/Config/Fields/NumericField.hpp>
-#include <Hry/Events/Event.hpp>
-#include <Hry/KeyBinding/KeyBinds.hpp>
-#include <Hry/Logger/Logger.hpp>
-#include <Hry/Plugin.hpp>
-#include <Hry/System/Keyboard.hpp>
-#include <Hry/Utils/Delegate.hpp>
+#include <Hry/Config/Fields/SelectionField.hpp>
+#include <Hry/Config/Fields/TextField.hpp>
 
-struct ExampleConfigData
+struct ConfigData
 {
-    int value;
+    bool renderWindow;
+    float windowOpacity;
 };
 
-class ExamplePlugin : public hry::Plugin
+ExamplePlugin::ExamplePlugin()
 {
-private:
-    hry::PluginInfo _pluginInfo{ "hry-example",
-                                 "Example plugin",
-                                 { "Hary309", "piotrkrupa06@gmail.com" },
-                                 "",
-                                 "This is a example of plugin based on hry-core.",
-                                 hry::Version{ 1, 0, 0 } };
+    _pluginInfo.name = "hry-example";
+    _pluginInfo.fullName = "Example Plugin";
+    _pluginInfo.authorInfo = { "Foo Bar", "foo@bar.com" };
+    _pluginInfo.website = "http://example.com";
+    _pluginInfo.version = hry::Version{ 1, 0, 0 };
+    _pluginInfo.desc = R"(
+# About
+Example plugin or sth
+# Changelog
+  * 1.0
+    * First release
+)";
+}
 
-public:
-    inline static hry::Logger* Logger;
+ExamplePlugin::Result ExamplePlugin::init(const InitParams&& initParams)
+{
+    Logger = initParams.logger;
+    Logger->info("Plugin initialized!");
 
-public:
-    ~ExamplePlugin() override
+    return ExamplePlugin::Result::Ok;
+}
+
+void ExamplePlugin::initConfig(hry::Config* config)
+{
+    config->setBindingType<ConfigData>();
+    config->onChangesApplied.connect<&ExamplePlugin::onConfigChangesApplied>(this);
+
+    config->add(hry::BoolFieldBuilder()
+                    .setID("render_window")
+                    .setLabel("Render window")
+                    .setDefaultValue(true)
+                    .bind(&ConfigData::renderWindow)
+                    .build());
+
+    config->add(hry::NumericFieldBuilder<float>()
+                    .setID("window_opacity")
+                    .setLabel("Window opacity")
+                    .setDefaultValue(50.f)
+                    .useDrag(0.001f, 0.f, 1.f)
+                    .bind(&ConfigData::windowOpacity)
+                    .build());
+}
+
+void ExamplePlugin::initKeyBinds(hry::KeyBinds* keyBinds)
+{
+    keyBinds->add(hry::KeyBindBuilder()
+                      .setID("change_value")
+                      .setLabel("Change value")
+                      .setPressCallback(hry::Dlg<&ExamplePlugin::keyBindPress>(this))
+                      .setReleaseCallback(hry::Dlg<&ExamplePlugin::keyBindPress>(this))
+                      .setDefaultKey(hry::Keyboard::Key::Q)
+                      .build());
+}
+
+void ExamplePlugin::initEvents(hry::EventDispatcher* eventDispatcher)
+{
+    eventDispatcher->system.onImGuiRender.connect<&ExamplePlugin::imguiRender>(this);
+}
+
+const hry::PluginInfo& ExamplePlugin::getPluginInfo() const
+{
+    return _pluginInfo;
+}
+
+void ExamplePlugin::onConfigChangesApplied(const hry::ConfigCallbackData& data)
+{
+    const auto& configData = data.getData<ConfigData>();
+    _renderWindow = configData->renderWindow;
+    _windowOpacity = configData->windowOpacity;
+}
+
+void ExamplePlugin::imguiRender()
+{
+    if (!_renderWindow)
     {
-        if (Logger != nullptr)
-        {
-            Logger->info("Unloading...");
-        }
+        return;
     }
 
-    Result init(const InitParams&& initParams) override
-    {
-        Logger = initParams.logger;
-        Logger->info("Created!");
+    ImGui::SetNextWindowBgAlpha(_windowOpacity);
 
-        return Result::Ok;
+    if (ImGui::Begin("hry-example window"))
+    {
+        ImGui::Text("Is keybind pressed? %s", _isKeyBindPressed ? "true" : "false");
     }
 
-    void initEvents(hry::EventDispatcher* /*dispatcher*/) override {}
+    ImGui::End();
+}
 
-    void initConfig(hry::Config* config) override
-    {
-        config->setBindingType<ExampleConfigData>();
-
-        config->add(hry::NumericFieldBuilder<int>()
-                        .bind(&ExampleConfigData::value)
-                        .setID("test")
-                        .setLabel("Test")
-                        .useDrag()
-                        .setDefaultValue(23)
-                        .build());
-    }
-
-    void initKeyBinds(hry::KeyBinds* keyBinds) override
-    {
-        keyBinds->add(hry::KeyBindBuilder()
-                          .setID("do_sth")
-                          .setLabel("Do sth")
-                          .setDefaultKey(hry::Keyboard::Key::Q)
-                          .build());
-    }
-
-    const hry::PluginInfo& getPluginInfo() const override { return _pluginInfo; }
-};
+void ExamplePlugin::keyBindPress(hry::ButtonState state)
+{
+    _isKeyBindPressed = state == hry::ButtonState::Pressed;
+}
 
 INIT_PLUGIN(ExamplePlugin)

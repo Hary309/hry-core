@@ -63,5 +63,5 @@ target_link_libraries(hry-core PRIVATE imgui glad minhook)
 
 # example
 project(hry-example VERSION 0.1.0)
-add_library(hry-example SHARED example/example.cpp)
+add_library(hry-example SHARED example/example.hpp example/example.cpp)
 target_link_libraries(hry-example PRIVATE hry-core)

@@ -58,7 +58,7 @@ public:
     virtual void initKeyBinds(KeyBinds* keyBinds) = 0;
     virtual void initEvents(EventDispatcher* eventDispatcher) = 0;
 
-    // replace with manifest.json
+    // TODO: replace with manifest.json
     [[nodiscard]] virtual const PluginInfo& getPluginInfo() const = 0;
 };
 
