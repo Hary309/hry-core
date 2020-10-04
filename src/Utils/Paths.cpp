@@ -8,7 +8,7 @@
 
 #include <filesystem>
 
-#include "Hry/Utils/Utils.hpp"
+#include "InternalUtils.hpp"
 
 namespace fs = std::filesystem;
 
