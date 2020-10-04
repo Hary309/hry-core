@@ -28,7 +28,6 @@ static wglGetCurrentContext_t* wglGetCurrentContext_func;
 static wglMakeCurrent_t* wglMakeCurrent_func;
 
 static std::unique_ptr<Detour> wglSwapBuffer_Detour;
-static std::unique_ptr<Detour> glViewPort_Detour;
 
 static bool isInited = false;
 static HWND hWnd;
@@ -67,14 +66,6 @@ BOOL new_wglSwapBuffers(HDC hdc)
 
     wglMakeCurrent_func(hdc, oHGLRC);
     return wglSwapBuffer_Detour->getOriginal<BOOL(HDC)>()(hdc);
-}
-
-// TODO: add support for resize
-void new_glViewport(GLint x, GLint y, GLsizei width, GLsizei height)
-{
-    printf("Resize: %d %d %d %d\n", x, y, width, height);
-
-    glViewPort_Detour->getOriginal<glViewport_t>()(x, y, width, height);
 }
 
 bool OpenGLHook::Install()
@@ -124,23 +115,6 @@ bool OpenGLHook::Install()
         return false;
     }
 
-    // auto glViewport_addr = reinterpret_cast<glViewport_t*>(GetProcAddress(libOpenGL, "glViewport"));
-
-    // Core::Logger->info("Hooking glViewport...");
-
-    // glViewPort_Detour = std::make_unique<Detour>(glViewport_addr, new_glViewport);
-
-    // if (auto res = glViewPort_Detour->create(); res != Detour::Status::Ok)
-    // {
-    //     Core::Logger->error("Cannot hook glViewport!");
-    //     return false;
-    // }
-
-    // if (auto res = glViewPort_Detour->enable(); res != Detour::Status::Ok)
-    // {
-    //     Core::Logger->error("Cannot enable hook for glViewport!");
-    //     return false;
-    // }
 
     return true;
 }
@@ -148,7 +122,6 @@ bool OpenGLHook::Install()
 void OpenGLHook::Uninstall()
 {
     wglSwapBuffer_Detour.reset();
-    glViewPort_Detour.reset();
 
     if (oWndProc != nullptr)
     {
