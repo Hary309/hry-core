@@ -72,7 +72,7 @@ void MainWindow::imguiRender()
 
     ImGui::SetNextWindowSize({ 600.f, 400.f }, ImGuiCond_FirstUseEver);
 
-    if (ImGui::Begin("Plugin Manager"))
+    if (ImGui::Begin("Plugin Manager", &_isWindowEnabled))
     {
         ImGui::Columns(4, "tabs##plugin_manager", false);
 
