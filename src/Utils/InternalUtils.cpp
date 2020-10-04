@@ -15,6 +15,8 @@
 
 #include "Core.hpp"
 
+HRY_NS_BEGIN
+
 std::string WideCharToUTF8(const wchar_t* text)
 {
     auto len = wcslen(text);
@@ -84,3 +86,5 @@ std::filesystem::path GetModulePath()
 
     return savedPath;
 }
+
+HRY_NS_END
