@@ -6,6 +6,7 @@
 
 #include "PluginsPage.hpp"
 
+#include <fmt/compile.h>
 #include <imgui.h>
 
 #include "Hry/Colors.hpp"
@@ -14,6 +15,7 @@
 #include "Hry/Utils/ImGuiUtils.hpp"
 
 #include "UI/Markdown.hpp"
+#include "Utils/Icons.hpp"
 #include "Utils/Windows.hpp"
 
 HRY_NS_BEGIN
@@ -141,7 +143,9 @@ void PluginsPage::renderList()
                 ImGui::SameLine();
 
                 ImGui::SetCursorPosY(ImGui::GetCursorPosY() - 2);
-                if (ImGui::Button("Check for update"))
+                if (ImGui::Button(
+                        fmt::format(FMT_COMPILE("Check for update {}"), Icons::ExternalLink)
+                            .c_str()))
                 {
                     Windows::OpenWebsite(module->info.website);
                 }
@@ -191,9 +195,9 @@ void PluginsPage::renderDetail()
 
     ImGui::PopFont();
 
-    ImGui::SameLine(ImGui::GetWindowContentRegionWidth() - 40);
+    ImGui::SameLine(ImGui::GetWindowContentRegionWidth() - 60);
 
-    if (ImGui::Button("Website"))
+    if (ImGui::Button(fmt::format(FMT_COMPILE("Website {}"), Icons::ExternalLink).c_str()))
     {
         Windows::OpenWebsite(_selectedPlugin->website);
     }
