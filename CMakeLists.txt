@@ -43,7 +43,6 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL
            -Wdouble-promotion
            -Wformat=2
            -Wmisleading-indentation
-           -Wmost
            -Wparentheses
            -Wswitch
            -Wswitch-bool
