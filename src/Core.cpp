@@ -14,7 +14,6 @@
 #include <eurotrucks2/scssdk_eut2.h>
 #include <imgui.h>
 #include <scssdk_telemetry.h>
-#include <vcruntime_typeinfo.h>
 
 #include "Hry/Config/ConfigFieldBase.hpp"
 #include "Hry/Config/Fields/BoolField.hpp"
@@ -141,7 +140,7 @@ void Core::initConfig()
                          .build());
 
     if (!_coreConfig->loadFromFile())
-    {
+    {   
         _coreConfig->saveToFile();
     }
 }

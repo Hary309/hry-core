@@ -23,12 +23,14 @@
 
 #include "Core.hpp"
 
-const GUID IID_ID3D11Device{
+
+const GUID IID_ID3D11Device_{
     0xdb6f6ddb, 0xac77, 0x4e88, { 0x82, 0x53, 0x81, 0x9d, 0xf9, 0xbb, 0xf1, 0x40 }
 };
 
 HRY_NS_BEGIN
 
+using D3D11CreateDeviceAndSwapChain_t = decltype(D3D11CreateDeviceAndSwapChain);
 using IDXGISwapChain_Present_t = decltype(IDXGISwapChainVtbl::Present);
 using IDXGISwapChain_ResizeBuffers_t = decltype(IDXGISwapChainVtbl::ResizeBuffers);
 
@@ -70,9 +72,9 @@ IDXGISwapChainVtbl* GetSwapChainVTable()
         windowClass.lpszClassName, HRY_TEXT("D3D11 Hook"), WS_OVERLAPPEDWINDOW, 0, 0, 100, 100,
         nullptr, nullptr, windowClass.hInstance, nullptr);
 
-    FARPROC D3D11CreateDeviceAndSwapChain =
-        ::GetProcAddress(libD3D11, "D3D11CreateDeviceAndSwapChain");
-    if (D3D11CreateDeviceAndSwapChain == nullptr)
+    auto D3D11CreateDeviceAndSwapChain_addr =
+        reinterpret_cast<D3D11CreateDeviceAndSwapChain_t*>(::GetProcAddress(libD3D11, "D3D11CreateDeviceAndSwapChain"));
+    if (D3D11CreateDeviceAndSwapChain_addr == nullptr)
     {
         Core::Logger->error("Cannot find D3D11CreateDeviceAndSwapChain inside d3d11.dll");
 
@@ -114,11 +116,7 @@ IDXGISwapChainVtbl* GetSwapChainVTable()
     ID3D11Device* device = nullptr;
     ID3D11DeviceContext* context = nullptr;
 
-    if (((long(__stdcall*)(
-            IDXGIAdapter*, D3D_DRIVER_TYPE, HMODULE, UINT, const D3D_FEATURE_LEVEL*, UINT, UINT,
-            const DXGI_SWAP_CHAIN_DESC*, IDXGISwapChain**, ID3D11Device**, D3D_FEATURE_LEVEL*,
-            ID3D11DeviceContext**))(D3D11CreateDeviceAndSwapChain))(
-            nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, 0, featureLevels, 1, D3D11_SDK_VERSION,
+    if (D3D11CreateDeviceAndSwapChain_addr(nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, 0, featureLevels, 1, D3D11_SDK_VERSION,
             &swapChainDesc, &swapChain, &device, &featureLevel, &context) < 0)
     {
         ::DestroyWindow(window);
@@ -158,7 +156,7 @@ HRESULT __stdcall new_IDXGISwapChain_Present(
         needUpdateInfo = false;
         ID3D11Device* d3dDevice = nullptr;
 
-        if (SUCCEEDED(IDXGISwapChain_GetDevice(swapChain, IID_ID3D11Device, (void**)&d3dDevice)))
+        if (SUCCEEDED(IDXGISwapChain_GetDevice(swapChain, IID_ID3D11Device_, (void**)&d3dDevice)))
         {
             DXGI_SWAP_CHAIN_DESC sd;
             IDXGISwapChain_GetDesc(swapChain, &sd);

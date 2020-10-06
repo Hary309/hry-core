@@ -193,9 +193,9 @@ namespace hry
     {
     public:
         template<size_t Len>
-        module_pattern(void* module, const char (&pattern)[Len]) : pattern(module)
+        module_pattern(void* module, const char (&str)[Len]) : pattern(module)
         {
-            Initialize(pattern, Len);
+            Initialize(str, Len);
         }
     };
 
@@ -203,10 +203,10 @@ namespace hry
     {
     public:
         template<size_t Len>
-        range_pattern(uintptr_t begin, uintptr_t end, const char (&pattern)[Len])
+        range_pattern(uintptr_t begin, uintptr_t end, const char (&str)[Len])
             : pattern(begin, end)
         {
-            Initialize(pattern, Len);
+            Initialize(str, Len);
         }
     };
 

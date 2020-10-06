@@ -6,6 +6,8 @@
 
 #include "Hry/KeyBinding/BindableKeys.hpp"
 
+#include <algorithm>
+
 HRY_NS_BEGIN
 
 static const auto BindableKeys = std::array{
