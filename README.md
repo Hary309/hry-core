@@ -37,6 +37,11 @@ This mod isn't like FiveM or MTA:SA, you still have to reverse engineer and hook
 
 ## How to use it
 
-(This section is on TODO list)
+(This section isn't complete)
 
 hry-core publicly available is compiled with clang-cl (Clang 11 rc5 and MSVC 19.27), so you can link with it
+
+## TODO List
+
+- support for loading files
+- API for controller's axis (easy binding and usage like keybinds)
