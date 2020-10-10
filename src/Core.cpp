@@ -66,7 +66,7 @@ bool Core::init(scs_telemetry_init_params_v100_t* scsTelemetry)
     Logger = LoggerFactory::GetLogger("core");
 
     Logger->info("Base address: 0x{:X}", GetBaseAddress());
-    Logger->info("API version {}.{}.{}", ApiVersion.major, ApiVersion.minor, ApiVersion.patch);
+    Logger->info("API version {}", ApiVersion);
     Logger->info("Game name: {}", GameTypeToString(Core::GameType));
     Logger->info("Module's path: {}", Paths::ModulePath);
     Logger->info("Home path: {}", Paths::HomePath);

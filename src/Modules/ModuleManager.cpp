@@ -228,7 +228,7 @@ bool ModuleManager::load(Module* mod)
 
     if (mod->loadResult == Plugin::Result::Ok)
     {
-        Core::Logger->info("Successfully loaded {}", dllName);
+        Core::Logger->info("Successfully loaded {} v{} (API v{})", dllName, mod->info.version, mod->plugin->ApiVersion);
 
         mod->plugin->initEvents(mod->data.eventDispatcher.get());
         mod->plugin->initConfig(mod->data.config.get());
