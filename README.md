@@ -4,7 +4,7 @@ hry-core is a small framework that provides many useful tools for creating plugi
 
 ## Features
 
-- UI and rendering based on Dear ImGui
+- UI and custom rendering based on Dear ImGui (supports DirectX 11 and OpenGL renderer)
 
 - Easy API for creating settings and keybinds
 
