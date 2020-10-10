@@ -31,6 +31,11 @@ HRY_NS_BEGIN
 using CreatePlugin_t = Plugin*();
 using InitImGui_t = void(ImGuiContext*);
 
+inline bool IsApiCompatible(Version version)
+{
+    return version.major == ApiVersion.major;
+}
+
 ModuleManager::ModuleManager(
     EventManager& eventMgr,
     ConfigManager& configMgr,
@@ -199,17 +204,19 @@ bool ModuleManager::load(Module* mod)
         return false;
     }
 
-    mod->info = mod->plugin->getPluginInfo();
-
-    const auto* name = mod->info.name.c_str();
-
     if (!IsApiCompatible(mod->plugin->ApiVersion))
     {
-        Core::Logger->error("{} is compiled on unsupported API", dllName);
+        Core::Logger->error("{} is compiled on unsupported API (hry-core {} vs {})", 
+            dllName, ApiVersion, mod->plugin->ApiVersion);
+
         unload(mod);
         mod->loadResult = Plugin::Result::ApiNotSupported;
         return false;
     }
+
+    mod->info = mod->plugin->getPluginInfo();
+
+    const auto* name = mod->info.name.c_str();
 
     mod->data.config = _configMgr.createConfig(name);
     mod->data.keyBinds = _keyBindsMgr.createKeyBinds(name);

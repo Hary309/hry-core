@@ -26,12 +26,7 @@ struct Version
     }
 };
 
-constexpr inline Version ApiVersion{ 0, 1, 0 };
-
-inline bool IsApiCompatible(Version version)
-{
-    return version.major == ApiVersion.major;
-}
+constexpr inline Version ApiVersion{ 1, 0, 0 };
 
 HRY_NS_END
 
