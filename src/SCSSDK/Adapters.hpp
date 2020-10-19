@@ -14,6 +14,8 @@
 #include "Hry/Math/SCSTypes.hpp"
 #include "Hry/Namespace.hpp"
 
+#include "SCSValueType.hpp"
+
 HRY_NS_BEGIN
 
 template<typename T>
@@ -165,17 +167,7 @@ auto CreateAdapter()
     return &valueAdapter<T>;
 }
 
-template<typename, typename = std::void_t<>>
-struct HasAdapter : std::false_type
-{
-};
-
 template<typename T>
-struct HasAdapter<T, std::void_t<decltype(valueAdapter<T>)>> : std::true_type
-{
-};
-
-template<typename T>
-inline constexpr auto HasAdapter_v = HasAdapter<T>::value;
+inline constexpr auto HasAdapter_v = SCSValueType_v<T> != SCS_VALUE_TYPE_INVALID;
 
 HRY_NS_END

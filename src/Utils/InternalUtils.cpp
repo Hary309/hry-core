@@ -9,8 +9,7 @@
 #include <filesystem>
 
 #include <ShlObj.h>
-#include <corecrt_wstdio.h>
-#include <corecrt_wstring.h>
+#include <string>
 #include <fmt/format.h>
 
 #include "Core.hpp"

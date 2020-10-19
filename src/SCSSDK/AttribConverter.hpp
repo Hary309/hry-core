@@ -80,6 +80,15 @@ auto CreateEnumDeserializer()
     return EnumDeserializerCreator<T>::create();
 }
 
+template<typename>
+struct AttribConverterCreator;
+
+template<typename T>
+auto CreateConverter()
+{
+    return AttribConverterCreator<T>::create();
+}
+
 template<typename ClassType>
 struct AttribConverter
 {
@@ -389,14 +398,5 @@ private:
             std::shared_ptr<FieldBase>(new Field_t(converter->id, member, converter)));
     }
 };
-
-template<typename>
-struct AttribConverterCreator;
-
-template<typename T>
-auto CreateConverter()
-{
-    return AttribConverterCreator<T>::create();
-}
 
 HRY_NS_END

@@ -7,11 +7,16 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 # core
 project(hry-core VERSION 0.1.0)
 
-if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC" OR CMAKE_CXX_COMPILER_ID STREQUAL
-                                            "Clang")
+if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
   set(STATIC_FLAG /MT)
 elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
   set(STATIC_FLAG -static)
+elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+  if (CMAKE_CXX_COMPILER_FRONTEND_VARIANT STREQUAL "GNU") # clang
+    set(STATIC_FLAG -static) # not sure how to link static runtime
+  elseif(CMAKE_CXX_COMPILER_FRONTEND_VARIANT STREQUAL "MSVC") # clang-cl
+    set(STATIC_FLAG /MT)
+  endif()
 endif()
 
 add_subdirectory(vendor)
@@ -43,7 +48,6 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL
            -Wdouble-promotion
            -Wformat=2
            -Wmisleading-indentation
-           -Wmost
            -Wparentheses
            -Wswitch
            -Wswitch-bool

@@ -14,7 +14,6 @@
 #include <eurotrucks2/scssdk_eut2.h>
 #include <imgui.h>
 #include <scssdk_telemetry.h>
-#include <vcruntime_typeinfo.h>
 
 #include "Hry/Config/ConfigFieldBase.hpp"
 #include "Hry/Config/Fields/BoolField.hpp"
@@ -58,16 +57,16 @@ Core::~Core()
 
 bool Core::init(scs_telemetry_init_params_v100_t* scsTelemetry)
 {
+    Core::GameType = DetermineGameType(scsTelemetry->common.game_id);
+
     Paths::Init();
     ImGui::GetIO().IniFilename = _strdup((Paths::HomePath + "\\imgui.ini").c_str());
-
-    Core::GameType = DetermineGameType(scsTelemetry->common.game_id);
 
     LoggerFactory::Init(Paths::HomePath + "/hry_core.log", _eventMgr);
     Logger = LoggerFactory::GetLogger("core");
 
     Logger->info("Base address: 0x{:X}", GetBaseAddress());
-    Logger->info("API version {}.{}.{}", ApiVersion.major, ApiVersion.minor, ApiVersion.patch);
+    Logger->info("API version {}", ApiVersion);
     Logger->info("Game name: {}", GameTypeToString(Core::GameType));
     Logger->info("Module's path: {}", Paths::ModulePath);
     Logger->info("Home path: {}", Paths::HomePath);
@@ -141,7 +140,7 @@ void Core::initConfig()
                          .build());
 
     if (!_coreConfig->loadFromFile())
-    {
+    {   
         _coreConfig->saveToFile();
     }
 }

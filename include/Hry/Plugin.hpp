@@ -43,7 +43,8 @@ public:
         GameType gameType;
     };
 
-    inline static Version ApiVersion = hry::ApiVersion;
+public:
+    Version ApiVersion = hry::ApiVersion;
 
 public:
     Plugin() = default;
