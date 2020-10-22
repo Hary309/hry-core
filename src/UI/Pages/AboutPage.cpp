@@ -88,6 +88,8 @@ void AboutPage::imguiRender()
   * [json](https://github.com/nlohmann/json)
   * [minhook](https://github.com/TsudaKageyu/minhook)
 ## Changelog
+  * 1.0.1
+    * Replace close button with text
   * 1.0
     * First release
 )");
