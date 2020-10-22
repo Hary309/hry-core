@@ -26,7 +26,7 @@ struct Version
     }
 };
 
-constexpr inline Version ApiVersion{ 1, 0, 0 };
+constexpr inline Version ApiVersion{ 1, 0, 1 };
 
 HRY_NS_END
 
