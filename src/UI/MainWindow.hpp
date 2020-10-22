@@ -37,6 +37,8 @@ private:
 
     EventManager& _eventMgr;
 
+    KeyBind* _showMainWindowKeyBind{};
+
 public:
     MainWindow(
         ModuleManager& moduleMgr,

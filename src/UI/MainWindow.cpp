@@ -8,8 +8,10 @@
 
 #include <functional>
 
+#include <fmt/format.h>
 #include <imgui.h>
 
+#include "Hry/Fonts.hpp"
 #include "Hry/KeyBinding/KeyBinds.hpp"
 #include "Hry/Namespace.hpp"
 #include "Hry/System/Keyboard.hpp"
@@ -55,12 +57,13 @@ MainWindow::MainWindow(
 
 void MainWindow::initKeyBinds(KeyBinds& keyBinds)
 {
-    keyBinds.add(KeyBindBuilder()
-                     .setLabel("Show main window")
-                     .setID("show_main_window")
-                     .setDefaultKey(Keyboard::Key::Delete)
-                     .setPressCallback(Dlg<&MainWindow::showMainWindowKeyBind>(this))
-                     .build());
+    _showMainWindowKeyBind =
+        keyBinds.add(KeyBindBuilder()
+                         .setLabel("Show main window")
+                         .setID("show_main_window")
+                         .setDefaultKey(Keyboard::Key::Delete)
+                         .setPressCallback(Dlg<&MainWindow::showMainWindowKeyBind>(this))
+                         .build());
 }
 
 void MainWindow::imguiRender()
@@ -72,8 +75,23 @@ void MainWindow::imguiRender()
 
     ImGui::SetNextWindowSize({ 600.f, 400.f }, ImGuiCond_FirstUseEver);
 
-    if (ImGui::Begin("Plugin Manager", &_isWindowEnabled))
+    if (ImGui::Begin("Plugin Manager", nullptr, ImGuiWindowFlags_NoCollapse))
     {
+        if (_showMainWindowKeyBind != nullptr && _showMainWindowKeyBind->key != nullptr)
+        {
+            auto* drawList = ImGui::GetForegroundDrawList();
+            const auto windowPos = ImGui::GetWindowPos();
+
+            const auto text = fmt::format("Press '{}' to hide", _showMainWindowKeyBind->key->name);
+            const auto textSize = ImGui::CalcTextSize(text.c_str());
+            const auto textPos = ImVec2{ windowPos.x + ImGui::GetWindowWidth() - textSize.x - 8.f,
+                                         windowPos.y + 3.f };
+
+            drawList->AddText(
+                textPos, ImGui::ColorConvertFloat4ToU32(ImColor(150, 150, 240).Value),
+                text.c_str());
+        }
+
         ImGui::Columns(4, "tabs##plugin_manager", false);
 
         if (TabButton("Plugins", _currentPage == &_pluginsPage))

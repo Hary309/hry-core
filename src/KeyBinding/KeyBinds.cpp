@@ -27,9 +27,13 @@ KeyBinds::KeyBinds(std::string name) : _name(std::move(name))
     _keyBindsFilePath = fmt::format("{}/{}.json", Paths::KeyBindsPath, _name);
 }
 
-void KeyBinds::add(std::unique_ptr<KeyBind>&& keyBind)
+KeyBind* KeyBinds::add(std::unique_ptr<KeyBind>&& keyBind)
 {
+    auto* ptr = keyBind.get();
+
     _keyBinds.push_back(std::move(keyBind));
+
+    return ptr;
 }
 
 void KeyBinds::saveToFile() const
