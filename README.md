@@ -44,6 +44,6 @@ hry-core publicly available is compiled with clang-cl (Clang 11 rc5 and MSVC 19.
 ## TODO List
 
 - support for loading images
-- Support for XInput
+- Support for XInput (figure out how to identify devices)
 - API for controller's axis (easy binding and usage like keybinds)
 
