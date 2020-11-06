@@ -11,11 +11,10 @@
 #include <windows.h>
 
 #include "Hry/Utils/Delegate.hpp"
+#include "Hry/Namespace.hpp"
 
 struct IDXGISwapChain;
 struct ID3D11Device;
-
-#include "Hry/Namespace.hpp"
 
 HRY_NS_BEGIN
 

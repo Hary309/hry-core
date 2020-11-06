@@ -33,6 +33,7 @@
 #include "Hooks/D3D11Hook.hpp"
 #include "Hooks/DInput8Hook.hpp"
 #include "Hooks/OpenGLHook.hpp"
+#include "Hooks/XInputHook.hpp"
 #include "Logger/LoggerFactory.hpp"
 #include "Utils/InternalImGuiUtils.hpp"
 
@@ -140,7 +141,7 @@ void Core::initConfig()
                          .build());
 
     if (!_coreConfig->loadFromFile())
-    {   
+    {
         _coreConfig->saveToFile();
     }
 }
@@ -190,7 +191,8 @@ bool Core::InstallHooks()
 
     success &= rendererSuccess;
 
-    success &= DInput8Hook::Install();
+    DInput8Hook::Install();
+    XInputHook::Install();
 
     if (success)
     {
