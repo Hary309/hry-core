@@ -194,7 +194,8 @@ bool Core::InstallHooks()
 
     success &= rendererSuccess;
 
-    success &= DInput8Hook::Install();
+    DInput8Hook::Install();
+    XInputHook::Install();
 
     if (success)
     {
