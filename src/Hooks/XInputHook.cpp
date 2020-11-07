@@ -1,3 +1,9 @@
+/**
+ * This file is part of the hry-core project
+ * @ Author: Piotr Krupa <piotrkrupa06@gmail.com>
+ * @ License: MIT License
+ */
+
 #include "XInputHook.hpp"
 
 #include <array>
@@ -21,30 +27,14 @@ HRY_NS_BEGIN
 using XInputGetState_t = decltype(XInputGetState);
 
 static std::unique_ptr<Detour> detour;
-static XINPUT_STATE deviceState[4];
 
 DWORD new_XInputGetState(DWORD index, XINPUT_STATE* state)
 {
-    auto result = detour->getOriginal<XInputGetState_t>()(index, state);
+    auto status = detour->getOriginal<XInputGetState_t>()(index, state);
 
-    if (result == ERROR_SUCCESS && state->dwPacketNumber > deviceState[index].dwPacketNumber)
-    {
-        auto& g = state->Gamepad;
+    XInputHook::OnJoystickData(index, status, *state);
 
-        auto lt = static_cast<double>(g.bLeftTrigger) * 100.0 / std::numeric_limits<BYTE>::max();
-        auto rt = static_cast<double>(g.bRightTrigger) * 100.0 / std::numeric_limits<BYTE>::max();
-
-        auto lx = static_cast<double>(g.sThumbLX) * 100.0 / std::numeric_limits<SHORT>::max();
-        auto ly = static_cast<double>(g.sThumbLY) * 100.0 / std::numeric_limits<SHORT>::max();
-
-        auto rx = static_cast<double>(g.sThumbRX) * 100.0 / std::numeric_limits<SHORT>::max();
-        auto ry = static_cast<double>(g.sThumbRY) * 100.0 / std::numeric_limits<SHORT>::max();
-
-        Core::Logger->info(
-            "LT: {}, RT: {}, LX: {}, LY: {}, RX: {}, RY: {} ", lt, rt, lx, ly, rx, ry);
-    }
-
-    return result;
+    return status;
 }
 
 HMODULE GetXInputHandle()

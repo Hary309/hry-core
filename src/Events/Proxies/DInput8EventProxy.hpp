@@ -17,8 +17,6 @@
 
 struct DIDEVICEOBJECTDATA;
 
-#include "Hry/Namespace.hpp"
-
 HRY_NS_BEGIN
 
 class DInput8EventProxy : public EventProxyBase
