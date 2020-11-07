@@ -9,6 +9,7 @@
 #include "Core.hpp"
 
 #include "Events/Proxies/TelemetryEventProxy.hpp"
+#include "Events/Proxies/XInputEventProxy.hpp"
 #include "Proxies/DInput8EventProxy.hpp"
 #include "Proxies/TelemetryEventProxy.hpp"
 #include "Proxies/WndProcEventProxy.hpp"
@@ -21,6 +22,7 @@ void EventManager::init(scs_telemetry_init_params_v100_t* scsTelemetry)
 
     _eventProxies.push_back(std::make_unique<WndProcEventProxy>(*this));
     _eventProxies.push_back(std::make_unique<DInput8EventProxy>(*this));
+    _eventProxies.push_back(std::make_unique<XInputEventProxy>(*this));
     _eventProxies.push_back(std::make_unique<TelemetryEventProxy>(*this, scsTelemetry));
 }
 
