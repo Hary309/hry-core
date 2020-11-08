@@ -44,7 +44,7 @@ Core::Core(HINSTANCE hInst)
       _channelAggregator(_eventDispatcher), _renderer(*this, _eventMgr),
       _keyBindsMgr(_eventDispatcher), _axisBindsMgr(_eventDispatcher),
       _moduleMgr(_eventMgr, _configMgr, _keyBindsMgr, _channelAggregator.getTelemetry()),
-      _mainWindow(_moduleMgr, _configMgr, _keyBindsMgr, _eventMgr, _eventDispatcher),
+      _mainWindow(_moduleMgr, _configMgr, _keyBindsMgr, _axisBindsMgr, _eventMgr, _eventDispatcher),
       _loggerWindow(_eventDispatcher), _imguiImplEvents(_eventDispatcher)
 {
     hInstance = hInst;
@@ -90,6 +90,13 @@ bool Core::init(scs_telemetry_init_params_v100_t* scsTelemetry)
 
     initConfig();
     initKeyBinds();
+
+    _coreAxisBinds = _axisBindsMgr.createAxisBinds("Core");
+    _coreAxisBinds->add(AxisBindBuiilder()
+                            .setID("accelerate")
+                            .setLabel("Accelerate")
+                            .setCallback(Dlg<&Core::accelerateAxisBind>(this))
+                            .build());
 
     _moduleMgr.init();
 
@@ -178,6 +185,11 @@ void Core::onConfigChangesApplied(const ConfigCallbackData& data)
     _loggerWindow.setOpacity(coreConfigData->logWindowOpacity);
 
     _showImGuiDemo = coreConfigData->showImGuiDemo;
+}
+
+void Core::accelerateAxisBind(double value)
+{
+    Core::Logger->info("Value: {}", value);
 }
 
 bool Core::InstallHooks()

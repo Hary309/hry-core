@@ -20,6 +20,7 @@
 #include "Hry/Utils/Utils.hpp"
 #include "Hry/Version.hpp"
 
+#include "AxisBinding/AxisBindsManager.hpp"
 #include "Config/ConfigManager.hpp"
 #include "Events/EventManager.hpp"
 #include "KeyBinding/KeyBindsManager.hpp"
@@ -68,6 +69,7 @@ private:
 
     HryPtr<Config> _coreConfig;
     HryPtr<KeyBinds> _coreKeyBinds;
+    HryPtr<AxisBinds> _coreAxisBinds;
 
     bool _showImGuiDemo{};
 
@@ -88,6 +90,7 @@ public:
 
 private:
     void onConfigChangesApplied(const ConfigCallbackData& data);
+    void accelerateAxisBind(double value);
 
 private:
     static bool InstallHooks();

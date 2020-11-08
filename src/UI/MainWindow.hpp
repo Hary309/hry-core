@@ -18,6 +18,7 @@
 #include "Modules/ModuleManager.hpp"
 #include "UI/Pages/AboutPage.hpp"
 #include "UI/Pages/ConfigPage.hpp"
+#include "UI/Pages/ControlsPage.hpp"
 #include "UI/Pages/KeyBindsPage.hpp"
 #include "UI/Pages/PluginsPage.hpp"
 
@@ -31,6 +32,7 @@ private:
     PluginsPage _pluginsPage;
     ConfigPage _configPage;
     KeyBindsPage _keyBindsPage;
+    ControlsPage _controlsPage;
     AboutPage _aboutPage;
 
     PageBase* _currentPage{ &_pluginsPage };
@@ -44,6 +46,7 @@ public:
         ModuleManager& moduleMgr,
         ConfigManager& configMgr,
         KeyBindsManager& keyBindsMgr,
+        AxisBindsManager& axisBindsMgr,
         EventManager& eventMgr,
         InternalEventDispatcher& eventDispatcher);
 
