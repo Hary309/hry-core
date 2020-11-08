@@ -9,6 +9,7 @@
 #include <scssdk_telemetry.h>
 #include <windows.h>
 
+#include "Hry/AxisBinding/AxisBinds.hpp"
 #include "Hry/Events/Event.hpp"
 #include "Hry/Events/EventDispatcher.hpp"
 #include "Hry/GameType.hpp"
@@ -57,6 +58,7 @@ private:
     Renderer _renderer;
     ConfigManager _configMgr;
     KeyBindsManager _keyBindsMgr;
+    AxisBindsManager _axisBindsMgr;
     ModuleManager _moduleMgr;
 
     MainWindow _mainWindow;
