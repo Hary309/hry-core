@@ -9,6 +9,7 @@
 #include <imgui.h>
 
 #include "Hry/Utils/ImGuiUtils.hpp"
+#include "Hry/Utils/Utils.hpp"
 
 HRY_NS_BEGIN
 
@@ -70,6 +71,13 @@ void ControlsPage::imguiRender()
                     if (ImGui::Button(text.data()))
                     {
                         _axisToSetBind = axisBind.get();
+                    }
+
+                    if (axisBind->deviceGUID.has_value() && ImGui::IsItemHovered())
+                    {
+                        ImGui::BeginTooltip();
+                        ImGui::Text("GUID: %s", FormatGUID(axisBind->deviceGUID.value()).c_str());
+                        ImGui::EndTooltip();
                     }
                 }
 
