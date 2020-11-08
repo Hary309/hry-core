@@ -44,7 +44,25 @@ void AxisBindsManager::onJoystickMove(const JoystickMoveEvent&& e)
         {
             if (axisBind->axis == e.axis && axisBind->deviceGUID == e.deviceGUID)
             {
-                axisBind->action(e.value);
+                if (std::abs(e.value) <= axisBind->deadZone)
+                {
+                    axisBind->action(0);
+                }
+                else
+                {
+                    auto newValue = (e.value * 100.0) / (100.0 - axisBind->deadZone);
+
+                    if (e.value < 0)
+                    {
+                        newValue += axisBind->deadZone;
+                    }
+                    else
+                    {
+                        newValue -= axisBind->deadZone;
+                    }
+
+                    axisBind->action(newValue);
+                }
             }
         }
     }

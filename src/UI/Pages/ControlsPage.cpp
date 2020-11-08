@@ -13,6 +13,11 @@
 
 HRY_NS_BEGIN
 
+bool SliderDouble(const char* label, double* v, double v_min, double v_max)
+{
+    return ImGui::SliderScalar(label, ImGuiDataType_Double, v, &v_min, &v_max, "%.3f", 0);
+}
+
 ControlsPage::ControlsPage(AxisBindsManager& axisBindsMgr, InternalEventDispatcher& dispatcher)
     : _axisBindsMgr(axisBindsMgr)
 {
@@ -35,8 +40,8 @@ void ControlsPage::imguiRender()
         if (ImGui::CollapsingHeader(
                 axisBindsSection->getName().c_str(), ImGuiTreeNodeFlags_DefaultOpen))
         {
-            ImGui::Columns(3);
-            ImGui::SetColumnOffset(2, ImGui::GetWindowContentRegionWidth() - 96);
+            ImGui::Columns(4);
+            ImGui::SetColumnOffset(3, ImGui::GetWindowContentRegionWidth() - 46);
             for (auto& axisBind : axisBinds)
             {
                 ImGui::PushID(&axisBind);
@@ -79,6 +84,17 @@ void ControlsPage::imguiRender()
                         ImGui::Text("GUID: %s", FormatGUID(axisBind->deviceGUID.value()).c_str());
                         ImGui::EndTooltip();
                     }
+                }
+
+                ImGui::NextColumn();
+
+                SliderDouble("##drag", &axisBind->deadZone, 0.0, 100.0);
+
+                if (ImGui::IsItemHovered())
+                {
+                    ImGui::BeginTooltip();
+                    ImGui::Text("Dead zone");
+                    ImGui::EndTooltip();
                 }
 
                 ImGui::NextColumn();

@@ -35,6 +35,8 @@ struct AxisBind final
     std::optional<Joystick::Axis> axis;
     std::optional<GUID> deviceGUID;
 
+    double deadZone = 0;
+
     Delegate_t action;
 
 private:
