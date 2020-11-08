@@ -56,6 +56,7 @@ private:
     Renderer _renderer;
     ConfigManager _configMgr;
     KeyBindsManager _keyBindsMgr;
+    AxisBindsManager _axisBindsMgr;
     ModuleManager _moduleMgr;
 
     MainWindow _mainWindow;
