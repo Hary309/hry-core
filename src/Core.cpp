@@ -91,6 +91,14 @@ bool Core::init(scs_telemetry_init_params_v100_t* scsTelemetry)
     initConfig();
     initKeyBinds();
 
+    _coreAxisBinds = _axisBindsMgr.createAxisBinds("Core");
+    _coreAxisBinds->add(
+        AxisBindBuiilder()
+            .setID("accelerate")
+            .setLabel("Accelerate")
+            .setCallback(Dlg<&Core::accelerateAxisBind>(this))
+            .build());
+
     _moduleMgr.init();
 
     _isInited = true;
@@ -181,6 +189,11 @@ void Core::onConfigChangesApplied(const ConfigCallbackData& data)
     _loggerWindow.setOpacity(coreConfigData->logWindowOpacity);
 
     _showImGuiDemo = coreConfigData->showImGuiDemo;
+}
+
+void Core::accelerateAxisBind(double value)
+{
+    Core::Logger->info("Value: {}", value);
 }
 
 bool Core::InstallHooks()
