@@ -46,11 +46,11 @@ void XInputEventProxy::onJoystickData(uint32_t index, uint32_t status, XINPUT_ST
     const auto& lastGP = lastState.Gamepad;
 
     sendAnalogChange(index, Joystick::Axis::X, currGP, lastGP, &XINPUT_GAMEPAD::bLeftTrigger);
-    sendAnalogChange(index, Joystick::Axis::Y, currGP, lastGP, &XINPUT_GAMEPAD::bLeftTrigger);
-    sendAnalogChange(index, Joystick::Axis::Z, currGP, lastGP, &XINPUT_GAMEPAD::bLeftTrigger);
-    sendAnalogChange(index, Joystick::Axis::R, currGP, lastGP, &XINPUT_GAMEPAD::bLeftTrigger);
-    sendAnalogChange(index, Joystick::Axis::U, currGP, lastGP, &XINPUT_GAMEPAD::bLeftTrigger);
-    sendAnalogChange(index, Joystick::Axis::V, currGP, lastGP, &XINPUT_GAMEPAD::bLeftTrigger);
+    sendAnalogChange(index, Joystick::Axis::Y, currGP, lastGP, &XINPUT_GAMEPAD::bRightTrigger);
+    sendAnalogChange(index, Joystick::Axis::Z, currGP, lastGP, &XINPUT_GAMEPAD::sThumbLX);
+    sendAnalogChange(index, Joystick::Axis::R, currGP, lastGP, &XINPUT_GAMEPAD::sThumbLY);
+    sendAnalogChange(index, Joystick::Axis::U, currGP, lastGP, &XINPUT_GAMEPAD::sThumbRX);
+    sendAnalogChange(index, Joystick::Axis::V, currGP, lastGP, &XINPUT_GAMEPAD::sThumbRY);
 
     if (currGP.wButtons != lastGP.wButtons)
     {

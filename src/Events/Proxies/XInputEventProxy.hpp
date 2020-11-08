@@ -15,6 +15,7 @@
 #include "Hry/Events/Event.hpp"
 #include "Hry/System/Joystick.hpp"
 
+#include "Events/EventManager.hpp"
 #include "Events/EventProxyBase.hpp"
 
 #undef max
