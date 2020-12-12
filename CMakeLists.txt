@@ -1,35 +1,20 @@
-cmake_minimum_required(VERSION 3.4.0)
+cmake_minimum_required(VERSION 3.15)
+cmake_policy(SET CMP0091 NEW)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
-# core
-project(hry-core VERSION 0.1.0)
-
-if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-  set(STATIC_FLAG /MT)
-elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-  set(STATIC_FLAG -static)
-elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-  if (CMAKE_CXX_COMPILER_FRONTEND_VARIANT STREQUAL "GNU") # clang
-    set(STATIC_FLAG -static) # not sure how to link static runtime
-  elseif(CMAKE_CXX_COMPILER_FRONTEND_VARIANT STREQUAL "MSVC") # clang-cl
-    set(STATIC_FLAG /MT)
-  endif()
-endif()
+project(hry-core VERSION 1.0.1)
 
 add_subdirectory(vendor)
 
+# core
 file(GLOB_RECURSE hry-core-src include/*.hpp src/*.hpp src/*.cpp)
 add_library(hry-core SHARED ${hry-core-src})
 
 target_compile_definitions(hry-core PUBLIC _USE_MATH_DEFINES)
-
-if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-  target_compile_definitions(hry-core PUBLIC DEBUG)
-endif()
-
 target_compile_definitions(hry-core PRIVATE HRY_EXPORT _CRT_SECURE_NO_WARNINGS)
 
 # vscode doesn't like relative paths in errors :/
@@ -37,8 +22,7 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
   target_compile_options(hry-core PUBLIC -fdiagnostics-absolute-paths)
 endif()
 
-if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL
-                                             "GNU")
+if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
   target_compile_options(
     hry-core
     PUBLIC -Wnon-virtual-dtor
@@ -55,8 +39,6 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL
            -Wpedantic)
 endif()
 
-target_compile_options(hry-core PUBLIC ${STATIC_FLAG})
-
 target_include_directories(hry-core PUBLIC include vendor/json/include
                                            vendor/imgui)
 target_include_directories(hry-core PRIVATE src vendor/scs_sdk/include
@@ -66,6 +48,6 @@ target_link_libraries(hry-core PUBLIC fmt::fmt-header-only)
 target_link_libraries(hry-core PRIVATE imgui glad minhook)
 
 # example
-project(hry-example VERSION 0.1.0)
+project(hry-example VERSION 1.0.0)
 add_library(hry-example SHARED example/example.hpp example/example.cpp)
 target_link_libraries(hry-example PRIVATE hry-core)

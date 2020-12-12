@@ -5,3 +5,5 @@ compile_commands.json
 .vs
 cmake-build-debug
 .idea
+deploy/zip
+deploy/hry-core-sdk.zip
