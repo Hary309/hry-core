@@ -10,6 +10,8 @@
 #include <Windows.h>
 #include <scssdk_telemetry.h>
 
+#include "fmt/core.h"
+
 #include "Core.hpp"
 #include "scssdk.h"
 
@@ -33,9 +35,16 @@ __declspec(dllexport) SCSAPI_RESULT
         return SCS_RESULT_ok;
     }
 
-    if (core->init(initParams))
+    try
     {
-        return SCS_RESULT_ok;
+        if (core->init(initParams))
+        {
+            return SCS_RESULT_ok;
+        }
+    }
+    catch (const std::exception& ex)
+    {
+        log(SCS_LOG_TYPE_error, fmt::format("Exception: {}", ex.what()).c_str());
     }
 
     return SCS_RESULT_generic_error;
