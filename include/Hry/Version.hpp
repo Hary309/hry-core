@@ -14,18 +14,30 @@
 
 HRY_NS_BEGIN
 
+/**
+ * @brief General structure for version information
+ * Usef for: API version, plugin version 
+ */
 struct Version
 {
     uint8_t major; // changes when api has breaking changes
     uint16_t minor;
     uint16_t patch;
 
+    /**
+     * @brief Converts structure to formatter string
+     * 
+     * @return Formatted string
+     */
     [[nodiscard]] std::string toString() const
     {
         return fmt::format("{}.{}.{}", major, minor, patch);
     }
 };
 
+/**
+ * @brief Current API version
+ */
 constexpr inline Version ApiVersion{ 1, 0, 1 };
 
 HRY_NS_END

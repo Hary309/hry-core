@@ -12,6 +12,9 @@ struct ImFont;
 
 HRY_NS_BEGIN
 
+/**
+ * @brief Holds fonts ready to use in ImGui
+ */
 struct Fonts
 {
     inline static ImFont* OpenSans_16; // default

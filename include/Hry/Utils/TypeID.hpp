@@ -8,6 +8,12 @@
 
 HRY_NS_BEGIN
 
+/**
+ * @brief Calculate unique type hash
+ * 
+ * @tparam T Type to calculate hash
+ * @return Calculated hash
+ */
 template<typename T>
 constexpr Hash64_t TypeID() noexcept
 {

@@ -14,6 +14,11 @@
 
 HRY_NS_BEGIN
 
+/**
+ * @brief Renders helper marker in ImGui Window
+ * 
+ * @param desc Text to render
+ */
 inline void ImGuiHelpMarker(const char* desc)
 {
     ImGui::TextDisabled("(?)");
@@ -27,7 +32,11 @@ inline void ImGuiHelpMarker(const char* desc)
     }
 }
 
-// type to imgui data type converter
+/**
+ * @brief Converts type to Dear ImGui data type
+ * 
+ * @tparam Type to convert 
+ */
 template<typename>
 struct ImGuiDataType;
 
@@ -91,6 +100,12 @@ struct ImGuiDataType<double>
     static constexpr int Value = ImGuiDataType_Double;
 };
 
+
+/**
+ * @brief Converts type to Dear ImGui data type
+ * 
+ * @tparam T Type to convert
+ */
 template<typename T>
 static inline constexpr auto ImGuiDataType_v = ImGuiDataType<T>::Value;
 

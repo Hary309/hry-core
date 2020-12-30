@@ -12,6 +12,9 @@
 
 HRY_NS_BEGIN
 
+/**
+ * @name 2D Vector type
+ */
 template<typename T>
 struct Vec2
 {

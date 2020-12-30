@@ -15,6 +15,13 @@ HRY_NS_BEGIN
 
 using Hash64_t = uint64_t;
 
+/**
+ * @brief Calculate hash from passed string iterator
+ * 
+ * @tparam InputIt string interator type
+ * @param begin string itertator
+ * @return Calculated hash
+ */
 template<typename InputIt>
 constexpr Hash64_t FNV1a_64(InputIt begin) noexcept
 {

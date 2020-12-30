@@ -80,6 +80,9 @@ private:
     }
 };
 
+/**
+ * @brief Combo box field
+ */
 class SelectionFieldBuilder final
     : public ConfigFieldBuilderBase<SelectionField, SelectionFieldBuilder, std::string>
 {
@@ -91,12 +94,22 @@ private:
 public:
     SelectionFieldBuilder() = default;
 
+    /**
+     * @brief Add option to combo box
+     * 
+     * @param arg Text of option
+     */
     SelectionFieldBuilder& addOption(const std::string& arg)
     {
         _options.push_back(arg);
         return *this;
     }
 
+    /**
+     * @brief Add multiple options at once
+     * 
+     * @param args Arugments
+     */
     template<typename... Args>
     SelectionFieldBuilder& addOptions(Args&&... args)
     {
@@ -104,13 +117,25 @@ public:
         return *this;
     }
 
-    // [optional] Use only to preview changes, don't treat is as applied value
+    /**
+     * optional
+     * @brief Set the preview callback
+     * 
+     * Use only to preview changes, don't treat is as applied value
+     * 
+     * @param previewCallback Delegate to be invoke when value change
+     */
     SelectionFieldBuilder& setPreviewCallback(SelectionField::PreviewCallback_t previewCallback)
     {
         _previewCallback = previewCallback;
         return *this;
     }
 
+    /**
+     * @brief Create the config field, pass it to add method in Config
+     * 
+     * @return Constructed config field
+     */
     std::unique_ptr<ConfigFieldBase> build() const
     {
         auto* selectionField = new SelectionField();

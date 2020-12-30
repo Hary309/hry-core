@@ -12,6 +12,9 @@
 
 HRY_NS_BEGIN
 
+/**
+ * @brief Mesure time
+ */
 class Timer final
 {
 public:
@@ -25,22 +28,48 @@ private:
     TimePoint_t _start;
 
 public:
+    /**
+     * @brief Construct a new Timer object
+     */
     Timer() : _start(Clock_t::now()) {}
 
+    /**
+     * @brief Reset timer
+     */
     void reset() { _start = Clock_t::now(); }
 
+    /**
+     * @brief Get elapsed time since last reset
+     * 
+     * @return Elapsed time
+     */
     [[nodiscard]] auto elapsed() const { return Clock_t::now() - _start; }
 
+    /**
+     * @brief Get elapsed time since last reset
+     * 
+     * @return Elapsed time in seconds 
+     */
     [[nodiscard]] double asSeconds() const
     {
         return std::chrono::duration_cast<Seconds_t>(elapsed()).count();
     }
 
+    /**
+     * @brief Get elapsed time since last reset
+     * 
+     * @return Elapsed time in miliseconds 
+     */
     [[nodiscard]] int64_t asMiliseconds() const
     {
         return std::chrono::duration_cast<Milliseconds_t>(elapsed()).count();
     }
 
+    /**
+     * @brief Get elapsed time since last reset
+     * 
+     * @return Elapsed time in microseconds
+     */
     [[nodiscard]] int64_t asMicrosecond() const
     {
         return std::chrono::duration_cast<Microseconds_t>(elapsed()).count();

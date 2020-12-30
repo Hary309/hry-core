@@ -10,6 +10,9 @@
 
 HRY_NS_BEGIN
 
+/**
+ * @brief Game's window resize types
+ */
 enum ResizeType
 {
     Maximized = 0,
@@ -17,6 +20,9 @@ enum ResizeType
     Restored
 };
 
+/**
+ * @brief Possible button state
+ */
 enum class ButtonState
 {
     Pressed,

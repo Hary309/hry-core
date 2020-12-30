@@ -10,6 +10,12 @@
 
 HRY_NS_BEGIN
 
+/**
+ * @brief Deduces offset of member in class
+ * 
+ * @param member pointer to class' member
+ * @return Offset of member
+ */
 template <typename T, typename Class>
 size_t OffsetOf(T Class::* member)
 {

@@ -10,8 +10,14 @@
 
 HRY_NS_BEGIN
 
+/**
+ * @brief Keyboard class
+ */
 struct Keyboard
 {
+    /**
+     * @brief Keys possible to use
+     */
     enum class Key
     {
         Unknown = -1,

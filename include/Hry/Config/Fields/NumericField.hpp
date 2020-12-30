@@ -123,7 +123,7 @@ private:
     {
         if (ImGui::DragScalar(
                 _label.c_str(), ImGuiDataType_v<T>, &_dirtyValue, drag.speed, &drag.min, &drag.max,
-                drag.format.c_str(), drag.power))
+                drag.format.c_str()))
         {
             _previewCallback(_dirtyValue);
         }
@@ -134,7 +134,7 @@ private:
     {
         if (ImGui::SliderScalar(
                 _label.c_str(), ImGuiDataType_v<T>, &_dirtyValue, &slider.min, &slider.max,
-                slider.format.c_str(), slider.power))
+                slider.format.c_str()))
         {
             _previewCallback(_dirtyValue);
         }
@@ -157,6 +157,11 @@ private:
     }
 };
 
+/**
+ * @brief Use to create input number field
+ * 
+ * @tparam T Number type
+ */
 template<typename T, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
 class NumericFieldBuilder final
     : public ConfigFieldBuilderBase<NumericField<T>, NumericFieldBuilder<T>, T>
@@ -168,6 +173,10 @@ private:
 public:
     NumericFieldBuilder() = default;
 
+    /**
+     * Select one
+     * @brief Use simple input number field
+     */
     NumericFieldBuilder& useInput()
     {
         T step = 0;
@@ -182,33 +191,67 @@ public:
         return useInput(step, stepFast);
     }
 
+    /**
+     * Select one
+     * @brief Use simple input number field
+     * 
+     * @param step How fast value should change
+     * @param stepFast How fast value should change in fast mode
+     */
     NumericFieldBuilder& useInput(T step, T stepFast)
     {
         return useInput(step, stepFast, NumericField<T>::getFormat());
     }
 
+    /**
+     * Select one
+     * @brief Use simple input number field
+     * 
+     * @param step How fast value should change
+     * @param stepFast How fast value should change in fast mode
+     * @param format Value formatting string (use C formatting)
+     */
     NumericFieldBuilder& useInput(T step, T stepFast, const std::string& format)
     {
         _widgetType = typename NumericField<T>::InputType{ step, stepFast, format };
         return *this;
     }
 
+    /**
+     * Select one
+     * @brief Use drag number field
+     * 
+     * @param speed Speed of changing value
+     * @param min Minimum value
+     * @param max Maximum value
+     */
     NumericFieldBuilder& useDrag(T speed = 1, T min = 0, T max = 0)
     {
         return useDrag(speed, min, max, NumericField<T>::getFormat());
     }
 
+    /**
+     * Select one
+     * @brief Use drag number field
+     * 
+     * @param speed Speed of changing value
+     * @param min Minimum value
+     * @param max Maximum value
+     * @param format Value formatting string (use C formatting)
+     */
     NumericFieldBuilder& useDrag(T speed, T min, T max, const std::string& format)
     {
-        return useDrag(speed, min, max, format, 1.f);
-    }
-
-    NumericFieldBuilder& useDrag(T speed, T min, T max, const std::string& format, float power)
-    {
-        _widgetType = typename NumericField<T>::DragType{ speed, min, max, format, power };
+        _widgetType = typename NumericField<T>::DragType{ speed, min, max, format };
         return *this;
     }
 
+    /**
+     * Select one
+     * @brief Use slider number field
+     * 
+     * @param min Minimum value
+     * @param max Maximum value
+     */
     NumericFieldBuilder& useSlider(T min, T max)
     {
         return useSlider(min, max, NumericField<T>::getFormat());
@@ -216,12 +259,7 @@ public:
 
     NumericFieldBuilder& useSlider(T min, T max, const std::string& format)
     {
-        return useSlider(min, max, format, 1.f);
-    }
-
-    NumericFieldBuilder& useSlider(T min, T max, const std::string& format, float power)
-    {
-        _widgetType = typename NumericField<T>::SliderType{ min, max, format, power };
+        _widgetType = typename NumericField<T>::SliderType{ min, max, format };
         return *this;
     }
 
@@ -233,6 +271,11 @@ public:
         return *this;
     }
 
+    /**
+     * @brief Create the config field, pass it to add method in Config
+     * 
+     * @return Constructed config field
+     */
     std::unique_ptr<ConfigFieldBase> build() const
     {
         auto* numericField = new NumericField<T>();

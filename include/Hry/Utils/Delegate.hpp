@@ -28,10 +28,20 @@ struct ConnectArg
 template<auto Addr>
 inline static ConnectArg<Addr> ConnectArg_v;
 
+/**
+ * @brief Utility class to sned information around the hry-core
+ *        Used for events system
+ * 
+ * @tparam Return Return type of a delegate function
+ * @tparam Args Types of arguments of a delegate function
+ */
 template<typename Return, typename... Args>
 class Delegate<Return(Args...)> final
 {
 public:
+    /**
+     * @brief Internal function type
+     */
     using Function_t = Return(void*, Args...);
 
 private:
@@ -41,20 +51,42 @@ private:
 public:
     Delegate() = default;
 
+    /**
+     * @brief Constructs delegate and connect function
+     * 
+     * @tparam FuncAddr function to connect to the delegate
+     */
     template<auto FuncAddr>
     Delegate(ConnectArg<FuncAddr> /*unused*/) noexcept
     {
         connect<FuncAddr>();
     }
 
+    /**
+     * @brief Constructs delegate with context and connect function
+     * 
+     * @tparam CtxFuncAddr function to connect to the delegate
+     * @tparam T context type
+     */
     template<auto CtxFuncAddr, typename T>
     Delegate(ConnectArg<CtxFuncAddr> /*unused*/, T* context) noexcept
     {
         connect<CtxFuncAddr>(context);
     }
 
+    /**
+     * @brief Constructs delegate with raw function pointer and context
+     * 
+     * @param func Function to connect to the delegate
+     * @param context Pointer to content
+     */
     Delegate(Function_t* func, void* context) noexcept { connect(func, context); }
 
+    /**
+     * @brief Connects function to the delegate
+     * 
+     * @tparam FuncAddr Function to connect to the delegate
+     */
     template<auto FuncAddr>
     void connect() noexcept
     {
@@ -69,6 +101,13 @@ public:
         _content = nullptr;
     }
 
+    /**
+    * @brief Connects function to the delegate with context
+    * 
+    * @tparam CtxFuncAddr Function with context to connect to the delegate
+    * @tparam T Context type
+    * @param content Pointer to content
+    */
     template<auto CtxFuncAddr, typename T>
     void connect(T* content) noexcept
     {
@@ -84,24 +123,24 @@ public:
         _content = content;
     }
 
-    template<auto FuncAddr>
-    void connect(ConnectArg<FuncAddr> /*unused*/) noexcept
-    {
-        connect<FuncAddr>();
-    }
-
-    template<auto CtxFuncAddr, typename T>
-    void connect(ConnectArg<CtxFuncAddr>, T* context) noexcept
-    {
-        connect<CtxFuncAddr>(context);
-    }
-
+    /**
+     * @brief Connects raw function with context to the delegate
+     * 
+     * @param func function to connect to the delegate
+     * @param context Pointer to content
+     */
     void connect(Function_t* func, void* context) noexcept
     {
         _function = func;
         _content = context;
     }
 
+    /**
+     * @brief Call the connected function
+     * 
+     * @param args Arguments to use to invoke the connected function
+     * @return Value returned by the connected function
+     */
     Return call(Args... args) const
     {
         if (_function)
@@ -110,17 +149,32 @@ public:
         }
     }
 
+    /**
+     * @brief Reset the delegate
+     */
     void reset() noexcept
     {
         _function = nullptr;
         _content = nullptr;
     }
 
+    /**
+     * @brief Call the connected function
+     * 
+     * @param args Arguments to use to invoke the connected function
+     * @return Value returned by the connected function
+     */
     Return operator()(Args... args) const { return call(std::forward<Args>(args)...); }
 
-    bool operator==(const Delegate<Return(Args...)>& b) const noexcept
+    /**
+     * @brief Compare the content of two delegates
+     * 
+     * @param other Other delegate to compare
+     * @return false if the fields inside are different
+     */
+    bool operator==(const Delegate<Return(Args...)>& other) const noexcept
     {
-        return (_function == b._function && _content == b._content);
+        return (_function == other._function && _content == other._content);
     }
 };
 
@@ -144,6 +198,12 @@ template<auto CtxFuncAddr, typename T>
 Delegate(ConnectArg<CtxFuncAddr>, T* context)
     -> Delegate<std::remove_pointer_t<FunctionPtr_t<decltype(CtxFuncAddr), T>>>;
 
+/**
+ * @brief Inline constructs delegate
+ * 
+ * @tparam FuncAddr Function to connect to the delegate
+ * @return Constructed delegate
+ */
 template<auto FuncAddr>
 auto Dlg() noexcept
 {
@@ -152,6 +212,14 @@ auto Dlg() noexcept
     };
 }
 
+/**
+ * @brief Inline constructs delegate with context
+ * 
+ * @tparam CtxFuncAddr Function with context to connect to the delegate
+ * @tparam T Context type
+ * @param content Context data
+ * @return Constructed delegate
+ */
 template<auto CtxFuncAddr, typename T>
 auto Dlg(T* content) noexcept
 {

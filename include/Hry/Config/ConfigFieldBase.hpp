@@ -41,6 +41,13 @@ private:
     }
 
 public:
+    /**
+     * @brief Insert data into config data structure
+     * 
+     * @tparam T type of data type
+     * @param offset Offset of member in struct
+     * @param value Value of data
+     */
     template<typename T>
     void insert(int64_t offset, const T& value)
     {
@@ -61,6 +68,12 @@ public:
         }
     }
 
+    /**
+     * @brief Get the config data of T type
+     * 
+     * @tparam T type of config data
+     * @return Config data
+     */
     template<typename T>
     const T* getData() const
     {
@@ -73,6 +86,9 @@ public:
     }
 };
 
+/**
+ * @brief Base class of config field
+ */
 class ConfigFieldBase
 {
     template<class, class, typename>
@@ -98,17 +114,61 @@ public:
     ConfigFieldBase& operator=(const ConfigFieldBase&) = default;
     virtual ~ConfigFieldBase() = default;
 
+    /**
+     * @brief Apply changes made by user
+     */
     virtual void applyChanges() = 0;
+
+    /**
+     * @brief Cancel changes made by user
+     */
     virtual void cancelChanges() = 0;
+
+    /**
+     * @brief Reset value to default value
+     */
     virtual void resetToDefault() = 0;
+
+    /**
+     * @brief Check if can reset to default
+     * 
+     * @return true if current value is different from default value
+     */
     virtual bool canResetToDefault() = 0;
 
+    /**
+     * @brief Check if there are dirty changes
+     * 
+     * Use applyChanges() or cancelChanges()
+     * 
+     * @return true if there are dirty changes
+     */
     virtual bool isDirty() const = 0;
 
+    /**
+     * @brief ImGui render
+     */
     virtual void imguiRender() = 0;
+
+    /**
+     * @brief Parse to json
+     * 
+     * @param json Json object
+     */
     virtual void toJson(nlohmann::json& json) = 0;
+
+    /**
+     * @brief Parse from json
+     * 
+     * @param json Json object
+     */
     virtual void fromJson(const nlohmann::json& json) = 0;
 
+    /**
+     * @brief Config structure filling
+     * 
+     * @param callbackData Config data to be filled
+     */
     virtual void setupCallbackData(ConfigCallbackData& callbackData) = 0;
 };
 
@@ -140,35 +200,60 @@ public:
     ConfigFieldBuilderBase& operator=(ConfigFieldBuilderBase&&) = delete;
     virtual ~ConfigFieldBuilderBase() = default;
 
-    // [required] set identifier of field (this will be saved to file)
+    /**
+     * required
+     * @brief set identifier of field, will be saved to file
+     * 
+     * @param id identifier of keybind
+     */
     ConfigFieldBuilder& setID(const std::string& id)
     {
         _id = id;
         return *static_cast<ConfigFieldBuilder*>(this);
     }
 
-    // [required] set display label
+    /**
+     * required
+     * @brief Set the label, will be visible in menu
+     * 
+     * @param label name to be displayed
+     */
     ConfigFieldBuilder& setLabel(const std::string& label)
     {
         _label = label;
         return *static_cast<ConfigFieldBuilder*>(this);
     }
 
-    // [optional] Description will be shown in tooltip
+    /**
+     * optional
+     * @brief Set description, will be shown next to the label in tooltip
+     * 
+     * @param desc Description
+     */
     ConfigFieldBuilder& setDescription(const std::string& description)
     {
         _description = description;
         return *static_cast<ConfigFieldBuilder*>(this);
     }
 
-    // [required] set default value
+    /**
+     * required
+     * @brief Set the default value
+     * 
+     * @param key value to be default
+     */
     ConfigFieldBuilder& setDefaultValue(ValueType value)
     {
         _defaultValue = value;
         return *static_cast<ConfigFieldBuilder*>(this);
     }
 
-    // [required] bind structure field with config field
+    /**
+     * required
+     * @brief bind structure field to config field
+     * 
+     * @param member Pointer to member
+     */
     template<typename ObjectType>
     ConfigFieldBuilder& bind(ValueType ObjectType::*member)
     {

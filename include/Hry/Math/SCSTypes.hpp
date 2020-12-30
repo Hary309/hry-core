@@ -20,44 +20,50 @@ HRY_NS_BEGIN
 struct Euler
 {
     /**
-         * @brief Heading.
-         *
-         * Stored in unit range where <0,1) corresponds to <0,360).
-         *
-         * The angle is measured counterclockwise in horizontal plane when looking
-         * from top where 0 corresponds to forward (north), 0.25 to left (west),
-         * 0.5 to backward (south) and 0.75 to right (east).
-         */
+     * @brief Heading.
+     *
+     * Stored in unit range where <0,1) corresponds to <0,360).
+     *
+     * The angle is measured counterclockwise in horizontal plane when looking
+     * from top where 0 corresponds to forward (north), 0.25 to left (west),
+     * 0.5 to backward (south) and 0.75 to right (east).
+     */
     float heading;
 
     /**
-         * @brief Pitch
-         *
-         * Stored in unit range where <-0.25,0.25> corresponds to <-90,90>.
-         *
-         * The pitch angle is zero when in horizontal direction,
-         * with positive values pointing up (0.25 directly to zenith),
-         * and negative values pointing down (-0.25 directly to nadir).
-         */
+     * @brief Pitch
+     *
+     * Stored in unit range where <-0.25,0.25> corresponds to <-90,90>.
+     *
+     * The pitch angle is zero when in horizontal direction,
+     * with positive values pointing up (0.25 directly to zenith),
+     * and negative values pointing down (-0.25 directly to nadir).
+     */
     float pitch;
 
     /**
-         * @brief Roll
-         *
-         * Stored in unit range where <-0.5,0.5> corresponds to <-180,180>.
-         *
-         * The angle is measured in counterclockwise when looking in direction of
-         * the roll axis.
-         */
+     * @brief Roll
+     *
+     * Stored in unit range where <-0.5,0.5> corresponds to <-180,180>.
+     *
+     * The angle is measured in counterclockwise when looking in direction of
+     * the roll axis.
+     */
     float roll;
 };
 
+/**
+ * @name Combination of position and orientation.
+ */
 struct PlacementF
 {
     Vec3<float> position;
     Euler orientation;
 };
 
+/**
+ * @name Combination of position and orientation.
+ */
 struct PlacementD
 {
     Vec3<double> position;

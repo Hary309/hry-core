@@ -11,6 +11,14 @@
 
 HRY_NS_BEGIN
 
+/**
+ * @brief Hooks vtable field
+ * 
+ * @tparam Func Function type
+ * @param vtableMethod Pointer to vtable field
+ * @param function Pointer to function, which will override the \p vtableMethod
+ * @return Pointer to original vtable method
+ */
 template<typename Func>
 Func HookVTableField(Func* vtableMethod, Func function)
 {

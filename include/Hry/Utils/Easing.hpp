@@ -30,8 +30,16 @@ HRY_NS_BEGIN
 
 // TODO: use concepts
 
+/**
+ * @brief Easing function ready to use in animations
+ */
 struct Easing final
 {
+    /**
+     * @brief Function type used to hold easing function pointer
+     * 
+     * @tparam T Data type
+     */
     template<typename T>
     using Function_t = T (*)(T);
 

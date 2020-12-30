@@ -13,6 +13,9 @@
 
 HRY_NS_BEGIN
 
+/**
+ * @name 3D Vector type
+ */
 template<typename T>
 struct Vec3
 {

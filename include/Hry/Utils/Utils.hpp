@@ -24,9 +24,20 @@ HRY_NS_BEGIN
 #    define HRY_TEXT(text) text
 #endif // !UNICODE
 
+/**
+ * @brief Unique pointer with delegate destructor
+ * 
+ * @tparam T Type to be hold
+ */
 template<typename T>
 using HryPtr = std::unique_ptr<T, Delegate<void(T*)>>;
 
+/**
+ * @brief Convert GUID to formatted string
+ * 
+ * @param guid GUID to be converted
+ * @return Formatted string
+ */
 HRY_API std::string FormatGUID(const GUID& guid);
 
 HRY_NS_END

@@ -10,8 +10,14 @@
 
 HRY_NS_BEGIN
 
+/**
+ * @brief Joystick class
+ */
 struct Joystick
 {
+    /**
+     * @brief Possible axis to use
+     */
     enum class Axis
     {
         X,    // X axis
@@ -24,6 +30,9 @@ struct Joystick
         PovY  // Y axis of the point-of-view hat
     };
 
+    /**
+     * @brief Possible buttons to use
+     */
     enum class Button
     {
         Button1,

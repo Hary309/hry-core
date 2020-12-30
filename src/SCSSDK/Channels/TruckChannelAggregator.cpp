@@ -88,8 +88,12 @@ TruckChannelAggregator::TruckChannelAggregator(
     registerChannel(SCS_TELEMETRY_TRUCK_CHANNEL_light_parking, _truck.lightParking);
     registerChannel(SCS_TELEMETRY_TRUCK_CHANNEL_light_low_beam, _truck.lightBeamLow);
     registerChannel(SCS_TELEMETRY_TRUCK_CHANNEL_light_high_beam, _truck.lightBeamHigh);
-    registerChannel(SCS_TELEMETRY_TRUCK_CHANNEL_light_aux_front, _truck.lightAuxFront);
-    registerChannel(SCS_TELEMETRY_TRUCK_CHANNEL_light_aux_roof, _truck.lightAuxRoof);
+    registerChannel(
+        SCS_TELEMETRY_TRUCK_CHANNEL_light_aux_front,
+        *reinterpret_cast<uint32_t*>(&_truck.lightAuxFront));
+    registerChannel(
+        SCS_TELEMETRY_TRUCK_CHANNEL_light_aux_roof,
+        *reinterpret_cast<uint32_t*>(&_truck.lightAuxRoof));
     registerChannel(SCS_TELEMETRY_TRUCK_CHANNEL_light_beacon, _truck.lightBeacon);
     registerChannel(SCS_TELEMETRY_TRUCK_CHANNEL_light_brake, _truck.lightBrake);
     registerChannel(SCS_TELEMETRY_TRUCK_CHANNEL_light_reverse, _truck.lightReverse);

@@ -12,6 +12,9 @@
 
 HRY_NS_BEGIN
 
+/**
+ * @brief Game name
+ */
 enum class GameType
 {
     ETS2,
@@ -19,6 +22,12 @@ enum class GameType
     Unknown
 };
 
+/**
+ * @brief Converts game type to string
+ * 
+ * @param gameType Value for game type
+ * @return Game name in string format
+ */
 inline std::string_view GameTypeToString(GameType gameType)
 {
     switch (gameType)

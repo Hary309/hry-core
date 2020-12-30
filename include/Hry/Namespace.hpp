@@ -6,6 +6,11 @@
 
 #pragma once
 
+/**
+ * @brief Namespace for hry-core API
+ */
+
+ 
 #define HRY_NS_BEGIN                                                                               \
     namespace hry                                                                                  \
     {

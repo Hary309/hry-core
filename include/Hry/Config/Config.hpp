@@ -26,6 +26,9 @@ HRY_NS_BEGIN
 class ConfigManager;
 class ConfigPage;
 
+/**
+ * @brief Config class
+ */
 class Config final
 {
     friend ConfigManager;
@@ -46,18 +49,34 @@ private:
     BindingStructDtor_t _bindingStructDtor{};
 
 public:
-    // is called when settings are loaded or applied (pressing save in settings)
+    /**
+     * @brief is called when settings are loaded or applied (pressing save in settings)
+     */
     hry::Delegate<void(const ConfigCallbackData&)> onChangesApplied;
 
-    // use to save extra data
+    /**
+     * @brief use to save extra data in config
+     */
     hry::Delegate<void(nlohmann::json&)> onSave;
 
-    // use to load saved extra data
+    /**
+     * @brief use to save extra data from config
+     */
     hry::Delegate<void(const nlohmann::json&)> onLoad;
 
 public:
+    /**
+     * @brief Construct a new Config
+     * 
+     * @param name Name to identify config among other
+     */
     explicit Config(std::string name);
 
+    /**
+     * @brief Set the base config type
+     * 
+     * @tparam T Type of config
+     */
     template<typename T>
     void setBindingType()
     {
@@ -71,6 +90,13 @@ public:
         };
     }
 
+    /**
+     * @brief Register config field
+     * 
+     * Use classes that inherit from ConfigFieldBuilderBase to construct field
+     * 
+     * @param configField Field to be registered
+     */
     void add(std::unique_ptr<ConfigFieldBase>&& configField)
     {
         if (configField != nullptr)
@@ -80,8 +106,16 @@ public:
         }
     }
 
+    /**
+     * @brief Save config to file
+     */
     void saveToFile() const;
-    // return false if cannot save
+
+    /**
+     * @brief Load config from file
+     * 
+     * @return false if cannot open file
+     */
     bool loadFromFile();
 
 private:

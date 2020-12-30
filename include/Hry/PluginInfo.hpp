@@ -13,12 +13,20 @@
 
 HRY_NS_BEGIN
 
+/**
+ * @brief Author information 
+ * 
+ */
 struct AuthorInfo final
 {
     std::string name;
     std::string email;
 };
 
+/**
+ * @brief Plugin information
+ * 
+ */
 struct PluginInfo final
 {
     std::string name;

@@ -64,6 +64,9 @@ public:
     }
 };
 
+/**
+ * @brief Text input field
+ */
 class TextFieldBuilder final
     : public ConfigFieldBuilderBase<TextField, TextFieldBuilder, std::string>
 {
@@ -73,13 +76,25 @@ private:
 public:
     TextFieldBuilder() = default;
 
-    // [optional] Use only to preview changes, don't treat is as applied value
+    /**
+     * optional
+     * @brief Set the preview callback
+     * 
+     * Use only to preview changes, don't treat is as applied value
+     * 
+     * @param previewCallback Delegate to be invoke when value change
+     */
     TextFieldBuilder& setPreviewCallback(TextField::PreviewCallback_t previewCallback)
     {
         _previewCallback = previewCallback;
         return *this;
     }
 
+    /**
+     * @brief Create the config field, pass it to add method in Config
+     * 
+     * @return Constructed config field
+     */
     std::unique_ptr<ConfigFieldBase> build() const
     {
         auto* textField = new TextField();

@@ -15,9 +15,15 @@
 
 HRY_NS_BEGIN
 
+/**
+ * @brief Events possible to use in plugin
+ * 
+ */
 struct EventDispatcher
 {
-    // system events
+    /**
+     * @brief system events
+     */
     struct
     {
         Sink<void(const ResizeEvent&&)> onWindowResize;
@@ -37,36 +43,44 @@ struct EventDispatcher
         Sink<void(const JoystickButtonEvent&&)> onJoystickButtonRelease;
 
         Sink<void()> onImGuiRender;
-        Signal<void(const OverlayStateEvent&&)> onOverlayStateChange;
+        Signal<void(const OverlayStateEvent&&)> onOverlayStateChange; // should be sink ;-;
     } system;
 
-    // game events
+    /**
+     * @brief game events
+     */
     struct
     {
         Sink<void(const FrameStartEvent&&)> onFrameStart;
         Sink<void(const FrameEndEvent&&)> onFrameEnd;
         Sink<void(const GameStateEvent&&)> onStateChange;
 
-        // gameplay events
+        /**
+         * @brief gameplay events
+         */
         struct
         {
-            Sink<void(const std::optional<scs::JobCancelled>&&)> jobCancelledSignal;
-            Sink<void(const std::optional<scs::JobDelivered>&&)> jobDeliveredSignal;
-            Sink<void(const std::optional<scs::PlayerFined>&&)> playerFinedSignal;
-            Sink<void(const std::optional<scs::PlayerTollgatePaid>&&)> playerTollgatePaidSignal;
-            Sink<void(const std::optional<scs::PlayerUseFerry>&&)> playerUseFerrySignal;
-            Sink<void(const std::optional<scs::PlayerUseTrain>&&)> playerUseTrainSignal;
+            Sink<void(const std::optional<scs::JobCancelled>&&)> onJobCancelled;
+            Sink<void(const std::optional<scs::JobDelivered>&&)> onJobDelivered;
+            Sink<void(const std::optional<scs::PlayerFined>&&)> onPlayerFined;
+            Sink<void(const std::optional<scs::PlayerTollgatePaid>&&)> onPlayerTollgatePaid;
+            Sink<void(const std::optional<scs::PlayerUseFerry>&&)> onPlayerUseFerry;
+            Sink<void(const std::optional<scs::PlayerUseTrain>&&)> onPlayerUseTrain;
         } gameplay;
 
-        // configuration callbacks
+        /**
+         * @brief configuration callbacks
+         * 
+         * Invoke when values are changed
+         */
         struct
         {
-            Sink<void(const std::optional<scs::Substances>&&)> substancesSignal;
-            Sink<void(const std::optional<scs::Controls>&&)> controlsSignal;
-            Sink<void(const std::optional<scs::HShifter>&&)> hshifterSignal;
-            Sink<void(const std::optional<scs::Truck>&&)> truckSignal;
-            Sink<void(const std::optional<scs::Trailer>&&)> trailerSignal;
-            Sink<void(const std::optional<scs::Job>&&)> jobSignal;
+            Sink<void(const std::optional<scs::Substances>&&)> onSubstances;
+            Sink<void(const std::optional<scs::Controls>&&)> onControls;
+            Sink<void(const std::optional<scs::HShifter>&&)> onHShifter;
+            Sink<void(const std::optional<scs::Truck>&&)> onTruck;
+            Sink<void(const std::optional<scs::Trailer>&&)> onTrailer;
+            Sink<void(const std::optional<scs::Job>&&)> onJob;
         } config;
     } game;
 };

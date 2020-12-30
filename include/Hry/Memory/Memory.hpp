@@ -15,6 +15,17 @@
 
 HRY_NS_BEGIN
 
+/**
+ * @brief Write data to any memory address with specified size
+ *
+ * Function unprotects memory, so it writes to any address
+ * 
+ * @tparam T Target type
+ * @tparam U Data type
+ * @param target Pointer to data, which will be filled with \p data
+ * @param data Data to fill pointer
+ * @param size Size of data
+ */
 template<typename T, typename U>
 void WriteMemory(T* target, U data, const size_t size)
 {
@@ -28,12 +39,27 @@ void WriteMemory(T* target, U data, const size_t size)
     VirtualProtect(reinterpret_cast<void*>(target), size, oldProtect, &newProtect);
 }
 
+/**
+ * @brief Write data to any memory address
+ * 
+ * @tparam T Target type
+ * @tparam U Data type
+ * @param target Pointer to data, which will be filled with \p data
+ * @param data Data to fill pointer
+ */
 template<typename T, typename U>
 void WriteMemory(T* target, U data)
 {
     WriteMemory(target, data, sizeof(U));
 }
 
+/**
+ * @brief Get the base address
+ * 
+ * Useful for fixed pointer but not recommended!
+ * 
+ * @return Base address of game 
+ */
 inline uintptr_t GetBaseAddress()
 {
     return reinterpret_cast<uintptr_t>(GetModuleHandle(nullptr)) - 0x140000000;

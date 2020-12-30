@@ -23,6 +23,14 @@ class Signal;
 template<typename>
 class Sink;
 
+/**
+ * @brief Signal handler
+ * 
+ * Used to notify multiple delegates
+ *
+ * @tparam Return Return type of a delegate function
+ * @tparam Args Types of arguments of a delegate function
+ */
 template<typename Return, typename... Args>
 class Signal<Return(Args...)> final
 {
@@ -35,6 +43,11 @@ private:
     std::vector<Delegate_t> _calls;
 
 public:
+    /**
+     * @brief Call the connected delegates
+     * 
+     * @param args Arguments to use to invoke the connected delegates
+     */
     void call(Args... args) noexcept
     {
         if constexpr (sizeof...(args) > 0)
@@ -54,8 +67,18 @@ public:
     }
 
 private:
+    /**
+     * @brief Add delegate to invoke list
+     * 
+     * @param delegate Delegate to add
+     */
     void add(Delegate_t delegate) noexcept { _calls.push_back(delegate); }
 
+    /**
+     * @brief Remove delegate from invoke list
+     * 
+     * @param delegate Delegate to remove
+     */
     void remove(Delegate_t delegate) noexcept
     {
         auto it = std::find_if(_calls.begin(), _calls.end(), [&delegate](const Delegate_t& a) {
@@ -69,6 +92,15 @@ private:
     }
 };
 
+/**
+ * @brief Sink
+ * 
+ * Sink is adaptor to signal class.
+ * In destructor all connected delegates to sink all disconnected
+ * 
+ * @tparam Return Return type of a delegate function
+ * @tparam Args Types of arguments of a delegate function
+ */
 template<typename Return, typename... Args>
 class Sink<Return(Args...)> final
 {
@@ -80,12 +112,20 @@ private:
     std::vector<typename Signal_t::Delegate_t> _internalCalls;
 
 public:
+    /**
+     * @brief Sink can be only constructed from signal class
+     * 
+     * @param signal The object that sink will be based on
+     */
     Sink(Signal_t& signal) noexcept : _signal(signal) {}
     Sink(Sink&&) noexcept = default;
     Sink(const Sink&) noexcept = default;
     Sink& operator=(Sink&&) noexcept = default;
     Sink& operator=(const Sink&) noexcept = default;
 
+    /**
+     * @brief Disconnect all connected delegates
+     */
     ~Sink() noexcept
     {
         for (auto& delegate : _internalCalls)
@@ -94,6 +134,11 @@ public:
         }
     }
 
+    /**
+     * @brief Connects function to the delegate
+     * 
+     * @tparam FuncAddr Function to connect to the delegate
+     */
     template<auto FuncAddr>
     void connect() noexcept
     {
@@ -104,6 +149,13 @@ public:
         _internalCalls.push_back(delegate);
     }
 
+    /**
+    * @brief Connects function to the delegate with context
+    * 
+    * @tparam CtxFuncAddr Function with context to connect to the delegate
+    * @tparam T Context type
+    * @param content Pointer to content
+    */
     template<auto MethodAddr, typename T>
     void connect(T* content) noexcept
     {
@@ -114,6 +166,9 @@ public:
         _internalCalls.push_back(delegate);
     }
 
+    /**
+     * @brief Disconnect all connected delegates
+     */
     void clear()
     {
         for (auto& delegate : _internalCalls)

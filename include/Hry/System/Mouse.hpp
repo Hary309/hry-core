@@ -10,8 +10,14 @@
 
 HRY_NS_BEGIN
 
+/**
+ * @brief Mouse class
+ */
 struct Mouse
 {
+    /**
+     * @brief Possible buttons
+     */
     enum class Button
     {
         Left,
@@ -24,12 +30,20 @@ struct Mouse
         Button8
     };
 
+    /**
+     * @brief Wheel possible axis move
+     */
     enum class Wheel
     {
         Vertical,
         Horizontal
     };
 
+    /**
+     * @brief Disables in game mouse movement
+     * 
+     * @param disable Set true to disable in-game mouse
+     */
     static void DisableInGameMouse(bool disable);
 };
 
