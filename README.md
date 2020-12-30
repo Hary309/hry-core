@@ -24,12 +24,17 @@ hry-core is a small framework that provides many useful tools for creating plugi
 
 - And much more!
 
-
 ## Motivation
 
 The idea was to create a simple tool (only for me) which provides simple API for rendering and inputs. In the process of developing it, I was feeling that I can do better so I keep adding more and more features. Now I am in a point where I'm almost satisfied with the API, and I'm ready to publish first alpha.
 
-Unfortunately, the documentation isn't there yet so you have to learn from examples. Check out the [example](example) and [hry-sic](https://github.com/Hary309/hry-sic)
+## Documentation
+
+Basic documentation is in hpp files, HTML version is [here](docs/html/index.html) 
+
+Usage of API you can find here: [example](example) and [hry-sic](https://github.com/Hary309/hry-sic)
+
+Tutorials are in progress
 
 ## This isn't binding of game
 
