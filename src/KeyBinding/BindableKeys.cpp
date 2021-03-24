@@ -120,6 +120,7 @@ static const auto BindableKeys = std::array{
     BindableKey{ Keyboard::Key::BrowserSearch, "Search" },
     BindableKey{ Keyboard::Key::BrowserFavorites, "Favorites" },
     BindableKey{ Keyboard::Key::BrowserHome, "Home" },
+    BindableKey{ Keyboard::Key::Capital, "Caps Lock" },
 
     // Mouse
     BindableKey{ Mouse::Button::Left, "Left Mouse Button" },

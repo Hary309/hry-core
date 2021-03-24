@@ -76,6 +76,7 @@ Keyboard::Key vkKeyCodeToEnum(WPARAM key, LPARAM flags) noexcept
         case '7': return Key::Num7;
         case '8': return Key::Num8;
         case '9': return Key::Num9;
+        case VK_CAPITAL: return Key::Capital;
         case VK_LWIN: return Key::LSystem;
         case VK_RWIN: return Key::RSystem;
         case VK_APPS: return Key::Menu;

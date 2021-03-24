@@ -129,6 +129,7 @@ struct Keyboard
         BrowserSearch,
         BrowserFavorites,
         BrowserHome,
+        Capital,
 
         KeyCount
     };
