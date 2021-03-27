@@ -24,7 +24,7 @@ jobs:
       - name: Build
         working-directory: ${{github.workspace}}/build
         shell: bash
-        run: cmake --build . --config ${{ matrix.configuration }} --target hry-core
+        run: cmake --build . --config ${{ matrix.configuration }} --target hry-core -j 16
 
       - name: Upload binaries
         uses: actions/upload-artifact@v2
@@ -33,3 +33,27 @@ jobs:
           path: |
             ${{github.workspace}}/build/${{ matrix.configuration }}/hry-core.dll
             ${{github.workspace}}/build/${{ matrix.configuration }}/hry-core.lib
+
+  generate-runtime-package:
+    runs-on: windows-latest
+    needs: build
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Download Release build
+        uses: actions/download-artifact@v2
+        with:
+          name: hry-core-Release
+
+      - name: Prepare directory
+        shell: bash
+        run: mv assets hry_assets
+
+      - name: Upload zip
+        uses: actions/upload-artifact@v2
+        with:
+          name: hry-core-runtime
+          path: |
+            ${{github.workspace}}/hry-core.dll
+            ${{github.workspace}}/hry_assets
