@@ -27,8 +27,8 @@ jobs:
         with:
           name: hry-core-debug
           path: |
-            ${{github.workspace}}/build/hry-core.dll
-            ${{github.workspace}}/build/hry-core.lib
+            ${{github.workspace}}/build/Debug/hry-core.dll
+            ${{github.workspace}}/build/Debug/hry-core.lib
 
   build-release:
     runs-on: windows-latest
@@ -54,5 +54,5 @@ jobs:
         with:
           name: hry-core-release
           path: |
-            ${{github.workspace}}/build/hry-core.dll
-            ${{github.workspace}}/build/hry-core.lib
+            ${{github.workspace}}/build/Release/hry-core.dll
+            ${{github.workspace}}/build/Release/hry-core.lib
