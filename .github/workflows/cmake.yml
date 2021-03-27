@@ -58,12 +58,11 @@ jobs:
             ${{github.workspace}}/hry-core.dll
             ${{github.workspace}}/hry_assets
 
-  
-  generate-runtime-package:
+  generate-sdk-package:
     runs-on: windows-latest
     needs: build
 
-    steps: 
+    steps:
       - uses: actions/checkout@v2
 
       - name: Prepare directories
@@ -88,7 +87,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: hry-core-Debug
-        
+
       - name: Copy debug files
         shell: bash
         run: |
@@ -99,7 +98,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: hry-core-Release
-        
+
       - name: Copy release files
         shell: bash
         run: |
@@ -109,11 +108,10 @@ jobs:
       - name: Upload zip
         uses: actions/upload-artifact@v2
         with:
-          name: hry-core-runtime
+          name: hry-core-sdk
           path: |
             ${{github.workspace}}/deploy/CMakeLists.txt
             ${{github.workspace}}/deploy/bin
             ${{github.workspace}}/deploy/lib
             ${{github.workspace}}/deploy/include
             ${{github.workspace}}/deploy/assets
-        
