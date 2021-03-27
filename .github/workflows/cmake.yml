@@ -3,8 +3,12 @@ name: Build release files
 on: workflow_dispatch
 
 jobs:
-  build-debug:
+  build:
     runs-on: windows-latest
+
+    strategy:
+      matrix:
+        configuration: ["Debug", "Release"]
 
     steps:
       - uses: actions/checkout@v2
@@ -15,44 +19,23 @@ jobs:
       - name: Configure CMake
         shell: bash
         working-directory: ${{github.workspace}}/build
-        run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=Debug
+        run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{ matrix.configuration }}
 
       - name: Build
         working-directory: ${{github.workspace}}/build
         shell: bash
-        run: cmake --build . --config Debug --target hry-core
+        run: cmake --build . --config ${{ matrix.configuration }} --target hry-core
 
       - name: Upload binaries
         uses: actions/upload-artifact@v2
         with:
-          name: hry-core-debug
+          name: hry-core-${{ matrix.configuration }}
           path: |
-            ${{github.workspace}}/build/Debug/hry-core.dll
-            ${{github.workspace}}/build/Debug/hry-core.lib
+            ${{github.workspace}}/build/${{ matrix.configuration }}/hry-core.dll
+            ${{github.workspace}}/build/${{ matrix.configuration }}/hry-core.lib
 
-  build-release:
+  generate-runtime:
     runs-on: windows-latest
 
     steps:
-      - uses: actions/checkout@v2
-
-      - name: Create Build Environment
-        run: cmake -E make_directory ${{github.workspace}}/build
-
-      - name: Configure CMake
-        shell: bash
-        working-directory: ${{github.workspace}}/build
-        run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=Release
-
-      - name: Build
-        working-directory: ${{github.workspace}}/build
-        shell: bash
-        run: cmake --build . --config Release --target hry-core
-
-      - name: Upload binaries
-        uses: actions/upload-artifact@v2
-        with:
-          name: hry-core-release
-          path: |
-            ${{github.workspace}}/build/Release/hry-core.dll
-            ${{github.workspace}}/build/Release/hry-core.lib
+      -
