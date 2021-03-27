@@ -19,7 +19,7 @@ jobs:
       - name: Configure CMake
         shell: bash
         working-directory: ${{github.workspace}}/build
-        run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{ matrix.configuration }}
+        run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -G Ninja
 
       - name: Build
         working-directory: ${{github.workspace}}/build
@@ -57,3 +57,63 @@ jobs:
           path: |
             ${{github.workspace}}/hry-core.dll
             ${{github.workspace}}/hry_assets
+
+  
+  generate-runtime-package:
+    runs-on: windows-latest
+    needs: build
+
+    steps: 
+      - uses: actions/checkout@v2
+
+      - name: Prepare directories
+        shell: bash
+        run: |
+          mkdir -p deploy/bin/debug
+          mkdir -p deploy/bin/release
+          mkdir -p deploy/lib/debug
+          mkdir -p deploy/lib/release
+
+      - name: Copy files
+        shell: bash
+        run: |
+          cp -r assets deploy
+          cp -r include deploy
+          cp -r vendor/json/include deploy
+          cp -r vendor/fmt/include deploy
+          cp vendor/imgui/imconfig.h deploy/include
+          cp vendor/imgui/imgui.h deploy/include
+
+      - name: Download debug files
+        uses: actions/download-artifact@v2
+        with:
+          name: hry-core-Debug
+        
+      - name: Copy debug files
+        shell: bash
+        run: |
+          mv hry-core.dll deploy/bin/debug
+          mv hry-core.lib deploy/lib/debug
+
+      - name: Download release files
+        uses: actions/download-artifact@v2
+        with:
+          name: hry-core-Release
+        
+      - name: Copy release files
+        shell: bash
+        run: |
+          mv hry-core.dll deploy/bin/release
+          mv hry-core.lib deploy/lib/release
+
+      - name: Upload zip
+        uses: actions/upload-artifact@v2
+        with:
+          name: hry-core-runtime
+          path: |
+            ${{github.workspace}}/deploy/CMakeLists.txt
+            ${{github.workspace}}/deploy/bin
+            ${{github.workspace}}/deploy/lib
+            ${{github.workspace}}/deploy/include
+            ${{github.workspace}}/deploy/assets
+        
