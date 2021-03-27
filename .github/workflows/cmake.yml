@@ -33,9 +33,3 @@ jobs:
           path: |
             ${{github.workspace}}/build/${{ matrix.configuration }}/hry-core.dll
             ${{github.workspace}}/build/${{ matrix.configuration }}/hry-core.lib
-
-  generate-runtime:
-    runs-on: windows-latest
-
-    steps:
-      -
