@@ -39,10 +39,22 @@ void Config::saveToFile() const
 
     if (f.is_open())
     {
-        nlohmann::json json;
-        toJson(json);
-        f << json.dump(4);
-        Core::Logger->info("Saved config for {}", _name);
+        try
+        {
+            nlohmann::json json;
+            toJson(json);
+            f << json.dump(4);
+            Core::Logger->info("Saved config for {}", _name);
+        }
+        catch (nlohmann::json::type_error& ex)
+        {
+            Core::Logger->error(
+                "Cannot encode config for '{}' because '{}'", this->_name, ex.what());
+        }
+        catch (nlohmann::json::exception& ex)
+        {
+            Core::Logger->error("Cannot save config for '{}' because '{}'", this->_name, ex.what());
+        }
     }
     else
     {
@@ -56,13 +68,25 @@ bool Config::loadFromFile()
 
     if (f.is_open())
     {
-        nlohmann::json json;
-        f >> json;
-        fromJson(json);
-        Core::Logger->info("Loaded config for {}", _name);
-        invokeCallback();
+        try
+        {
+            nlohmann::json json;
+            f >> json;
+            fromJson(json);
+            Core::Logger->info("Loaded config for {}", _name);
+            invokeCallback();
 
-        return true;
+            return true;
+        }
+        catch (nlohmann::json::parse_error& ex)
+        {
+            Core::Logger->error(
+                "Cannot parse config for '{}' because '{}'", this->_name, ex.what());
+        }
+        catch (nlohmann::json::exception& ex)
+        {
+            Core::Logger->error("Cannot load config for '{}' because '{}'", this->_name, ex.what());
+        }
     }
 
     // load default configs
