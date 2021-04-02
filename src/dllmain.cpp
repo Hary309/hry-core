@@ -44,7 +44,7 @@ __declspec(dllexport) SCSAPI_RESULT
     }
     catch (const std::exception& ex)
     {
-        log(SCS_LOG_TYPE_error, fmt::format("Exception: {}", ex.what()).c_str());
+        log(SCS_LOG_TYPE_error, fmt::format("[hry-core] {}", ex.what()).c_str());
     }
 
     return SCS_RESULT_generic_error;
