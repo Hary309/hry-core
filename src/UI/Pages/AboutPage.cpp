@@ -81,13 +81,15 @@ void AboutPage::imguiRender()
   * [OverShifted](https://github.com/OverShifted) - base author of ImGui theme
   * [MetGang](https://github.com/MetGang) - helped me a lot with C++ templates
   * [MetRiko](https://github.com/Metriko) - helped me with UI design
-## Used libaries
+## Used libraries
   * [fmt](https://github.com/fmtlib/fmt)
   * [imgui](https://github.com/ocornut/imgui)
   * [imgui_markdown](https://github.com/juliettef/imgui_markdown)
   * [json](https://github.com/nlohmann/json)
   * [minhook](https://github.com/TsudaKageyu/minhook)
 ## Changelog
+  * 1.0.3
+    * Fix crashes related to corrupted config files
   * 1.0.2
     * Add support for Caps Lock key
   * 1.0.1

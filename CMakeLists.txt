@@ -6,7 +6,7 @@ set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
-project(hry-core VERSION 1.0.2)
+project(hry-core VERSION 1.0.3)
 
 add_subdirectory(vendor)
 
