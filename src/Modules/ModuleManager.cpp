@@ -12,6 +12,7 @@
 #include <memory>
 
 #include <Windows.h>
+#include <fmt/format.h>
 #include <imgui.h>
 #include <nlohmann/json.hpp>
 
@@ -206,8 +207,9 @@ bool ModuleManager::load(Module* mod)
 
     if (!IsApiCompatible(mod->plugin->ApiVersion))
     {
-        Core::Logger->error("{} is compiled on unsupported API (hry-core {} vs {})", 
-            dllName, ApiVersion, mod->plugin->ApiVersion);
+        Core::Logger->error(
+            "{} is compiled on unsupported API (hry-core {} vs {})", dllName, ApiVersion,
+            mod->plugin->ApiVersion);
 
         unload(mod);
         mod->loadResult = Plugin::Result::ApiNotSupported;
@@ -221,14 +223,17 @@ bool ModuleManager::load(Module* mod)
     mod->data.config = _configMgr.createConfig(name);
     mod->data.keyBinds = _keyBindsMgr.createKeyBinds(name);
     mod->data.logger = LoggerFactory::GetLogger(name);
-    mod->data.eventDispatcher = std::make_unique<EventDispatcher>(_eventMgr.createEventDispatcher());
+    mod->data.eventDispatcher =
+        std::make_unique<EventDispatcher>(_eventMgr.createEventDispatcher());
 
     mod->loadResult = mod->plugin->init(
         Plugin::InitParams{ mod->data.logger.get(), &_telemetry, ApiVersion, Core::GameType });
 
     if (mod->loadResult == Plugin::Result::Ok)
     {
-        Core::Logger->info("Successfully loaded {} v{} (API v{})", dllName, mod->info.version, mod->plugin->ApiVersion);
+        Core::Logger->info(
+            "Successfully loaded {} v{} (API v{})", dllName, mod->info.version,
+            mod->plugin->ApiVersion);
 
         mod->plugin->initEvents(mod->data.eventDispatcher.get());
         mod->plugin->initConfig(mod->data.config.get());
@@ -294,9 +299,20 @@ void ModuleManager::saveListToFile()
         return;
     }
 
-    file << json.dump(4);
+    try
+    {
+        Core::Logger->info("Saving plugins list to file...");
 
-    Core::Logger->info("Saving plugins list to file...");
+        file << json.dump(4);
+    }
+    catch (nlohmann::json::type_error& ex)
+    {
+        Core::Logger->error("Cannot encode module list because '{}'", ex.what());
+    }
+    catch (nlohmann::json::exception& ex)
+    {
+        Core::Logger->error("Cannot save module list because '{}'", ex.what());
+    }
 }
 
 void ModuleManager::loadListFromFile()
@@ -315,31 +331,43 @@ void ModuleManager::loadListFromFile()
 
     Core::Logger->info("Loading plugins list from file...");
 
-    nlohmann::json json;
-
-    file >> json;
-
-    for (const auto& obj : json)
+    try
     {
-        const auto jdllPath = obj.find("dll_path");
-        const auto jLoadAtStart = obj.find("load_at_start");
+        nlohmann::json json;
 
-        if (jdllPath == obj.end() || jLoadAtStart == obj.end())
+        file >> json;
+
+        for (const auto& obj : json)
         {
-            continue;
+            const auto jdllPath = obj.find("dll_path");
+            const auto jLoadAtStart = obj.find("load_at_start");
+
+            if (jdllPath == obj.end() || jLoadAtStart == obj.end())
+            {
+                continue;
+            }
+
+            const auto dllPath = jdllPath->get<std::string>();
+            const auto loadAtStart = jLoadAtStart->get<bool>();
+
+            Module* mod = tryAdd(dllPath);
+
+            if (mod != nullptr)
+            {
+                Core::Logger->info("Added {}", mod->dllName);
+
+                mod->loadAtStart = loadAtStart;
+            }
         }
-
-        const auto dllPath = jdllPath->get<std::string>();
-        const auto loadAtStart = jLoadAtStart->get<bool>();
-
-        Module* mod = tryAdd(dllPath);
-
-        if (mod != nullptr)
-        {
-            Core::Logger->info("Added {}", mod->dllName);
-
-            mod->loadAtStart = loadAtStart;
-        }
+        fmt::format_error("asd");
+    }
+    catch (nlohmann::json::parse_error& ex)
+    {
+        Core::Logger->error("Cannot parse module list because '{}'", ex.what());
+    }
+    catch (nlohmann::json::exception& ex)
+    {
+        Core::Logger->error("Cannot load module list because '{}'", ex.what());
     }
 }
 

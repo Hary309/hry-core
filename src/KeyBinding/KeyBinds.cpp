@@ -47,12 +47,24 @@ void KeyBinds::saveToFile() const
 
     if (f.is_open())
     {
-        nlohmann::json json;
-        toJson(json);
+        try
+        {
+            nlohmann::json json;
+            toJson(json);
 
-        f << json.dump(4);
+            f << json.dump(4);
 
-        Core::Logger->info("Saved keybinds for {}", _name);
+            Core::Logger->info("Saved keybinds for {}", _name);
+        }
+        catch (nlohmann::json::type_error& ex)
+        {
+            Core::Logger->error(
+                "Cannot encode config for '{}' because '{}'", this->_name, ex.what());
+        }
+        catch (nlohmann::json::exception& ex)
+        {
+            Core::Logger->error("Cannot save config for '{}' because '{}'", this->_name, ex.what());
+        }
     }
     else
     {
@@ -66,12 +78,24 @@ bool KeyBinds::loadFromFile()
 
     if (f.is_open())
     {
-        nlohmann::json json;
-        f >> json;
-        fromJson(json);
-        Core::Logger->info("Loaded keybinds for {}", _name);
+        try
+        {
+            nlohmann::json json;
+            f >> json;
+            fromJson(json);
+            Core::Logger->info("Loaded keybinds for {}", _name);
 
-        return true;
+            return true;
+        }
+        catch (nlohmann::json::parse_error& ex)
+        {
+            Core::Logger->error(
+                "Cannot parse config for '{}' because '{}'", this->_name, ex.what());
+        }
+        catch (nlohmann::json::exception& ex)
+        {
+            Core::Logger->error("Cannot load config for '{}' because '{}'", this->_name, ex.what());
+        }
     }
 
     return false;
