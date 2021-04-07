@@ -43,7 +43,7 @@ struct EventDispatcher
         Sink<void(const JoystickButtonEvent&&)> onJoystickButtonRelease;
 
         Sink<void()> onImGuiRender;
-        Signal<void(const OverlayStateEvent&&)> onOverlayStateChange; // should be sink ;-;
+        Sink<void(const OverlayStateEvent&&)> onOverlayStateChange;
     } system;
 
     /**
