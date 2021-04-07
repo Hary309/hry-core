@@ -88,6 +88,8 @@ void AboutPage::imguiRender()
   * [json](https://github.com/nlohmann/json)
   * [minhook](https://github.com/TsudaKageyu/minhook)
 ## Changelog
+  * 1.0.4
+    * Add support for D-pad
   * 1.0.3
     * Fix crashes related to corrupted config files
   * 1.0.2
