@@ -140,7 +140,7 @@ void Core::initConfig()
                          .build());
 
     if (!_coreConfig->loadFromFile())
-    {   
+    {
         _coreConfig->saveToFile();
     }
 }

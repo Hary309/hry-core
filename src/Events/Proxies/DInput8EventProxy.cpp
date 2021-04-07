@@ -14,6 +14,7 @@
 #include "Hry/Events/Event.hpp"
 #include "Hry/System/Joystick.hpp"
 #include "Hry/System/Mouse.hpp"
+#include "Hry/System/System.hpp"
 
 #include "Events/EventManager.hpp"
 #include "Hooks/DInput8Hook.hpp"
@@ -32,8 +33,7 @@ constexpr int DI_JOYSTICK_X = offsetof(DIJOYSTATE, lX);
 // constexpr int DI_JOYSTICK_RZ = offsetof(DIJOYSTATE, lRz);
 // constexpr int DI_JOYSTICK_SLIDER_0 = (offsetof(DIJOYSTATE, rglSlider) + 0);
 // constexpr int DI_JOYSTICK_SLIDER_1 = (offsetof(DIJOYSTATE, rglSlider) + 1);
-constexpr int DI_JOYSTICK_POV_0 = (offsetof(DIJOYSTATE, rgdwPOV) + 0);
-constexpr int DI_JOYSTICK_POV_1 = (offsetof(DIJOYSTATE, rgdwPOV) + 1);
+constexpr int DI_JOYSTICK_POV_0 = (offsetof(DIJOYSTATE, rgdwPOV));
 constexpr int DI_JOYSTICK_BUTTON_0 = (offsetof(DIJOYSTATE, rgbButtons) + 0);
 constexpr int DI_JOYSTICK_BUTTON_31 = (offsetof(DIJOYSTATE, rgbButtons) + 31);
 
@@ -121,61 +121,120 @@ void DInput8EventProxy::onJoystickData(
 
         if (offset >= DI_JOYSTICK_BUTTON_0 && offset <= DI_JOYSTICK_BUTTON_31)
         {
-            const auto buttonId = offset - DI_JOYSTICK_BUTTON_0;
-            JoystickButtonEvent e{};
-            e.deviceGUID = guid;
-            e.button = static_cast<Joystick::Button>(buttonId);
+            auto button = static_cast<Joystick::Button>(offset - DI_JOYSTICK_BUTTON_0);
 
             if (event.dwData != 0)
             {
-                e.state = ButtonState::Pressed;
-                _eventMgr.system.joystickButtonPressSignal.call(std::move(e));
+                sendJoystickButtonEvent(guid, button, ButtonState::Pressed);
             }
             else
             {
-                e.state = ButtonState::Released;
-                _eventMgr.system.joystickButtonReleaseSignal.call(std::move(e));
+                sendJoystickButtonEvent(guid, button, ButtonState::Released);
             }
         }
         else
         {
-            double result{};
-
-            // TODO: use [[likely]] and [[unlikely]] when C++20 will be fully supported
+            // D-pad
             if (offset == DI_JOYSTICK_POV_0)
             {
                 const auto value = LOWORD(event.dwData);
 
-                if (value != 0xFFFF)
-                {
-                    auto angle = (static_cast<double>(value)) * M_PI / DI_DEGREES / 180.0;
-
-                    result = std::sin(angle) * 180.0;
-                }
-            }
-            else if (offset == DI_JOYSTICK_POV_1)
-            {
-                const auto value = LOWORD(event.dwData);
+                double x = 0;
+                double y = 0;
 
                 if (value != 0xFFFF)
                 {
                     auto angle = (static_cast<double>(value)) * M_PI / DI_DEGREES / 180.0;
 
-                    result = std::cos(angle) * 180.0;
+                    x = std::sin(angle) * 180.0;
+                    y = std::cos(angle) * 180.0;
                 }
+
+                auto& lastStatus = _dpadStatus[guid];
+
+                sendJoystickDPadEvent(
+                    x, guid, lastStatus.right, lastStatus.left, Joystick::Button::DpadRight,
+                    Joystick::Button::DpadLeft);
+
+                sendJoystickDPadEvent(
+                    y, guid, lastStatus.up, lastStatus.down, Joystick::Button::DpadUp,
+                    Joystick::Button::DpadDown);
             }
-            else
+            else // other analogs
             {
-                result = (static_cast<double>(static_cast<int>(event.dwData)) * 100.0) /
-                         static_cast<double>(std::numeric_limits<uint16_t>::max());
+                double result = (static_cast<double>(static_cast<int>(event.dwData)) * 100.0) /
+                                static_cast<double>(std::numeric_limits<uint16_t>::max());
+
+                JoystickMoveEvent e{};
+                e.deviceGUID = guid;
+                e.axis = static_cast<Joystick::Axis>(offset / sizeof(DI_JOYSTICK_X));
+                e.value = result;
+
+                _eventMgr.system.joystickMoveSignal.call(std::move(e));
             }
+        }
+    }
+}
 
-            JoystickMoveEvent e{};
-            e.deviceGUID = guid;
-            e.axis = static_cast<Joystick::Axis>(offset / sizeof(DI_JOYSTICK_X));
-            e.value = result;
+void DInput8EventProxy::sendJoystickButtonEvent(
+    GUID deviceGUID, Joystick::Button button, ButtonState buttonState)
+{
+    JoystickButtonEvent e{};
+    e.deviceGUID = deviceGUID;
+    e.button = button;
+    e.state = buttonState;
+    _eventMgr.system.joystickButtonPressSignal.call(std::move(e));
+}
 
-            _eventMgr.system.joystickMoveSignal.call(std::move(e));
+void DInput8EventProxy::sendJoystickDPadEvent(
+    double value,
+    GUID deviceGUID,
+    bool& field1,
+    bool& field2,
+    Joystick::Button button1,
+    Joystick::Button button2)
+{
+    // ugh ugly
+    // TODO: make it pretty someday
+    if (value > 0.1)
+    {
+        if (!field1)
+        {
+            sendJoystickButtonEvent(deviceGUID, button1, ButtonState::Pressed);
+            field1 = true;
+        }
+
+        if (field2)
+        {
+            sendJoystickButtonEvent(deviceGUID, button2, ButtonState::Released);
+            field2 = false;
+        }
+    }
+    else if (value < -0.1)
+    {
+        if (!field2)
+        {
+            sendJoystickButtonEvent(deviceGUID, button2, ButtonState::Pressed);
+            field2 = true;
+        }
+        if (field1)
+        {
+            sendJoystickButtonEvent(deviceGUID, button1, ButtonState::Released);
+            field2 = false;
+        }
+    }
+    else
+    {
+        if (field1)
+        {
+            sendJoystickButtonEvent(deviceGUID, button1, ButtonState::Released);
+            field1 = false;
+        }
+
+        if (field2)
+        {
+            sendJoystickButtonEvent(deviceGUID, button2, ButtonState::Released);
+            field2 = false;
         }
     }
 }

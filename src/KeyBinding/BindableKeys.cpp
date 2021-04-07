@@ -165,6 +165,10 @@ static const auto BindableKeys = std::array{
     BindableKey{ Joystick::Button::Button30, "Joy Button 30" },
     BindableKey{ Joystick::Button::Button31, "Joy Button 31" },
     BindableKey{ Joystick::Button::Button32, "Joy Button 32" },
+    BindableKey{ Joystick::Button::DpadLeft, "Joy D-pad Left" },
+    BindableKey{ Joystick::Button::DpadRight, "Joy D-pad Right" },
+    BindableKey{ Joystick::Button::DpadUp, "Joy D-pad Up" },
+    BindableKey{ Joystick::Button::DpadDown, "Joy D-pad Down" },
 };
 
 const BindableKey* GetBindableKey(BindableKey::Key_t key)

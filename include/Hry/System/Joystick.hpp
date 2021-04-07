@@ -20,14 +20,12 @@ struct Joystick
      */
     enum class Axis
     {
-        X,    // X axis
-        Y,    // Y axis
-        Z,    // Z axis
-        R,    // R axis
-        U,    // U axis
-        V,    // V axis
-        PovX, // X axis of the point-of-view hat
-        PovY  // Y axis of the point-of-view hat
+        X, // X axis
+        Y, // Y axis
+        Z, // Z axis
+        R, // R axis
+        U, // U axis
+        V  // V axis
     };
 
     /**
@@ -66,7 +64,11 @@ struct Joystick
         Button29,
         Button30,
         Button31,
-        Button32
+        Button32,
+        DpadLeft,
+        DpadRight,
+        DpadUp,
+        DpadDown
     };
 };
 
