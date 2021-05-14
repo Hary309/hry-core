@@ -50,12 +50,5 @@ target_link_libraries(hry-core PRIVATE imgui glad minhook)
 # example
 project(hry-example VERSION 1.0.0)
 
-file(GLOB_RECURSE hry-example-src example/*.cpp example/*.hpp)
-
-add_library(hry-example SHARED example/example.hpp ${hry-example-src})
-target_compile_definitions(hry-example PRIVATE BT_USE_DOUBLE_PRECISION)
-target_link_libraries(hry-example PRIVATE hry-core
-  C:/dev/hry-core/vendor/bullet/build/lib/BulletDynamics.lib
-  C:/dev/hry-core/vendor/bullet/build/lib/BulletCollision.lib
-  C:/dev/hry-core/vendor/bullet/build/lib/LinearMath.lib)
-target_include_directories(hry-example PRIVATE vendor/bullet/src)
+add_library(hry-example SHARED example/example.hpp example/example.cpp)
+target_link_libraries(hry-example PRIVATE hry-core)
