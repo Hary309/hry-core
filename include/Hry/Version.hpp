@@ -38,7 +38,7 @@ struct Version
 /**
  * @brief Current API version
  */
-constexpr inline Version ApiVersion{ 1, 0, 4 };
+constexpr inline Version ApiVersion{ 1, 0, 5 };
 
 HRY_NS_END
 
