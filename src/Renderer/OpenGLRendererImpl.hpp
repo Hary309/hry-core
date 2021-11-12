@@ -23,7 +23,6 @@ private:
 
 private:
     inline static HMODULE _dllOpenGL3;
-    inline static wglGetProcAddress_t* _wglGetProcAddress;
 
 public:
     OpenGLRendererImpl(Renderer& renderer, EventManager& eventMgr);
@@ -35,8 +34,6 @@ private:
     void onInit(HWND hWnd);
     void onSwapBuffers();
     void onWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
-
-    static void* gladLoader(const char* name);
 };
 
 HRY_NS_END
