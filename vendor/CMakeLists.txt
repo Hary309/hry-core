@@ -1,4 +1,5 @@
 include(glad.cmake)
 include(imgui.cmake)
 include(minhook.cmake)
+include(bullet3/UseBullet.cmake)
 add_subdirectory(fmt)

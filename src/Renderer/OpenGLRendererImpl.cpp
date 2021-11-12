@@ -45,6 +45,8 @@ void OpenGLRendererImpl::onInit(HWND hWnd)
 {
     Core::Logger->info("Initializing OpenGL renderer...");
 
+    gladLoadGL();
+
     if (gladLoadGLLoader(OpenGLRendererImpl::gladLoader) == 0)
     {
         Core::Logger->error("Cannot initialize glad loader!");

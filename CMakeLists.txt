@@ -52,3 +52,15 @@ project(hry-example VERSION 1.0.0)
 
 add_library(hry-example SHARED example/example.hpp example/example.cpp)
 target_link_libraries(hry-example PRIVATE hry-core)
+
+target_compile_definitions(hry-example PRIVATE BT_USE_DOUBLE_PRECISION)
+
+# Bullet
+find_library(BulletCollision BulletCollision vendor/bullet3/build/lib)
+find_library(BulletDynamics BulletDynamics vendor/bullet3/build/lib)
+find_library(BulletSoftBody BulletSoftBody vendor/bullet3/build/lib)
+find_library(LinearMath LinearMath vendor/bullet3/build/lib)
+
+target_link_libraries(hry-example PRIVATE hry-core BulletCollision BulletDynamics BulletSoftBody LinearMath)
+
+target_include_directories(hry-example PRIVATE vendor/bullet3/src)
