@@ -121,7 +121,12 @@ bool OpenGLHook::Install()
 
 void OpenGLHook::Uninstall()
 {
-    wglSwapBuffer_Detour.reset();
+    if (wglSwapBuffer_Detour)
+    {
+        wglSwapBuffer_Detour->disable();
+        wglSwapBuffer_Detour->remove();
+        wglSwapBuffer_Detour.reset();
+    }
 
     if (oWndProc != nullptr)
     {

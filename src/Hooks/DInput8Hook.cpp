@@ -155,7 +155,12 @@ bool DInput8Hook::Install()
 
 void DInput8Hook::Uninstall()
 {
-    detour.reset();
+    if (detour)
+    {
+        detour->disable();
+        detour->remove();
+        detour.reset();
+    }
 }
 
 HRY_NS_END
