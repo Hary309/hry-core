@@ -141,41 +141,6 @@ static bool ImGui_ImplWin32_UpdateMouseCursor()
     return true;
 }
 
-static void ImGui_ImplWin32_UpdateMousePos()
-{
-    ImGuiIO& io = ImGui::GetIO();
-
-    // Set OS mouse position if requested (rarely used, only when ImGuiConfigFlags_NavEnableSetMousePos is enabled by user)
-    if (io.WantSetMousePos)
-    {
-        POINT pos = { (int)io.MousePos.x, (int)io.MousePos.y };
-        ::ClientToScreen(g_hWnd, &pos);
-        ::SetCursorPos(pos.x, pos.y);
-    }
-
-    // Set mouse position
-    io.MousePos = ImVec2(-FLT_MAX, -FLT_MAX);
-    POINT pos;
-    if (HWND active_window = ::GetForegroundWindow())
-        if (active_window == g_hWnd || ::IsChild(active_window, g_hWnd))
-            if (::GetCursorPos(&pos) && ::ScreenToClient(g_hWnd, &pos))
-            {
-                if (pos.x > io.DisplaySize.x)
-                {
-                    pos.x = io.DisplaySize.x;
-                    ::SetCursorPos(pos.x, pos.y);
-                }
-
-                if (pos.y > io.DisplaySize.y)
-                {
-                    pos.y = io.DisplaySize.y;
-                    ::SetCursorPos(pos.x, pos.y);
-                }
-
-                io.MousePos = ImVec2((float)pos.x, (float)pos.y);
-            }
-}
-
 // Gamepad navigation mapping
 static void ImGui_ImplWin32_UpdateGamepads()
 {
@@ -247,9 +212,6 @@ void    ImGui_ImplWin32_NewFrame()
     io.KeyAlt = (::GetKeyState(VK_MENU) & 0x8000) != 0;
     io.KeySuper = false;
     // io.KeysDown[], io.MousePos, io.MouseDown[], io.MouseWheel: filled by the WndProc handler below.
-
-    // Update OS mouse position
-    ImGui_ImplWin32_UpdateMousePos();
 
     // Update OS mouse cursor with the cursor requested by imgui
     ImGuiMouseCursor mouse_cursor = io.MouseDrawCursor ? ImGuiMouseCursor_None : ImGui::GetMouseCursor();

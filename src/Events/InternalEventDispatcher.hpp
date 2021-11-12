@@ -41,6 +41,7 @@ struct InternalEventDispatcher
 
         Sink<void(std::string msg, Logger::Level)> onLog;
         Sink<void(HWND, UINT, WPARAM, LPARAM)> onWndProc;
+        Sink<void(const OverlayStateEvent&&)> onOverlayStateChange;
     } system;
 
     // game events

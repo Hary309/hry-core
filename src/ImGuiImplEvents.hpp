@@ -22,6 +22,8 @@ public:
     ImGuiImplEvents(InternalEventDispatcher& dispatcher);
 
 private:
+    static void OnOverlayStateChange(const OverlayStateEvent&&);
+    static void OnMouseMove(const MouseMoveEvent&&);
     static void OnMouseButtonPress(const MouseButtonEvent&&);
     static void OnMouseButtonRelease(const MouseButtonEvent&&);
     static void OnMouseWheelScroll(const MouseWheelEvent&&);

@@ -56,17 +56,13 @@ void DInput8EventProxy::onMouseData(const std::vector<DIDEVICEOBJECTDATA>&& even
             // mouse move x
             case DI_MOUSE_X:
             {
-                _mouseOffset.x = event.dwData;
-
-                MouseMoveEvent moveEvent{ _mouseOffset };
+                MouseMoveEvent moveEvent{ { static_cast<int>(event.dwData), 0 } };
                 _eventMgr.system.mouseMoveSignal.call(std::move(moveEvent));
             }
             break;
             case DI_MOUSE_Y:
             {
-                _mouseOffset.y = event.dwData;
-
-                MouseMoveEvent moveEvent{ _mouseOffset };
+                MouseMoveEvent moveEvent{ { 0, static_cast<int>(event.dwData) } };
                 _eventMgr.system.mouseMoveSignal.call(std::move(moveEvent));
             }
             break;

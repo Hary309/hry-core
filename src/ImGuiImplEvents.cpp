@@ -16,9 +16,28 @@ HRY_NS_BEGIN
 
 ImGuiImplEvents::ImGuiImplEvents(InternalEventDispatcher& dispatcher)
 {
+    dispatcher.system.onOverlayStateChange.connect<OnOverlayStateChange>();
+    dispatcher.system.onMouseMove.connect<OnMouseMove>();
     dispatcher.system.onMouseButtonPress.connect<OnMouseButtonPress>();
     dispatcher.system.onMouseButtonRelease.connect<OnMouseButtonRelease>();
     dispatcher.system.onMouseWheelScroll.connect<OnMouseWheelScroll>();
+}
+
+void ImGuiImplEvents::OnOverlayStateChange(const OverlayStateEvent&& overlayEvent)
+{
+    if (overlayEvent.isEnabled)
+    {
+        auto& imguiIO = ImGui::GetIO();
+        imguiIO.MousePos.x = imguiIO.DisplaySize.x / 2;
+        imguiIO.MousePos.y = imguiIO.DisplaySize.y / 2;
+    }
+}
+
+void ImGuiImplEvents::OnMouseMove(const MouseMoveEvent&& moveEvent)
+{
+    auto& imguiIO = ImGui::GetIO();
+    imguiIO.MousePos.x += static_cast<float>(moveEvent.offset.x);
+    imguiIO.MousePos.y += static_cast<float>(moveEvent.offset.y);
 }
 
 void ImGuiImplEvents::OnMouseButtonPress(const MouseButtonEvent&& buttonEvent)

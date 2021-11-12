@@ -11,7 +11,6 @@
 
 #include "Hry/Events/Event.hpp"
 #include "Hry/System/Keyboard.hpp"
-#include "Hry/System/Mouse.hpp"
 #include "Hry/System/System.hpp"
 
 #include "Events/EventManager.hpp"
@@ -208,102 +207,6 @@ void WndProcEventProxy::onWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lPa
         {
             _eventMgr.system.keyReleaseSignal.call(
                 KeyboardEvent{ vkKeyCodeToEnum(wParam, lParam), ButtonState::Released });
-        }
-        break;
-
-        case WM_MOUSEWHEEL:
-        {
-            MouseWheelEvent wheelEvent{};
-            wheelEvent.wheel = Mouse::Wheel::Vertical;
-            wheelEvent.delta = GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA;
-
-            _eventMgr.system.mouseWheelScrollSignal.call(std::move(wheelEvent));
-        }
-        break;
-
-        // mouse wheel
-        case WM_MOUSEHWHEEL:
-        {
-            MouseWheelEvent wheelEvent{};
-            wheelEvent.wheel = Mouse::Wheel::Horizontal;
-            wheelEvent.delta = GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA;
-
-            _eventMgr.system.mouseWheelScrollSignal.call(std::move(wheelEvent));
-        }
-        break;
-
-        case WM_MOUSEMOVE:
-        {
-            int x = GET_X_LPARAM(lParam);
-            int y = GET_Y_LPARAM(lParam);
-
-            MouseMoveEvent moveEvent;
-            moveEvent.offset.x = x - _lastMousePos.x;
-            moveEvent.offset.y = y - _lastMousePos.y;
-
-            _lastMousePos = { x, y };
-
-            _eventMgr.system.mouseMoveSignal.call(std::move(moveEvent));
-        }
-        break;
-
-        // Left mouse button
-        case WM_LBUTTONDOWN:
-        {
-            _eventMgr.system.mouseButtonPressSignal.call(
-                { Mouse::Button::Left, ButtonState::Pressed });
-        }
-        break;
-        case WM_LBUTTONUP:
-        {
-            _eventMgr.system.mouseButtonReleaseSignal.call(
-                { Mouse::Button::Left, ButtonState::Released });
-        }
-        break;
-
-        // Right mouse button
-        case WM_RBUTTONDOWN:
-        {
-            _eventMgr.system.mouseButtonPressSignal.call(
-                { Mouse::Button::Right, ButtonState::Pressed });
-        }
-        break;
-        case WM_RBUTTONUP:
-        {
-            _eventMgr.system.mouseButtonReleaseSignal.call(
-                { Mouse::Button::Right, ButtonState::Released });
-        }
-        break;
-
-        // Middle mouse button
-        case WM_MBUTTONDOWN:
-        {
-            _eventMgr.system.mouseButtonPressSignal.call(
-                { Mouse::Button::Middle, ButtonState::Pressed });
-        }
-        break;
-        case WM_MBUTTONUP:
-        {
-            _eventMgr.system.mouseButtonReleaseSignal.call(
-                { Mouse::Button::Middle, ButtonState::Released });
-        }
-        break;
-
-        // xbutton
-        case WM_XBUTTONDOWN:
-        {
-            Mouse::Button button = GET_XBUTTON_WPARAM(wParam) == XBUTTON1 ? Mouse::Button::Button4 :
-                                                                            Mouse::Button::Button5;
-
-            _eventMgr.system.mouseButtonPressSignal.call({ button, ButtonState::Pressed });
-        }
-        break;
-        case WM_XBUTTONUP:
-        {
-            Mouse::Button button = GET_XBUTTON_WPARAM(wParam) == XBUTTON1 ? Mouse::Button::Button4 :
-                                                                            Mouse::Button::Button5;
-
-            _eventMgr.system.mouseButtonReleaseSignal.call({ button, ButtonState::Released });
         }
         break;
     }

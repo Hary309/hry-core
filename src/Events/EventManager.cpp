@@ -100,6 +100,7 @@ InternalEventDispatcher EventManager::createInternalEventDispatcher()
 
             system.logSignal,
             system.wndProcSignal,
+            system.overlayStateChangeSignal
         },
         {
             game.frameStartSignal,

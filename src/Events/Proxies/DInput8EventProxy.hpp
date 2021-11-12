@@ -48,8 +48,6 @@ class DInput8EventProxy : public EventProxyBase
     };
 
 private:
-    Vec2i _mouseOffset{};
-
     std::unordered_map<GUID, DPadStatus> _dpadStatus;
 
 public:
