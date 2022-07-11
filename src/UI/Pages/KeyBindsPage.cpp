@@ -115,13 +115,14 @@ void KeyBindsPage::handleKeyPress(const KeyboardEvent&& keyboardEvent)
 {
     if (_keyToSetBind != nullptr)
     {
-        if (keyboardEvent.key != Keyboard::Key::Escape)
+        auto newKey = GetBindableKey(keyboardEvent.key);
+            
+        if (newKey)
         {
-            _keyToSetBind->key = GetBindableKey(keyboardEvent.key);
+            _keyToSetBind->key = newKey;
             _keyToSetBind->joystickGUID.reset();
+            applyChanges();
         }
-
-        applyChanges();
     }
 }
 
@@ -129,10 +130,14 @@ void KeyBindsPage::handleMouseButtonPress(const MouseButtonEvent&& buttonEvent)
 {
     if (_keyToSetBind != nullptr)
     {
-        _keyToSetBind->key = GetBindableKey(buttonEvent.button);
-        _keyToSetBind->joystickGUID.reset();
+        auto newKey = GetBindableKey(buttonEvent.button);
 
-        applyChanges();
+        if (newKey)
+        {
+            _keyToSetBind->key = newKey;
+            _keyToSetBind->joystickGUID.reset();
+            applyChanges();
+        }
     }
 }
 
@@ -140,10 +145,14 @@ void KeyBindsPage::handleJoystickButtonPress(const JoystickButtonEvent&& buttonE
 {
     if (_keyToSetBind != nullptr)
     {
-        _keyToSetBind->key = GetBindableKey(buttonEvent.button);
-        _keyToSetBind->joystickGUID = buttonEvent.deviceGUID;
+        auto newKey = GetBindableKey(buttonEvent.button);
 
-        applyChanges();
+        if (newKey)
+        {
+            _keyToSetBind->key = newKey;
+            _keyToSetBind->joystickGUID = buttonEvent.deviceGUID;
+            applyChanges();
+        }
     }
 }
 

@@ -16,7 +16,7 @@ HRY_NS_BEGIN
 
 /**
  * @brief General structure for version information
- * Usef for: API version, plugin version 
+ * Usef for: API version, plugin version
  */
 struct Version
 {
@@ -26,7 +26,7 @@ struct Version
 
     /**
      * @brief Converts structure to formatter string
-     * 
+     *
      * @return Formatted string
      */
     [[nodiscard]] std::string toString() const
@@ -38,7 +38,7 @@ struct Version
 /**
  * @brief Current API version
  */
-constexpr inline Version ApiVersion{ 1, 0, 5 };
+constexpr inline Version ApiVersion{ 1, 0, 6 };
 
 HRY_NS_END
 

@@ -19,6 +19,8 @@
 #include "Hry/Namespace.hpp"
 #include "Hry/Utils/Utils.hpp"
 
+#include "Hry/Memory/Detour.hpp"
+
 #include "Renderer/Renderer.hpp"
 
 #include "Core.hpp"
@@ -34,7 +36,6 @@ using D3D11CreateDeviceAndSwapChain_t = decltype(D3D11CreateDeviceAndSwapChain);
 using IDXGISwapChain_Present_t = decltype(IDXGISwapChainVtbl::Present);
 using IDXGISwapChain_ResizeBuffers_t = decltype(IDXGISwapChainVtbl::ResizeBuffers);
 
-static IDXGISwapChain_Present_t oSwapChainPresent;
 static IDXGISwapChain_ResizeBuffers_t oSwapChainResizeBuffers;
 static WNDPROC oWndProc;
 
@@ -42,6 +43,8 @@ static IDXGISwapChainVtbl* swapChainVTable;
 
 static bool needUpdateInfo = true;
 static bool isInited = false;
+
+static std::shared_ptr<hry::Detour> swapChainPresentHook;
 
 // original code: https://github.com/Rebzzel/kiero
 IDXGISwapChainVtbl* GetSwapChainVTable()
@@ -178,7 +181,7 @@ HRESULT __stdcall new_IDXGISwapChain_Present(
     }
 
     D3D11Hook::OnPresent.call(swapChain);
-    return oSwapChainPresent(swapChain, syncInterval, flags);
+    return swapChainPresentHook->getOriginal<IDXGISwapChain_Present_t>()(swapChain, syncInterval, flags);
 }
 
 HRESULT __stdcall new_IDXGISwapChain_ResizeBuffers(
@@ -207,7 +210,22 @@ bool D3D11Hook::Install()
     Core::Logger->info("Using D3D11 renderer");
 
     Core::Logger->info("Hooking IDXGISwapChain::Present...");
-    oSwapChainPresent = HookVTableField(&swapChainVTable->Present, &new_IDXGISwapChain_Present);
+
+    swapChainPresentHook =
+        std::make_shared<hry::Detour>(swapChainVTable->Present, &new_IDXGISwapChain_Present);
+
+
+    if (swapChainPresentHook->create() != hry::Detour::Status::Ok)
+    {
+        Core::Logger->error("Cannot create hook");
+        return false;
+    }
+
+    if (swapChainPresentHook->enable() != hry::Detour::Status::Ok)
+    {
+        Core::Logger->error("Cannot enable hook");
+        return false;
+    }
 
     Core::Logger->info("Hooking IDXGISwapChain::ResizeBuffers...");
     oSwapChainResizeBuffers =
@@ -220,10 +238,12 @@ void D3D11Hook::Uninstall()
 {
     if (swapChainVTable != nullptr)
     {
-        if (oSwapChainPresent != nullptr)
+        if (swapChainPresentHook)
         {
             Core::Logger->info("Restoring IDXGISwapChain::Present...");
-            HookVTableField(&swapChainVTable->Present, oSwapChainPresent);
+            swapChainPresentHook->disable();
+            swapChainPresentHook->remove();
+            swapChainPresentHook.reset();
         }
 
         if (oSwapChainResizeBuffers != nullptr)

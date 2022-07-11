@@ -48,7 +48,7 @@ static const auto BindableKeys = std::array{
     BindableKey{ Keyboard::Key::Num7, "7" },
     BindableKey{ Keyboard::Key::Num8, "8" },
     BindableKey{ Keyboard::Key::Num9, "9" },
-    BindableKey{ Keyboard::Key::Escape, "Escape" },
+    // BindableKey{ Keyboard::Key::Escape, "Escape" }, # DISABLED
     BindableKey{ Keyboard::Key::LControl, "Left Ctrl" },
     BindableKey{ Keyboard::Key::LShift, "Left Shift" },
     BindableKey{ Keyboard::Key::LAlt, "Left Alt" },
@@ -123,7 +123,7 @@ static const auto BindableKeys = std::array{
     BindableKey{ Keyboard::Key::Capital, "Caps Lock" },
 
     // Mouse
-    BindableKey{ Mouse::Button::Left, "Left Mouse Button" },
+    // BindableKey{ Mouse::Button::Left, "Left Mouse Button" }, # DISABLED
     BindableKey{ Mouse::Button::Right, "Right Mouse Button" },
     BindableKey{ Mouse::Button::Middle, "Middle Mouse Button" },
     BindableKey{ Mouse::Button::Button4, "Mouse Button 4" },
