@@ -88,6 +88,8 @@ void AboutPage::imguiRender()
   * [json](https://github.com/nlohmann/json)
   * [minhook](https://github.com/TsudaKageyu/minhook)
 ## Changelog
+  * 1.0.7
+    * Fix crash related with Alt-Tab
   * 1.0.6
     * Probably fixed crash with D3D11 hook
     * Disallow to use LMB as bindable key

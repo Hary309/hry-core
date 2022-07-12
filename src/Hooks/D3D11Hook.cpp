@@ -36,15 +36,18 @@ using D3D11CreateDeviceAndSwapChain_t = decltype(D3D11CreateDeviceAndSwapChain);
 using IDXGISwapChain_Present_t = decltype(IDXGISwapChainVtbl::Present);
 using IDXGISwapChain_ResizeBuffers_t = decltype(IDXGISwapChainVtbl::ResizeBuffers);
 
-static IDXGISwapChain_ResizeBuffers_t oSwapChainResizeBuffers;
-static WNDPROC oWndProc;
+namespace
+{
+WNDPROC oWndProc;
 
-static IDXGISwapChainVtbl* swapChainVTable;
+bool needUpdateInfo = true;
+bool isInited = false;
 
-static bool needUpdateInfo = true;
-static bool isInited = false;
+IDXGISwapChainVtbl* swapChainVTable;
 
-static std::shared_ptr<hry::Detour> swapChainPresentHook;
+std::unique_ptr<hry::Detour> swapChainPresentHook;
+std::unique_ptr<hry::Detour> swapChainResizeBufferHook;
+}
 
 // original code: https://github.com/Rebzzel/kiero
 IDXGISwapChainVtbl* GetSwapChainVTable()
@@ -195,7 +198,8 @@ HRESULT __stdcall new_IDXGISwapChain_ResizeBuffers(
     needUpdateInfo = true;
 
     D3D11Hook::OnBeforeResize.call(swapChain, width, height);
-    return oSwapChainResizeBuffers(swapChain, bufferCount, width, height, format, flags);
+    return swapChainResizeBufferHook->getOriginal<IDXGISwapChain_ResizeBuffers_t>()(
+        swapChain, bufferCount, width, height, format, flags);
 }
 
 bool D3D11Hook::Install()
@@ -212,7 +216,7 @@ bool D3D11Hook::Install()
     Core::Logger->info("Hooking IDXGISwapChain::Present...");
 
     swapChainPresentHook =
-        std::make_shared<hry::Detour>(swapChainVTable->Present, &new_IDXGISwapChain_Present);
+        std::make_unique<hry::Detour>(swapChainVTable->Present, &new_IDXGISwapChain_Present);
 
 
     if (swapChainPresentHook->create() != hry::Detour::Status::Ok)
@@ -228,29 +232,41 @@ bool D3D11Hook::Install()
     }
 
     Core::Logger->info("Hooking IDXGISwapChain::ResizeBuffers...");
-    oSwapChainResizeBuffers =
-        HookVTableField(&swapChainVTable->ResizeBuffers, &new_IDXGISwapChain_ResizeBuffers);
+    swapChainResizeBufferHook =
+        std::make_unique<hry::Detour>(
+        swapChainVTable->ResizeBuffers, &new_IDXGISwapChain_ResizeBuffers);
+
+    if (swapChainResizeBufferHook->create() != hry::Detour::Status::Ok)
+    {
+        Core::Logger->error("Cannot create hook");
+        return false;
+    }
+
+    if (swapChainResizeBufferHook->enable() != hry::Detour::Status::Ok)
+    {
+        Core::Logger->error("Cannot enable hook");
+        return false;
+    }
 
     return true;
 }
 
 void D3D11Hook::Uninstall()
 {
-    if (swapChainVTable != nullptr)
+    if (swapChainPresentHook)
     {
-        if (swapChainPresentHook)
-        {
-            Core::Logger->info("Restoring IDXGISwapChain::Present...");
-            swapChainPresentHook->disable();
-            swapChainPresentHook->remove();
-            swapChainPresentHook.reset();
-        }
+        Core::Logger->info("Restoring IDXGISwapChain::Present...");
+        swapChainPresentHook->disable();
+        swapChainPresentHook->remove();
+        swapChainPresentHook.reset();
+    }
 
-        if (oSwapChainResizeBuffers != nullptr)
-        {
-            Core::Logger->info("Restoring IDXGISwapChain::ResizeBuffers...");
-            HookVTableField(&swapChainVTable->ResizeBuffers, oSwapChainResizeBuffers);
-        }
+    if (swapChainResizeBufferHook)
+    {
+        Core::Logger->info("Restoring IDXGISwapChain::Present...");
+        swapChainResizeBufferHook->disable();
+        swapChainResizeBufferHook->remove();
+        swapChainResizeBufferHook.reset();
     }
 
     if (oWndProc != nullptr)
