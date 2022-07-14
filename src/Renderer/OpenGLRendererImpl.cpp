@@ -18,8 +18,8 @@
 
 #include "Core.hpp"
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 OpenGLRendererImpl::OpenGLRendererImpl(Renderer& renderer, EventManager& eventMgr)
     : RendererBase(renderer, eventMgr)
 {
@@ -71,5 +71,4 @@ void OpenGLRendererImpl::onWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM l
 {
     _eventMgr.system.wndProcSignal.call(hWnd, uMsg, wParam, lParam);
 }
-
-HRY_NS_END
+}

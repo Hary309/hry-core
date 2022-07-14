@@ -16,7 +16,6 @@
 #include <windows.h>
 
 #include "Hry/Memory/Hooking.hpp"
-#include "Hry/Namespace.hpp"
 #include "Hry/Utils/Utils.hpp"
 
 #include "Hry/Memory/Detour.hpp"
@@ -30,8 +29,8 @@ const GUID IID_ID3D11Device_{
     0xdb6f6ddb, 0xac77, 0x4e88, { 0x82, 0x53, 0x81, 0x9d, 0xf9, 0xbb, 0xf1, 0x40 }
 };
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 using D3D11CreateDeviceAndSwapChain_t = decltype(D3D11CreateDeviceAndSwapChain);
 using IDXGISwapChain_Present_t = decltype(IDXGISwapChainVtbl::Present);
 using IDXGISwapChain_ResizeBuffers_t = decltype(IDXGISwapChainVtbl::ResizeBuffers);
@@ -275,5 +274,4 @@ void D3D11Hook::Uninstall()
         SetWindowLongPtr(hWnd, GWLP_WNDPROC, (LONG_PTR)oWndProc);
     }
 }
-
-HRY_NS_END
+}

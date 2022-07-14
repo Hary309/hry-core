@@ -21,8 +21,8 @@
 IMGUI_IMPL_API LRESULT
     ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 Keyboard::Key vkKeyCodeToEnum(WPARAM key, LPARAM flags) noexcept
 {
     using Key = Keyboard::Key;
@@ -211,5 +211,4 @@ void WndProcEventProxy::onWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lPa
         break;
     }
 }
-
-HRY_NS_END
+}

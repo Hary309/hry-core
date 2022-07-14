@@ -16,8 +16,8 @@
 
 struct DIDEVICEOBJECTDATA;
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 struct DInput8Hook
 {
     using OnMouseData_t = Delegate<void(const std::vector<DIDEVICEOBJECTDATA>&&)>;
@@ -31,5 +31,4 @@ struct DInput8Hook
     static bool Install();
     static void Uninstall();
 };
-
-HRY_NS_END
+}

@@ -7,17 +7,12 @@
 
 #pragma once
 
-#include "Hry/Namespace.hpp"
 
-HRY_NS_BEGIN
-
-namespace scs
+namespace hry::scs
 {
     struct JobChannel
     {
         /** The total damage of the cargo in range 0.0 to 1.0 */
         float cargoDamage;
     };
-} // namespace scs
-
-HRY_NS_END
+}

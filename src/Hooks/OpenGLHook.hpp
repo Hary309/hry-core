@@ -8,11 +8,10 @@
 
 #include <windows.h>
 
-#include "Hry/Namespace.hpp"
 #include "Hry/Utils/Delegate.hpp"
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 struct OpenGLHook
 {
     inline static Delegate<void(HWND, UINT, WPARAM, LPARAM)> OnWndProc;
@@ -23,5 +22,4 @@ struct OpenGLHook
     static bool Install();
     static void Uninstall();
 };
-
-HRY_NS_END
+}

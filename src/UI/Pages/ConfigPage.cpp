@@ -8,8 +8,8 @@
 
 #include <imgui.h>
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 ConfigPage::ConfigPage(ConfigManager& configMgr) : _configMgr(configMgr)
 {
 }
@@ -104,5 +104,4 @@ void ConfigPage::imguiRender()
         ImGui::TextColored(ImColor(255, 0, 0).Value, "Unsaved changes!");
     }
 }
-
-HRY_NS_END
+}

@@ -11,15 +11,14 @@
 
 #include <scssdk_telemetry.h>
 
-#include "Hry/Namespace.hpp"
 
 #include "SCSSDK/Adapters.hpp"
 #include "SCSSDK/SCSValueType.hpp"
 
 #include "scssdk.h"
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 template<typename T>
 inline void storeValue(
     const scs_string_t /*unused*/,
@@ -112,5 +111,4 @@ protected:
 private:
     static void CheckForError(const char* id, std::optional<uint32_t> index, scs_result_t result);
 };
-
-HRY_NS_END
+}

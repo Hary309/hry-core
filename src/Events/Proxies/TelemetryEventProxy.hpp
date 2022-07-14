@@ -8,14 +8,13 @@
 
 #include <scssdk_telemetry.h>
 
-#include "Hry/Namespace.hpp"
 
 #include "Events/EventProxyBase.hpp"
 #include "Events/Proxies/Telemetry/TelemetryConfigurationProxy.hpp"
 #include "Events/Proxies/Telemetry/TelemetryGameplayProxy.hpp"
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 class TelemetryEventProxy : public EventProxyBase
 {
 private:
@@ -32,5 +31,4 @@ private:
     static void ChangedState(
         scs_event_t event, const void* event_info, scs_context_t context) noexcept;
 };
-
-HRY_NS_END
+}

@@ -6,21 +6,20 @@
 
 #pragma once
 
+#include "Hry/Utils/Delegate.hpp"
+#include "Hry/Utils/Hash.hpp"
+#include "Hry/Utils/OffsetOf.hpp"
+
+#include <nlohmann/json_fwd.hpp>
+
 #include <memory>
 #include <string>
 #include <type_traits>
 #include <utility>
 #include <variant>
 
-#include <nlohmann/json_fwd.hpp>
-
-#include "Hry/Namespace.hpp"
-#include "Hry/Utils/Delegate.hpp"
-#include "Hry/Utils/Hash.hpp"
-#include "Hry/Utils/OffsetOf.hpp"
-
-HRY_NS_BEGIN
-
+namespace hry
+{
 class Config;
 
 template<class, class, typename>
@@ -43,7 +42,7 @@ private:
 public:
     /**
      * @brief Insert data into config data structure
-     * 
+     *
      * @tparam T type of data type
      * @param offset Offset of member in struct
      * @param value Value of data
@@ -70,7 +69,7 @@ public:
 
     /**
      * @brief Get the config data of T type
-     * 
+     *
      * @tparam T type of config data
      * @return Config data
      */
@@ -131,16 +130,16 @@ public:
 
     /**
      * @brief Check if can reset to default
-     * 
+     *
      * @return true if current value is different from default value
      */
     virtual bool canResetToDefault() = 0;
 
     /**
      * @brief Check if there are dirty changes
-     * 
+     *
      * Use applyChanges() or cancelChanges()
-     * 
+     *
      * @return true if there are dirty changes
      */
     virtual bool isDirty() const = 0;
@@ -152,21 +151,21 @@ public:
 
     /**
      * @brief Parse to json
-     * 
+     *
      * @param json Json object
      */
     virtual void toJson(nlohmann::json& json) = 0;
 
     /**
      * @brief Parse from json
-     * 
+     *
      * @param json Json object
      */
     virtual void fromJson(const nlohmann::json& json) = 0;
 
     /**
      * @brief Config structure filling
-     * 
+     *
      * @param callbackData Config data to be filled
      */
     virtual void setupCallbackData(ConfigCallbackData& callbackData) = 0;
@@ -203,7 +202,7 @@ public:
     /**
      * required
      * @brief set identifier of field, will be saved to file
-     * 
+     *
      * @param id identifier of keybind
      */
     ConfigFieldBuilder& setID(const std::string& id)
@@ -215,7 +214,7 @@ public:
     /**
      * required
      * @brief Set the label, will be visible in menu
-     * 
+     *
      * @param label name to be displayed
      */
     ConfigFieldBuilder& setLabel(const std::string& label)
@@ -227,7 +226,7 @@ public:
     /**
      * optional
      * @brief Set description, will be shown next to the label in tooltip
-     * 
+     *
      * @param desc Description
      */
     ConfigFieldBuilder& setDescription(const std::string& description)
@@ -239,7 +238,7 @@ public:
     /**
      * required
      * @brief Set the default value
-     * 
+     *
      * @param key value to be default
      */
     ConfigFieldBuilder& setDefaultValue(ValueType value)
@@ -251,7 +250,7 @@ public:
     /**
      * required
      * @brief bind structure field to config field
-     * 
+     *
      * @param member Pointer to member
      */
     template<typename ObjectType>
@@ -270,5 +269,4 @@ protected:
         field._description = _description;
     }
 };
-
-HRY_NS_END
+}

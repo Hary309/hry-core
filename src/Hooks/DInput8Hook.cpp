@@ -35,8 +35,8 @@ using DirectInputDevice8_GetDeviceData_t = decltype(IDirectInputDevice8WVtbl::Ge
 
 static std::unique_ptr<hry::Detour> detour;
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 HRESULT __stdcall new_DirectInputDevice_GetDeviceData(
     IDirectInputDevice8W* self,
     DWORD cbObjectData,
@@ -162,5 +162,4 @@ void DInput8Hook::Uninstall()
         detour.reset();
     }
 }
-
-HRY_NS_END
+}

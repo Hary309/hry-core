@@ -16,7 +16,6 @@
 #include <nlohmann/json.hpp>
 
 #include "Hry/KeyBinding/KeyBinds.hpp"
-#include "Hry/Namespace.hpp"
 #include "Hry/System/System.hpp"
 #include "Hry/Utils/Delegate.hpp"
 
@@ -24,8 +23,8 @@
 
 using system_clock = std::chrono::system_clock;
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 KeyBindsManager::KeyBindsManager(InternalEventDispatcher& dispatcher)
 {
     dispatcher.system.onKeyPress.connect<&KeyBindsManager::handleKeyboardEvent>(this);
@@ -164,5 +163,4 @@ void KeyBindsManager::saveAll() const
         k->saveToFile();
     }
 }
-
-HRY_NS_END
+}

@@ -7,15 +7,14 @@
 #pragma once
 
 #include "Hry/Events/Event.hpp"
-#include "Hry/Namespace.hpp"
 #include "Hry/Utils/Signal.hpp"
 
 #include "KeyBinding/KeyBindsManager.hpp"
 
 #include "PageBase.hpp"
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 class KeyBindsPage : public PageBase
 {
 private:
@@ -35,5 +34,4 @@ private:
 
     void applyChanges();
 };
-
-HRY_NS_END
+}

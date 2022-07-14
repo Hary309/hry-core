@@ -10,10 +10,9 @@
 #include <type_traits>
 
 #include "Hry/Export.hpp"
-#include "Hry/Namespace.hpp"
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 /**
  * @brief Class for creating hooks
  */
@@ -59,7 +58,7 @@ private:
 public:
     /**
      * @brief Construct a new Detour
-     * 
+     *
      * @param target A pointer to the target function, which will be
                      overridden by the detour function.
      * @param detour A pointer to the detour function, which will override
@@ -69,7 +68,7 @@ public:
 
     /**
      * @brief Construct a new Detour
-     * 
+     *
      * @param target A pointer to the target function, which will be
                      overridden by the detour function.
      * @param detour A pointer to the detour function, which will override
@@ -79,7 +78,7 @@ public:
 
     /**
      * @brief Construct a new Detour object
-     * 
+     *
      * @tparam Function Function type
      * @param target A pointer to the target function, which will be
                      overridden by the detour function.
@@ -101,34 +100,34 @@ public:
 
     /**
      * @brief Creates a Hook
-     * 
+     *
      * @return Error code
      */
     Status create();
     /**
      * @brief Removes an already created hook
-     * 
-     * @return Error code 
+     *
+     * @return Error code
      */
     Status remove();
 
     /**
      * @brief Enables an already created hook
-     * 
-     * @return Error code 
+     *
+     * @return Error code
      */
     Status enable();
 
     /**
      * @brief Disables an already created hook
-     * 
-     * @return Error code 
+     *
+     * @return Error code
      */
     Status disable();
 
     /**
      * @brief Cast original function to provided type
-     * 
+     *
      * @tparam T Function type
      * @return Pointer to function with specified type
      */
@@ -138,5 +137,4 @@ public:
         return reinterpret_cast<std::remove_pointer_t<T>*>(_original);
     }
 };
-
-HRY_NS_END
+}

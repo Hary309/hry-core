@@ -5,15 +5,14 @@
  */
 
 #pragma once
-#include "Hry/Namespace.hpp"
 
 #include "Memory.hpp"
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 /**
  * @brief Hooks vtable field
- * 
+ *
  * @tparam Func Function type
  * @param vtableMethod Pointer to vtable field
  * @param function Pointer to function, which will override the \p vtableMethod
@@ -33,5 +32,4 @@ Func HookVTableField(Func* vtableMethod, Func function)
 
     return original;
 }
-
-HRY_NS_END
+}

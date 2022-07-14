@@ -8,14 +8,13 @@
 
 #include <scssdk_telemetry.h>
 
-#include "Hry/Namespace.hpp"
 
 #include "Events/EventManager.hpp"
 
 #include "GameplayDataConverters.hpp"
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 class TelemetryGameplayProxy
 {
 private:
@@ -34,5 +33,4 @@ public:
 private:
     static void Gameplay(scs_event_t event, const void* event_info, scs_context_t context) noexcept;
 };
-
-HRY_NS_END
+}

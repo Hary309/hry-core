@@ -10,13 +10,12 @@
 
 #include <imgui.h>
 
-#include "Hry/Namespace.hpp"
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 /**
  * @brief Renders helper marker in ImGui Window
- * 
+ *
  * @param desc Text to render
  */
 inline void ImGuiHelpMarker(const char* desc)
@@ -34,8 +33,8 @@ inline void ImGuiHelpMarker(const char* desc)
 
 /**
  * @brief Converts type to Dear ImGui data type
- * 
- * @tparam Type to convert 
+ *
+ * @tparam Type to convert
  */
 template<typename>
 struct ImGuiDataType;
@@ -103,10 +102,9 @@ struct ImGuiDataType<double>
 
 /**
  * @brief Converts type to Dear ImGui data type
- * 
+ *
  * @tparam T Type to convert
  */
 template<typename T>
 static inline constexpr auto ImGuiDataType_v = ImGuiDataType<T>::Value;
-
-HRY_NS_END
+}

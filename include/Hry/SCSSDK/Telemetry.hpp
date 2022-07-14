@@ -10,15 +10,14 @@
 #include <array>
 #include <memory>
 
-#include "Hry/Namespace.hpp"
 #include "Hry/SCSSDK/CommonChannel.hpp"
 #include "Hry/SCSSDK/ConfigurationData.hpp"
 #include "Hry/SCSSDK/JobChannel.hpp"
 #include "Hry/SCSSDK/TrailerChannel.hpp"
 #include "Hry/SCSSDK/TruckChannel.hpp"
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 class ChannelAggregator;
 
 struct Telemetry final
@@ -71,5 +70,4 @@ public:
 
     const scs::Substances* getSubstances() const { return &_substances; }
 };
-
-HRY_NS_END
+}

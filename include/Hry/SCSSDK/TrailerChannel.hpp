@@ -8,10 +8,9 @@
 #pragma once
 
 #include "Hry/Math/SCSTypes.hpp"
-#include "Hry/Namespace.hpp"
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 namespace scs
 {
     struct TrailerChannel
@@ -55,5 +54,4 @@ namespace scs
         std::vector<float> wheelLiftOffset;
     };
 } // namespace scs
-
-HRY_NS_END
+}

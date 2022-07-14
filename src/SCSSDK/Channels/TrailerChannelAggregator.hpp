@@ -18,8 +18,8 @@
 
 #include "ChannelAggregatorBase.hpp"
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 class TrailerChannelAggregator : public ChannelAggregatorBase
 {
 public:
@@ -76,5 +76,4 @@ private:
 
     static std::string GetIndexedId(const char* id, int index);
 };
-
-HRY_NS_END
+}

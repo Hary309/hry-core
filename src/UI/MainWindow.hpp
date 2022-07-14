@@ -9,7 +9,6 @@
 #include "Hry/Events/Event.hpp"
 #include "Hry/Events/EventDispatcher.hpp"
 #include "Hry/KeyBinding/KeyBinds.hpp"
-#include "Hry/Namespace.hpp"
 #include "Hry/System/System.hpp"
 #include "Hry/Utils/Signal.hpp"
 
@@ -21,8 +20,8 @@
 #include "UI/Pages/KeyBindsPage.hpp"
 #include "UI/Pages/PluginsPage.hpp"
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 class MainWindow
 {
 private:
@@ -54,5 +53,4 @@ public:
 private:
     void showMainWindowKeyBind(hry::ButtonState);
 };
-
-HRY_NS_END
+}

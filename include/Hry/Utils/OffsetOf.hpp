@@ -6,13 +6,12 @@
 
 #pragma once
 
-#include "Hry/Namespace.hpp"
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 /**
  * @brief Deduces offset of member in class
- * 
+ *
  * @param member pointer to class' member
  * @return Offset of member
  */
@@ -21,5 +20,4 @@ size_t OffsetOf(T Class::* member)
 {
     return reinterpret_cast<size_t>(&(reinterpret_cast<Class*>(0)->*member));
 }
-
-HRY_NS_END
+}

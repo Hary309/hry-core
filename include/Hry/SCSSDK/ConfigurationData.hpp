@@ -12,10 +12,9 @@
 #include <vector>
 
 #include "Hry/Math/Vec3.hpp"
-#include "Hry/Namespace.hpp"
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 namespace scs
 {
     /* - Common structures - */
@@ -56,7 +55,7 @@ namespace scs
 
     /**
      * @brief Used for truck and trailer
-     * 
+     *
      */
     struct Wheel
     {
@@ -93,7 +92,7 @@ namespace scs
 
     /**
      * @brief Information for source and destination company
-     * 
+     *
      */
     struct Company
     {
@@ -139,16 +138,16 @@ namespace scs
             /** @brief Gear selected when requirements for this h-shifter slot are meet */
             int32_t gear;
 
-            /** 
-             * @brief Position of h-shifter handle 
+            /**
+             * @brief Position of h-shifter handle
              *
              * Zero corresponds to neutral position. Mapping to physical position of
              * the handle depends on input setup.
              */
             uint32_t handlePosition;
 
-            /** 
-             * @brief Bitmask of required on/off state of selectors 
+            /**
+             * @brief Bitmask of required on/off state of selectors
              *
              * Only first selector_count bits are relevant
              */
@@ -323,5 +322,4 @@ namespace scs
         bool isSpecialJob;
     };
 } // namespace scs
-
-HRY_NS_END
+}

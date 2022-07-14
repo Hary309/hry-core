@@ -21,8 +21,8 @@
 
 namespace fs = std::filesystem;
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 Config::Config(std::string name) : _name(std::move(name))
 {
     _configFilePath = fmt::format("{}\\{}.json", Paths::ConfigsPath, _name);
@@ -226,5 +226,4 @@ void Config::invokeCallback()
         onChangesApplied(callbackData);
     }
 }
-
-HRY_NS_END
+}

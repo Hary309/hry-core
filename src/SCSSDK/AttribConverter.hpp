@@ -13,14 +13,13 @@
 
 #include <scssdk_value.h>
 
-#include "Hry/Namespace.hpp"
 
 #include "Adapters.hpp"
 
 #undef max
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 struct FieldBase
 {
     std::string_view id;
@@ -398,5 +397,4 @@ private:
             std::shared_ptr<FieldBase>(new Field_t(converter->id, member, converter)));
     }
 };
-
-HRY_NS_END
+}

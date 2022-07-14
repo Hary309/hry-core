@@ -10,12 +10,11 @@
 #include <string>
 
 #include "Hry/Logger/Logger.hpp"
-#include "Hry/Namespace.hpp"
 
 #include "Events/EventManager.hpp"
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 class LoggerFactory
 {
 private:
@@ -28,5 +27,4 @@ public:
 
     static std::unique_ptr<Logger> GetLogger(const char* moduleName);
 };
-
-HRY_NS_END
+}

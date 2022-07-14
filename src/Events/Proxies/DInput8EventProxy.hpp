@@ -35,8 +35,8 @@ namespace std
     };
 } // namespace std
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 class DInput8EventProxy : public EventProxyBase
 {
     struct DPadStatus
@@ -68,5 +68,4 @@ private:
         Joystick::Button button1,
         Joystick::Button button2);
 };
-
-HRY_NS_END
+}

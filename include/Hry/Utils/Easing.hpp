@@ -18,7 +18,6 @@
 
 #pragma once
 
-#include "Hry/Namespace.hpp"
 
 #ifndef _USE_MATH_DEFINES
 #    define _USE_MATH_DEFINES
@@ -26,8 +25,8 @@
 
 #include <cmath>
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 // TODO: use concepts
 
 /**
@@ -37,7 +36,7 @@ struct Easing final
 {
     /**
      * @brief Function type used to hold easing function pointer
-     * 
+     *
      * @tparam T Data type
      */
     template<typename T>
@@ -347,5 +346,4 @@ struct Easing final
         return static_cast<T>(0.5) * BounceEaseOut(p * 2 - 1) + static_cast<T>(0.5);
     }
 };
-
-HRY_NS_END
+}

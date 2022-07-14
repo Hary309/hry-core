@@ -14,8 +14,8 @@
 
 #include "Core.hpp"
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 TrailerChannelAggregator::TrailerChannelAggregator(
     TrailerChannelAggregator::Trailers_t& trailersChannel,
     scs_telemetry_init_params_v100_t* scsTelemetry,
@@ -162,5 +162,4 @@ std::string TrailerChannelAggregator::GetIndexedId(const char* id, int index)
 
     return idStr;
 }
-
-HRY_NS_END
+}

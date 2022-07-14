@@ -11,15 +11,14 @@
 
 #include <imgui.h>
 
-#include "Hry/Namespace.hpp"
 #include "Hry/Utils/Utils.hpp"
 
 #include "Core.hpp"
 #include "D3D11RendererImpl.hpp"
 #include "OpenGLRendererImpl.hpp"
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 Renderer::Renderer(Core& core, EventManager& eventMgr) : _core(core)
 {
     ImGui::CreateContext();
@@ -60,5 +59,4 @@ void Renderer::onRendererRenderImGui()
 {
     _core.imguiRender();
 }
-
-HRY_NS_END
+}

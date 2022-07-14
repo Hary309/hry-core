@@ -6,16 +6,16 @@
 
 #pragma once
 
+#include "Hry/Config/ConfigFieldBase.hpp"
+#include "Hry/Export.hpp"
+
 #include <iterator>
 #include <string>
 #include <variant>
 #include <vector>
 
-#include "Hry/Config/ConfigFieldBase.hpp"
-#include "Hry/Export.hpp"
-
-HRY_NS_BEGIN
-
+namespace hry
+{
 class SelectionFieldBuilder;
 
 class HRY_API SelectionField final : public ConfigFieldBase
@@ -96,7 +96,7 @@ public:
 
     /**
      * @brief Add option to combo box
-     * 
+     *
      * @param arg Text of option
      */
     SelectionFieldBuilder& addOption(const std::string& arg)
@@ -107,7 +107,7 @@ public:
 
     /**
      * @brief Add multiple options at once
-     * 
+     *
      * @param args Arugments
      */
     template<typename... Args>
@@ -120,9 +120,9 @@ public:
     /**
      * optional
      * @brief Set the preview callback
-     * 
+     *
      * Use only to preview changes, don't treat is as applied value
-     * 
+     *
      * @param previewCallback Delegate to be invoke when value change
      */
     SelectionFieldBuilder& setPreviewCallback(SelectionField::PreviewCallback_t previewCallback)
@@ -133,7 +133,7 @@ public:
 
     /**
      * @brief Create the config field, pass it to add method in Config
-     * 
+     *
      * @return Constructed config field
      */
     std::unique_ptr<ConfigFieldBase> build() const
@@ -148,5 +148,4 @@ public:
         return std::unique_ptr<ConfigFieldBase>(selectionField);
     }
 };
-
-HRY_NS_END
+}

@@ -37,8 +37,8 @@ constexpr int DI_JOYSTICK_POV_0 = (offsetof(DIJOYSTATE, rgdwPOV));
 constexpr int DI_JOYSTICK_BUTTON_0 = (offsetof(DIJOYSTATE, rgbButtons) + 0);
 constexpr int DI_JOYSTICK_BUTTON_31 = (offsetof(DIJOYSTATE, rgbButtons) + 31);
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 DInput8EventProxy::DInput8EventProxy(EventManager& eventMgr) : EventProxyBase(eventMgr)
 {
     DInput8Hook::OnMouseData.connect<&DInput8EventProxy::onMouseData>(this);
@@ -234,5 +234,4 @@ void DInput8EventProxy::sendJoystickDPadEvent(
         }
     }
 }
-
-HRY_NS_END
+}

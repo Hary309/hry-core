@@ -20,8 +20,8 @@
 
 namespace fs = std::filesystem;
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 KeyBinds::KeyBinds(std::string name) : _name(std::move(name))
 {
     _keyBindsFilePath = fmt::format("{}/{}.json", Paths::KeyBindsPath, _name);
@@ -206,5 +206,4 @@ void KeyBinds::fromJson(const nlohmann::json& json)
         }
     }
 }
-
-HRY_NS_END
+}

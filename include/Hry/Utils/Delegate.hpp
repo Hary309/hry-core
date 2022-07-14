@@ -13,10 +13,9 @@
 #include <optional>
 #include <type_traits>
 
-#include "Hry/Namespace.hpp"
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 template<typename>
 class Delegate;
 
@@ -31,7 +30,7 @@ inline static ConnectArg<Addr> ConnectArg_v;
 /**
  * @brief Utility class to sned information around the hry-core
  *        Used for events system
- * 
+ *
  * @tparam Return Return type of a delegate function
  * @tparam Args Types of arguments of a delegate function
  */
@@ -53,7 +52,7 @@ public:
 
     /**
      * @brief Constructs delegate and connect function
-     * 
+     *
      * @tparam FuncAddr function to connect to the delegate
      */
     template<auto FuncAddr>
@@ -64,7 +63,7 @@ public:
 
     /**
      * @brief Constructs delegate with context and connect function
-     * 
+     *
      * @tparam CtxFuncAddr function to connect to the delegate
      * @tparam T context type
      */
@@ -76,7 +75,7 @@ public:
 
     /**
      * @brief Constructs delegate with raw function pointer and context
-     * 
+     *
      * @param func Function to connect to the delegate
      * @param context Pointer to content
      */
@@ -84,7 +83,7 @@ public:
 
     /**
      * @brief Connects function to the delegate
-     * 
+     *
      * @tparam FuncAddr Function to connect to the delegate
      */
     template<auto FuncAddr>
@@ -103,7 +102,7 @@ public:
 
     /**
     * @brief Connects function to the delegate with context
-    * 
+    *
     * @tparam CtxFuncAddr Function with context to connect to the delegate
     * @tparam T Context type
     * @param content Pointer to content
@@ -125,7 +124,7 @@ public:
 
     /**
      * @brief Connects raw function with context to the delegate
-     * 
+     *
      * @param func function to connect to the delegate
      * @param context Pointer to content
      */
@@ -137,7 +136,7 @@ public:
 
     /**
      * @brief Call the connected function
-     * 
+     *
      * @param args Arguments to use to invoke the connected function
      * @return Value returned by the connected function
      */
@@ -160,7 +159,7 @@ public:
 
     /**
      * @brief Call the connected function
-     * 
+     *
      * @param args Arguments to use to invoke the connected function
      * @return Value returned by the connected function
      */
@@ -168,7 +167,7 @@ public:
 
     /**
      * @brief Compare the content of two delegates
-     * 
+     *
      * @param other Other delegate to compare
      * @return false if the fields inside are different
      */
@@ -200,7 +199,7 @@ Delegate(ConnectArg<CtxFuncAddr>, T* context)
 
 /**
  * @brief Inline constructs delegate
- * 
+ *
  * @tparam FuncAddr Function to connect to the delegate
  * @return Constructed delegate
  */
@@ -214,7 +213,7 @@ auto Dlg() noexcept
 
 /**
  * @brief Inline constructs delegate with context
- * 
+ *
  * @tparam CtxFuncAddr Function with context to connect to the delegate
  * @tparam T Context type
  * @param content Context data
@@ -227,5 +226,4 @@ auto Dlg(T* content) noexcept
         ConnectArg_v<CtxFuncAddr>, content
     };
 }
-
-HRY_NS_END
+}

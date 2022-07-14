@@ -8,11 +8,10 @@
 
 #include <Windows.h>
 
-#include "Hry/Namespace.hpp"
 #include "Hry/Plugin.hpp"
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 class Logger;
 struct EventDispatcher;
 class KeyBinds;
@@ -43,5 +42,4 @@ struct Module
 
     [[nodiscard]] bool isLoaded() const { return plugin != nullptr; }
 };
-
-HRY_NS_END
+}

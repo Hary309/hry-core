@@ -8,8 +8,8 @@
 
 #include <algorithm>
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 static const auto BindableKeys = std::array{
     // Keyboard
     BindableKey{ Keyboard::Key::A, "A" },
@@ -184,5 +184,4 @@ const BindableKey* GetBindableKey(BindableKey::Key_t key)
 
     return nullptr;
 }
-
-HRY_NS_END
+}

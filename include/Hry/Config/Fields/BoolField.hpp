@@ -6,15 +6,15 @@
 
 #pragma once
 
-#include <memory>
-#include <string>
-
 #include "Hry/Config/ConfigFieldBase.hpp"
 #include "Hry/Export.hpp"
 #include "Hry/Utils/Delegate.hpp"
 
-HRY_NS_BEGIN
+#include <memory>
+#include <string>
 
+namespace hry
+{
 class BoolFieldBuilder;
 
 class HRY_API BoolField final : public ConfigFieldBase
@@ -66,9 +66,9 @@ public:
     /**
      * optional
      * @brief Set the preview callback
-     * 
+     *
      * Use only to preview changes, don't treat is as applied value
-     * 
+     *
      * @param previewCallback Delegate to be invoke when value change
      */
     BoolFieldBuilder& setPreviewCallback(BoolField::PreviewCallback_t previewCallback)
@@ -79,7 +79,7 @@ public:
 
     /**
      * @brief Create the config field, pass it to add method in Config
-     * 
+     *
      * @return Constructed config field
      */
     std::unique_ptr<ConfigFieldBase> build() const
@@ -95,5 +95,4 @@ public:
         return std::unique_ptr<ConfigFieldBase>(boolField);
     }
 };
-
-HRY_NS_END
+}

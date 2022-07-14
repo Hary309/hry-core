@@ -8,10 +8,9 @@
 
 #include <string_view>
 
-#include "Hry/Namespace.hpp"
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 /**
  * @brief Game name
  */
@@ -24,7 +23,7 @@ enum class GameType
 
 /**
  * @brief Converts game type to string
- * 
+ *
  * @param gameType Value for game type
  * @return Game name in string format
  */
@@ -37,5 +36,4 @@ inline std::string_view GameTypeToString(GameType gameType)
         default: return "Unknown";
     }
 }
-
-HRY_NS_END
+}

@@ -10,10 +10,9 @@
 
 #include "Hry/Events/Event.hpp"
 #include "Hry/Events/EventDispatcher.hpp"
-#include "Hry/Namespace.hpp"
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 ImGuiImplEvents::ImGuiImplEvents(InternalEventDispatcher& dispatcher)
 {
     dispatcher.system.onOverlayStateChange.connect<OnOverlayStateChange>();
@@ -65,5 +64,4 @@ void ImGuiImplEvents::OnMouseWheelScroll(const MouseWheelEvent&& wheelEvent)
         imguiIO.MouseWheelH = static_cast<float>(wheelEvent.delta);
     }
 }
-
-HRY_NS_END
+}

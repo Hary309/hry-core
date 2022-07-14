@@ -6,10 +6,9 @@
 
 #pragma once
 
-#include "Hry/Namespace.hpp"
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 /**
  * @brief Keyboard class
  */
@@ -134,5 +133,4 @@ struct Keyboard
         KeyCount
     };
 };
-
-HRY_NS_END
+}

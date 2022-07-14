@@ -6,14 +6,11 @@
 
 #include "Core.hpp"
 
-#include <cstdio>
-#include <filesystem>
-#include <string>
-
-#include <amtrucks/scssdk_ats.h>
-#include <eurotrucks2/scssdk_eut2.h>
-#include <imgui.h>
-#include <scssdk_telemetry.h>
+#include "Hooks/D3D11Hook.hpp"
+#include "Hooks/DInput8Hook.hpp"
+#include "Hooks/OpenGLHook.hpp"
+#include "Logger/LoggerFactory.hpp"
+#include "Utils/InternalImGuiUtils.hpp"
 
 #include "Hry/Config/ConfigFieldBase.hpp"
 #include "Hry/Config/Fields/BoolField.hpp"
@@ -24,27 +21,31 @@
 #include "Hry/Events/EventDispatcher.hpp"
 #include "Hry/GameType.hpp"
 #include "Hry/Memory/Memory.hpp"
-#include "Hry/Namespace.hpp"
 #include "Hry/Utils/Paths.hpp"
 #include "Hry/Utils/Signal.hpp"
 #include "Hry/Utils/Utils.hpp"
 #include "Hry/Version.hpp"
 
-#include "Hooks/D3D11Hook.hpp"
-#include "Hooks/DInput8Hook.hpp"
-#include "Hooks/OpenGLHook.hpp"
-#include "Logger/LoggerFactory.hpp"
-#include "Utils/InternalImGuiUtils.hpp"
+#include <amtrucks/scssdk_ats.h>
+#include <eurotrucks2/scssdk_eut2.h>
+#include <imgui.h>
+#include <scssdk_telemetry.h>
 
-HRY_NS_BEGIN
+#include <cstdio>
+#include <filesystem>
+#include <string>
 
+namespace hry
+{
 Core::Core(HINSTANCE hInst)
-    : _eventDispatcher(_eventMgr.createInternalEventDispatcher()),
-      _channelAggregator(_eventDispatcher), _renderer(*this, _eventMgr),
-      _keyBindsMgr(_eventDispatcher),
-      _moduleMgr(_eventMgr, _configMgr, _keyBindsMgr, _channelAggregator.getTelemetry()),
-      _mainWindow(_moduleMgr, _configMgr, _keyBindsMgr, _eventMgr, _eventDispatcher),
-      _loggerWindow(_eventDispatcher), _imguiImplEvents(_eventDispatcher)
+    : _eventDispatcher(_eventMgr.createInternalEventDispatcher())
+    , _channelAggregator(_eventDispatcher)
+    , _renderer(*this, _eventMgr)
+    , _keyBindsMgr(_eventDispatcher)
+    , _moduleMgr(_eventMgr, _configMgr, _keyBindsMgr, _channelAggregator.getTelemetry())
+    , _mainWindow(_moduleMgr, _configMgr, _keyBindsMgr, _eventMgr, _eventDispatcher)
+    , _loggerWindow(_eventDispatcher)
+    , _imguiImplEvents(_eventDispatcher)
 {
     hInstance = hInst;
 }
@@ -114,30 +115,33 @@ void Core::initConfig()
     _coreConfig->setBindingType<CoreConfig>();
     _coreConfig->onChangesApplied.connect<&Core::onConfigChangesApplied>(this);
 
-    _coreConfig->add(BoolFieldBuilder()
-                         .setID("show_imgui_demo")
-                         .setLabel("Show ImGui Demo")
-                         .setDescription("Developer option")
-                         .bind(&CoreConfig::showImGuiDemo)
-                         .setDefaultValue(false)
-                         .build());
+    _coreConfig->add(
+        BoolFieldBuilder()
+            .setID("show_imgui_demo")
+            .setLabel("Show ImGui Demo")
+            .setDescription("Developer option")
+            .bind(&CoreConfig::showImGuiDemo)
+            .setDefaultValue(false)
+            .build());
 
-    _coreConfig->add(BoolFieldBuilder()
-                         .setID("show_log_window")
-                         .setLabel("Show log window")
-                         .setDescription("Developer option")
-                         .bind(&CoreConfig::showLogWindow)
-                         .setDefaultValue(false)
-                         .build());
+    _coreConfig->add(
+        BoolFieldBuilder()
+            .setID("show_log_window")
+            .setLabel("Show log window")
+            .setDescription("Developer option")
+            .bind(&CoreConfig::showLogWindow)
+            .setDefaultValue(false)
+            .build());
 
-    _coreConfig->add(NumericFieldBuilder<float>()
-                         .setID("log_window_opacity")
-                         .setLabel("Log window opacity")
-                         .setDescription("Developer option")
-                         .bind(&CoreConfig::logWindowOpacity)
-                         .setDefaultValue(0.94f)
-                         .useSlider(0, 1, "%.2f")
-                         .build());
+    _coreConfig->add(
+        NumericFieldBuilder<float>()
+            .setID("log_window_opacity")
+            .setLabel("Log window opacity")
+            .setDescription("Developer option")
+            .bind(&CoreConfig::logWindowOpacity)
+            .setDefaultValue(0.94f)
+            .useSlider(0, 1, "%.2f")
+            .build());
 
     if (!_coreConfig->loadFromFile())
     {
@@ -229,5 +233,4 @@ GameType Core::DetermineGameType(const char* gameID)
 
     return GameType::Unknown;
 }
-
-HRY_NS_END
+} // namespace hry

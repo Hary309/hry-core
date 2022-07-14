@@ -12,18 +12,17 @@
 #include <type_traits>
 #include <vector>
 
-#include "Hry/Namespace.hpp"
 
 #include "Delegate.hpp"
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 template<typename>
 class TaskScheduler;
 
 /**
  * @brief Schedule task by time
- * 
+ *
  * @tparam Return Return type of a delegate function
  * @tparam Args Types of arguments of a delegate function
  */
@@ -75,7 +74,7 @@ public:
 
     /**
      * @brief Add task to scheduler
-     * 
+     *
      * @param delay In what time task should be called
      * @param delegate Task to be invoked
      * @param args Arguments for delegate invoke
@@ -92,5 +91,4 @@ private:
         task.task(std::get<I>(std::forward<Tuple>(t))...);
     }
 };
-
-HRY_NS_END
+}

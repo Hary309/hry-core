@@ -13,11 +13,10 @@
 #include <guiddef.h>
 
 #include "Hry/Export.hpp"
-#include "Hry/Namespace.hpp"
 #include "Hry/Utils/Delegate.hpp"
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 #ifdef UNICODE
 #    define HRY_TEXT(text) L##text
 #else
@@ -26,7 +25,7 @@ HRY_NS_BEGIN
 
 /**
  * @brief Unique pointer with delegate destructor
- * 
+ *
  * @tparam T Type to be hold
  */
 template<typename T>
@@ -34,13 +33,12 @@ using HryPtr = std::unique_ptr<T, Delegate<void(T*)>>;
 
 /**
  * @brief Convert GUID to formatted string
- * 
+ *
  * @param guid GUID to be converted
  * @return Formatted string
  */
 HRY_API std::string FormatGUID(const GUID& guid);
-
-HRY_NS_END
+}
 
 namespace fmt
 {

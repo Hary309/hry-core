@@ -10,10 +10,9 @@
 #include <cstdint>
 #include <string>
 
-#include "Hry/Namespace.hpp"
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 namespace scs
 {
     /* -- Common types -- */
@@ -123,5 +122,4 @@ namespace scs
     };
 
 } // namespace scs
-
-HRY_NS_END
+}

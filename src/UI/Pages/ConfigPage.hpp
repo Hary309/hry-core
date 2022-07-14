@@ -6,14 +6,13 @@
 
 #pragma once
 
-#include "Hry/Namespace.hpp"
 
 #include "Config/ConfigManager.hpp"
 
 #include "PageBase.hpp"
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 class ConfigPage : public PageBase
 {
 private:
@@ -24,5 +23,4 @@ public:
 
     void imguiRender() override;
 };
-
-HRY_NS_END
+}

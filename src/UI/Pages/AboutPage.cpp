@@ -21,8 +21,8 @@
 #include "UI/Markdown.hpp"
 #include "Utils/Icons.hpp"
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 void TextCentered(const char* text)
 {
     ImGui::Dummy({ ImGui::GetWindowContentRegionWidth() / 2 - ImGui::CalcTextSize(text).x / 2, 1 });
@@ -111,5 +111,4 @@ void AboutPage::imguiRender()
 
     ImGui::EndChild();
 }
-
-HRY_NS_END
+}

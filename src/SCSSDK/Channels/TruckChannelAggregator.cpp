@@ -9,12 +9,11 @@
 #include <common/scssdk_telemetry_truck_common_channels.h>
 
 #include "Hry/Events/Event.hpp"
-#include "Hry/Namespace.hpp"
 
 #include "Core.hpp"
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 TruckChannelAggregator::TruckChannelAggregator(
     scs::TruckChannel& truckChannel,
     scs_telemetry_init_params_v100_t* scsTelemetry,
@@ -223,5 +222,4 @@ void TruckChannelAggregator::unregisterWheels(int startIndex, int endIndex)
         SCS_TELEMETRY_TRUCK_CHANNEL_wheel_lift_offset, startIndex, endIndex,
         _truck.wheelLiftOffset);
 }
-
-HRY_NS_END
+}

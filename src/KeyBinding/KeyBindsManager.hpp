@@ -15,7 +15,6 @@
 #include "Hry/Events/EventDispatcher.hpp"
 #include "Hry/KeyBinding/BindableKeys.hpp"
 #include "Hry/KeyBinding/KeyBinds.hpp"
-#include "Hry/Namespace.hpp"
 #include "Hry/System/System.hpp"
 #include "Hry/Utils/Delegate.hpp"
 #include "Hry/Utils/TaskScheduler.hpp"
@@ -23,8 +22,8 @@
 
 #include "Events/EventManager.hpp"
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 class KeyBindsManager
 {
 public:
@@ -60,5 +59,4 @@ private:
 
     void onTaskHold(KeyBind* keyBind, std::chrono::system_clock::time_point);
 };
-
-HRY_NS_END
+}

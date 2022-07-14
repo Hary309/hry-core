@@ -6,25 +6,24 @@
 
 #pragma once
 
+#include "Hry/Export.hpp"
+
+#include <fmt/core.h>
+#include <fmt/format.h>
+
 #include <sstream>
 #include <string>
 #include <string_view>
 #include <type_traits>
 #include <utility>
 
-#include <fmt/core.h>
-#include <fmt/format.h>
-
-#include "Hry/Export.hpp"
-#include "Hry/Namespace.hpp"
-
-HRY_NS_BEGIN
-
+namespace hry
+{
 /**
  * @brief Logger class
- * 
+ *
  * Useful for logging actions and printing debug information
- * 
+ *
  */
 class Logger final
 {
@@ -45,14 +44,15 @@ private:
 public:
     /**
      * @brief Construct a new Logger object
-     * 
+     *
      * @param moduleName Name to identify log message
      */
-    explicit Logger(std::string moduleName) : _moduleName(std::move(moduleName)) {}
+    explicit Logger(std::string moduleName)
+        : _moduleName(std::move(moduleName)) {}
 
     /**
      * @brief Write log message
-     * 
+     *
      * @param level Level of message
      * @param msg Message content
      */
@@ -60,7 +60,7 @@ public:
 
     /**
      * @brief Write log message with formatting
-     * 
+     *
      * @tparam Args Arguments for formatting
      * @param level Level of message
      * @param format Formatting string
@@ -74,7 +74,7 @@ public:
 
     /**
      * @brief Write log message with info level
-     * 
+     *
      * @tparam Args Arguments for formatting
      * @param format Formatting string
      * @param args Arguments for formatting
@@ -87,7 +87,7 @@ public:
 
     /**
      * @brief Write log message with warning level
-     * 
+     *
      * @tparam Args Arguments for formatting
      * @param format Formatting string
      * @param args Arguments for formatting
@@ -100,7 +100,7 @@ public:
 
     /**
      * @brief Write log message with error level
-     * 
+     *
      * @tparam Args Arguments for formatting
      * @param format Formatting string
      * @param args Arguments for formatting
@@ -111,5 +111,4 @@ public:
         log(Level::Error, format, std::forward<Args>(args)...);
     }
 };
-
-HRY_NS_END
+}

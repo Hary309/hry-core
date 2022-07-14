@@ -14,8 +14,8 @@
 #include "Hry/Config/ConfigFieldBase.hpp"
 #include "Hry/Utils/ImGuiUtils.hpp"
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 void SelectionField::imguiRender()
 {
     int size = _options.size();
@@ -78,5 +78,4 @@ void SelectionField::fromJson(const nlohmann::json& json)
         }
     }
 }
-
-HRY_NS_END
+}

@@ -15,8 +15,8 @@
 
 #include "Utils/Windows.hpp"
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 void LinkCallback(ImGui::MarkdownLinkCallbackData linkData)
 {
     std::string url(linkData.link, linkData.linkLength);
@@ -43,5 +43,4 @@ void Markdown::Render(std::string_view text)
 
     ImGui::PopStyleVar();
 }
-
-HRY_NS_END
+}

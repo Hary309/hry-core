@@ -12,8 +12,8 @@
 
 #include "SCSSDK/AttribConverter.hpp"
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 using namespace scs;
 
 template<>
@@ -140,5 +140,4 @@ struct AttribConverterCreator<PlayerUseTrain>
         return obj;
     }
 };
-
-HRY_NS_END
+}

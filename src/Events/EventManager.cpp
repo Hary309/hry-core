@@ -6,7 +6,6 @@
 
 #include "EventManager.hpp"
 
-#include "Hry/Namespace.hpp"
 
 #include "Events/Proxies/TelemetryEventProxy.hpp"
 #include "Proxies/DInput8EventProxy.hpp"
@@ -15,8 +14,8 @@
 
 #include "Core.hpp"
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 void EventManager::init(scs_telemetry_init_params_v100_t* scsTelemetry)
 {
     Core::Logger->info("Initializing EventManager...");
@@ -118,5 +117,4 @@ InternalEventDispatcher EventManager::createInternalEventDispatcher()
     };
     // clang-format on
 }
-
-HRY_NS_END
+}

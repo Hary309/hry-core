@@ -6,10 +6,9 @@
 
 #pragma once
 
-#include "Hry/Namespace.hpp"
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 class Renderer;
 class EventManager;
 
@@ -28,5 +27,4 @@ public:
 
     virtual void init() = 0;
 };
-
-HRY_NS_END
+}

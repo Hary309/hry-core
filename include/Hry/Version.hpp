@@ -10,10 +10,9 @@
 
 #include <fmt/format.h>
 
-#include "Hry/Namespace.hpp"
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 /**
  * @brief General structure for version information
  * Usef for: API version, plugin version
@@ -39,8 +38,7 @@ struct Version
  * @brief Current API version
  */
 constexpr inline Version ApiVersion{ 1, 0, 7 };
-
-HRY_NS_END
+}
 
 template<>
 struct fmt::formatter<hry::Version>

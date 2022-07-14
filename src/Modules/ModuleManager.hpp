@@ -11,7 +11,6 @@
 #include <string>
 #include <vector>
 
-#include "Hry/Namespace.hpp"
 #include "Hry/SCSSDK/Telemetry.hpp"
 
 #include "Config/ConfigManager.hpp"
@@ -20,8 +19,8 @@
 
 #include "Module.hpp"
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 class ModuleManager
 {
 private:
@@ -66,5 +65,4 @@ private:
 
     Module* tryAdd(const std::filesystem::path& path);
 };
-
-HRY_NS_END
+}

@@ -9,11 +9,10 @@
 #include <vector>
 
 #include "Hry/Config/Config.hpp"
-#include "Hry/Namespace.hpp"
 #include "Hry/Utils/Utils.hpp"
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 class ConfigManager
 {
 public:
@@ -37,5 +36,4 @@ private:
     void removeConfig(Config* config);
     void configDeleter(Config* ptr);
 };
-
-HRY_NS_END
+}

@@ -27,8 +27,8 @@
 
 namespace fs = std::filesystem;
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 using CreatePlugin_t = Plugin*();
 using InitImGui_t = void(ImGuiContext*);
 
@@ -392,5 +392,4 @@ Module* ModuleManager::tryAdd(const fs::path& path)
 
     return nullptr;
 }
-
-HRY_NS_END
+}

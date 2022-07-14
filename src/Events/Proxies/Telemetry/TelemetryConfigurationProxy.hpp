@@ -11,7 +11,6 @@
 
 #include <scssdk_telemetry.h>
 
-#include "Hry/Namespace.hpp"
 #include "Hry/SCSSDK/ConfigurationData.hpp"
 
 #include "Events/EventManager.hpp"
@@ -19,8 +18,8 @@
 
 #include "ConfigurationDataConverters.hpp"
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 class TelemetryConfigurationProxy
 {
 private:
@@ -41,5 +40,4 @@ private:
     static void Configuration(
         scs_event_t event, const void* event_info, scs_context_t context) noexcept;
 };
-
-HRY_NS_END
+}

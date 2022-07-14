@@ -8,13 +8,12 @@
 
 #include "Hry/Events/Event.hpp"
 #include "Hry/Events/EventDispatcher.hpp"
-#include "Hry/Namespace.hpp"
 #include "Hry/Utils/Signal.hpp"
 
 #include "Events/EventManager.hpp"
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 // implement missing mouse events for ImGui (thx dinput8)
 class ImGuiImplEvents
 {
@@ -28,5 +27,4 @@ private:
     static void OnMouseButtonRelease(const MouseButtonEvent&&);
     static void OnMouseWheelScroll(const MouseWheelEvent&&);
 };
-
-HRY_NS_END
+}

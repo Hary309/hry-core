@@ -6,10 +6,9 @@
 
 #pragma once
 
-#include "Hry/Namespace.hpp"
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 /**
  * @brief Joystick class
  */
@@ -71,5 +70,4 @@ struct Joystick
         DpadDown
     };
 };
-
-HRY_NS_END
+}

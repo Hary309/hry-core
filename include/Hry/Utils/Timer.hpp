@@ -8,10 +8,9 @@
 
 #include <chrono>
 
-#include "Hry/Namespace.hpp"
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 /**
  * @brief Mesure time
  */
@@ -40,15 +39,15 @@ public:
 
     /**
      * @brief Get elapsed time since last reset
-     * 
+     *
      * @return Elapsed time
      */
     [[nodiscard]] auto elapsed() const { return Clock_t::now() - _start; }
 
     /**
      * @brief Get elapsed time since last reset
-     * 
-     * @return Elapsed time in seconds 
+     *
+     * @return Elapsed time in seconds
      */
     [[nodiscard]] double asSeconds() const
     {
@@ -57,8 +56,8 @@ public:
 
     /**
      * @brief Get elapsed time since last reset
-     * 
-     * @return Elapsed time in miliseconds 
+     *
+     * @return Elapsed time in miliseconds
      */
     [[nodiscard]] int64_t asMiliseconds() const
     {
@@ -67,7 +66,7 @@ public:
 
     /**
      * @brief Get elapsed time since last reset
-     * 
+     *
      * @return Elapsed time in microseconds
      */
     [[nodiscard]] int64_t asMicrosecond() const
@@ -75,5 +74,4 @@ public:
         return std::chrono::duration_cast<Microseconds_t>(elapsed()).count();
     }
 };
-
-HRY_NS_END
+}

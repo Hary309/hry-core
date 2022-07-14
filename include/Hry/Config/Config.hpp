@@ -6,23 +6,22 @@
 
 #pragma once
 
+#include "ConfigFieldBase.hpp"
+
+#include "Hry/Utils/Delegate.hpp"
+#include "Hry/Utils/Hash.hpp"
+#include "Hry/Utils/TypeID.hpp"
+
+#include <nlohmann/json_fwd.hpp>
+
 #include <fstream>
 #include <memory>
 #include <string>
 #include <type_traits>
 #include <vector>
 
-#include <nlohmann/json_fwd.hpp>
-
-#include "Hry/Namespace.hpp"
-#include "Hry/Utils/Delegate.hpp"
-#include "Hry/Utils/Hash.hpp"
-#include "Hry/Utils/TypeID.hpp"
-
-#include "ConfigFieldBase.hpp"
-
-HRY_NS_BEGIN
-
+namespace hry
+{
 class ConfigManager;
 class ConfigPage;
 
@@ -67,14 +66,14 @@ public:
 public:
     /**
      * @brief Construct a new Config
-     * 
+     *
      * @param name Name to identify config among other
      */
     explicit Config(std::string name);
 
     /**
      * @brief Set the base config type
-     * 
+     *
      * @tparam T Type of config
      */
     template<typename T>
@@ -92,9 +91,9 @@ public:
 
     /**
      * @brief Register config field
-     * 
+     *
      * Use classes that inherit from ConfigFieldBuilderBase to construct field
-     * 
+     *
      * @param configField Field to be registered
      */
     void add(std::unique_ptr<ConfigFieldBase>&& configField)
@@ -113,7 +112,7 @@ public:
 
     /**
      * @brief Load config from file
-     * 
+     *
      * @return false if cannot open file
      */
     bool loadFromFile();
@@ -137,5 +136,4 @@ private:
 
     void invokeCallback();
 };
-
-HRY_NS_END
+}

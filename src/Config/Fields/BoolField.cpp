@@ -12,8 +12,8 @@
 #include "Hry/Config/ConfigFieldBase.hpp"
 #include "Hry/Utils/ImGuiUtils.hpp"
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 void BoolField::imguiRender()
 {
     if (ImGui::Checkbox(_label.c_str(), &_dirtyValue))
@@ -41,5 +41,4 @@ void BoolField::fromJson(const nlohmann::json& json)
         _dirtyValue = _value;
     }
 }
-
-HRY_NS_END
+}

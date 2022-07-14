@@ -26,8 +26,8 @@
 
 struct scs_telemetry_init_params_v100_t;
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 class EventProxyBase;
 
 class EventManager
@@ -99,5 +99,4 @@ public:
     [[nodiscard]] EventDispatcher createEventDispatcher();
     [[nodiscard]] InternalEventDispatcher createInternalEventDispatcher();
 };
-
-HRY_NS_END
+}

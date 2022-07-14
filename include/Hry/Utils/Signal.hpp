@@ -11,12 +11,11 @@
 
 #include <vector>
 
-#include "Hry/Namespace.hpp"
 
 #include "Delegate.hpp"
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 template<typename>
 class Signal;
 
@@ -25,7 +24,7 @@ class Sink;
 
 /**
  * @brief Signal handler
- * 
+ *
  * Used to notify multiple delegates
  *
  * @tparam Return Return type of a delegate function
@@ -45,7 +44,7 @@ private:
 public:
     /**
      * @brief Call the connected delegates
-     * 
+     *
      * @param args Arguments to use to invoke the connected delegates
      */
     void call(Args... args) noexcept
@@ -69,14 +68,14 @@ public:
 private:
     /**
      * @brief Add delegate to invoke list
-     * 
+     *
      * @param delegate Delegate to add
      */
     void add(Delegate_t delegate) noexcept { _calls.push_back(delegate); }
 
     /**
      * @brief Remove delegate from invoke list
-     * 
+     *
      * @param delegate Delegate to remove
      */
     void remove(Delegate_t delegate) noexcept
@@ -94,10 +93,10 @@ private:
 
 /**
  * @brief Sink
- * 
+ *
  * Sink is adaptor to signal class.
  * In destructor all connected delegates to sink all disconnected
- * 
+ *
  * @tparam Return Return type of a delegate function
  * @tparam Args Types of arguments of a delegate function
  */
@@ -114,7 +113,7 @@ private:
 public:
     /**
      * @brief Sink can be only constructed from signal class
-     * 
+     *
      * @param signal The object that sink will be based on
      */
     Sink(Signal_t& signal) noexcept : _signal(signal) {}
@@ -136,7 +135,7 @@ public:
 
     /**
      * @brief Connects function to the delegate
-     * 
+     *
      * @tparam FuncAddr Function to connect to the delegate
      */
     template<auto FuncAddr>
@@ -151,7 +150,7 @@ public:
 
     /**
     * @brief Connects function to the delegate with context
-    * 
+    *
     * @tparam CtxFuncAddr Function with context to connect to the delegate
     * @tparam T Context type
     * @param content Pointer to content
@@ -182,5 +181,4 @@ public:
 
 template<typename Return, typename... Args>
 Sink(Signal<Return(Args...)>&) -> Sink<Return(Args...)>;
-
-HRY_NS_END
+}

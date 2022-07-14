@@ -7,7 +7,6 @@
 #pragma once
 
 #include "Hry/Events/Event.hpp"
-#include "Hry/Namespace.hpp"
 #include "Hry/SCSSDK/ConfigurationData.hpp"
 #include "Hry/SCSSDK/TruckChannel.hpp"
 
@@ -15,8 +14,8 @@
 
 #include "ChannelAggregatorBase.hpp"
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 class TruckChannelAggregator : public ChannelAggregatorBase
 {
 private:
@@ -38,5 +37,4 @@ private:
     void registerWheels(int startIndex, int endIndex);
     void unregisterWheels(int startIndex, int endIndex);
 };
-
-HRY_NS_END
+}

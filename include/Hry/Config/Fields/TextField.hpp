@@ -6,13 +6,13 @@
 
 #pragma once
 
-#include <string>
-
 #include "Hry/Config/ConfigFieldBase.hpp"
 #include "Hry/Export.hpp"
 
-HRY_NS_BEGIN
+#include <string>
 
+namespace hry
+{
 class TextFieldBuilder;
 
 class HRY_API TextField final : public ConfigFieldBase
@@ -79,9 +79,9 @@ public:
     /**
      * optional
      * @brief Set the preview callback
-     * 
+     *
      * Use only to preview changes, don't treat is as applied value
-     * 
+     *
      * @param previewCallback Delegate to be invoke when value change
      */
     TextFieldBuilder& setPreviewCallback(TextField::PreviewCallback_t previewCallback)
@@ -92,7 +92,7 @@ public:
 
     /**
      * @brief Create the config field, pass it to add method in Config
-     * 
+     *
      * @return Constructed config field
      */
     std::unique_ptr<ConfigFieldBase> build() const
@@ -108,5 +108,4 @@ public:
         return std::unique_ptr<ConfigFieldBase>(textField);
     }
 };
-
-HRY_NS_END
+}

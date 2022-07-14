@@ -6,12 +6,11 @@
 
 #pragma once
 
-#include "Hry/Namespace.hpp"
 
 struct ImFont;
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 /**
  * @brief Holds fonts ready to use in ImGui
  */
@@ -23,5 +22,4 @@ struct Fonts
     inline static ImFont* OpenSans_Bold_19;
     inline static ImFont* OpenSans_Bold_18;
 };
-
-HRY_NS_END
+}

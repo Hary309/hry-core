@@ -16,8 +16,8 @@
 
 #include "Core.hpp"
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 using glViewport_t = decltype(glViewport);
 using wglCreateContext_t = decltype(wglCreateContext);
 using wglGetCurrentContext_t = decltype(wglGetCurrentContext);
@@ -134,5 +134,4 @@ void OpenGLHook::Uninstall()
         SetWindowLongPtr(hWnd, GWLP_WNDPROC, (LONG_PTR)oWndProc);
     }
 }
-
-HRY_NS_END
+}

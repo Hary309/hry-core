@@ -9,13 +9,12 @@
 #include <Windows.h>
 
 #include "Hry/Math/Vec2.hpp"
-#include "Hry/Namespace.hpp"
 #include "Hry/Utils/Signal.hpp"
 
 #include "Events/EventProxyBase.hpp"
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 class WndProcEventProxy : public EventProxyBase
 {
 private:
@@ -28,5 +27,4 @@ public:
 private:
     void onWndProc(HWND, UINT, WPARAM, LPARAM) noexcept;
 };
-
-HRY_NS_END
+}

@@ -10,12 +10,11 @@
 
 #include "Hry/Events/Event.hpp"
 #include "Hry/Logger/Logger.hpp"
-#include "Hry/Namespace.hpp"
 #include "Hry/SCSSDK/ConfigurationData.hpp"
 #include "Hry/Utils/Signal.hpp"
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 struct InternalEventDispatcher
 {
     // system events
@@ -63,5 +62,4 @@ struct InternalEventDispatcher
         } config;
     } game;
 };
-
-HRY_NS_END
+}

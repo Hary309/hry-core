@@ -6,14 +6,12 @@
 
 #pragma once
 
-#include <type_traits>
-
-#include "Hry/Namespace.hpp"
-
 #include "Vec3.hpp"
 
-HRY_NS_BEGIN
+#include <type_traits>
 
+namespace hry
+{
 /**
  * @brief Orientation of object.
  */
@@ -69,56 +67,55 @@ struct PlacementD
     Vec3<double> position;
     Euler orientation;
 };
-
-HRY_NS_END
+}
 
 namespace fmt
 {
-    template<>
-    struct formatter<hry::Euler>
+template<>
+struct formatter<hry::Euler>
+{
+    template<typename ParseContext>
+    constexpr auto parse(ParseContext& ctx)
     {
-        template<typename ParseContext>
-        constexpr auto parse(ParseContext& ctx)
-        {
-            return ctx.begin();
-        }
+        return ctx.begin();
+    }
 
-        template<typename FormatContext>
-        auto format(hry::Euler const& vec, FormatContext& ctx)
-        {
-            return format_to(ctx.out(), "Euler: {{{}, {}, {}}}", vec.heading, vec.pitch, vec.roll);
-        }
-    };
-
-    template<>
-    struct formatter<hry::PlacementF>
+    template<typename FormatContext>
+    auto format(hry::Euler const& vec, FormatContext& ctx)
     {
-        template<typename ParseContext>
-        constexpr auto parse(ParseContext& ctx)
-        {
-            return ctx.begin();
-        }
+        return format_to(ctx.out(), "Euler: {{{}, {}, {}}}", vec.heading, vec.pitch, vec.roll);
+    }
+};
 
-        template<typename FormatContext>
-        auto format(hry::PlacementF const& vec, FormatContext& ctx)
-        {
-            return format_to(ctx.out(), "PlacementF: {{{}, {}}}", vec.position, vec.orientation);
-        }
-    };
-
-    template<>
-    struct formatter<hry::PlacementD>
+template<>
+struct formatter<hry::PlacementF>
+{
+    template<typename ParseContext>
+    constexpr auto parse(ParseContext& ctx)
     {
-        template<typename ParseContext>
-        constexpr auto parse(ParseContext& ctx)
-        {
-            return ctx.begin();
-        }
+        return ctx.begin();
+    }
 
-        template<typename FormatContext>
-        auto format(hry::PlacementD const& vec, FormatContext& ctx)
-        {
-            return format_to(ctx.out(), "PlacementD: {{{}, {}}}", vec.position, vec.orientation);
-        }
-    };
+    template<typename FormatContext>
+    auto format(hry::PlacementF const& vec, FormatContext& ctx)
+    {
+        return format_to(ctx.out(), "PlacementF: {{{}, {}}}", vec.position, vec.orientation);
+    }
+};
+
+template<>
+struct formatter<hry::PlacementD>
+{
+    template<typename ParseContext>
+    constexpr auto parse(ParseContext& ctx)
+    {
+        return ctx.begin();
+    }
+
+    template<typename FormatContext>
+    auto format(hry::PlacementD const& vec, FormatContext& ctx)
+    {
+        return format_to(ctx.out(), "PlacementD: {{{}, {}}}", vec.position, vec.orientation);
+    }
+};
 } // namespace fmt

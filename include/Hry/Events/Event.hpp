@@ -6,21 +6,20 @@
 
 #pragma once
 
-#include <cstdint>
-#include <optional>
-#include <variant>
-
-#include <guiddef.h>
-
 #include "Hry/Math/Vec2.hpp"
-#include "Hry/Namespace.hpp"
 #include "Hry/System/Joystick.hpp"
 #include "Hry/System/Keyboard.hpp"
 #include "Hry/System/Mouse.hpp"
 #include "Hry/System/System.hpp"
 
-HRY_NS_BEGIN
+#include <guiddef.h>
 
+#include <cstdint>
+#include <optional>
+#include <variant>
+
+namespace hry
+{
 /**
  * @brief Window resize event
  */
@@ -135,7 +134,7 @@ struct JoystickMoveEvent
 
 /**
  * @brief Joystick button event
- * 
+ *
  */
 struct JoystickButtonEvent
 {
@@ -192,5 +191,4 @@ struct FrameEndEvent
      */
     double deltaTime;
 };
-
-HRY_NS_END
+}

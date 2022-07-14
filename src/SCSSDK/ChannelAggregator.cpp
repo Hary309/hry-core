@@ -11,8 +11,8 @@
 #include "SCSSDK/Channels/TrailerChannelAggregator.hpp"
 #include "SCSSDK/Channels/TruckChannelAggregator.hpp"
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 ChannelAggregator::ChannelAggregator(InternalEventDispatcher& dispatcher)
     : _eventDispatcher(dispatcher)
 {
@@ -42,5 +42,4 @@ void ChannelAggregator::onSubstances(const std::optional<scs::Substances>&& subs
         _telemetry._substances.substances.clear();
     }
 }
-
-HRY_NS_END
+}

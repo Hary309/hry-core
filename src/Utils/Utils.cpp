@@ -6,12 +6,11 @@
 
 #include "Hry/Utils/Utils.hpp"
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 std::string HRY_API FormatGUID(const GUID& guid)
 {
     return fmt::format(
         "{{{:x}-{:x}-{:x}-{:x}}}", guid.Data1, guid.Data2, guid.Data3, fmt::join(guid.Data4, ""));
 }
-
-HRY_NS_END
+}

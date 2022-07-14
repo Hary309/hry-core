@@ -9,15 +9,14 @@
 #include <scssdk_telemetry.h>
 
 #include "Hry/Events/Event.hpp"
-#include "Hry/Namespace.hpp"
 #include "Hry/Utils/Timer.hpp"
 
 #include "Events/EventManager.hpp"
 
 #include "scssdk.h"
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 TelemetryEventProxy::TelemetryEventProxy(
     EventManager& eventMgr, scs_telemetry_init_params_v100_t* scsTelemetry)
     : EventProxyBase(eventMgr), _configuration(eventMgr, scsTelemetry),
@@ -76,5 +75,4 @@ void TelemetryEventProxy::ChangedState(
     }
     eventMgr->game.stateChangeSignal.call(GameStateEvent{ type });
 }
-
-HRY_NS_END
+}

@@ -13,15 +13,14 @@
 
 #include "Hry/Fonts.hpp"
 #include "Hry/KeyBinding/KeyBinds.hpp"
-#include "Hry/Namespace.hpp"
 #include "Hry/System/Keyboard.hpp"
 #include "Hry/System/Mouse.hpp"
 #include "Hry/Utils/Delegate.hpp"
 
 #include "Utils/InternalImGuiUtils.hpp"
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 bool TabButton(const char* text, bool active)
 {
     if (active)
@@ -139,5 +138,4 @@ void MainWindow::showMainWindowKeyBind(hry::ButtonState /*unused*/)
 
     _eventMgr.system.overlayStateChangeSignal.call({ _isWindowEnabled });
 }
-
-HRY_NS_END
+}

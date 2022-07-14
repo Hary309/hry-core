@@ -13,8 +13,8 @@
 #include "Hry/Config/ConfigFieldBase.hpp"
 #include "Hry/Utils/ImGuiUtils.hpp"
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 void TextField::imguiRender()
 {
     if (ImGui::InputText(_label.c_str(), &_dirtyValue))
@@ -37,5 +37,4 @@ void TextField::fromJson(const nlohmann::json& json)
         _dirtyValue = _value;
     }
 }
-
-HRY_NS_END
+}

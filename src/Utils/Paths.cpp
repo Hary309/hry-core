@@ -12,8 +12,8 @@
 
 namespace fs = std::filesystem;
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 void TryCreateDirectory(std::string_view path)
 {
     if (!fs::exists(path))
@@ -36,5 +36,4 @@ void Paths::Init()
     TryCreateDirectory(Paths::ConfigsPath);
     TryCreateDirectory(Paths::KeyBindsPath);
 }
-
-HRY_NS_END
+}

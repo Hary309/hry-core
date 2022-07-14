@@ -6,6 +6,18 @@
 
 #pragma once
 
+#include "BindableKeys.hpp"
+
+#include "Hry/Export.hpp"
+#include "Hry/System/Keyboard.hpp"
+#include "Hry/System/Mouse.hpp"
+#include "Hry/System/System.hpp"
+#include "Hry/Utils/Delegate.hpp"
+#include "Hry/Utils/TaskScheduler.hpp"
+
+#include <guiddef.h>
+#include <nlohmann/json_fwd.hpp>
+
 #include <algorithm>
 #include <chrono>
 #include <memory>
@@ -15,21 +27,8 @@
 #include <variant>
 #include <vector>
 
-#include <guiddef.h>
-#include <nlohmann/json_fwd.hpp>
-
-#include "Hry/Export.hpp"
-#include "Hry/Namespace.hpp"
-#include "Hry/System/Keyboard.hpp"
-#include "Hry/System/Mouse.hpp"
-#include "Hry/System/System.hpp"
-#include "Hry/Utils/Delegate.hpp"
-#include "Hry/Utils/TaskScheduler.hpp"
-
-#include "BindableKeys.hpp"
-
-HRY_NS_BEGIN
-
+namespace hry
+{
 class KeyBinds;
 class KeyBindsManager;
 class KeyBindsPage;
@@ -37,7 +36,7 @@ class KeyBindBuilder;
 
 /**
  * @brief Class for key binding
- * 
+ *
  */
 class KeyBind final
 {
@@ -74,13 +73,13 @@ public:
 
     /**
      * @brief Default key
-     * 
+     *
      * Null for not set
      */
     const BindableKey* defaultKey = nullptr;
     /**
      * @brief Current assign key
-     * 
+     *
      * Null for not set
      */
     const BindableKey* key = nullptr;
@@ -135,16 +134,16 @@ private:
 public:
     /**
      * @brief Construct a new Key Binds object with name
-     * 
+     *
      * Use KeyBindBuilder to create bind
-     * 
+     *
      * @param name Name is used to identify section of keybinds, and seperate from others
      */
     explicit KeyBinds(std::string name);
 
     /**
      * @brief Register keybind
-     * 
+     *
      * @param keyBind Keybind to register
      * @return Registered keybind
      */
@@ -157,7 +156,7 @@ public:
 
     /**
      * @brief Load keybinds from config file
-     * 
+     *
      * @return False if cannot open config file
      */
     bool loadFromFile();
@@ -209,7 +208,7 @@ public:
     /**
      * required
      * @brief Set the label, will be visible in menu
-     * 
+     *
      * @param label name to be displayed
      */
     KeyBindBuilder& setLabel(const std::string& label)
@@ -221,7 +220,7 @@ public:
     /**
      * optional
      * @brief Set description, will be shown next to the label in tooltip
-     * 
+     *
      * @param desc Description
      */
     KeyBindBuilder& setDescription(const std::string& desc)
@@ -233,7 +232,7 @@ public:
     /**
      * optional
      * @brief Set the Default Key
-     * 
+     *
      * @param key key to be default
      */
     KeyBindBuilder& setDefaultKey(BindableKey::Key_t key)
@@ -246,10 +245,10 @@ public:
     /**
      * optional
      * @brief set how this keybind can be triggered
-     * 
+     *
      * Default is Activator::Click
-     * 
-     * @param activator 
+     *
+     * @param activator
      */
     KeyBindBuilder& setActivator(KeyBind::Activator activator)
     {
@@ -260,7 +259,7 @@ public:
     /**
      * optional
      * @brief Set key press callback action
-     * 
+     *
      * @param callback Delegate to be invoke when key is pressed
      */
     KeyBindBuilder& setPressCallback(KeyBind::Delegate_t callback)
@@ -272,7 +271,7 @@ public:
     /**
      * optional
      * @brief Set key release callback action
-     * 
+     *
      * @param callback Delegate to be invoke when key is released
      */
     KeyBindBuilder& setReleaseCallback(KeyBind::Delegate_t callback)
@@ -284,7 +283,7 @@ public:
     /**
      * required
      * @brief Create the key bind, pass it to add method in KeyBinds
-     * 
+     *
      * @return Constructed keybind object
      */
     std::unique_ptr<KeyBind> build()
@@ -305,5 +304,4 @@ public:
         return std::unique_ptr<KeyBind>(keyBind);
     }
 };
-
-HRY_NS_END
+}

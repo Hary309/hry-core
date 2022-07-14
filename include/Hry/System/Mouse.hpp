@@ -6,10 +6,9 @@
 
 #pragma once
 
-#include "Hry/Namespace.hpp"
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 /**
  * @brief Mouse class
  */
@@ -41,10 +40,9 @@ struct Mouse
 
     /**
      * @brief Disables in game mouse movement
-     * 
+     *
      * @param disable Set true to disable in-game mouse
      */
     static void DisableInGameMouse(bool disable);
 };
-
-HRY_NS_END
+}

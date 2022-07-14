@@ -9,14 +9,13 @@
 #include <memory>
 #include <vector>
 
-#include "Hry/Namespace.hpp"
 #include "Hry/SCSSDK/Telemetry.hpp"
 
 #include "Events/InternalEventDispatcher.hpp"
 #include "SCSSDK/Channels/ChannelAggregatorBase.hpp"
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 class ChannelAggregatorBase;
 
 class ChannelAggregator
@@ -38,5 +37,4 @@ public:
 private:
     void onSubstances(const std::optional<scs::Substances>&&);
 };
-
-HRY_NS_END
+}

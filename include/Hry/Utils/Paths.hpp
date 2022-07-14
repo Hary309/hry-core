@@ -8,10 +8,9 @@
 
 #include <string>
 
-#include "Hry/Namespace.hpp"
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 class Core;
 
 /**
@@ -31,5 +30,4 @@ public:
 private:
     static void Init();
 };
-
-HRY_NS_END
+}

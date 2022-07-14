@@ -6,10 +6,9 @@
 
 #pragma once
 
-#include "Hry/Namespace.hpp"
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 class PageBase
 {
 public:
@@ -24,5 +23,4 @@ public:
 
     virtual void imguiRender() = 0;
 };
-
-HRY_NS_END
+}

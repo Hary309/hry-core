@@ -6,13 +6,12 @@
 
 #pragma once
 
-#include "Hry/Namespace.hpp"
 #include "Hry/SCSSDK/JobChannel.hpp"
 
 #include "ChannelAggregatorBase.hpp"
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 class JobChannelAggregator : public ChannelAggregatorBase
 {
 private:
@@ -22,5 +21,4 @@ public:
     JobChannelAggregator(
         scs::JobChannel& jobChannel, scs_telemetry_init_params_v100_t* scsTelemetry);
 };
-
-HRY_NS_END
+}

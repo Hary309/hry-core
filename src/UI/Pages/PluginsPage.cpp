@@ -18,8 +18,8 @@
 #include "Utils/Icons.hpp"
 #include "Utils/Windows.hpp"
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 bool ButtonColored(const char* txt, ImVec4 color, bool enabled = true)
 {
     ImGui::PushStyleColor(ImGuiCol_Button, color);
@@ -209,5 +209,4 @@ void PluginsPage::renderDetail()
 
     Markdown::Render(_selectedPlugin->desc);
 }
-
-HRY_NS_END
+}

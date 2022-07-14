@@ -9,7 +9,6 @@
 #include <common/scssdk_telemetry_common_gameplay_events.h>
 #include <scssdk_telemetry_event.h>
 
-#include "Hry/Namespace.hpp"
 #include "Hry/SCSSDK/GameplayData.hpp"
 
 #include "SCSSDK/AttribConverter.hpp"
@@ -18,8 +17,8 @@
 #include "Core.hpp"
 #include "GameplayDataConverters.hpp"
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 TelemetryGameplayProxy::TelemetryGameplayProxy(
     EventManager& eventMgr, scs_telemetry_init_params_v100_t* scsTelemetry)
     : _eventMgr(eventMgr), _jobCancelled(CreateConverter<JobCancelled>()),
@@ -112,5 +111,4 @@ void TelemetryGameplayProxy::Gameplay(
         }
     }
 }
-
-HRY_NS_END
+}

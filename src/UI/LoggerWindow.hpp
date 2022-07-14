@@ -10,12 +10,11 @@
 
 #include <imgui.h>
 
-#include "Hry/Namespace.hpp"
 
 #include "Events/InternalEventDispatcher.hpp"
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 class LoggerWindow
 {
     struct Line
@@ -46,5 +45,4 @@ private:
     static void renderLine(const Line& line);
     void onLog(const std::string& msg, Logger::Level level);
 };
-
-HRY_NS_END
+}

@@ -12,7 +12,6 @@
 #include "Hry/Config/Config.hpp"
 #include "Hry/GameType.hpp"
 #include "Hry/Logger/Logger.hpp"
-#include "Hry/Namespace.hpp"
 #include "Hry/SCSSDK/Telemetry.hpp"
 #include "Hry/Utils/Delegate.hpp"
 #include "Hry/Utils/Utils.hpp"
@@ -22,8 +21,8 @@
 
 #include "PluginInfo.hpp"
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 /**
  * @brief Base class for plugin
  */
@@ -65,7 +64,7 @@ public:
 
     /**
      * @brief Interface for general initialization
-     *        Is called as first 
+     *        Is called as first
      *
      * @param initParams Holds useful information
      *                   pointers are freed after destructor call
@@ -77,7 +76,7 @@ public:
     /**
      * @brief Interface for initalizing config
      *        Is called as third
-     * 
+     *
      * @param config Holds class for creating config
      */
     virtual void initConfig(Config* config) = 0;
@@ -85,7 +84,7 @@ public:
     /**
      * @brief Interface for initializing key bindings
      *        Is called as fourth
-     * 
+     *
      * @param keyBinds Holds class for creating key bindings
      */
     virtual void initKeyBinds(KeyBinds* keyBinds) = 0;
@@ -93,22 +92,21 @@ public:
     /**
      * @brief Interface for registering events
      *        Is called as second
-     * 
+     *
      * @param eventDispatcher Holds structure for registering for event calls
      */
     virtual void initEvents(EventDispatcher* eventDispatcher) = 0;
 
     /**
      * @brief Intarface for getting information about plugin
-     * 
+     *
      * @todo replace with manifest.json or sth
      *
      * @return reference for plugin info structure
      */
     [[nodiscard]] virtual const PluginInfo& getPluginInfo() const = 0;
 };
-
-HRY_NS_END
+}
 
 /**
  * @brief Simple macro for initializing plugin

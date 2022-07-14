@@ -6,10 +6,9 @@
 
 #pragma once
 
-#include "Hry/Namespace.hpp"
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 struct InternalImGuiUtils
 {
     // @enable: if true enable mouse input and show cursor
@@ -19,5 +18,4 @@ struct InternalImGuiUtils
 
     static void LoadFonts();
 };
-
-HRY_NS_END
+}

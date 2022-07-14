@@ -11,12 +11,11 @@
 #include <d3d11.h>
 #include <wrl/client.h>
 
-#include "Hry/Namespace.hpp"
 
 #include "RendererBase.hpp"
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 class Renderer;
 
 class D3D11RendererImpl : public RendererBase
@@ -47,5 +46,4 @@ private:
 
     void resize();
 };
-
-HRY_NS_END
+}

@@ -23,8 +23,8 @@
 #undef max
 #undef min
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 TelemetryConfigurationProxy::TelemetryConfigurationProxy(
     EventManager& eventMgr, scs_telemetry_init_params_v100_t* scsTelemetry)
     : _eventMgr(eventMgr), _substances(CreateConverter<scs::Substances>()),
@@ -125,5 +125,4 @@ void TelemetryConfigurationProxy::Configuration(
         }
     }
 }
-
-HRY_NS_END
+}

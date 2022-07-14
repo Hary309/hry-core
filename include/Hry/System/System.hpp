@@ -6,10 +6,9 @@
 
 #pragma once
 
-#include "Hry/Namespace.hpp"
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 /**
  * @brief Game's window resize types
  */
@@ -28,5 +27,4 @@ enum class ButtonState
     Pressed,
     Released
 };
-
-HRY_NS_END
+}

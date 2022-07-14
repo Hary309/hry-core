@@ -12,15 +12,14 @@
 #include <imgui_impl_dx11.h>
 #include <imgui_impl_win32.h>
 
-#include "Hry/Namespace.hpp"
 
 #include "Hooks/D3D11Hook.hpp"
 
 #include "Core.hpp"
 #include "Renderer.hpp"
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 D3D11RendererImpl::D3D11RendererImpl(Renderer& renderer, EventManager& eventMgr)
     : RendererBase(renderer, eventMgr)
 {
@@ -123,5 +122,4 @@ void D3D11RendererImpl::onResize(IDXGISwapChain* /*unused*/)
 {
     resize();
 }
-
-HRY_NS_END
+}

@@ -8,14 +8,13 @@
 
 #include <string>
 
-#include "Hry/Namespace.hpp"
 #include "Hry/Version.hpp"
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 /**
- * @brief Author information 
- * 
+ * @brief Author information
+ *
  */
 struct AuthorInfo final
 {
@@ -25,7 +24,7 @@ struct AuthorInfo final
 
 /**
  * @brief Plugin information
- * 
+ *
  */
 struct PluginInfo final
 {
@@ -40,5 +39,4 @@ struct PluginInfo final
 
     Version version;
 };
-
-HRY_NS_END
+}

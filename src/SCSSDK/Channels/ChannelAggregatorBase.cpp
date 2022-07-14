@@ -8,15 +8,14 @@
 
 #include <limits>
 
-#include "Hry/Namespace.hpp"
 
 #include "Core.hpp"
 #include "scssdk.h"
 
 #undef max
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 ChannelAggregatorBase::ChannelAggregatorBase(scs_telemetry_init_params_v100_t* scsTelemetry)
     : register_for_channel(scsTelemetry->register_for_channel),
       unregister_from_channel(scsTelemetry->unregister_from_channel)
@@ -39,5 +38,4 @@ void ChannelAggregatorBase::CheckForError(
         }
     }
 }
-
-HRY_NS_END
+}

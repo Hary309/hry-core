@@ -6,19 +6,18 @@
 
 #include "LoggerFactory.hpp"
 
-#include <filesystem>
-#include <fstream>
-#include <utility>
+#include "Hry/Logger/Logger.hpp"
 
 #include <fmt/chrono.h>
 #include <fmt/core.h>
 #include <fmt/format.h>
 
-#include "Hry/Logger/Logger.hpp"
-#include "Hry/Namespace.hpp"
+#include <filesystem>
+#include <fstream>
+#include <utility>
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 void LoggerFactory::Init(const std::string& logFilePath, EventManager& eventMgr)
 {
     _eventMgr = &eventMgr;
@@ -54,8 +53,7 @@ void LoggerFactory::WriteLine(Logger::Level level, std::string_view module, std:
 
     std::time_t t = std::time(nullptr);
 
-    auto buffer =
-        fmt::format("[{:%H:%M:%S}] [{}] [{}] {}", fmt::localtime(t), levelName, module, msg);
+    auto buffer = fmt::format("[{:%H:%M:%S}] [{}] [{}] {}", fmt::localtime(t), levelName, module, msg);
 
     logFile << buffer << std::endl;
 
@@ -66,5 +64,4 @@ std::unique_ptr<Logger> LoggerFactory::GetLogger(const char* moduleName)
 {
     return std::make_unique<Logger>(moduleName);
 }
-
-HRY_NS_END
+}

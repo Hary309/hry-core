@@ -9,10 +9,9 @@
 #include <imgui.h>
 
 #include "Hry/Fonts.hpp"
-#include "Hry/Namespace.hpp"
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 void InternalImGuiUtils::EnableCursor(bool enable)
 {
     auto& io = ImGui::GetIO();
@@ -96,5 +95,4 @@ void InternalImGuiUtils::LoadFonts()
     Fonts::OpenSans_Bold_18 =
         io.Fonts->AddFontFromFileTTF("plugins\\hry_assets\\OpenSans-Bold.ttf", 18.f);
 }
-
-HRY_NS_END
+}

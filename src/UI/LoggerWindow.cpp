@@ -10,8 +10,8 @@
 
 #include "imgui.h"
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 LoggerWindow::LoggerWindow(InternalEventDispatcher& dispatcher)
 {
     dispatcher.system.onLog.connect<&LoggerWindow::onLog>(this);
@@ -136,5 +136,4 @@ void LoggerWindow::onLog(const std::string& msg, Logger::Level level)
         _lines.emplace_back(Line{ msg, level });
     }
 }
-
-HRY_NS_END
+}

@@ -6,19 +6,19 @@
 
 #pragma once
 
+#include "Hry/Config/ConfigFieldBase.hpp"
+#include "Hry/Utils/ImGuiUtils.hpp"
+
+#include <imgui.h>
+#include <nlohmann/json.hpp>
+
 #include <cstdint>
 #include <string>
 #include <type_traits>
 #include <variant>
 
-#include <imgui.h>
-#include <nlohmann/json.hpp>
-
-#include "Hry/Config/ConfigFieldBase.hpp"
-#include "Hry/Utils/ImGuiUtils.hpp"
-
-HRY_NS_BEGIN
-
+namespace hry
+{
 template<typename, typename>
 class NumericFieldBuilder;
 
@@ -159,7 +159,7 @@ private:
 
 /**
  * @brief Use to create input number field
- * 
+ *
  * @tparam T Number type
  */
 template<typename T, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
@@ -194,7 +194,7 @@ public:
     /**
      * Select one
      * @brief Use simple input number field
-     * 
+     *
      * @param step How fast value should change
      * @param stepFast How fast value should change in fast mode
      */
@@ -206,7 +206,7 @@ public:
     /**
      * Select one
      * @brief Use simple input number field
-     * 
+     *
      * @param step How fast value should change
      * @param stepFast How fast value should change in fast mode
      * @param format Value formatting string (use C formatting)
@@ -220,7 +220,7 @@ public:
     /**
      * Select one
      * @brief Use drag number field
-     * 
+     *
      * @param speed Speed of changing value
      * @param min Minimum value
      * @param max Maximum value
@@ -233,7 +233,7 @@ public:
     /**
      * Select one
      * @brief Use drag number field
-     * 
+     *
      * @param speed Speed of changing value
      * @param min Minimum value
      * @param max Maximum value
@@ -248,7 +248,7 @@ public:
     /**
      * Select one
      * @brief Use slider number field
-     * 
+     *
      * @param min Minimum value
      * @param max Maximum value
      */
@@ -273,7 +273,7 @@ public:
 
     /**
      * @brief Create the config field, pass it to add method in Config
-     * 
+     *
      * @return Constructed config field
      */
     std::unique_ptr<ConfigFieldBase> build() const
@@ -290,5 +290,4 @@ public:
         return std::unique_ptr<ConfigFieldBase>(numericField);
     }
 };
-
-HRY_NS_END
+}

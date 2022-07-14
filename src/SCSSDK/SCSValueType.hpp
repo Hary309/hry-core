@@ -13,10 +13,9 @@
 #include <stdint.h>
 
 #include "Hry/Math/SCSTypes.hpp"
-#include "Hry/Namespace.hpp"
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 template<typename>
 struct SCSValueType
 {
@@ -97,5 +96,4 @@ struct SCSValueType<std::string>
 
 template<typename T>
 constexpr inline auto SCSValueType_v = SCSValueType<T>::Value;
-
-HRY_NS_END
+}

@@ -12,12 +12,11 @@
 #include <scssdk_value.h>
 
 #include "Hry/Math/SCSTypes.hpp"
-#include "Hry/Namespace.hpp"
 
 #include "SCSValueType.hpp"
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 template<typename T>
 using ValueAdapter_t = T (*)(const scs_value_t& param) noexcept;
 
@@ -169,5 +168,4 @@ auto CreateAdapter()
 
 template<typename T>
 inline constexpr auto HasAdapter_v = SCSValueType_v<T> != SCS_VALUE_TYPE_INVALID;
-
-HRY_NS_END
+}

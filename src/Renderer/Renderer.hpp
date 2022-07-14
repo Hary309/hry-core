@@ -8,12 +8,11 @@
 
 #include <memory>
 
-#include "Hry/Namespace.hpp"
 
 #include "RendererBase.hpp"
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 class Core;
 class D3D11RendererImpl;
 class OpenGLRendererImpl;
@@ -42,5 +41,4 @@ protected:
     void onRendererInit();
     void onRendererRenderImGui();
 };
-
-HRY_NS_END
+}

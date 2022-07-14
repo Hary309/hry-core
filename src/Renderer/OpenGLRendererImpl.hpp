@@ -8,12 +8,11 @@
 
 #include <Windows.h>
 
-#include "Hry/Namespace.hpp"
 
 #include "Renderer/RendererBase.hpp"
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 class Renderer;
 
 class OpenGLRendererImpl : public RendererBase
@@ -35,5 +34,4 @@ private:
     void onSwapBuffers();
     void onWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 };
-
-HRY_NS_END
+}

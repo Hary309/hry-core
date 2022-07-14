@@ -6,18 +6,17 @@
 
 #pragma once
 
-#include "Hry/Namespace.hpp"
+#include "Event.hpp"
+
 #include "Hry/SCSSDK/ConfigurationData.hpp"
 #include "Hry/SCSSDK/GameplayData.hpp"
 #include "Hry/Utils/Signal.hpp"
 
-#include "Event.hpp"
-
-HRY_NS_BEGIN
-
+namespace hry
+{
 /**
  * @brief Events possible to use in plugin
- * 
+ *
  */
 struct EventDispatcher
 {
@@ -70,7 +69,7 @@ struct EventDispatcher
 
         /**
          * @brief configuration callbacks
-         * 
+         *
          * Invoke when values are changed
          */
         struct
@@ -84,5 +83,4 @@ struct EventDispatcher
         } config;
     } game;
 };
-
-HRY_NS_END
+}

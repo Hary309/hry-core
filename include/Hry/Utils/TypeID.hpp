@@ -6,11 +6,11 @@
 
 #include "Hash.hpp"
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 /**
  * @brief Calculate unique type hash
- * 
+ *
  * @tparam T Type to calculate hash
  * @return Calculated hash
  */
@@ -23,5 +23,4 @@ constexpr Hash64_t TypeID() noexcept
     return FNV1a_64(__PRETTY_FUNCTION__);
 #endif
 }
-
-HRY_NS_END
+}

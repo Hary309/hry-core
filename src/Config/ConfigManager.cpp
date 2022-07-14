@@ -13,8 +13,8 @@
 
 #include "Core.hpp"
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 HryPtr<Config> ConfigManager::createConfig(const std::string& name)
 {
     auto* config = new Config(name);
@@ -51,5 +51,4 @@ void ConfigManager::configDeleter(Config* ptr)
     removeConfig(ptr);
     delete ptr;
 }
-
-HRY_NS_END
+}

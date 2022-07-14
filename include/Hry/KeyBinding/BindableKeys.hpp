@@ -6,18 +6,17 @@
 
 #pragma once
 
-#include <array>
-#include <string>
-#include <variant>
-
 #include "Hry/Export.hpp"
-#include "Hry/Namespace.hpp"
 #include "Hry/System/Joystick.hpp"
 #include "Hry/System/Keyboard.hpp"
 #include "Hry/System/Mouse.hpp"
 
-HRY_NS_BEGIN
+#include <array>
+#include <string>
+#include <variant>
 
+namespace hry
+{
 /**
  * @brief Struct for holding possible keys to bind
  */
@@ -25,9 +24,9 @@ struct BindableKey final
 {
     /**
      * @brief Possible bindable key type
-     * 
+     *
      * Possible to bind are:
-     * - Keyboard keys 
+     * - Keyboard keys
      * - Mouse buttons
      * - Joystick buttons
      */
@@ -44,7 +43,7 @@ struct BindableKey final
 
     /**
      * @brief Check if structure hold specified bindable key type
-     * 
+     *
      * @tparam T Bindable key type in Key_t
      * @return true if has
      */
@@ -57,12 +56,11 @@ struct BindableKey final
 
 /**
  * @brief Get the Bindable Key for specified key
- * 
+ *
  * Returned keys will never be nullptr
- * 
+ *
  * @param key Key to convert to bindable key
  * @return Bindable key, nullptr if not found
  */
 HRY_API const BindableKey* GetBindableKey(BindableKey::Key_t key);
-
-HRY_NS_END
+}

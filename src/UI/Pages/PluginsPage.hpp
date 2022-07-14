@@ -15,8 +15,8 @@
 
 #include "PageBase.hpp"
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 class PluginsPage : public PageBase
 {
 private:
@@ -33,5 +33,4 @@ private:
     void renderList();
     void renderDetail();
 };
-
-HRY_NS_END
+}

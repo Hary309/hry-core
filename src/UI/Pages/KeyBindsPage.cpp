@@ -14,8 +14,8 @@
 
 #include "Utils/InternalImGuiUtils.hpp"
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 KeyBindsPage::KeyBindsPage(KeyBindsManager& keyBindsMgr, InternalEventDispatcher& dispatcher)
     : _keyBindsMgr(keyBindsMgr)
 {
@@ -116,7 +116,7 @@ void KeyBindsPage::handleKeyPress(const KeyboardEvent&& keyboardEvent)
     if (_keyToSetBind != nullptr)
     {
         auto newKey = GetBindableKey(keyboardEvent.key);
-            
+
         if (newKey)
         {
             _keyToSetBind->key = newKey;
@@ -162,5 +162,4 @@ void KeyBindsPage::applyChanges()
     InternalImGuiUtils::EnableCursor(true);
     _keyBindsMgr.saveAll();
 }
-
-HRY_NS_END
+}

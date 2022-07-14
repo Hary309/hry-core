@@ -11,15 +11,14 @@
 
 #include <Windows.h>
 
-#include "Hry/Namespace.hpp"
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 /**
  * @brief Write data to any memory address with specified size
  *
  * Function unprotects memory, so it writes to any address
- * 
+ *
  * @tparam T Target type
  * @tparam U Data type
  * @param target Pointer to data, which will be filled with \p data
@@ -41,7 +40,7 @@ void WriteMemory(T* target, U data, const size_t size)
 
 /**
  * @brief Write data to any memory address
- * 
+ *
  * @tparam T Target type
  * @tparam U Data type
  * @param target Pointer to data, which will be filled with \p data
@@ -55,14 +54,13 @@ void WriteMemory(T* target, U data)
 
 /**
  * @brief Get the base address
- * 
+ *
  * Useful for fixed pointer but not recommended!
- * 
- * @return Base address of game 
+ *
+ * @return Base address of game
  */
 inline uintptr_t GetBaseAddress()
 {
     return reinterpret_cast<uintptr_t>(GetModuleHandle(nullptr)) - 0x140000000;
 }
-
-HRY_NS_END
+}

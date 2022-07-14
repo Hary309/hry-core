@@ -9,15 +9,14 @@
 #pragma once
 #include <cstdint>
 
-#include "Hry/Namespace.hpp"
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 using Hash64_t = uint64_t;
 
 /**
  * @brief Calculate hash from passed string iterator
- * 
+ *
  * @tparam InputIt string interator type
  * @param begin string itertator
  * @return Calculated hash
@@ -36,5 +35,4 @@ constexpr Hash64_t FNV1a_64(InputIt begin) noexcept
 
     return value;
 }
-
-HRY_NS_END
+}
