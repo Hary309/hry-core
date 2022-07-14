@@ -46,9 +46,3 @@ target_include_directories(hry-core PRIVATE src vendor/scs_sdk/include
 
 target_link_libraries(hry-core PUBLIC fmt::fmt-header-only)
 target_link_libraries(hry-core PRIVATE imgui glad minhook)
-
-# example
-project(hry-example VERSION 1.0.0)
-
-add_library(hry-example SHARED example/example.hpp example/example.cpp)
-target_link_libraries(hry-example PRIVATE hry-core)
