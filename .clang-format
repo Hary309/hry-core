@@ -1,6 +1,7 @@
-BasedOnStyle: Microsoft
 Language: Cpp
+IndentWidth: 4
 Standard: c++17
+FixNamespaceComments: false
 AlignAfterOpenBracket: AlwaysBreak
 AlignConsecutiveAssignments: false
 AlignConsecutiveBitFields: false
@@ -10,7 +11,7 @@ AlignEscapedNewlines: Right
 AlignOperands: Align
 AllowAllArgumentsOnNextLine: true
 AllowAllConstructorInitializersOnNextLine: false
-AllowAllParametersOfDeclarationOnNextLine: true
+AllowAllParametersOfDeclarationOnNextLine: false
 AllowShortBlocksOnASingleLine: Never
 AllowShortCaseLabelsOnASingleLine: true
 AllowShortEnumsOnASingleLine: false
@@ -21,7 +22,7 @@ AllowShortLoopsOnASingleLine: false
 AlwaysBreakAfterReturnType: None
 AlwaysBreakBeforeMultilineStrings: false
 AlwaysBreakTemplateDeclarations: Yes
-BinPackArguments: true
+BinPackArguments: false
 BinPackParameters: false
 BreakBeforeBraces: Custom
 BraceWrapping:
@@ -44,12 +45,11 @@ BraceWrapping:
   SplitEmptyNamespace: true
 BreakBeforeBinaryOperators: None
 BreakBeforeTernaryOperators: false
-BreakConstructorInitializers: BeforeColon
-BreakInheritanceList: BeforeColon
+BreakConstructorInitializers: BeforeComma
+BreakInheritanceList: BeforeComma
 BreakStringLiterals: true
 ConstructorInitializerAllOnOneLineOrOnePerLine: false
 Cpp11BracedListStyle: false
-FixNamespaceComments: true
 IndentCaseBlocks: false
 IndentCaseLabels: true
 IndentExternBlock: AfterExternBlock
@@ -58,7 +58,6 @@ IndentPPDirectives: AfterHash
 IndentWrappedFunctionNames: true
 KeepEmptyLinesAtTheStartOfBlocks: false
 MaxEmptyLinesToKeep: 1
-NamespaceIndentation: All
 PointerAlignment: Left
 ReflowComments: false
 SortIncludes: true
@@ -79,22 +78,22 @@ SpacesInConditionalStatement: false
 SpacesInParentheses: false
 SpacesInSquareBrackets: false
 UseTab: Never
-ColumnLimit: 100
+ColumnLimit: 0
 AccessModifierOffset: -4
-IncludeBlocks: Regroup
+IncludeBlocks: Preserve
 IncludeCategories:
   # Headers in <> without extension
   - Regex: '<([A-Za-z0-9\/-_])+>'
-    Priority: 1
+    Priority: 5
   # Headers with Hry/
   - Regex: "Hry/.*"
     Priority: 3
   # Headers in <> with extension
   - Regex: '\<.*\>'
-    Priority: 2
+    Priority: 4
   # Headers with /
   - Regex: ".*/.*"
-    Priority: 4
+    Priority: 2
   # Anything else
   - Regex: ".*"
-    Priority: 5
+    Priority: 1

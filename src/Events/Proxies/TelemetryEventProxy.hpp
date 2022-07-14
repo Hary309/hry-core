@@ -6,12 +6,11 @@
 
 #pragma once
 
-#include <scssdk_telemetry.h>
-
-
 #include "Events/EventProxyBase.hpp"
 #include "Events/Proxies/Telemetry/TelemetryConfigurationProxy.hpp"
 #include "Events/Proxies/Telemetry/TelemetryGameplayProxy.hpp"
+
+#include <scssdk_telemetry.h>
 
 namespace hry
 {

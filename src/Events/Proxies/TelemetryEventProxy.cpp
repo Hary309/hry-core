@@ -6,21 +6,21 @@
 
 #include "TelemetryEventProxy.hpp"
 
-#include <scssdk_telemetry.h>
+#include "scssdk.h"
+
+#include "Events/EventManager.hpp"
 
 #include "Hry/Events/Event.hpp"
 #include "Hry/Utils/Timer.hpp"
 
-#include "Events/EventManager.hpp"
-
-#include "scssdk.h"
+#include <scssdk_telemetry.h>
 
 namespace hry
 {
-TelemetryEventProxy::TelemetryEventProxy(
-    EventManager& eventMgr, scs_telemetry_init_params_v100_t* scsTelemetry)
-    : EventProxyBase(eventMgr), _configuration(eventMgr, scsTelemetry),
-      _gameplay(eventMgr, scsTelemetry)
+TelemetryEventProxy::TelemetryEventProxy(EventManager& eventMgr, scs_telemetry_init_params_v100_t* scsTelemetry)
+    : EventProxyBase(eventMgr)
+    , _configuration(eventMgr, scsTelemetry)
+    , _gameplay(eventMgr, scsTelemetry)
 {
     scsTelemetry->register_for_event(
         SCS_TELEMETRY_EVENT_frame_start, TelemetryEventProxy::FrameStart, &eventMgr);

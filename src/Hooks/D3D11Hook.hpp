@@ -6,15 +6,14 @@
 
 #pragma once
 
-#include <cstdint>
+#include "Hry/Utils/Delegate.hpp"
 
 #include <windows.h>
 
-#include "Hry/Utils/Delegate.hpp"
+#include <cstdint>
 
 struct IDXGISwapChain;
 struct ID3D11Device;
-
 
 namespace hry
 {

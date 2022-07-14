@@ -48,7 +48,9 @@ public:
      * @param moduleName Name to identify log message
      */
     explicit Logger(std::string moduleName)
-        : _moduleName(std::move(moduleName)) {}
+        : _moduleName(std::move(moduleName))
+    {
+    }
 
     /**
      * @brief Write log message

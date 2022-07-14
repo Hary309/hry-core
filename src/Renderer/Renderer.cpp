@@ -6,20 +6,21 @@
 
 #include "Renderer.hpp"
 
-#include <cstdio>
-#include <memory>
-
-#include <imgui.h>
-
-#include "Hry/Utils/Utils.hpp"
-
 #include "Core.hpp"
 #include "D3D11RendererImpl.hpp"
 #include "OpenGLRendererImpl.hpp"
 
+#include "Hry/Utils/Utils.hpp"
+
+#include <imgui.h>
+
+#include <cstdio>
+#include <memory>
+
 namespace hry
 {
-Renderer::Renderer(Core& core, EventManager& eventMgr) : _core(core)
+Renderer::Renderer(Core& core, EventManager& eventMgr)
+    : _core(core)
 {
     ImGui::CreateContext();
 

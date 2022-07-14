@@ -6,11 +6,11 @@
 
 #pragma once
 
-#include <common/scssdk_telemetry_common_gameplay_events.h>
+#include "SCSSDK/AttribConverter.hpp"
 
 #include "Hry/SCSSDK/GameplayData.hpp"
 
-#include "SCSSDK/AttribConverter.hpp"
+#include <common/scssdk_telemetry_common_gameplay_events.h>
 
 namespace hry
 {

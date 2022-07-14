@@ -6,9 +6,9 @@
 
 #pragma once
 
-#include "Hry/SCSSDK/CommonChannel.hpp"
-
 #include "ChannelAggregatorBase.hpp"
+
+#include "Hry/SCSSDK/CommonChannel.hpp"
 
 namespace hry
 {
@@ -18,7 +18,6 @@ private:
     scs::CommonChannel& _common;
 
 public:
-    CommonChannelAggregator(
-        scs::CommonChannel& commonChannel, scs_telemetry_init_params_v100_t* scsTelemetry);
+    CommonChannelAggregator(scs::CommonChannel& commonChannel, scs_telemetry_init_params_v100_t* scsTelemetry);
 };
 }

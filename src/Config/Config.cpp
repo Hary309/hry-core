@@ -6,24 +6,26 @@
 
 #include "Hry/Config/Config.hpp"
 
-#include <filesystem>
-
-#include <imgui.h>
-#include <nlohmann/json.hpp>
-
-#include "Hry/Config/ConfigFieldBase.hpp"
-#include "Hry/Utils/Paths.hpp"
+#include "Core.hpp"
 
 #include "Renderer/Renderer.hpp"
 #include "Utils/Icons.hpp"
 
-#include "Core.hpp"
+#include "Hry/Config/ConfigFieldBase.hpp"
+#include "Hry/Utils/Paths.hpp"
+
+#include <imgui.h>
+#include <nlohmann/json.hpp>
+
+#include <filesystem>
+
 
 namespace fs = std::filesystem;
 
 namespace hry
 {
-Config::Config(std::string name) : _name(std::move(name))
+Config::Config(std::string name)
+    : _name(std::move(name))
 {
     _configFilePath = fmt::format("{}\\{}.json", Paths::ConfigsPath, _name);
 }

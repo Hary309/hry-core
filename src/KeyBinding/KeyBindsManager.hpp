@@ -6,10 +6,7 @@
 
 #pragma once
 
-#include <chrono>
-#include <functional>
-#include <memory>
-#include <vector>
+#include "Events/EventManager.hpp"
 
 #include "Hry/Events/Event.hpp"
 #include "Hry/Events/EventDispatcher.hpp"
@@ -20,7 +17,10 @@
 #include "Hry/Utils/TaskScheduler.hpp"
 #include "Hry/Utils/Utils.hpp"
 
-#include "Events/EventManager.hpp"
+#include <chrono>
+#include <functional>
+#include <memory>
+#include <vector>
 
 namespace hry
 {

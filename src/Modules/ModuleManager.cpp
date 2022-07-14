@@ -6,24 +6,24 @@
 
 #include "ModuleManager.hpp"
 
-#include <algorithm>
-#include <filesystem>
-#include <fstream>
-#include <memory>
+#include "Core.hpp"
+
+#include "Logger/LoggerFactory.hpp"
+#include "Modules/Module.hpp"
+
+#include "Hry/Events/EventDispatcher.hpp"
+#include "Hry/Utils/Paths.hpp"
+#include "Hry/Version.hpp"
 
 #include <Windows.h>
 #include <fmt/format.h>
 #include <imgui.h>
 #include <nlohmann/json.hpp>
 
-#include "Hry/Events/EventDispatcher.hpp"
-#include "Hry/Utils/Paths.hpp"
-#include "Hry/Version.hpp"
-
-#include "Logger/LoggerFactory.hpp"
-#include "Modules/Module.hpp"
-
-#include "Core.hpp"
+#include <algorithm>
+#include <filesystem>
+#include <fstream>
+#include <memory>
 
 namespace fs = std::filesystem;
 
@@ -37,12 +37,11 @@ inline bool IsApiCompatible(Version version)
     return version.major == ApiVersion.major;
 }
 
-ModuleManager::ModuleManager(
-    EventManager& eventMgr,
-    ConfigManager& configMgr,
-    KeyBindsManager& keyBindsMgr,
-    const Telemetry& telemetry)
-    : _eventMgr(eventMgr), _configMgr(configMgr), _keyBindsMgr(keyBindsMgr), _telemetry(telemetry)
+ModuleManager::ModuleManager(EventManager& eventMgr, ConfigManager& configMgr, KeyBindsManager& keyBindsMgr, const Telemetry& telemetry)
+    : _eventMgr(eventMgr)
+    , _configMgr(configMgr)
+    , _keyBindsMgr(keyBindsMgr)
+    , _telemetry(telemetry)
 {
 }
 

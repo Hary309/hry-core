@@ -6,10 +6,9 @@
 
 #pragma once
 
-#include <cstdint>
-
 #include <imgui.h>
 
+#include <cstdint>
 
 namespace hry
 {
@@ -98,7 +97,6 @@ struct ImGuiDataType<double>
 {
     static constexpr int Value = ImGuiDataType_Double;
 };
-
 
 /**
  * @brief Converts type to Dear ImGui data type

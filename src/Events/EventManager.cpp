@@ -6,13 +6,12 @@
 
 #include "EventManager.hpp"
 
+#include "Core.hpp"
 
 #include "Events/Proxies/TelemetryEventProxy.hpp"
 #include "Proxies/DInput8EventProxy.hpp"
 #include "Proxies/TelemetryEventProxy.hpp"
 #include "Proxies/WndProcEventProxy.hpp"
-
-#include "Core.hpp"
 
 namespace hry
 {

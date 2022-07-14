@@ -7,14 +7,14 @@
 
 #pragma once
 
-#include <array>
-#include <memory>
-
 #include "Hry/SCSSDK/CommonChannel.hpp"
 #include "Hry/SCSSDK/ConfigurationData.hpp"
 #include "Hry/SCSSDK/JobChannel.hpp"
 #include "Hry/SCSSDK/TrailerChannel.hpp"
 #include "Hry/SCSSDK/TruckChannel.hpp"
+
+#include <array>
+#include <memory>
 
 namespace hry
 {
@@ -38,8 +38,9 @@ private:
 
 private:
     Telemetry()
-        : _truck(std::make_unique<scs::TruckChannel>()), _job(std::make_unique<scs::JobChannel>()),
-          _common(std::make_unique<scs::CommonChannel>())
+        : _truck(std::make_unique<scs::TruckChannel>())
+        , _job(std::make_unique<scs::JobChannel>())
+        , _common(std::make_unique<scs::CommonChannel>())
     {
         for (int i = 0; i < Telemetry::MaxTrailerCount; ++i)
         {

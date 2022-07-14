@@ -6,10 +6,10 @@
 
 #pragma once
 
+#include "Hry/Export.hpp"
+
 #include <cstdint>
 #include <type_traits>
-
-#include "Hry/Export.hpp"
 
 namespace hry
 {
@@ -87,8 +87,8 @@ public:
      */
     template<typename Function>
     Detour(Function target, Function detour)
-        : _target(reinterpret_cast<uintptr_t*>(target)),
-          _detour(reinterpret_cast<uintptr_t*>(detour))
+        : _target(reinterpret_cast<uintptr_t*>(target))
+        , _detour(reinterpret_cast<uintptr_t*>(detour))
     {
     }
 

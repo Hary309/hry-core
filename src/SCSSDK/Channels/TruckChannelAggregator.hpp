@@ -6,13 +6,13 @@
 
 #pragma once
 
-#include "Hry/Events/Event.hpp"
-#include "Hry/SCSSDK/ConfigurationData.hpp"
-#include "Hry/SCSSDK/TruckChannel.hpp"
+#include "ChannelAggregatorBase.hpp"
 
 #include "Events/EventManager.hpp"
 
-#include "ChannelAggregatorBase.hpp"
+#include "Hry/Events/Event.hpp"
+#include "Hry/SCSSDK/ConfigurationData.hpp"
+#include "Hry/SCSSDK/TruckChannel.hpp"
 
 namespace hry
 {
@@ -25,10 +25,7 @@ private:
     uint32_t _wheelCount = 0;
 
 public:
-    TruckChannelAggregator(
-        scs::TruckChannel& truckChannel,
-        scs_telemetry_init_params_v100_t* scsTelemetry,
-        InternalEventDispatcher& dispatcher);
+    TruckChannelAggregator(scs::TruckChannel& truckChannel, scs_telemetry_init_params_v100_t* scsTelemetry, InternalEventDispatcher& dispatcher);
 
 private:
     void onTruckConfig(const std::optional<scs::Truck>&& truck);

@@ -6,13 +6,12 @@
 
 #include "Hry/Logger/Logger.hpp"
 
-
 #include "Logger/LoggerFactory.hpp"
 
 namespace hry
 {
-    void Logger::log(Level level, std::string_view msg)
-    {
-        LoggerFactory::WriteLine(level, _moduleName, msg);
-    }
-} // namespace hry
+void Logger::log(Level level, std::string_view msg)
+{
+    LoggerFactory::WriteLine(level, _moduleName, msg);
+}
+}

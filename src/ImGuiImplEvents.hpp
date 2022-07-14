@@ -6,11 +6,11 @@
 
 #pragma once
 
+#include "Events/EventManager.hpp"
+
 #include "Hry/Events/Event.hpp"
 #include "Hry/Events/EventDispatcher.hpp"
 #include "Hry/Utils/Signal.hpp"
-
-#include "Events/EventManager.hpp"
 
 namespace hry
 {
@@ -18,7 +18,7 @@ namespace hry
 class ImGuiImplEvents
 {
 public:
-    ImGuiImplEvents(InternalEventDispatcher& dispatcher);
+    explicit ImGuiImplEvents(InternalEventDispatcher& dispatcher);
 
 private:
     static void OnOverlayStateChange(const OverlayStateEvent&&);

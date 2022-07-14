@@ -6,7 +6,6 @@
 
 #include "Hry/System//Mouse.hpp"
 
-
 #include "Hooks/DInput8Hook.hpp"
 
 namespace hry

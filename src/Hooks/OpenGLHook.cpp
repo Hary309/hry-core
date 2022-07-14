@@ -6,15 +6,15 @@
 
 #include "OpenGLHook.hpp"
 
-#include <memory>
-
-#include <Windows.h>
-#include <gl/GL.h>
+#include "Core.hpp"
 
 #include "Hry/Memory/Detour.hpp"
 #include "Hry/Utils/Utils.hpp"
 
-#include "Core.hpp"
+#include <Windows.h>
+#include <gl/GL.h>
+
+#include <memory>
 
 namespace hry
 {
@@ -114,7 +114,6 @@ bool OpenGLHook::Install()
         Core::Logger->error("Cannot enable hook for wglSwapBuffers!");
         return false;
     }
-
 
     return true;
 }

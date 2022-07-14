@@ -233,4 +233,4 @@ GameType Core::DetermineGameType(const char* gameID)
 
     return GameType::Unknown;
 }
-} // namespace hry
+}

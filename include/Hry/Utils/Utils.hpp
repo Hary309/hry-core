@@ -6,14 +6,14 @@
 
 #pragma once
 
-#include <filesystem>
-#include <memory>
+#include "Hry/Export.hpp"
+#include "Hry/Utils/Delegate.hpp"
 
 #include <fmt/format.h>
 #include <guiddef.h>
 
-#include "Hry/Export.hpp"
-#include "Hry/Utils/Delegate.hpp"
+#include <filesystem>
+#include <memory>
 
 namespace hry
 {
@@ -42,21 +42,20 @@ HRY_API std::string FormatGUID(const GUID& guid);
 
 namespace fmt
 {
-    template<>
-    struct formatter<GUID>
+template<>
+struct formatter<GUID>
+{
+    template<typename ParseContext>
+    constexpr auto parse(ParseContext& ctx)
     {
-        template<typename ParseContext>
-        constexpr auto parse(ParseContext& ctx)
-        {
-            return ctx.begin();
-        }
+        return ctx.begin();
+    }
 
-        template<typename FormatContext>
-        auto format(GUID const& guid, FormatContext& ctx)
-        {
-            return format_to(
-                ctx.out(), "{{{:x}-{:x}-{:x}-{:x}}}", guid.Data1, guid.Data2, guid.Data3,
-                fmt::join(guid.Data4, ""));
-        }
-    };
-} // namespace fmt
+    template<typename FormatContext>
+    auto format(GUID const& guid, FormatContext& ctx)
+    {
+        return format_to(
+            ctx.out(), "{{{:x}-{:x}-{:x}-{:x}}}", guid.Data1, guid.Data2, guid.Data3, fmt::join(guid.Data4, ""));
+    }
+};
+}

@@ -6,7 +6,6 @@
 
 #pragma once
 
-
 namespace hry
 {
 /**
@@ -15,8 +14,8 @@ namespace hry
  * @param member pointer to class' member
  * @return Offset of member
  */
-template <typename T, typename Class>
-size_t OffsetOf(T Class::* member)
+template<typename T, typename Class>
+size_t OffsetOf(T Class::*member)
 {
     return reinterpret_cast<size_t>(&(reinterpret_cast<Class*>(0)->*member));
 }

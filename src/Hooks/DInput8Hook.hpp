@@ -6,13 +6,13 @@
 
 #pragma once
 
-#include <cstdint>
-#include <vector>
+#include "Hry/System/Joystick.hpp"
+#include "Hry/Utils/Delegate.hpp"
 
 #include <guiddef.h>
 
-#include "Hry/System/Joystick.hpp"
-#include "Hry/Utils/Delegate.hpp"
+#include <cstdint>
+#include <vector>
 
 struct DIDEVICEOBJECTDATA;
 

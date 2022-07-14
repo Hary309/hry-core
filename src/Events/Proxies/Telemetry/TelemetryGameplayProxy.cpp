@@ -6,26 +6,28 @@
 
 #include "TelemetryGameplayProxy.hpp"
 
-#include <common/scssdk_telemetry_common_gameplay_events.h>
-#include <scssdk_telemetry_event.h>
-
-#include "Hry/SCSSDK/GameplayData.hpp"
+#include "Core.hpp"
+#include "GameplayDataConverters.hpp"
 
 #include "SCSSDK/AttribConverter.hpp"
 #include "SCSSDK/SCSValueType.hpp"
 
-#include "Core.hpp"
-#include "GameplayDataConverters.hpp"
+#include "Hry/SCSSDK/GameplayData.hpp"
+
+#include <common/scssdk_telemetry_common_gameplay_events.h>
+#include <scssdk_telemetry_event.h>
 
 namespace hry
 {
 TelemetryGameplayProxy::TelemetryGameplayProxy(
     EventManager& eventMgr, scs_telemetry_init_params_v100_t* scsTelemetry)
-    : _eventMgr(eventMgr), _jobCancelled(CreateConverter<JobCancelled>()),
-      _jobDelivered(CreateConverter<JobDelivered>()), _playerFined(CreateConverter<PlayerFined>()),
-      _playerTollgatePaid(CreateConverter<PlayerTollgatePaid>()),
-      _playerUseFerry(CreateConverter<PlayerUseFerry>()),
-      _playerUseTrain(CreateConverter<PlayerUseTrain>())
+    : _eventMgr(eventMgr)
+    , _jobCancelled(CreateConverter<JobCancelled>())
+    , _jobDelivered(CreateConverter<JobDelivered>())
+    , _playerFined(CreateConverter<PlayerFined>())
+    , _playerTollgatePaid(CreateConverter<PlayerTollgatePaid>())
+    , _playerUseFerry(CreateConverter<PlayerUseFerry>())
+    , _playerUseTrain(CreateConverter<PlayerUseTrain>())
 {
     scsTelemetry->register_for_event(
         SCS_TELEMETRY_EVENT_gameplay, TelemetryGameplayProxy::Gameplay, this);

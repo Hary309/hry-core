@@ -21,14 +21,10 @@ ChannelAggregator::ChannelAggregator(InternalEventDispatcher& dispatcher)
 
 void ChannelAggregator::init(scs_telemetry_init_params_v100_t* scsTelemetry)
 {
-    _channelAggregators.push_back(std::unique_ptr<ChannelAggregatorBase>(
-        new TruckChannelAggregator(*_telemetry._truck, scsTelemetry, _eventDispatcher)));
-    _channelAggregators.push_back(std::unique_ptr<ChannelAggregatorBase>(
-        new TrailerChannelAggregator(_telemetry._trailers, scsTelemetry, _eventDispatcher)));
-    _channelAggregators.push_back(std::unique_ptr<ChannelAggregatorBase>(
-        new JobChannelAggregator(*_telemetry._job, scsTelemetry)));
-    _channelAggregators.push_back(std::unique_ptr<ChannelAggregatorBase>(
-        new CommonChannelAggregator(*_telemetry._common, scsTelemetry)));
+    _channelAggregators.push_back(std::unique_ptr<ChannelAggregatorBase>(new TruckChannelAggregator(*_telemetry._truck, scsTelemetry, _eventDispatcher)));
+    _channelAggregators.push_back(std::unique_ptr<ChannelAggregatorBase>(new TrailerChannelAggregator(_telemetry._trailers, scsTelemetry, _eventDispatcher)));
+    _channelAggregators.push_back(std::unique_ptr<ChannelAggregatorBase>(new JobChannelAggregator(*_telemetry._job, scsTelemetry)));
+    _channelAggregators.push_back(std::unique_ptr<ChannelAggregatorBase>(new CommonChannelAggregator(*_telemetry._common, scsTelemetry)));
 }
 
 void ChannelAggregator::onSubstances(const std::optional<scs::Substances>&& substances)

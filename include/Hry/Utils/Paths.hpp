@@ -8,7 +8,6 @@
 
 #include <string>
 
-
 namespace hry
 {
 class Core;

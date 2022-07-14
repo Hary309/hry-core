@@ -9,17 +9,17 @@
 #define COBJMACROS
 #define CINTERFACE
 
-#include <cstdio>
-#include <memory>
-#include <vector>
-
-#include <dinput.h>
-#include <windows.h>
+#include "Core.hpp"
 
 #include "Hry/Memory/Detour.hpp"
 #include "Hry/Memory/Hooking.hpp"
 
-#include "Core.hpp"
+#include <dinput.h>
+#include <windows.h>
+
+#include <cstdio>
+#include <memory>
+#include <vector>
 
 const GUID IID_IDirectInput8W{
     0xbf798031, 0x483a, 0x4da2, { 0xaa, 0x99, 0x5d, 0x64, 0xed, 0x36, 0x97, 0x00 }

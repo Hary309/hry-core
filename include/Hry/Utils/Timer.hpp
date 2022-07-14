@@ -8,7 +8,6 @@
 
 #include <chrono>
 
-
 namespace hry
 {
 /**
@@ -30,7 +29,10 @@ public:
     /**
      * @brief Construct a new Timer object
      */
-    Timer() : _start(Clock_t::now()) {}
+    Timer()
+        : _start(Clock_t::now())
+    {
+    }
 
     /**
      * @brief Reset timer

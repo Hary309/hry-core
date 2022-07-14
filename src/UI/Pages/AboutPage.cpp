@@ -6,7 +6,12 @@
 
 #include "AboutPage.hpp"
 
-#include <string_view>
+#include "UI/Markdown.hpp"
+#include "Utils/Icons.hpp"
+
+#include "Hry/Colors.hpp"
+#include "Hry/Fonts.hpp"
+#include "Hry/Version.hpp"
 
 #include <Windows.h>
 #include <fmt/compile.h>
@@ -14,12 +19,7 @@
 #include <imgui.h>
 #include <shellapi.h>
 
-#include "Hry/Colors.hpp"
-#include "Hry/Fonts.hpp"
-#include "Hry/Version.hpp"
-
-#include "UI/Markdown.hpp"
-#include "Utils/Icons.hpp"
+#include <string_view>
 
 namespace hry
 {
@@ -42,32 +42,23 @@ void AboutPage::imguiRender()
 
     ImGui::Columns(3, "AboutPage##Columns", false);
 
-    if (ImGui::Button(
-            fmt::format(FMT_COMPILE("Buy me a Coffee {}"), Icons::ExternalLink).c_str(),
-            { -1, 24 }))
+    if (ImGui::Button(fmt::format(FMT_COMPILE("Buy me a Coffee {}"), Icons::ExternalLink).c_str(), { -1, 24 }))
     {
-        ShellExecuteA(
-            nullptr, "open", "https://ko-fi.com/hary309", nullptr, nullptr, SW_SHOWNORMAL);
+        ShellExecuteA(nullptr, "open", "https://ko-fi.com/hary309", nullptr, nullptr, SW_SHOWNORMAL);
     }
 
     ImGui::NextColumn();
 
-    if (ImGui::Button(
-            fmt::format(FMT_COMPILE("Website {}"), Icons::ExternalLink).c_str(), { -1, 24 }))
+    if (ImGui::Button(fmt::format(FMT_COMPILE("Website {}"), Icons::ExternalLink).c_str(), { -1, 24 }))
     {
-        ShellExecuteA(
-            nullptr, "open", "https://hary309.github.io/projects/hry-plugins/", nullptr, nullptr,
-            SW_SHOWNORMAL);
+        ShellExecuteA(nullptr, "open", "https://hary309.github.io/projects/hry-plugins/", nullptr, nullptr, SW_SHOWNORMAL);
     }
 
     ImGui::NextColumn();
 
-    if (ImGui::Button(
-            fmt::format(FMT_COMPILE("Github {}"), Icons::ExternalLink).c_str(), { -1, 24 }))
+    if (ImGui::Button(fmt::format(FMT_COMPILE("Github {}"), Icons::ExternalLink).c_str(), { -1, 24 }))
     {
-        ShellExecuteA(
-            nullptr, "open", "https://github.com/Hary309/hry-core", nullptr, nullptr,
-            SW_SHOWNORMAL);
+        ShellExecuteA(nullptr, "open", "https://github.com/Hary309/hry-core", nullptr, nullptr, SW_SHOWNORMAL);
     }
 
     ImGui::Columns(1);

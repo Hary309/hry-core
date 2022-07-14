@@ -6,13 +6,13 @@
 
 #include "Hry/Config/Fields/SelectionField.hpp"
 
-#include <type_traits>
+#include "Hry/Config/ConfigFieldBase.hpp"
+#include "Hry/Utils/ImGuiUtils.hpp"
 
 #include <imgui.h>
 #include <nlohmann/json.hpp>
 
-#include "Hry/Config/ConfigFieldBase.hpp"
-#include "Hry/Utils/ImGuiUtils.hpp"
+#include <type_traits>
 
 namespace hry
 {

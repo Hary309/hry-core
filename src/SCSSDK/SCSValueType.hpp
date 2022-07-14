@@ -6,13 +6,13 @@
 
 #pragma once
 
-#include <variant>
+#include "Hry/Math/SCSTypes.hpp"
 
 #include <scssdk_telemetry.h>
 #include <scssdk_value.h>
 #include <stdint.h>
 
-#include "Hry/Math/SCSTypes.hpp"
+#include <variant>
 
 namespace hry
 {

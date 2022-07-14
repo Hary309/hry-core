@@ -6,8 +6,10 @@
 
 #pragma once
 
-#include <algorithm>
-#include <memory>
+#include "PluginInfo.hpp"
+
+#include "Events/EventDispatcher.hpp"
+#include "KeyBinding/KeyBinds.hpp"
 
 #include "Hry/Config/Config.hpp"
 #include "Hry/GameType.hpp"
@@ -16,10 +18,8 @@
 #include "Hry/Utils/Delegate.hpp"
 #include "Hry/Utils/Utils.hpp"
 
-#include "Events/EventDispatcher.hpp"
-#include "KeyBinding/KeyBinds.hpp"
-
-#include "PluginInfo.hpp"
+#include <algorithm>
+#include <memory>
 
 namespace hry
 {
@@ -112,8 +112,8 @@ public:
  * @brief Simple macro for initializing plugin
  *        Put it once in main file with class that inherits from Plugin
  */
-#define INIT_PLUGIN(PLUGIN_TYPE)                                                                   \
-    extern "C"                                                                                     \
-    {                                                                                              \
-        __declspec(dllexport) hry::Plugin* CreatePlugin() { return new PLUGIN_TYPE(); }            \
+#define INIT_PLUGIN(PLUGIN_TYPE)                                                        \
+    extern "C"                                                                          \
+    {                                                                                   \
+        __declspec(dllexport) hry::Plugin* CreatePlugin() { return new PLUGIN_TYPE(); } \
     }

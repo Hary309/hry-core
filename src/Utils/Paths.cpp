@@ -6,9 +6,9 @@
 
 #include "Hry/Utils/Paths.hpp"
 
-#include <filesystem>
-
 #include "InternalUtils.hpp"
+
+#include <filesystem>
 
 namespace fs = std::filesystem;
 

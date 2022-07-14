@@ -8,7 +8,6 @@
 
 #include <string_view>
 
-
 namespace hry
 {
 /**

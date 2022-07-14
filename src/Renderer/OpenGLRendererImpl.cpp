@@ -6,17 +6,17 @@
 
 #include "OpenGLRendererImpl.hpp"
 
-#include <glad/glad.h>
-#include <imgui.h>
-#include <imgui_impl_opengl3.h>
-#include <imgui_impl_win32.h>
-
-#include "Hry/Utils/Utils.hpp"
+#include "Core.hpp"
 
 #include "Hooks/OpenGLHook.hpp"
 #include "Renderer/RendererBase.hpp"
 
-#include "Core.hpp"
+#include "Hry/Utils/Utils.hpp"
+
+#include <glad/glad.h>
+#include <imgui.h>
+#include <imgui_impl_opengl3.h>
+#include <imgui_impl_win32.h>
 
 namespace hry
 {

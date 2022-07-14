@@ -6,34 +6,34 @@
 
 #pragma once
 
-#include <unordered_map>
-#include <vector>
-
-#include <guiddef.h>
-#include <rpc.h>
+#include "Events/EventProxyBase.hpp"
 
 #include "Hry/Math/Vec2.hpp"
 #include "Hry/System/Joystick.hpp"
 #include "Hry/System/Mouse.hpp"
 #include "Hry/System/System.hpp"
 
-#include "Events/EventProxyBase.hpp"
+#include <guiddef.h>
+#include <rpc.h>
+
+#include <unordered_map>
+#include <vector>
 
 struct DIDEVICEOBJECTDATA;
 
 namespace std
 {
-    template<>
-    struct hash<GUID>
+template<>
+struct hash<GUID>
+{
+    size_t operator()(const GUID& guid) const noexcept
     {
-        size_t operator()(const GUID& guid) const noexcept
-        {
-            const auto* p = reinterpret_cast<const std::uint64_t*>(&guid);
-            std::hash<std::uint64_t> hash;
-            return hash(p[0]) ^ hash(p[1]);
-        }
-    };
-} // namespace std
+        const auto* p = reinterpret_cast<const std::uint64_t*>(&guid);
+        std::hash<std::uint64_t> hash;
+        return hash(p[0]) ^ hash(p[1]);
+    }
+};
+}
 
 namespace hry
 {

@@ -6,7 +6,6 @@
 
 #pragma once
 
-
 namespace hry
 {
 class EventManager;
@@ -17,6 +16,9 @@ protected:
     EventManager& _eventMgr;
 
 public:
-    explicit EventProxyBase(EventManager& eventMgr) : _eventMgr(eventMgr) {}
+    explicit EventProxyBase(EventManager& eventMgr)
+        : _eventMgr(eventMgr)
+    {
+    }
 };
 }

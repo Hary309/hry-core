@@ -6,11 +6,11 @@
 
 #pragma once
 
-#include <common/scssdk_telemetry_common_configs.h>
+#include "SCSSDK/AttribConverter.hpp"
 
 #include "Hry/SCSSDK/ConfigurationData.hpp"
 
-#include "SCSSDK/AttribConverter.hpp"
+#include <common/scssdk_telemetry_common_configs.h>
 
 namespace hry
 {

@@ -6,12 +6,11 @@
 
 #pragma once
 
-#include <vector>
+#include "Events/InternalEventDispatcher.hpp"
 
 #include <imgui.h>
 
-
-#include "Events/InternalEventDispatcher.hpp"
+#include <vector>
 
 namespace hry
 {

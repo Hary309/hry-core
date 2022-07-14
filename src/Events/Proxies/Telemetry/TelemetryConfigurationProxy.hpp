@@ -6,17 +6,17 @@
 
 #pragma once
 
-#include <string_view>
-#include <variant>
-
-#include <scssdk_telemetry.h>
-
-#include "Hry/SCSSDK/ConfigurationData.hpp"
+#include "ConfigurationDataConverters.hpp"
 
 #include "Events/EventManager.hpp"
 #include "SCSSDK/AttribConverter.hpp"
 
-#include "ConfigurationDataConverters.hpp"
+#include "Hry/SCSSDK/ConfigurationData.hpp"
+
+#include <scssdk_telemetry.h>
+
+#include <string_view>
+#include <variant>
 
 namespace hry
 {

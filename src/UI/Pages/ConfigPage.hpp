@@ -6,10 +6,9 @@
 
 #pragma once
 
+#include "PageBase.hpp"
 
 #include "Config/ConfigManager.hpp"
-
-#include "PageBase.hpp"
 
 namespace hry
 {

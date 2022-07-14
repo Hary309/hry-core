@@ -6,7 +6,6 @@
 
 #pragma once
 
-
 namespace hry
 {
 class Renderer;
@@ -20,7 +19,8 @@ protected:
 
 public:
     explicit RendererBase(Renderer& renderer, EventManager& eventMgr)
-        : _renderer(renderer), _eventMgr(eventMgr)
+        : _renderer(renderer)
+        , _eventMgr(eventMgr)
     {
     }
     virtual ~RendererBase() = default;

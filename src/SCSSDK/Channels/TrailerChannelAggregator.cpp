@@ -6,21 +6,19 @@
 
 #include "TrailerChannelAggregator.hpp"
 
-#include <string_view>
-
-#include <common/scssdk_telemetry_trailer_common_channels.h>
+#include "Core.hpp"
 
 #include "fmt/core.h"
 
-#include "Core.hpp"
+#include <common/scssdk_telemetry_trailer_common_channels.h>
+
+#include <string_view>
 
 namespace hry
 {
-TrailerChannelAggregator::TrailerChannelAggregator(
-    TrailerChannelAggregator::Trailers_t& trailersChannel,
-    scs_telemetry_init_params_v100_t* scsTelemetry,
-    InternalEventDispatcher& dispatcher)
-    : ChannelAggregatorBase(scsTelemetry), _trailers(trailersChannel)
+TrailerChannelAggregator::TrailerChannelAggregator(TrailerChannelAggregator::Trailers_t& trailersChannel, scs_telemetry_init_params_v100_t* scsTelemetry, InternalEventDispatcher& dispatcher)
+    : ChannelAggregatorBase(scsTelemetry)
+    , _trailers(trailersChannel)
 {
     dispatcher.game.config.trailerSignal.connect<&TrailerChannelAggregator::onTrailerConfig>(this);
 
@@ -33,24 +31,13 @@ TrailerChannelAggregator::TrailerChannelAggregator(
 void TrailerChannelAggregator::registerTrailer(int index)
 {
     registerChannel(SCS_TELEMETRY_TRAILER_CHANNEL_connected, index, _trailers[index]->connected);
-    registerChannel(
-        SCS_TELEMETRY_TRAILER_CHANNEL_cargo_damage, index, _trailers[index]->cargoDamage);
-    registerChannel(
-        SCS_TELEMETRY_TRAILER_CHANNEL_world_placement, index, _trailers[index]->worldPlacement);
-    registerChannel(
-        SCS_TELEMETRY_TRAILER_CHANNEL_local_linear_velocity, index,
-        _trailers[index]->localVelocityLinear);
-    registerChannel(
-        SCS_TELEMETRY_TRAILER_CHANNEL_local_angular_velocity, index,
-        _trailers[index]->localVelocityAngular);
-    registerChannel(
-        SCS_TELEMETRY_TRAILER_CHANNEL_local_linear_acceleration, index,
-        _trailers[index]->localAccelerationLinear);
-    registerChannel(
-        SCS_TELEMETRY_TRAILER_CHANNEL_local_angular_acceleration, index,
-        _trailers[index]->localAccelerationAngular);
-    registerChannel(
-        SCS_TELEMETRY_TRAILER_CHANNEL_wear_chassis, index, _trailers[index]->wearChassis);
+    registerChannel(SCS_TELEMETRY_TRAILER_CHANNEL_cargo_damage, index, _trailers[index]->cargoDamage);
+    registerChannel(SCS_TELEMETRY_TRAILER_CHANNEL_world_placement, index, _trailers[index]->worldPlacement);
+    registerChannel(SCS_TELEMETRY_TRAILER_CHANNEL_local_linear_velocity, index, _trailers[index]->localVelocityLinear);
+    registerChannel(SCS_TELEMETRY_TRAILER_CHANNEL_local_angular_velocity, index, _trailers[index]->localVelocityAngular);
+    registerChannel(SCS_TELEMETRY_TRAILER_CHANNEL_local_linear_acceleration, index, _trailers[index]->localAccelerationLinear);
+    registerChannel(SCS_TELEMETRY_TRAILER_CHANNEL_local_angular_acceleration, index, _trailers[index]->localAccelerationAngular);
+    registerChannel(SCS_TELEMETRY_TRAILER_CHANNEL_wear_chassis, index, _trailers[index]->wearChassis);
     registerChannel(SCS_TELEMETRY_TRAILER_CHANNEL_wear_wheels, index, _trailers[index]->wearWheels);
 }
 
@@ -99,58 +86,26 @@ void TrailerChannelAggregator::onTrailerConfig(const std::optional<scs::Trailer>
 
 void TrailerChannelAggregator::registerWheels(int trailerIndex, int startIndex, int endIndex)
 {
-    registerIndexedChannel(
-        SCS_TELEMETRY_TRAILER_CHANNEL_wheel_susp_deflection, trailerIndex, startIndex, endIndex,
-        _trailers[trailerIndex]->wheelSuspensionDeflection);
-    registerIndexedChannel(
-        SCS_TELEMETRY_TRAILER_CHANNEL_wheel_on_ground, trailerIndex, startIndex, endIndex,
-        _trailers[trailerIndex]->wheelOnGround);
-    registerIndexedChannel(
-        SCS_TELEMETRY_TRAILER_CHANNEL_wheel_substance, trailerIndex, startIndex, endIndex,
-        _trailers[trailerIndex]->wheelSubstance);
-    registerIndexedChannel(
-        SCS_TELEMETRY_TRAILER_CHANNEL_wheel_velocity, trailerIndex, startIndex, endIndex,
-        _trailers[trailerIndex]->wheelAngularVelocity);
-    registerIndexedChannel(
-        SCS_TELEMETRY_TRAILER_CHANNEL_wheel_steering, trailerIndex, startIndex, endIndex,
-        _trailers[trailerIndex]->wheelSteering);
-    registerIndexedChannel(
-        SCS_TELEMETRY_TRAILER_CHANNEL_wheel_rotation, trailerIndex, startIndex, endIndex,
-        _trailers[trailerIndex]->wheelRotation);
-    registerIndexedChannel(
-        SCS_TELEMETRY_TRAILER_CHANNEL_wheel_lift, trailerIndex, startIndex, endIndex,
-        _trailers[trailerIndex]->wheelLift);
-    registerIndexedChannel(
-        SCS_TELEMETRY_TRAILER_CHANNEL_wheel_lift_offset, trailerIndex, startIndex, endIndex,
-        _trailers[trailerIndex]->wheelLiftOffset);
+    registerIndexedChannel(SCS_TELEMETRY_TRAILER_CHANNEL_wheel_susp_deflection, trailerIndex, startIndex, endIndex, _trailers[trailerIndex]->wheelSuspensionDeflection);
+    registerIndexedChannel(SCS_TELEMETRY_TRAILER_CHANNEL_wheel_on_ground, trailerIndex, startIndex, endIndex, _trailers[trailerIndex]->wheelOnGround);
+    registerIndexedChannel(SCS_TELEMETRY_TRAILER_CHANNEL_wheel_substance, trailerIndex, startIndex, endIndex, _trailers[trailerIndex]->wheelSubstance);
+    registerIndexedChannel(SCS_TELEMETRY_TRAILER_CHANNEL_wheel_velocity, trailerIndex, startIndex, endIndex, _trailers[trailerIndex]->wheelAngularVelocity);
+    registerIndexedChannel(SCS_TELEMETRY_TRAILER_CHANNEL_wheel_steering, trailerIndex, startIndex, endIndex, _trailers[trailerIndex]->wheelSteering);
+    registerIndexedChannel(SCS_TELEMETRY_TRAILER_CHANNEL_wheel_rotation, trailerIndex, startIndex, endIndex, _trailers[trailerIndex]->wheelRotation);
+    registerIndexedChannel(SCS_TELEMETRY_TRAILER_CHANNEL_wheel_lift, trailerIndex, startIndex, endIndex, _trailers[trailerIndex]->wheelLift);
+    registerIndexedChannel(SCS_TELEMETRY_TRAILER_CHANNEL_wheel_lift_offset, trailerIndex, startIndex, endIndex, _trailers[trailerIndex]->wheelLiftOffset);
 }
 
 void TrailerChannelAggregator::unregisterWheels(int trailerIndex, int startIndex, int endIndex)
 {
-    unregisterIndexedChannel(
-        SCS_TELEMETRY_TRAILER_CHANNEL_wheel_susp_deflection, trailerIndex, startIndex, endIndex,
-        _trailers[trailerIndex]->wheelSuspensionDeflection);
-    unregisterIndexedChannel(
-        SCS_TELEMETRY_TRAILER_CHANNEL_wheel_on_ground, trailerIndex, startIndex, endIndex,
-        _trailers[trailerIndex]->wheelOnGround);
-    unregisterIndexedChannel(
-        SCS_TELEMETRY_TRAILER_CHANNEL_wheel_substance, trailerIndex, startIndex, endIndex,
-        _trailers[trailerIndex]->wheelSubstance);
-    unregisterIndexedChannel(
-        SCS_TELEMETRY_TRAILER_CHANNEL_wheel_velocity, trailerIndex, startIndex, endIndex,
-        _trailers[trailerIndex]->wheelAngularVelocity);
-    unregisterIndexedChannel(
-        SCS_TELEMETRY_TRAILER_CHANNEL_wheel_steering, trailerIndex, startIndex, endIndex,
-        _trailers[trailerIndex]->wheelSteering);
-    unregisterIndexedChannel(
-        SCS_TELEMETRY_TRAILER_CHANNEL_wheel_rotation, trailerIndex, startIndex, endIndex,
-        _trailers[trailerIndex]->wheelRotation);
-    unregisterIndexedChannel(
-        SCS_TELEMETRY_TRAILER_CHANNEL_wheel_lift, trailerIndex, startIndex, endIndex,
-        _trailers[trailerIndex]->wheelLift);
-    unregisterIndexedChannel(
-        SCS_TELEMETRY_TRAILER_CHANNEL_wheel_lift_offset, trailerIndex, startIndex, endIndex,
-        _trailers[trailerIndex]->wheelLiftOffset);
+    unregisterIndexedChannel(SCS_TELEMETRY_TRAILER_CHANNEL_wheel_susp_deflection, trailerIndex, startIndex, endIndex, _trailers[trailerIndex]->wheelSuspensionDeflection);
+    unregisterIndexedChannel(SCS_TELEMETRY_TRAILER_CHANNEL_wheel_on_ground, trailerIndex, startIndex, endIndex, _trailers[trailerIndex]->wheelOnGround);
+    unregisterIndexedChannel(SCS_TELEMETRY_TRAILER_CHANNEL_wheel_substance, trailerIndex, startIndex, endIndex, _trailers[trailerIndex]->wheelSubstance);
+    unregisterIndexedChannel(SCS_TELEMETRY_TRAILER_CHANNEL_wheel_velocity, trailerIndex, startIndex, endIndex, _trailers[trailerIndex]->wheelAngularVelocity);
+    unregisterIndexedChannel(SCS_TELEMETRY_TRAILER_CHANNEL_wheel_steering, trailerIndex, startIndex, endIndex, _trailers[trailerIndex]->wheelSteering);
+    unregisterIndexedChannel(SCS_TELEMETRY_TRAILER_CHANNEL_wheel_rotation, trailerIndex, startIndex, endIndex, _trailers[trailerIndex]->wheelRotation);
+    unregisterIndexedChannel(SCS_TELEMETRY_TRAILER_CHANNEL_wheel_lift, trailerIndex, startIndex, endIndex, _trailers[trailerIndex]->wheelLift);
+    unregisterIndexedChannel(SCS_TELEMETRY_TRAILER_CHANNEL_wheel_lift_offset, trailerIndex, startIndex, endIndex, _trailers[trailerIndex]->wheelLiftOffset);
 }
 
 std::string TrailerChannelAggregator::GetIndexedId(const char* id, int index)

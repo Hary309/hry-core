@@ -6,12 +6,12 @@
 
 #include "Hry/Config/Fields/TextField.hpp"
 
+#include "Hry/Config/ConfigFieldBase.hpp"
+#include "Hry/Utils/ImGuiUtils.hpp"
+
 #include <imgui.h>
 #include <imgui_stdlib.h>
 #include <nlohmann/json.hpp>
-
-#include "Hry/Config/ConfigFieldBase.hpp"
-#include "Hry/Utils/ImGuiUtils.hpp"
 
 namespace hry
 {

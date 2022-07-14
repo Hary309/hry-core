@@ -7,8 +7,8 @@
 /// Author: github.com/MetGang
 
 #pragma once
-#include <cstdint>
 
+#include <cstdint>
 
 namespace hry
 {

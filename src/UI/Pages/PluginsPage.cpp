@@ -6,17 +6,17 @@
 
 #include "PluginsPage.hpp"
 
-#include <fmt/compile.h>
-#include <imgui.h>
+#include "UI/Markdown.hpp"
+#include "Utils/Icons.hpp"
+#include "Utils/Windows.hpp"
 
 #include "Hry/Colors.hpp"
 #include "Hry/Fonts.hpp"
 #include "Hry/Plugin.hpp"
 #include "Hry/Utils/ImGuiUtils.hpp"
 
-#include "UI/Markdown.hpp"
-#include "Utils/Icons.hpp"
-#include "Utils/Windows.hpp"
+#include <fmt/compile.h>
+#include <imgui.h>
 
 namespace hry
 {
@@ -43,7 +43,8 @@ bool ButtonColored(const char* txt, ImVec4 color, bool enabled = true)
     return result;
 }
 
-PluginsPage::PluginsPage(ModuleManager& moduleMgr) : _moduleMgr(moduleMgr)
+PluginsPage::PluginsPage(ModuleManager& moduleMgr)
+    : _moduleMgr(moduleMgr)
 {
 }
 
@@ -126,8 +127,7 @@ void PluginsPage::renderList()
         else if (module->loadResult != Plugin::Result::Ok)
         {
             ImGui::TextColored(
-                ImColor(200, 50, 50).Value, "%s [%d]",
-                [](Plugin::Result result) {
+                ImColor(200, 50, 50).Value, "%s [%d]", [](Plugin::Result result) {
                     switch (result)
                     {
                         case Plugin::Result::ApiNotSupported: return "Not supported API version";

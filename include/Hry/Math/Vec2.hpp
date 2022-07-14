@@ -21,9 +21,16 @@ struct Vec2
 
     Vec2() = default;
     Vec2(T x, T y)
-        : x(x), y(y) {}
+        : x(x)
+        , y(y)
+    {
+    }
+
     explicit Vec2(T value)
-        : x(value), y(value) {}
+        : x(value)
+        , y(value)
+    {
+    }
 };
 
 template<typename T>
@@ -149,4 +156,4 @@ struct formatter<hry::Vec2<T>>
         return format_to(ctx.out(), "{{{}, {}}}", vec.x, vec.y);
     }
 };
-} // namespace fmt
+}

@@ -4,21 +4,20 @@
  * @ License: MIT License
  */
 
-#include <memory>
+#include "Core.hpp"
+#include "scssdk.h"
+
+#include "fmt/core.h"
 
 #include <MinHook.h>
 #include <Windows.h>
 #include <scssdk_telemetry.h>
 
-#include "fmt/core.h"
-
-#include "Core.hpp"
-#include "scssdk.h"
+#include <memory>
 
 static std::unique_ptr<hry::Core> core;
 
-__declspec(dllexport) SCSAPI_RESULT
-    scs_telemetry_init(const scs_u32_t version, const scs_telemetry_init_params_t* const params)
+__declspec(dllexport) SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version, const scs_telemetry_init_params_t* const params)
 {
     if (version != SCS_TELEMETRY_VERSION_1_01)
     {

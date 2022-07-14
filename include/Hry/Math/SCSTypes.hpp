@@ -118,4 +118,4 @@ struct formatter<hry::PlacementD>
         return format_to(ctx.out(), "PlacementD: {{{}, {}}}", vec.position, vec.orientation);
     }
 };
-} // namespace fmt
+}

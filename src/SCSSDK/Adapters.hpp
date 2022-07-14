@@ -6,14 +6,14 @@
 
 #pragma once
 
-#include <string>
-#include <type_traits>
-
-#include <scssdk_value.h>
+#include "SCSValueType.hpp"
 
 #include "Hry/Math/SCSTypes.hpp"
 
-#include "SCSValueType.hpp"
+#include <scssdk_value.h>
+
+#include <string>
+#include <type_traits>
 
 namespace hry
 {

@@ -6,11 +6,9 @@
 
 #pragma once
 
-#include <memory>
-#include <string>
-#include <vector>
+#include "InternalEventDispatcher.hpp"
 
-#include <Windows.h>
+#include "Events/EventProxyBase.hpp"
 
 #include "Hry/Events/Event.hpp"
 #include "Hry/Events/EventDispatcher.hpp"
@@ -20,9 +18,11 @@
 #include "Hry/SCSSDK/TruckChannel.hpp"
 #include "Hry/Utils/Signal.hpp"
 
-#include "Events/EventProxyBase.hpp"
+#include <Windows.h>
 
-#include "InternalEventDispatcher.hpp"
+#include <memory>
+#include <string>
+#include <vector>
 
 struct scs_telemetry_init_params_v100_t;
 

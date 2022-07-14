@@ -35,7 +35,8 @@ private:
 
 private:
     explicit ConfigCallbackData(void* data, size_t dataSize)
-        : _data(static_cast<uint8_t*>(data)), _dataSize(dataSize)
+        : _data(static_cast<uint8_t*>(data))
+        , _dataSize(dataSize)
     {
     }
 

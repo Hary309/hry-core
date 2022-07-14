@@ -6,13 +6,13 @@
 
 #include "KeyBindsPage.hpp"
 
-#include <imgui.h>
+#include "Utils/InternalImGuiUtils.hpp"
 
 #include "Hry/KeyBinding/BindableKeys.hpp"
 #include "Hry/KeyBinding/KeyBinds.hpp"
 #include "Hry/Utils/ImGuiUtils.hpp"
 
-#include "Utils/InternalImGuiUtils.hpp"
+#include <imgui.h>
 
 namespace hry
 {
@@ -37,8 +37,7 @@ void KeyBindsPage::imguiRender()
             continue;
         }
 
-        if (ImGui::CollapsingHeader(
-                keyBindsSection->getName().c_str(), ImGuiTreeNodeFlags_DefaultOpen))
+        if (ImGui::CollapsingHeader(keyBindsSection->getName().c_str(), ImGuiTreeNodeFlags_DefaultOpen))
         {
             ImGui::Columns(3);
             ImGui::SetColumnOffset(2, ImGui::GetWindowContentRegionWidth() - 96);

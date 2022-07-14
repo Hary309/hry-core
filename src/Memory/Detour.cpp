@@ -8,14 +8,16 @@
 
 #include <MinHook.h>
 
-
 namespace hry
 {
-Detour::Detour(uintptr_t* target, uintptr_t* detour) : _target(target), _detour(detour)
+Detour::Detour(uintptr_t* target, uintptr_t* detour)
+    : _target(target)
+    , _detour(detour)
 {
 }
 
-Detour::Detour(uintptr_t target, uintptr_t detour) : Detour((uintptr_t*)target, (uintptr_t*)detour)
+Detour::Detour(uintptr_t target, uintptr_t detour)
+    : Detour((uintptr_t*)target, (uintptr_t*)detour)
 {
 }
 

@@ -10,9 +10,9 @@
 
 namespace hry
 {
-CommonChannelAggregator::CommonChannelAggregator(
-    scs::CommonChannel& commonChannel, scs_telemetry_init_params_v100_t* scsTelemetry)
-    : ChannelAggregatorBase(scsTelemetry), _common(commonChannel)
+CommonChannelAggregator::CommonChannelAggregator(scs::CommonChannel& commonChannel, scs_telemetry_init_params_v100_t* scsTelemetry)
+    : ChannelAggregatorBase(scsTelemetry)
+    , _common(commonChannel)
 {
     registerChannel(SCS_TELEMETRY_CHANNEL_local_scale, _common.localScale);
     registerChannel(SCS_TELEMETRY_CHANNEL_game_time, _common.gameTime);

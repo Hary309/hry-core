@@ -6,18 +6,18 @@
 
 #pragma once
 
-#include <filesystem>
-#include <memory>
-#include <string>
-#include <vector>
-
-#include "Hry/SCSSDK/Telemetry.hpp"
+#include "Module.hpp"
 
 #include "Config/ConfigManager.hpp"
 #include "Events/EventManager.hpp"
 #include "KeyBinding/KeyBindsManager.hpp"
 
-#include "Module.hpp"
+#include "Hry/SCSSDK/Telemetry.hpp"
+
+#include <filesystem>
+#include <memory>
+#include <string>
+#include <vector>
 
 namespace hry
 {

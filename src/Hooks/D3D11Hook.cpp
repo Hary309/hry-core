@@ -10,20 +10,18 @@
 #define CINTERFACE
 #define COBJMACROS
 
-#include <cstdio>
+#include "Core.hpp"
+
+#include "Renderer/Renderer.hpp"
+
+#include "Hry/Memory/Detour.hpp"
+#include "Hry/Memory/Hooking.hpp"
+#include "Hry/Utils/Utils.hpp"
 
 #include <d3d11.h>
 #include <windows.h>
 
-#include "Hry/Memory/Hooking.hpp"
-#include "Hry/Utils/Utils.hpp"
-
-#include "Hry/Memory/Detour.hpp"
-
-#include "Renderer/Renderer.hpp"
-
-#include "Core.hpp"
-
+#include <cstdio>
 
 const GUID IID_ID3D11Device_{
     0xdb6f6ddb, 0xac77, 0x4e88, { 0x82, 0x53, 0x81, 0x9d, 0xf9, 0xbb, 0xf1, 0x40 }
@@ -121,8 +119,7 @@ IDXGISwapChainVtbl* GetSwapChainVTable()
     ID3D11Device* device = nullptr;
     ID3D11DeviceContext* context = nullptr;
 
-    if (D3D11CreateDeviceAndSwapChain_addr(nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, 0, featureLevels, 1, D3D11_SDK_VERSION,
-            &swapChainDesc, &swapChain, &device, &featureLevel, &context) < 0)
+    if (D3D11CreateDeviceAndSwapChain_addr(nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, 0, featureLevels, 1, D3D11_SDK_VERSION, &swapChainDesc, &swapChain, &device, &featureLevel, &context) < 0)
     {
         ::DestroyWindow(window);
         ::UnregisterClass(windowClass.lpszClassName, windowClass.hInstance);
@@ -153,8 +150,7 @@ LRESULT __stdcall WndProcD3D(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
     return CallWindowProc(oWndProc, hWnd, uMsg, wParam, lParam);
 }
 
-HRESULT __stdcall new_IDXGISwapChain_Present(
-    IDXGISwapChain* swapChain, UINT syncInterval, UINT flags)
+HRESULT __stdcall new_IDXGISwapChain_Present(IDXGISwapChain* swapChain, UINT syncInterval, UINT flags)
 {
     if (needUpdateInfo)
     {
@@ -217,7 +213,6 @@ bool D3D11Hook::Install()
     swapChainPresentHook =
         std::make_unique<hry::Detour>(swapChainVTable->Present, &new_IDXGISwapChain_Present);
 
-
     if (swapChainPresentHook->create() != hry::Detour::Status::Ok)
     {
         Core::Logger->error("Cannot create hook");
@@ -233,7 +228,7 @@ bool D3D11Hook::Install()
     Core::Logger->info("Hooking IDXGISwapChain::ResizeBuffers...");
     swapChainResizeBufferHook =
         std::make_unique<hry::Detour>(
-        swapChainVTable->ResizeBuffers, &new_IDXGISwapChain_ResizeBuffers);
+            swapChainVTable->ResizeBuffers, &new_IDXGISwapChain_ResizeBuffers);
 
     if (swapChainResizeBufferHook->create() != hry::Detour::Status::Ok)
     {

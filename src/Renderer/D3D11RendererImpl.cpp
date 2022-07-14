@@ -6,17 +6,16 @@
 
 #include "D3D11RendererImpl.hpp"
 
-#include <cstdio>
+#include "Core.hpp"
+#include "Renderer.hpp"
+
+#include "Hooks/D3D11Hook.hpp"
 
 #include <imgui.h>
 #include <imgui_impl_dx11.h>
 #include <imgui_impl_win32.h>
 
-
-#include "Hooks/D3D11Hook.hpp"
-
-#include "Core.hpp"
-#include "Renderer.hpp"
+#include <cstdio>
 
 namespace hry
 {

@@ -6,11 +6,10 @@
 
 #pragma once
 
-#include <cstdint>
-#include <memory>
-
 #include <Windows.h>
 
+#include <cstdint>
+#include <memory>
 
 namespace hry
 {

@@ -13,7 +13,6 @@
 #include <optional>
 #include <type_traits>
 
-
 namespace hry
 {
 template<typename>
@@ -101,12 +100,12 @@ public:
     }
 
     /**
-    * @brief Connects function to the delegate with context
-    *
-    * @tparam CtxFuncAddr Function with context to connect to the delegate
-    * @tparam T Context type
-    * @param content Pointer to content
-    */
+     * @brief Connects function to the delegate with context
+     *
+     * @tparam CtxFuncAddr Function with context to connect to the delegate
+     * @tparam T Context type
+     * @param content Pointer to content
+     */
     template<auto CtxFuncAddr, typename T>
     void connect(T* content) noexcept
     {

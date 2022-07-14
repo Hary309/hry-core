@@ -10,7 +10,8 @@
 
 namespace hry
 {
-ConfigPage::ConfigPage(ConfigManager& configMgr) : _configMgr(configMgr)
+ConfigPage::ConfigPage(ConfigManager& configMgr)
+    : _configMgr(configMgr)
 {
 }
 

@@ -6,17 +6,17 @@
 
 #pragma once
 
-#include <array>
-
-#include <common/scssdk_telemetry_common_configs.h>
-
-#include "Hry/SCSSDK/Telemetry.hpp"
-#include "Hry/SCSSDK/TrailerChannel.hpp"
+#include "ChannelAggregatorBase.hpp"
 
 #include "Events/EventProxyBase.hpp"
 #include "Events/InternalEventDispatcher.hpp"
 
-#include "ChannelAggregatorBase.hpp"
+#include "Hry/SCSSDK/Telemetry.hpp"
+#include "Hry/SCSSDK/TrailerChannel.hpp"
+
+#include <common/scssdk_telemetry_common_configs.h>
+
+#include <array>
 
 namespace hry
 {
@@ -31,10 +31,7 @@ private:
     std::array<uint32_t, Telemetry::MaxTrailerCount> _wheelCount{};
 
 public:
-    TrailerChannelAggregator(
-        Trailers_t& trailerChannel,
-        scs_telemetry_init_params_v100_t* scsTelemetry,
-        InternalEventDispatcher& dispatcher);
+    TrailerChannelAggregator(Trailers_t& trailerChannel, scs_telemetry_init_params_v100_t* scsTelemetry, InternalEventDispatcher& dispatcher);
 
 private:
     template<typename ValueType>
@@ -51,8 +48,7 @@ private:
         uint32_t endIndex,
         std::vector<ValueType>& member)
     {
-        ChannelAggregatorBase::registerIndexedChannel(
-            GetIndexedId(id, trailerIndex).c_str(), beginIndex, endIndex, member);
+        ChannelAggregatorBase::registerIndexedChannel(GetIndexedId(id, trailerIndex).c_str(), beginIndex, endIndex, member);
     }
 
     template<typename ValueType>
@@ -63,8 +59,7 @@ private:
         uint32_t endIndex,
         std::vector<ValueType>& member)
     {
-        ChannelAggregatorBase::unregisterIndexedChannel(
-            GetIndexedId(id, trailerIndex).c_str(), startIndex, endIndex, member);
+        ChannelAggregatorBase::unregisterIndexedChannel(GetIndexedId(id, trailerIndex).c_str(), startIndex, endIndex, member);
     }
 
     void registerTrailer(int index);

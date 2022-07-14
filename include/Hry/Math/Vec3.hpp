@@ -24,9 +24,18 @@ struct Vec3
 
     Vec3() = default;
     Vec3(T x, T y, T z)
-        : x(x), y(y), z(z) {}
+        : x(x)
+        , y(y)
+        , z(z)
+    {
+    }
+
     explicit Vec3(T value)
-        : x(value), y(value), z(value) {}
+        : x(value)
+        , y(value)
+        , z(value)
+    {
+    }
 };
 
 template<typename T>

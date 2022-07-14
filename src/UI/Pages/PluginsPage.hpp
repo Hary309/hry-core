@@ -6,14 +6,14 @@
 
 #pragma once
 
-#include <memory>
-#include <string>
-#include <vector>
+#include "PageBase.hpp"
 
 #include "Modules/Module.hpp"
 #include "Modules/ModuleManager.hpp"
 
-#include "PageBase.hpp"
+#include <memory>
+#include <string>
+#include <vector>
 
 namespace hry
 {

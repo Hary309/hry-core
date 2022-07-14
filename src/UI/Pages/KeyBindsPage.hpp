@@ -6,12 +6,12 @@
 
 #pragma once
 
-#include "Hry/Events/Event.hpp"
-#include "Hry/Utils/Signal.hpp"
+#include "PageBase.hpp"
 
 #include "KeyBinding/KeyBindsManager.hpp"
 
-#include "PageBase.hpp"
+#include "Hry/Events/Event.hpp"
+#include "Hry/Utils/Signal.hpp"
 
 namespace hry
 {

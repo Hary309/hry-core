@@ -6,10 +6,9 @@
 
 #pragma once
 
-#include <memory>
-
-
 #include "RendererBase.hpp"
+
+#include <memory>
 
 namespace hry
 {

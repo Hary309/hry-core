@@ -6,12 +6,6 @@
 
 #pragma once
 
-#include "Hry/Events/Event.hpp"
-#include "Hry/Events/EventDispatcher.hpp"
-#include "Hry/KeyBinding/KeyBinds.hpp"
-#include "Hry/System/System.hpp"
-#include "Hry/Utils/Signal.hpp"
-
 #include "Events/EventManager.hpp"
 #include "KeyBinding/KeyBindsManager.hpp"
 #include "Modules/ModuleManager.hpp"
@@ -19,6 +13,12 @@
 #include "UI/Pages/ConfigPage.hpp"
 #include "UI/Pages/KeyBindsPage.hpp"
 #include "UI/Pages/PluginsPage.hpp"
+
+#include "Hry/Events/Event.hpp"
+#include "Hry/Events/EventDispatcher.hpp"
+#include "Hry/KeyBinding/KeyBinds.hpp"
+#include "Hry/System/System.hpp"
+#include "Hry/Utils/Signal.hpp"
 
 namespace hry
 {

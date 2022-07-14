@@ -6,13 +6,13 @@
 
 #pragma once
 
-#include <memory>
-#include <vector>
+#include "Events/InternalEventDispatcher.hpp"
+#include "SCSSDK/Channels/ChannelAggregatorBase.hpp"
 
 #include "Hry/SCSSDK/Telemetry.hpp"
 
-#include "Events/InternalEventDispatcher.hpp"
-#include "SCSSDK/Channels/ChannelAggregatorBase.hpp"
+#include <memory>
+#include <vector>
 
 namespace hry
 {

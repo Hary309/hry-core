@@ -6,10 +6,7 @@
 
 #include "MainWindow.hpp"
 
-#include <functional>
-
-#include <fmt/format.h>
-#include <imgui.h>
+#include "Utils/InternalImGuiUtils.hpp"
 
 #include "Hry/Fonts.hpp"
 #include "Hry/KeyBinding/KeyBinds.hpp"
@@ -17,7 +14,10 @@
 #include "Hry/System/Mouse.hpp"
 #include "Hry/Utils/Delegate.hpp"
 
-#include "Utils/InternalImGuiUtils.hpp"
+#include <fmt/format.h>
+#include <imgui.h>
+
+#include <functional>
 
 namespace hry
 {
@@ -26,8 +26,7 @@ bool TabButton(const char* text, bool active)
     if (active)
     {
         ImGui::PushStyleColor(ImGuiCol_Button, ImGui::GetStyle().Colors[ImGuiCol_ButtonActive]);
-        ImGui::PushStyleColor(
-            ImGuiCol_ButtonHovered, ImGui::GetStyle().Colors[ImGuiCol_ButtonActive]);
+        ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImGui::GetStyle().Colors[ImGuiCol_ButtonActive]);
     }
 
     if (auto result = ImGui::Button(text, { -1, 32 }); result && !active)
@@ -49,8 +48,10 @@ MainWindow::MainWindow(
     KeyBindsManager& keyBindsMgr,
     EventManager& eventMgr,
     InternalEventDispatcher& eventDispatcher)
-    : _pluginsPage(moduleMgr), _configPage(configMgr), _keyBindsPage(keyBindsMgr, eventDispatcher),
-      _eventMgr(eventMgr)
+    : _pluginsPage(moduleMgr)
+    , _configPage(configMgr)
+    , _keyBindsPage(keyBindsMgr, eventDispatcher)
+    , _eventMgr(eventMgr)
 {
 }
 
@@ -87,8 +88,7 @@ void MainWindow::imguiRender()
                                          windowPos.y + 3.f };
 
             drawList->AddText(
-                textPos, ImGui::ColorConvertFloat4ToU32(ImColor(150, 150, 240).Value),
-                text.c_str());
+                textPos, ImGui::ColorConvertFloat4ToU32(ImColor(150, 150, 240).Value), text.c_str());
         }
 
         ImGui::Columns(4, "tabs##plugin_manager", false);

@@ -6,9 +6,9 @@
 
 #pragma once
 
-#include <string>
-
 #include "Hry/Version.hpp"
+
+#include <string>
 
 namespace hry
 {

@@ -6,15 +6,14 @@
 
 #pragma once
 
+#include "Adapters.hpp"
+
+#include <scssdk_value.h>
+
 #include <limits>
 #include <optional>
 #include <string>
 #include <vector>
-
-#include <scssdk_value.h>
-
-
-#include "Adapters.hpp"
 
 #undef max
 
@@ -27,7 +26,11 @@ struct FieldBase
     bool isIndexed = false;
     bool used = false;
 
-    explicit FieldBase(std::string_view id) : id(id) {}
+    explicit FieldBase(std::string_view id)
+        : id(id)
+    {
+    }
+
     virtual ~FieldBase() = default;
 
     virtual void process(const scs_named_value_t& param, void* data) noexcept = 0;
@@ -110,7 +113,9 @@ public:
 
     template<typename ValueType, typename InnerValueType>
     void bind(
-        std::string_view id, ValueType ClassType::*member, InnerValueType ValueType::*innerMember)
+        std::string_view id,
+        ValueType ClassType::*member,
+        InnerValueType ValueType::*innerMember)
     {
         addComplex(id, member, innerMember, CreateAdapter<InnerValueType>());
     }
@@ -133,7 +138,8 @@ public:
 
     template<typename ValueType>
     void bindIndexed(
-        std::optional<std::string_view> countID, std::vector<ValueType> ClassType::*member)
+        std::optional<std::string_view> countID,
+        std::vector<ValueType> ClassType::*member)
     {
         static_assert(!HasAdapter_v<ValueType>, "This type isn't complex!");
 
@@ -202,7 +208,9 @@ private:
         AdapterPtr adapter;
 
         SimpleField(std::string_view id, MemberPtr member, AdapterPtr adapter)
-            : FieldBase(id), member(member), adapter(std::move(adapter))
+            : FieldBase(id)
+            , member(member)
+            , adapter(std::move(adapter))
         {
         }
 
@@ -221,7 +229,9 @@ private:
         ValueAdapter_t<std::string> adapter{ &valueAdapter<std::string> };
 
         EnumField(std::string_view id, MemberPtr member, EnumDeserializer&& deserializer)
-            : FieldBase(id), member(member), deserializer(std::move(deserializer))
+            : FieldBase(id)
+            , member(member)
+            , deserializer(std::move(deserializer))
         {
         }
 
@@ -242,8 +252,14 @@ private:
         AdapterPtr adapter;
 
         ComplexField(
-            std::string_view id, MemberPtr member, InnerMemberPtr innerMember, AdapterPtr adapter)
-            : FieldBase(id), member(member), innerMember(innerMember), adapter(std::move(adapter))
+            std::string_view id,
+            MemberPtr member,
+            InnerMemberPtr innerMember,
+            AdapterPtr adapter)
+            : FieldBase(id)
+            , member(member)
+            , innerMember(innerMember)
+            , adapter(std::move(adapter))
         {
         }
 
@@ -262,7 +278,9 @@ private:
         AdapterPtr adapter;
 
         IndexedSizeField(std::string_view id, MemberPtr member, AdapterPtr adapter)
-            : FieldBase(id), member(member), adapter(std::move(adapter))
+            : FieldBase(id)
+            , member(member)
+            , adapter(std::move(adapter))
         {
         }
 
@@ -284,7 +302,9 @@ private:
         AdapterPtr adapter;
 
         SimpleIndexedField(std::string_view id, VectorPtr vector, AdapterPtr adapter)
-            : FieldBase(id), vector(vector), adapter(std::move(adapter))
+            : FieldBase(id)
+            , vector(vector)
+            , adapter(std::move(adapter))
         {
             isIndexed = true;
         }
@@ -312,8 +332,12 @@ private:
         std::shared_ptr<FieldBase> converter;
 
         ComplexIndexedField(
-            std::string_view id, VectorPtr vector, std::shared_ptr<FieldBase> converter)
-            : FieldBase(id), vector(vector), converter(std::move(converter))
+            std::string_view id,
+            VectorPtr vector,
+            std::shared_ptr<FieldBase> converter)
+            : FieldBase(id)
+            , vector(vector)
+            , converter(std::move(converter))
         {
             isIndexed = true;
         }
@@ -344,7 +368,9 @@ private:
 
     template<typename ValueType, typename EnumDeserializerType>
     void addEnum(
-        std::string_view id, ValueType ClassType::*member, EnumDeserializerType&& deserializer)
+        std::string_view id,
+        ValueType ClassType::*member,
+        EnumDeserializerType&& deserializer)
     {
         using MemberPtr_t = ValueType(ClassType::*);
         using Field_t = EnumField<MemberPtr_t, typename std::decay_t<EnumDeserializerType>>;
@@ -388,7 +414,8 @@ private:
 
     template<typename ValueType>
     void addComplexIndexed(
-        ValueType ClassType::*member, const std::shared_ptr<FieldBase>& converter)
+        ValueType ClassType::*member,
+        const std::shared_ptr<FieldBase>& converter)
     {
         using VectorPtr_t = ValueType(ClassType::*);
         using Field_t = ComplexIndexedField<VectorPtr_t>;

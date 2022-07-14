@@ -6,7 +6,6 @@
 
 #pragma once
 
-
 #include "UI/Pages/PageBase.hpp"
 
 namespace hry

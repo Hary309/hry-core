@@ -6,10 +6,10 @@
 
 #pragma once
 
-#include <vector>
-
 #include "Hry/Config/Config.hpp"
 #include "Hry/Utils/Utils.hpp"
+
+#include <vector>
 
 namespace hry
 {

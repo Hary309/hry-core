@@ -6,10 +6,10 @@
 
 #include "ImGuiImplEvents.hpp"
 
-#include <imgui.h>
-
 #include "Hry/Events/Event.hpp"
 #include "Hry/Events/EventDispatcher.hpp"
+
+#include <imgui.h>
 
 namespace hry
 {

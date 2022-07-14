@@ -6,13 +6,13 @@
 
 #include "InternalUtils.hpp"
 
-#include <filesystem>
+#include "Core.hpp"
 
 #include <ShlObj.h>
-#include <string>
 #include <fmt/format.h>
 
-#include "Core.hpp"
+#include <filesystem>
+#include <string>
 
 namespace hry
 {

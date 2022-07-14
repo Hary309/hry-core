@@ -6,12 +6,12 @@
 
 #pragma once
 
-#include <memory>
-#include <string>
+#include "Events/EventManager.hpp"
 
 #include "Hry/Logger/Logger.hpp"
 
-#include "Events/EventManager.hpp"
+#include <memory>
+#include <string>
 
 namespace hry
 {

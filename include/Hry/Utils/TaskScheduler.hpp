@@ -6,14 +6,13 @@
 
 #pragma once
 
+#include "Delegate.hpp"
+
 #include <chrono>
 #include <queue>
 #include <tuple>
 #include <type_traits>
 #include <vector>
-
-
-#include "Delegate.hpp"
 
 namespace hry
 {

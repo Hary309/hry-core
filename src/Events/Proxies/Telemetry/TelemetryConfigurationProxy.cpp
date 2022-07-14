@@ -6,19 +6,19 @@
 
 #include "TelemetryConfigurationProxy.hpp"
 
-#include <algorithm>
-#include <charconv>
-#include <iterator>
-#include <string>
+#include "Core.hpp"
+
+#include "Hry/SCSSDK/ConfigurationData.hpp"
 
 #include <common/scssdk_telemetry_common_configs.h>
 #include <fmt/format.h>
 #include <scssdk_telemetry_event.h>
 #include <scssdk_value.h>
 
-#include "Hry/SCSSDK/ConfigurationData.hpp"
-
-#include "Core.hpp"
+#include <algorithm>
+#include <charconv>
+#include <iterator>
+#include <string>
 
 #undef max
 #undef min
@@ -27,10 +27,13 @@ namespace hry
 {
 TelemetryConfigurationProxy::TelemetryConfigurationProxy(
     EventManager& eventMgr, scs_telemetry_init_params_v100_t* scsTelemetry)
-    : _eventMgr(eventMgr), _substances(CreateConverter<scs::Substances>()),
-      _controls(CreateConverter<scs::Controls>()), _hshifter(CreateConverter<scs::HShifter>()),
-      _truck(CreateConverter<scs::Truck>()), _trailer(CreateConverter<scs::Trailer>()),
-      _job(CreateConverter<scs::Job>())
+    : _eventMgr(eventMgr)
+    , _substances(CreateConverter<scs::Substances>())
+    , _controls(CreateConverter<scs::Controls>())
+    , _hshifter(CreateConverter<scs::HShifter>())
+    , _truck(CreateConverter<scs::Truck>())
+    , _trailer(CreateConverter<scs::Trailer>())
+    , _job(CreateConverter<scs::Job>())
 {
     scsTelemetry->register_for_event(
         SCS_TELEMETRY_EVENT_configuration, TelemetryConfigurationProxy::Configuration, this);

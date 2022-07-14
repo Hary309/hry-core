@@ -6,10 +6,9 @@
 
 #pragma once
 
-#include <Windows.h>
-
-
 #include "Renderer/RendererBase.hpp"
+
+#include <Windows.h>
 
 namespace hry
 {

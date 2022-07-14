@@ -6,9 +6,9 @@
 
 #include "LoggerWindow.hpp"
 
-#include "Hry/Logger/Logger.hpp"
-
 #include "imgui.h"
+
+#include "Hry/Logger/Logger.hpp"
 
 namespace hry
 {

@@ -6,14 +6,14 @@
 
 #include "Markdown.hpp"
 
-#include <string>
+#include "Utils/Windows.hpp"
+
+#include "Hry/Fonts.hpp"
 
 #include <imgui.h>
 #include <imgui_markdown.h>
 
-#include "Hry/Fonts.hpp"
-
-#include "Utils/Windows.hpp"
+#include <string>
 
 namespace hry
 {

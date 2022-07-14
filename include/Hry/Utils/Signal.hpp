@@ -9,10 +9,9 @@
 
 #pragma once
 
-#include <vector>
-
-
 #include "Delegate.hpp"
+
+#include <vector>
 
 namespace hry
 {
@@ -116,7 +115,10 @@ public:
      *
      * @param signal The object that sink will be based on
      */
-    Sink(Signal_t& signal) noexcept : _signal(signal) {}
+    Sink(Signal_t& signal) noexcept
+        : _signal(signal)
+    {
+    }
     Sink(Sink&&) noexcept = default;
     Sink(const Sink&) noexcept = default;
     Sink& operator=(Sink&&) noexcept = default;

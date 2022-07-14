@@ -6,12 +6,12 @@
 
 #pragma once
 
-#include <Windows.h>
+#include "Events/EventProxyBase.hpp"
 
 #include "Hry/Math/Vec2.hpp"
 #include "Hry/Utils/Signal.hpp"
 
-#include "Events/EventProxyBase.hpp"
+#include <Windows.h>
 
 namespace hry
 {

@@ -6,13 +6,12 @@
 
 #pragma once
 
-#include <cstdint>
+#include "RendererBase.hpp"
 
 #include <d3d11.h>
 #include <wrl/client.h>
 
-
-#include "RendererBase.hpp"
+#include <cstdint>
 
 namespace hry
 {

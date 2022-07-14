@@ -6,20 +6,19 @@
 
 #include "WndProcEventProxy.hpp"
 
-#include <imgui.h>
-#include <windowsx.h>
+#include "Core.hpp"
+
+#include "Events/EventManager.hpp"
+#include "Hooks/D3D11Hook.hpp"
 
 #include "Hry/Events/Event.hpp"
 #include "Hry/System/Keyboard.hpp"
 #include "Hry/System/System.hpp"
 
-#include "Events/EventManager.hpp"
-#include "Hooks/D3D11Hook.hpp"
+#include <imgui.h>
+#include <windowsx.h>
 
-#include "Core.hpp"
-
-IMGUI_IMPL_API LRESULT
-    ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 namespace hry
 {
@@ -148,7 +147,8 @@ Keyboard::Key vkKeyCodeToEnum(WPARAM key, LPARAM flags) noexcept
 }
 
 WndProcEventProxy::WndProcEventProxy(EventManager& eventMgr)
-    : EventProxyBase(eventMgr), _onWndProc(eventMgr.system.wndProcSignal)
+    : EventProxyBase(eventMgr)
+    , _onWndProc(eventMgr.system.wndProcSignal)
 {
     _onWndProc.connect<&WndProcEventProxy::onWndProc>(this);
 }

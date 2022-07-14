@@ -8,7 +8,6 @@
 
 #include <imgui.h>
 
-
 namespace hry
 {
 /**

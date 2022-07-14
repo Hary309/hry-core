@@ -6,12 +6,12 @@
 
 #pragma once
 
-#include <Windows.h>
-
 #include "Hry/Events/Event.hpp"
 #include "Hry/Logger/Logger.hpp"
 #include "Hry/SCSSDK/ConfigurationData.hpp"
 #include "Hry/Utils/Signal.hpp"
+
+#include <Windows.h>
 
 namespace hry
 {

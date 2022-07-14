@@ -6,7 +6,6 @@
 
 #pragma once
 
-
 struct ImFont;
 
 namespace hry

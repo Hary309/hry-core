@@ -6,23 +6,24 @@
 
 #include "Hry/KeyBinding/KeyBinds.hpp"
 
-#include <filesystem>
-#include <string>
-
-#include <nlohmann/json.hpp>
+#include "Core.hpp"
 
 #include "Hry/KeyBinding/BindableKeys.hpp"
 #include "Hry/System/Joystick.hpp"
 #include "Hry/System/Mouse.hpp"
 #include "Hry/Utils/Paths.hpp"
 
-#include "Core.hpp"
+#include <nlohmann/json.hpp>
+
+#include <filesystem>
+#include <string>
 
 namespace fs = std::filesystem;
 
 namespace hry
 {
-KeyBinds::KeyBinds(std::string name) : _name(std::move(name))
+KeyBinds::KeyBinds(std::string name)
+    : _name(std::move(name))
 {
     _keyBindsFilePath = fmt::format("{}/{}.json", Paths::KeyBindsPath, _name);
 }

@@ -6,9 +6,9 @@
 
 #pragma once
 
-#include <windows.h>
-
 #include "Hry/Utils/Delegate.hpp"
+
+#include <windows.h>
 
 namespace hry
 {

@@ -6,17 +6,7 @@
 
 #pragma once
 
-#include <scssdk_telemetry.h>
-#include <windows.h>
-
-#include "Hry/Events/Event.hpp"
-#include "Hry/Events/EventDispatcher.hpp"
-#include "Hry/GameType.hpp"
-#include "Hry/KeyBinding/KeyBinds.hpp"
-#include "Hry/Logger/Logger.hpp"
-#include "Hry/Utils/Timer.hpp"
-#include "Hry/Utils/Utils.hpp"
-#include "Hry/Version.hpp"
+#include "ImGuiImplEvents.hpp"
 
 #include "Config/ConfigManager.hpp"
 #include "Events/EventManager.hpp"
@@ -27,7 +17,17 @@
 #include "UI/LoggerWindow.hpp"
 #include "UI/MainWindow.hpp"
 
-#include "ImGuiImplEvents.hpp"
+#include "Hry/Events/Event.hpp"
+#include "Hry/Events/EventDispatcher.hpp"
+#include "Hry/GameType.hpp"
+#include "Hry/KeyBinding/KeyBinds.hpp"
+#include "Hry/Logger/Logger.hpp"
+#include "Hry/Utils/Timer.hpp"
+#include "Hry/Utils/Utils.hpp"
+#include "Hry/Version.hpp"
+
+#include <scssdk_telemetry.h>
+#include <windows.h>
 
 namespace hry
 {

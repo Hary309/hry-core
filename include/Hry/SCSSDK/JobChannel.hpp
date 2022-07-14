@@ -7,12 +7,11 @@
 
 #pragma once
 
-
 namespace hry::scs
 {
-    struct JobChannel
-    {
-        /** The total damage of the cargo in range 0.0 to 1.0 */
-        float cargoDamage;
-    };
+struct JobChannel
+{
+    /** The total damage of the cargo in range 0.0 to 1.0 */
+    float cargoDamage;
+};
 }

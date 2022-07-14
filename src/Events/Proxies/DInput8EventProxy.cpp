@@ -6,18 +6,18 @@
 
 #include "DInput8EventProxy.hpp"
 
-#include <cmath>
-#include <cstdio>
-
-#include <dinput.h>
+#include "Events/EventManager.hpp"
+#include "Hooks/DInput8Hook.hpp"
 
 #include "Hry/Events/Event.hpp"
 #include "Hry/System/Joystick.hpp"
 #include "Hry/System/Mouse.hpp"
 #include "Hry/System/System.hpp"
 
-#include "Events/EventManager.hpp"
-#include "Hooks/DInput8Hook.hpp"
+#include <dinput.h>
+
+#include <cmath>
+#include <cstdio>
 
 #undef max
 
@@ -39,7 +39,8 @@ constexpr int DI_JOYSTICK_BUTTON_31 = (offsetof(DIJOYSTATE, rgbButtons) + 31);
 
 namespace hry
 {
-DInput8EventProxy::DInput8EventProxy(EventManager& eventMgr) : EventProxyBase(eventMgr)
+DInput8EventProxy::DInput8EventProxy(EventManager& eventMgr)
+    : EventProxyBase(eventMgr)
 {
     DInput8Hook::OnMouseData.connect<&DInput8EventProxy::onMouseData>(this);
     DInput8Hook::OnJoystickData.connect<&DInput8EventProxy::onJoystickData>(this);

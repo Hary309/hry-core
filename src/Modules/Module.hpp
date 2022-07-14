@@ -6,9 +6,9 @@
 
 #pragma once
 
-#include <Windows.h>
-
 #include "Hry/Plugin.hpp"
+
+#include <Windows.h>
 
 namespace hry
 {

@@ -6,20 +6,20 @@
 
 #include "KeyBindsManager.hpp"
 
+#include "Core.hpp"
+
+#include "Hry/KeyBinding/KeyBinds.hpp"
+#include "Hry/System/System.hpp"
+#include "Hry/Utils/Delegate.hpp"
+
+#include <nlohmann/json.hpp>
+
 #include <chrono>
 #include <cstdio>
 #include <filesystem>
 #include <fstream>
 #include <ios>
 #include <ratio>
-
-#include <nlohmann/json.hpp>
-
-#include "Hry/KeyBinding/KeyBinds.hpp"
-#include "Hry/System/System.hpp"
-#include "Hry/Utils/Delegate.hpp"
-
-#include "Core.hpp"
 
 using system_clock = std::chrono::system_clock;
 
