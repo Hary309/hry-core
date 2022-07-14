@@ -19,8 +19,7 @@
 
 namespace hry
 {
-TelemetryGameplayProxy::TelemetryGameplayProxy(
-    EventManager& eventMgr, scs_telemetry_init_params_v100_t* scsTelemetry)
+TelemetryGameplayProxy::TelemetryGameplayProxy(EventManager& eventMgr, scs_telemetry_init_params_v100_t* scsTelemetry)
     : _eventMgr(eventMgr)
     , _jobCancelled(CreateConverter<JobCancelled>())
     , _jobDelivered(CreateConverter<JobDelivered>())
@@ -29,12 +28,10 @@ TelemetryGameplayProxy::TelemetryGameplayProxy(
     , _playerUseFerry(CreateConverter<PlayerUseFerry>())
     , _playerUseTrain(CreateConverter<PlayerUseTrain>())
 {
-    scsTelemetry->register_for_event(
-        SCS_TELEMETRY_EVENT_gameplay, TelemetryGameplayProxy::Gameplay, this);
+    scsTelemetry->register_for_event(SCS_TELEMETRY_EVENT_gameplay, TelemetryGameplayProxy::Gameplay, this);
 }
 
-void TelemetryGameplayProxy::Gameplay(
-    scs_event_t /*event*/, const void* event_info, scs_context_t context) noexcept
+void TelemetryGameplayProxy::Gameplay(scs_event_t /*event*/, const void* event_info, scs_context_t context) noexcept
 {
     const auto* gameplay = reinterpret_cast<const scs_telemetry_gameplay_event_t*>(event_info);
 
@@ -48,8 +45,7 @@ void TelemetryGameplayProxy::Gameplay(
         }
         else
         {
-            self->_eventMgr.game.gameplay.jobCancelledSignal.call(
-                self->_jobCancelled.process(gameplay->attributes));
+            self->_eventMgr.game.gameplay.jobCancelledSignal.call(self->_jobCancelled.process(gameplay->attributes));
         }
     }
     else if (strcmp(gameplay->id, SCS_TELEMETRY_GAMEPLAY_EVENT_job_delivered) == 0)
@@ -60,8 +56,7 @@ void TelemetryGameplayProxy::Gameplay(
         }
         else
         {
-            self->_eventMgr.game.gameplay.jobDeliveredSignal.call(
-                self->_jobDelivered.process(gameplay->attributes));
+            self->_eventMgr.game.gameplay.jobDeliveredSignal.call(self->_jobDelivered.process(gameplay->attributes));
         }
     }
     else if (strcmp(gameplay->id, SCS_TELEMETRY_GAMEPLAY_EVENT_player_fined) == 0)
@@ -72,8 +67,7 @@ void TelemetryGameplayProxy::Gameplay(
         }
         else
         {
-            self->_eventMgr.game.gameplay.playerFinedSignal.call(
-                self->_playerFined.process(gameplay->attributes));
+            self->_eventMgr.game.gameplay.playerFinedSignal.call(self->_playerFined.process(gameplay->attributes));
         }
     }
     else if (strcmp(gameplay->id, SCS_TELEMETRY_GAMEPLAY_EVENT_player_tollgate_paid) == 0)
@@ -84,8 +78,7 @@ void TelemetryGameplayProxy::Gameplay(
         }
         else
         {
-            self->_eventMgr.game.gameplay.playerTollgatePaidSignal.call(
-                self->_playerTollgatePaid.process(gameplay->attributes));
+            self->_eventMgr.game.gameplay.playerTollgatePaidSignal.call(self->_playerTollgatePaid.process(gameplay->attributes));
         }
     }
     else if (strcmp(gameplay->id, SCS_TELEMETRY_GAMEPLAY_EVENT_player_use_ferry) == 0)
@@ -96,8 +89,7 @@ void TelemetryGameplayProxy::Gameplay(
         }
         else
         {
-            self->_eventMgr.game.gameplay.playerUseFerrySignal.call(
-                self->_playerUseFerry.process(gameplay->attributes));
+            self->_eventMgr.game.gameplay.playerUseFerrySignal.call(self->_playerUseFerry.process(gameplay->attributes));
         }
     }
     else if (strcmp(gameplay->id, SCS_TELEMETRY_GAMEPLAY_EVENT_player_use_train) == 0)
@@ -108,8 +100,7 @@ void TelemetryGameplayProxy::Gameplay(
         }
         else
         {
-            self->_eventMgr.game.gameplay.playerUseTrainSignal.call(
-                self->_playerUseTrain.process(gameplay->attributes));
+            self->_eventMgr.game.gameplay.playerUseTrainSignal.call(self->_playerUseTrain.process(gameplay->attributes));
         }
     }
 }

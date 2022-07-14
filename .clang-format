@@ -25,6 +25,8 @@ AlwaysBreakTemplateDeclarations: Yes
 BinPackArguments: false
 BinPackParameters: false
 BreakBeforeBraces: Custom
+NamespaceIndentation: Inner
+SeparateDefinitionBlocks: Always
 BraceWrapping:
   AfterCaseLabel: true
   AfterClass: true

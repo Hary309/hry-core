@@ -149,9 +149,9 @@ bool ModuleManager::load(Module* mod)
         Core::Logger->warning("Cannot find {}, removing from list", dllName);
 
         _modules.erase(
-            std::remove_if(
-                _modules.begin(), _modules.end(),
-                [mod](const auto& lambdaMod) { return mod == lambdaMod.get(); }),
+            std::remove_if(_modules.begin(), _modules.end(), [mod](const auto& lambdaMod) {
+                return mod == lambdaMod.get();
+            }),
             _modules.end());
 
         return false;
@@ -182,8 +182,7 @@ bool ModuleManager::load(Module* mod)
 
     mod->dllHandle = handle;
 
-    auto* CreatePlugin_func =
-        reinterpret_cast<CreatePlugin_t*>(GetProcAddress(handle, "CreatePlugin"));
+    auto* CreatePlugin_func = reinterpret_cast<CreatePlugin_t*>(GetProcAddress(handle, "CreatePlugin"));
 
     if (CreatePlugin_func == nullptr)
     {
@@ -206,9 +205,7 @@ bool ModuleManager::load(Module* mod)
 
     if (!IsApiCompatible(mod->plugin->ApiVersion))
     {
-        Core::Logger->error(
-            "{} is compiled on unsupported API (hry-core {} vs {})", dllName, ApiVersion,
-            mod->plugin->ApiVersion);
+        Core::Logger->error("{} is compiled on unsupported API (hry-core {} vs {})", dllName, ApiVersion, mod->plugin->ApiVersion);
 
         unload(mod);
         mod->loadResult = Plugin::Result::ApiNotSupported;
@@ -222,17 +219,13 @@ bool ModuleManager::load(Module* mod)
     mod->data.config = _configMgr.createConfig(name);
     mod->data.keyBinds = _keyBindsMgr.createKeyBinds(name);
     mod->data.logger = LoggerFactory::GetLogger(name);
-    mod->data.eventDispatcher =
-        std::make_unique<EventDispatcher>(_eventMgr.createEventDispatcher());
+    mod->data.eventDispatcher = std::make_unique<EventDispatcher>(_eventMgr.createEventDispatcher());
 
-    mod->loadResult = mod->plugin->init(
-        Plugin::InitParams{ mod->data.logger.get(), &_telemetry, ApiVersion, Core::GameType });
+    mod->loadResult = mod->plugin->init(Plugin::InitParams{ mod->data.logger.get(), &_telemetry, ApiVersion, Core::GameType });
 
     if (mod->loadResult == Plugin::Result::Ok)
     {
-        Core::Logger->info(
-            "Successfully loaded {} v{} (API v{})", dllName, mod->info.version,
-            mod->plugin->ApiVersion);
+        Core::Logger->info("Successfully loaded {} v{} (API v{})", dllName, mod->info.version, mod->plugin->ApiVersion);
 
         mod->plugin->initEvents(mod->data.eventDispatcher.get());
         mod->plugin->initConfig(mod->data.config.get());
@@ -374,9 +367,9 @@ Module* ModuleManager::tryAdd(const fs::path& path)
 {
     const std::string filepath = path.string();
 
-    auto it = std::find_if(
-        _modules.begin(), _modules.end(),
-        [&filepath](const std::unique_ptr<Module>& module) { return module->dllPath == filepath; });
+    auto it = std::find_if(_modules.begin(), _modules.end(), [&filepath](const auto& module) {
+        return module->dllPath == filepath;
+    });
 
     if (it == _modules.end())
     {

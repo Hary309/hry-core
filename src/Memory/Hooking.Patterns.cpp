@@ -18,10 +18,10 @@ namespace hry
 {
 namespace detail
 {
-void set_base()
-{
-    detail::set_base((uintptr_t)GetModuleHandle(nullptr));
-}
+    void set_base()
+    {
+        detail::set_base((uintptr_t)GetModuleHandle(nullptr));
+    }
 }
 
 static void TransformPattern(std::string_view pattern, std::string& data, std::string& mask)
