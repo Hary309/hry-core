@@ -6,24 +6,24 @@
 
 #include "XInputHook.hpp"
 
-#include <array>
-#include <limits>
-#include <memory>
-#include <string_view>
+#include "Core.hpp"
+
+#include "Hry/Memory/Detour.hpp"
 
 #include <Windows.h>
 #include <Xinput.h>
 #include <psapi.h>
 
-#include "Hry/Memory/Detour.hpp"
-
-#include "Core.hpp"
+#include <array>
+#include <limits>
+#include <memory>
+#include <string_view>
 
 #undef max
 #undef min
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 using XInputGetState_t = decltype(XInputGetState);
 
 static std::unique_ptr<Detour> detour;
@@ -108,5 +108,4 @@ void XInputHook::Uninstall()
 {
     detour.reset();
 }
-
-HRY_NS_END
+}

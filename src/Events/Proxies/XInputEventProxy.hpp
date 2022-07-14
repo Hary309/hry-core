@@ -6,22 +6,22 @@
 
 #pragma once
 
-#include <array>
+#include "Events/EventManager.hpp"
+#include "Events/EventProxyBase.hpp"
+
+#include "Hry/Events/Event.hpp"
+#include "Hry/System/Joystick.hpp"
 
 #include <Windows.h>
 #include <Xinput.h>
 #include <stdint.h>
 
-#include "Hry/Events/Event.hpp"
-#include "Hry/System/Joystick.hpp"
-
-#include "Events/EventManager.hpp"
-#include "Events/EventProxyBase.hpp"
+#include <array>
 
 #undef max
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 class XInputEventProxy : public EventProxyBase
 {
 private:
@@ -55,5 +55,4 @@ private:
 
     GUID getDeviceGUID(uint32_t index) const { return { index, 0, 0, {} }; }
 };
-
-HRY_NS_END
+}

@@ -6,22 +6,22 @@
 
 #include "XInputEventProxy.hpp"
 
-#include <bitset>
-#include <limits>
+#include "Core.hpp"
+#include "Hooks/XInputHook.hpp"
 
 #include "Hry/Events/Event.hpp"
 #include "Hry/System/Joystick.hpp"
 #include "Hry/System/System.hpp"
 
-#include "Hooks/XInputHook.hpp"
-
-#include "Core.hpp"
+#include <bitset>
+#include <limits>
 
 #undef max
 
-HRY_NS_BEGIN
-
-XInputEventProxy::XInputEventProxy(EventManager& eventMgr) : EventProxyBase(eventMgr)
+namespace hry
+{
+XInputEventProxy::XInputEventProxy(EventManager& eventMgr)
+    : EventProxyBase(eventMgr)
 {
     XInputHook::OnJoystickData.connect<&XInputEventProxy::onJoystickData>(this);
 }
@@ -83,5 +83,4 @@ void XInputEventProxy::onJoystickData(uint32_t index, uint32_t status, XINPUT_ST
 
     _devices[index] = currentState;
 }
-
-HRY_NS_END
+}

@@ -6,13 +6,12 @@
 
 #pragma once
 
-#include "Hry/Namespace.hpp"
 #include "Hry/Utils/Delegate.hpp"
 
 struct _XINPUT_STATE;
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 struct XInputHook
 {
     inline static Delegate<void(uint32_t, uint32_t, _XINPUT_STATE&)> OnJoystickData;
@@ -20,5 +19,4 @@ struct XInputHook
     static bool Install();
     static void Uninstall();
 };
-
-HRY_NS_END
+}

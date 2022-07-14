@@ -9,6 +9,8 @@
 #include "Hooks/D3D11Hook.hpp"
 #include "Hooks/DInput8Hook.hpp"
 #include "Hooks/OpenGLHook.hpp"
+#include "Hooks/XInputHook.hpp"
+
 #include "Logger/LoggerFactory.hpp"
 #include "Utils/InternalImGuiUtils.hpp"
 
@@ -42,8 +44,9 @@ Core::Core(HINSTANCE hInst)
     , _channelAggregator(_eventDispatcher)
     , _renderer(*this, _eventMgr)
     , _keyBindsMgr(_eventDispatcher)
+    , _axisBindsMgr(_eventDispatcher)
     , _moduleMgr(_eventMgr, _configMgr, _keyBindsMgr, _channelAggregator.getTelemetry())
-    , _mainWindow(_moduleMgr, _configMgr, _keyBindsMgr, _eventMgr, _eventDispatcher)
+    , _mainWindow(_moduleMgr, _configMgr, _keyBindsMgr, _axisBindsMgr, _eventMgr, _eventDispatcher)
     , _loggerWindow(_eventDispatcher)
     , _imguiImplEvents(_eventDispatcher)
 {

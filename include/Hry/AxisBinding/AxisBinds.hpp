@@ -6,20 +6,19 @@
 
 #pragma once
 
+#include "Hry/Export.hpp"
+#include "Hry/System/Joystick.hpp"
+#include "Hry/Utils/Delegate.hpp"
+
+#include <guiddef.h>
+
 #include <memory>
 #include <optional>
 #include <string>
 #include <vector>
 
-#include <guiddef.h>
-
-#include "Hry/Export.hpp"
-#include "Hry/Namespace.hpp"
-#include "Hry/System/Joystick.hpp"
-#include "Hry/Utils/Delegate.hpp"
-
-HRY_NS_BEGIN
-
+namespace hry
+{
 class AxisBindBuiilder;
 
 struct AxisBind final
@@ -56,6 +55,7 @@ public:
     HRY_API void add(std::unique_ptr<AxisBind>&& axisBind);
 
     auto& getAxisBinds() { return _axisBinds; }
+
     const auto& getName() const { return _name; }
 };
 
@@ -110,5 +110,4 @@ public:
         return std::unique_ptr<AxisBind>(axisBind);
     }
 };
-
-HRY_NS_END
+}

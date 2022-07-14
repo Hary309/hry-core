@@ -6,16 +6,16 @@
 
 #pragma once
 
-#include <array>
-
-#include "Hry/System/Joystick.hpp"
-
 #include "AxisBinding/AxisBindsManager.hpp"
 #include "Events/InternalEventDispatcher.hpp"
 #include "UI/Pages/PageBase.hpp"
 
-HRY_NS_BEGIN
+#include "Hry/System/Joystick.hpp"
 
+#include <array>
+
+namespace hry
+{
 class ControlsPage : public PageBase
 {
 public:
@@ -37,5 +37,4 @@ private:
 
     static std::string_view GetAxisName(Joystick::Axis axis);
 };
-
-HRY_NS_END
+}

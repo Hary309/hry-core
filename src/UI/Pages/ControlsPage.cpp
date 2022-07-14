@@ -6,13 +6,13 @@
 
 #include "ControlsPage.hpp"
 
-#include <imgui.h>
-
 #include "Hry/Utils/ImGuiUtils.hpp"
 #include "Hry/Utils/Utils.hpp"
 
-HRY_NS_BEGIN
+#include <imgui.h>
 
+namespace hry
+{
 bool SliderDouble(const char* label, double* v, double v_min, double v_max)
 {
     return ImGui::SliderScalar(label, ImGuiDataType_Double, v, &v_min, &v_max, "%.3f", 0);
@@ -138,11 +138,8 @@ std::string_view ControlsPage::GetAxisName(Joystick::Axis axis)
         case Joystick::Axis::R: return "Axis R";
         case Joystick::Axis::U: return "Axis U";
         case Joystick::Axis::V: return "Axis V";
-        case Joystick::Axis::PovX: return "Axis Pov X";
-        case Joystick::Axis::PovY: return "Axis Pov Y";
         default: break;
     }
     return "";
 }
-
-HRY_NS_END
+}

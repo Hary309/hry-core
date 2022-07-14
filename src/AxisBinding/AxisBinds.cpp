@@ -8,9 +8,10 @@
 
 #include <utility>
 
-HRY_NS_BEGIN
-
-AxisBinds::AxisBinds(std::string name) : _name(std::move(name))
+namespace hry
+{
+AxisBinds::AxisBinds(std::string name)
+    : _name(std::move(name))
 {
 }
 
@@ -18,5 +19,4 @@ void AxisBinds::add(std::unique_ptr<AxisBind>&& axisBind)
 {
     _axisBinds.push_back(std::move(axisBind));
 }
-
-HRY_NS_END
+}

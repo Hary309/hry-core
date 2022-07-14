@@ -6,16 +6,15 @@
 
 #pragma once
 
-#include <vector>
-
 #include "Hry/AxisBinding/AxisBinds.hpp"
-#include "Hry/Namespace.hpp"
 #include "Hry/Utils/Utils.hpp"
 
 #include "Events/InternalEventDispatcher.hpp"
 
-HRY_NS_BEGIN
+#include <vector>
 
+namespace hry
+{
 class AxisBindsManager
 {
 private:
@@ -33,5 +32,4 @@ private:
     void axisBindsDeleter(AxisBinds* axisBinds);
     void onJoystickMove(const JoystickMoveEvent&& e);
 };
-
-HRY_NS_END
+}

@@ -8,8 +8,8 @@
 
 #include "Hry/AxisBinding/AxisBinds.hpp"
 
-HRY_NS_BEGIN
-
+namespace hry
+{
 AxisBindsManager::AxisBindsManager(InternalEventDispatcher& dispatcher)
 {
     dispatcher.system.onJoystickMove.connect<&AxisBindsManager::onJoystickMove>(this);
@@ -67,5 +67,4 @@ void AxisBindsManager::onJoystickMove(const JoystickMoveEvent&& e)
         }
     }
 }
-
-HRY_NS_END
+}
