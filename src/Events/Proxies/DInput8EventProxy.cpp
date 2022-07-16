@@ -6,6 +6,7 @@
 
 #include "DInput8EventProxy.hpp"
 
+#include "Core.hpp"
 #include "Events/EventManager.hpp"
 #include "Hooks/DInput8Hook.hpp"
 
@@ -43,7 +44,7 @@ DInput8EventProxy::DInput8EventProxy(EventManager& eventMgr)
     : EventProxyBase(eventMgr)
 {
     DInput8Hook::OnMouseData.connect<&DInput8EventProxy::onMouseData>(this);
-    DInput8Hook::OnJoystickData.connect<&DInput8EventProxy::onJoystickData>(this);
+    // DInput8Hook::OnJoyst ickData.connect<&DInput8EventProxy::onJoystickData>(this);
 }
 
 void DInput8EventProxy::onMouseData(const std::vector<DIDEVICEOBJECTDATA>&& events) noexcept
@@ -73,8 +74,7 @@ void DInput8EventProxy::onMouseData(const std::vector<DIDEVICEOBJECTDATA>&& even
             {
                 MouseWheelEvent wheelEvent{};
                 wheelEvent.wheel = Mouse::Wheel::Vertical;
-                wheelEvent.delta =
-                    static_cast<short>(static_cast<short>(event.dwData) / WHEEL_DELTA);
+                wheelEvent.delta = static_cast<short>(static_cast<short>(event.dwData) / WHEEL_DELTA);
 
                 _eventMgr.system.mouseWheelScrollSignal.call(std::move(wheelEvent));
             }
@@ -83,8 +83,7 @@ void DInput8EventProxy::onMouseData(const std::vector<DIDEVICEOBJECTDATA>&& even
             {
                 if (offset >= DI_MOUSE_BUTTON_0 && offset <= DI_MOUSE_BUTTON_7)
                 {
-                    sendMouseButtonEvent(
-                        event.dwData, static_cast<Mouse::Button>(offset - DI_MOUSE_BUTTON_0));
+                    sendMouseButtonEvent(event.dwData, static_cast<Mouse::Button>(offset - DI_MOUSE_BUTTON_0));
                 }
             }
         }
@@ -109,8 +108,7 @@ void DInput8EventProxy::sendMouseButtonEvent(int pressData, Mouse::Button button
     }
 }
 
-void DInput8EventProxy::onJoystickData(
-    const std::vector<DIDEVICEOBJECTDATA>&& events, const GUID& guid) noexcept
+void DInput8EventProxy::onJoystickData(const std::vector<DIDEVICEOBJECTDATA>&& events, const GUID& guid) noexcept
 {
     for (const auto& event : events)
     {
@@ -149,13 +147,8 @@ void DInput8EventProxy::onJoystickData(
 
                 auto& lastStatus = _dpadStatus[guid];
 
-                sendJoystickDPadEvent(
-                    x, guid, lastStatus.right, lastStatus.left, Joystick::Button::DpadRight,
-                    Joystick::Button::DpadLeft);
-
-                sendJoystickDPadEvent(
-                    y, guid, lastStatus.up, lastStatus.down, Joystick::Button::DpadUp,
-                    Joystick::Button::DpadDown);
+                sendJoystickDPadEvent(x, guid, lastStatus.right, lastStatus.left, Joystick::Button::DpadRight, Joystick::Button::DpadLeft);
+                sendJoystickDPadEvent(y, guid, lastStatus.up, lastStatus.down, Joystick::Button::DpadUp, Joystick::Button::DpadDown);
             }
             else // other analogs
             {
@@ -173,8 +166,7 @@ void DInput8EventProxy::onJoystickData(
     }
 }
 
-void DInput8EventProxy::sendJoystickButtonEvent(
-    GUID deviceGUID, Joystick::Button button, ButtonState buttonState)
+void DInput8EventProxy::sendJoystickButtonEvent(GUID deviceGUID, Joystick::Button button, ButtonState buttonState)
 {
     JoystickButtonEvent e{};
     e.deviceGUID = deviceGUID;

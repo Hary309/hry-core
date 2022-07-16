@@ -35,24 +35,12 @@ private:
 
     template<typename ValueType>
     void sendAnalogChange(
-        uint32_t index,
+        GUID deviceGuid,
         Joystick::Axis axis,
         const XINPUT_GAMEPAD& currState,
         const XINPUT_GAMEPAD& lastState,
-        ValueType XINPUT_GAMEPAD::*offset)
-    {
-        if (currState.*offset != lastState.*offset)
-        {
-            JoystickMoveEvent e{};
-            e.deviceGUID = getDeviceGUID(index);
-            e.axis = axis;
-            e.value = static_cast<double>(currState.*offset) /
-                      static_cast<double>(std::numeric_limits<ValueType>::max()) * 100.0;
+        ValueType XINPUT_GAMEPAD::*offset);
 
-            _eventMgr.system.joystickMoveSignal.call(std::move(e));
-        }
-    }
-
-    GUID getDeviceGUID(uint32_t index) const { return { index, 0, 0, {} }; }
+    GUID getDeviceGUID(uint32_t index) const;
 };
 }
