@@ -6,6 +6,8 @@
 
 #include "ControlsPage.hpp"
 
+#include "Core.hpp"
+
 #include "Hry/Utils/ImGuiUtils.hpp"
 #include "Hry/Utils/Utils.hpp"
 
@@ -26,6 +28,8 @@ ControlsPage::ControlsPage(AxisBindsManager& axisBindsMgr, InternalEventDispatch
 
 void ControlsPage::imguiRender()
 {
+    _taskScheduler.update();
+
     const auto& axisBindsList = _axisBindsMgr.getAxisBinds();
 
     for (const auto& axisBindsSection : axisBindsList)
@@ -37,8 +41,7 @@ void ControlsPage::imguiRender()
             continue;
         }
 
-        if (ImGui::CollapsingHeader(
-                axisBindsSection->getName().c_str(), ImGuiTreeNodeFlags_DefaultOpen))
+        if (ImGui::CollapsingHeader(axisBindsSection->getName().c_str(), ImGuiTreeNodeFlags_DefaultOpen))
         {
             ImGui::Columns(4);
             ImGui::SetColumnOffset(3, ImGui::GetWindowContentRegionWidth() - 46);
@@ -81,14 +84,17 @@ void ControlsPage::imguiRender()
                     if (axisBind->deviceGUID.has_value() && ImGui::IsItemHovered())
                     {
                         ImGui::BeginTooltip();
-                        ImGui::Text("GUID: %s", FormatGUID(axisBind->deviceGUID.value()).c_str());
+                        ImGui::Text("GUID: %s", fmt::format("{}", axisBind->deviceGUID.value()).c_str());
                         ImGui::EndTooltip();
                     }
                 }
 
                 ImGui::NextColumn();
 
-                SliderDouble("##drag", &axisBind->deadZone, 0.0, 100.0);
+                if (SliderDouble("##drag", &axisBind->deadZone, 0.0, 100.0))
+                {
+                    axisBindsSection->saveToFile();
+                }
 
                 if (ImGui::IsItemHovered())
                 {
@@ -103,6 +109,7 @@ void ControlsPage::imguiRender()
                 {
                     axisBind->axis.reset();
                     axisBind->deviceGUID.reset();
+                    axisBindsSection->saveToFile();
                 }
 
                 ImGui::PopID();
@@ -116,16 +123,39 @@ void ControlsPage::imguiRender()
 
 void ControlsPage::onJoystickMove(const JoystickMoveEvent&& e)
 {
-    auto& curr = _axisValues[static_cast<int>(e.axis)];
-
-    if (_axisToSetBind != nullptr && std::abs(curr - e.value) > 25.0)
+    if (_axisToSetBind != nullptr && std::abs(e.value) > 25.0)
     {
-        _axisToSetBind->axis = e.axis;
-        _axisToSetBind->deviceGUID = e.deviceGUID;
-        _axisToSetBind = nullptr;
+        if (e.api == JoystickApi::DInput)
+        {
+            if (!_deviceToBind.has_value())
+            {
+                _deviceToBind = e;
+                _taskScheduler.addTask(
+                    std::chrono::milliseconds(250),
+                    { ConnectArg_v<&ControlsPage::onBindDInput>, this });
+            }
+        }
+        else if (e.api == JoystickApi::XInput)
+        {
+            _deviceToBind.reset();
+            _axisToSetBind->axis = e.axis;
+            _axisToSetBind->deviceGUID = e.deviceGUID;
+            _axisToSetBind = nullptr;
+            _axisBindsMgr.saveAll();
+        }
     }
+}
 
-    curr = e.value;
+void ControlsPage::onBindDInput()
+{
+    if (_axisToSetBind != nullptr && _deviceToBind.has_value())
+    {
+        _axisToSetBind->axis = _deviceToBind->axis;
+        _axisToSetBind->deviceGUID = _deviceToBind->deviceGUID;
+        _axisToSetBind = nullptr;
+        _deviceToBind.reset();
+        _axisBindsMgr.saveAll();
+    }
 }
 
 std::string_view ControlsPage::GetAxisName(Joystick::Axis axis)

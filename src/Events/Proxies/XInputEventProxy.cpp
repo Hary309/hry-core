@@ -85,9 +85,9 @@ void XInputEventProxy::onJoystickData(uint32_t index, uint32_t status, XINPUT_ST
             {
                 JoystickButtonEvent e{};
                 e.deviceGUID = getDeviceGUID(index);
-                e.button =
-                    static_cast<Joystick::Button>(static_cast<int>(Joystick::Button::Button1) + i);
+                e.button = static_cast<Joystick::Button>(static_cast<int>(Joystick::Button::Button1) + i);
                 e.state = state ? ButtonState::Pressed : ButtonState::Released;
+                e.api = JoystickApi::XInput;
 
                 if (state)
                 {
@@ -119,6 +119,7 @@ void XInputEventProxy::sendAnalogChange(
         e.axis = axis;
         e.value = static_cast<double>(currState.*offset) /
                   static_cast<double>(std::numeric_limits<ValueType>::max()) * 100.0;
+        e.api = JoystickApi::XInput;
 
         _eventMgr.system.joystickMoveSignal.call(std::move(e));
     }

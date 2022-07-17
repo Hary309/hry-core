@@ -111,6 +111,15 @@ struct GameStateEvent
 };
 
 /**
+ * @brief Joystick Api
+ */
+enum class JoystickApi
+{
+    DInput,
+    XInput,
+};
+
+/**
  * @brief Joystick analog move event
  */
 struct JoystickMoveEvent
@@ -130,6 +139,11 @@ struct JoystickMoveEvent
      * range [-100 .. 100]
      */
     double value;
+
+    /**
+     * @brief Joystick Api
+     */
+    JoystickApi api;
 };
 
 /**
@@ -152,6 +166,11 @@ struct JoystickButtonEvent
      * @brief State of the button
      */
     ButtonState state;
+
+    /**
+     * @brief Joystick Api
+     */
+    JoystickApi api;
 };
 
 /**

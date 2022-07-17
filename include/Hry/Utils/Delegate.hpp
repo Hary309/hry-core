@@ -145,6 +145,11 @@ public:
         {
             return _function(_content, std::forward<Args>(args)...);
         }
+
+        if constexpr (!std::is_same_v<Return, void>)
+        {
+            return {};
+        }
     }
 
     /**

@@ -44,7 +44,7 @@ DInput8EventProxy::DInput8EventProxy(EventManager& eventMgr)
     : EventProxyBase(eventMgr)
 {
     DInput8Hook::OnMouseData.connect<&DInput8EventProxy::onMouseData>(this);
-    // DInput8Hook::OnJoyst ickData.connect<&DInput8EventProxy::onJoystickData>(this);
+    DInput8Hook::OnJoystickData.connect<&DInput8EventProxy::onJoystickData>(this);
 }
 
 void DInput8EventProxy::onMouseData(const std::vector<DIDEVICEOBJECTDATA>&& events) noexcept
@@ -159,7 +159,7 @@ void DInput8EventProxy::onJoystickData(const std::vector<DIDEVICEOBJECTDATA>&& e
                 e.deviceGUID = guid;
                 e.axis = static_cast<Joystick::Axis>(offset / sizeof(DI_JOYSTICK_X));
                 e.value = result;
-
+                e.api = JoystickApi::DInput;
                 _eventMgr.system.joystickMoveSignal.call(std::move(e));
             }
         }
@@ -172,6 +172,7 @@ void DInput8EventProxy::sendJoystickButtonEvent(GUID deviceGUID, Joystick::Butto
     e.deviceGUID = deviceGUID;
     e.button = button;
     e.state = buttonState;
+    e.api = JoystickApi::DInput;
     _eventMgr.system.joystickButtonPressSignal.call(std::move(e));
 }
 

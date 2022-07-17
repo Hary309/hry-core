@@ -5,6 +5,7 @@
  */
 
 #include "KeyBindsPage.hpp"
+#include "Core.hpp"
 
 #include "Utils/InternalImGuiUtils.hpp"
 
@@ -26,6 +27,8 @@ KeyBindsPage::KeyBindsPage(KeyBindsManager& keyBindsMgr, InternalEventDispatcher
 
 void KeyBindsPage::imguiRender()
 {
+    _taskScheduler.update();
+
     const auto& keyBindsList = _keyBindsMgr.getKeyBinds();
 
     for (const auto& keyBindsSection : keyBindsList)
@@ -144,13 +147,27 @@ void KeyBindsPage::handleJoystickButtonPress(const JoystickButtonEvent&& buttonE
 {
     if (_keyToSetBind != nullptr)
     {
-        auto newKey = GetBindableKey(buttonEvent.button);
+        const auto* newKey = GetBindableKey(buttonEvent.button);
 
-        if (newKey)
+        if (newKey != nullptr)
         {
-            _keyToSetBind->key = newKey;
-            _keyToSetBind->joystickGUID = buttonEvent.deviceGUID;
-            applyChanges();
+            if (buttonEvent.api == JoystickApi::DInput)
+            {
+                if (!_deviceToBind.has_value())
+                {
+                    _deviceToBind = buttonEvent;
+                    _taskScheduler.addTask(
+                        std::chrono::milliseconds(250),
+                        { ConnectArg_v<&KeyBindsPage::onBindDInput>, this });
+                }
+            }
+            else if (buttonEvent.api == JoystickApi::XInput)
+            {
+                _keyToSetBind->key = newKey;
+                _keyToSetBind->joystickGUID = buttonEvent.deviceGUID;
+                _deviceToBind.reset();
+                applyChanges();
+            }
         }
     }
 }
@@ -160,5 +177,16 @@ void KeyBindsPage::applyChanges()
     _keyToSetBind = nullptr;
     InternalImGuiUtils::EnableCursor(true);
     _keyBindsMgr.saveAll();
+}
+
+void KeyBindsPage::onBindDInput()
+{
+    if (_keyToSetBind != nullptr && _deviceToBind.has_value())
+    {
+        _keyToSetBind->key = GetBindableKey(_deviceToBind->button);
+        _keyToSetBind->joystickGUID = _deviceToBind->deviceGUID;
+        _deviceToBind.reset();
+        applyChanges();
+    }
 }
 }

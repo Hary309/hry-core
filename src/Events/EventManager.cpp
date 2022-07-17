@@ -28,7 +28,6 @@ void EventManager::init(scs_telemetry_init_params_v100_t* scsTelemetry)
 
 EventDispatcher EventManager::createEventDispatcher()
 {
-    // clang-format off
     return {
         {
             system.windowResizeSignal,
@@ -48,7 +47,7 @@ EventDispatcher EventManager::createEventDispatcher()
             system.joystickButtonReleaseSignal,
 
             system.imguiRenderSignal,
-            system.overlayStateChangeSignal
+            system.overlayStateChangeSignal,
         },
         {
             game.frameStartSignal,
@@ -60,7 +59,7 @@ EventDispatcher EventManager::createEventDispatcher()
                 game.gameplay.playerFinedSignal,
                 game.gameplay.playerTollgatePaidSignal,
                 game.gameplay.playerUseFerrySignal,
-                game.gameplay.playerUseTrainSignal
+                game.gameplay.playerUseTrainSignal,
             },
             {
                 game.config.substancesSignal,
@@ -68,16 +67,14 @@ EventDispatcher EventManager::createEventDispatcher()
                 game.config.hshifterSignal,
                 game.config.truckSignal,
                 game.config.trailerSignal,
-                game.config.jobSignal
-            }
-        }
+                game.config.jobSignal,
+            },
+        },
     };
-    // clang-format on
 }
 
 InternalEventDispatcher EventManager::createInternalEventDispatcher()
 {
-    // clang-format off
     return {
         {
             system.windowResizeSignal,
@@ -100,7 +97,7 @@ InternalEventDispatcher EventManager::createInternalEventDispatcher()
 
             system.logSignal,
             system.wndProcSignal,
-            system.overlayStateChangeSignal
+            system.overlayStateChangeSignal,
         },
         {
             game.frameStartSignal,
@@ -112,10 +109,9 @@ InternalEventDispatcher EventManager::createInternalEventDispatcher()
                 game.config.hshifterSignal,
                 game.config.truckSignal,
                 game.config.trailerSignal,
-                game.config.jobSignal
-            }
-        }
+                game.config.jobSignal,
+            },
+        },
     };
-    // clang-format on
 }
 }

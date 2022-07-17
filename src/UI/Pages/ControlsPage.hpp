@@ -11,6 +11,7 @@
 #include "UI/Pages/PageBase.hpp"
 
 #include "Hry/System/Joystick.hpp"
+#include "Hry/Utils/TaskScheduler.hpp"
 
 #include <array>
 
@@ -24,8 +25,10 @@ public:
 private:
     AxisBindsManager& _axisBindsMgr;
 
-    std::array<double, 8> _axisValues{};
     AxisBind* _axisToSetBind = nullptr;
+
+    TaskScheduler<void()> _taskScheduler;
+    std::optional<JoystickMoveEvent> _deviceToBind;
 
 public:
     explicit ControlsPage(AxisBindsManager& axisBindsMgr, InternalEventDispatcher& dispatcher);
@@ -34,6 +37,8 @@ public:
 
 private:
     void onJoystickMove(const JoystickMoveEvent&& e);
+
+    void onBindDInput();
 
     static std::string_view GetAxisName(Joystick::Axis axis);
 };
