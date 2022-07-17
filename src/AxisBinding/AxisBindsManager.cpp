@@ -67,4 +67,12 @@ void AxisBindsManager::onJoystickMove(const JoystickMoveEvent&& e)
         }
     }
 }
+
+void AxisBindsManager::saveAll()
+{
+    for (const auto& k : _axisBinds)
+    {
+        k->saveToFile();
+    }
+}
 }

@@ -10,6 +10,8 @@
 #include "Hry/System/Joystick.hpp"
 #include "Hry/Utils/Delegate.hpp"
 
+#include <nlohmann/json_fwd.hpp>
+
 #include <guiddef.h>
 
 #include <memory>
@@ -19,11 +21,11 @@
 
 namespace hry
 {
-class AxisBindBuiilder;
+class AxisBindBuilder;
 
 struct AxisBind final
 {
-    friend AxisBindBuiilder;
+    friend AxisBindBuilder;
 
     using Delegate_t = Delegate<void(double)>;
 
@@ -46,6 +48,7 @@ class AxisBinds
 {
 private:
     std::string _name;
+    std::string _axisBindsFilePath;
 
     std::vector<std::unique_ptr<AxisBind>> _axisBinds;
 
@@ -57,9 +60,16 @@ public:
     auto& getAxisBinds() { return _axisBinds; }
 
     const auto& getName() const { return _name; }
+
+    void saveToFile() const;
+    bool loadFromFile();
+
+private:
+    void toJson(nlohmann::json& json) const;
+    void fromJson(const nlohmann::json& json);
 };
 
-class AxisBindBuiilder final
+class AxisBindBuilder final
 {
     friend AxisBinds;
 
@@ -72,27 +82,27 @@ private:
 
 public:
     // set identifier of keybind (this will be saved to file)
-    AxisBindBuiilder& setID(const std::string& id)
+    AxisBindBuilder& setID(const std::string& id)
     {
         _id = id;
         return *this;
     }
 
     // set display label
-    AxisBindBuiilder& setLabel(const std::string& label)
+    AxisBindBuilder& setLabel(const std::string& label)
     {
         _label = label;
         return *this;
     }
 
     // set descrption, will be shown next to label
-    AxisBindBuiilder& setDescription(const std::string& desc)
+    AxisBindBuilder& setDescription(const std::string& desc)
     {
         _desc = desc;
         return *this;
     }
 
-    AxisBindBuiilder& setCallback(AxisBind::Delegate_t callback)
+    AxisBindBuilder& setCallback(AxisBind::Delegate_t callback)
     {
         _action = callback;
         return *this;

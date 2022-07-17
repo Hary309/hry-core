@@ -67,7 +67,6 @@ private:
 
     HryPtr<Config> _coreConfig;
     HryPtr<KeyBinds> _coreKeyBinds;
-    HryPtr<AxisBinds> _coreAxisBinds;
 
     bool _showImGuiDemo{};
 
@@ -83,12 +82,12 @@ public:
 
     void initConfig();
     void initKeyBinds();
+    void initAxisBinds();
 
     [[nodiscard]] bool isInited() const { return _isInited; }
 
 private:
     void onConfigChangesApplied(const ConfigCallbackData& data);
-    void accelerateAxisBind(double value);
 
 private:
     static bool InstallHooks();

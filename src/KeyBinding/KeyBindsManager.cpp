@@ -31,13 +31,10 @@ KeyBindsManager::KeyBindsManager(InternalEventDispatcher& dispatcher)
     dispatcher.system.onKeyRelease.connect<&KeyBindsManager::handleKeyboardEvent>(this);
 
     dispatcher.system.onMouseButtonPress.connect<&KeyBindsManager::handleMouseButtonEvent>(this);
-    dispatcher.system.onMouseButtonRelease.connect<&KeyBindsManager::handleMouseButtonEvent>(
-        this);
-    dispatcher.system.onJoystickButtonPress.connect<&KeyBindsManager::handleJoystickButtonEvent>(
-        this);
+    dispatcher.system.onMouseButtonRelease.connect<&KeyBindsManager::handleMouseButtonEvent>(this);
+    dispatcher.system.onJoystickButtonPress.connect<&KeyBindsManager::handleJoystickButtonEvent>(this);
 
-    dispatcher.system.onJoystickButtonRelease
-        .connect<&KeyBindsManager::handleJoystickButtonEvent>(this);
+    dispatcher.system.onJoystickButtonRelease.connect<&KeyBindsManager::handleJoystickButtonEvent>(this);
 
     dispatcher.game.onFrameEnd.connect<&KeyBindsManager::update>(this);
 }
@@ -82,8 +79,7 @@ void KeyBindsManager::handleJoystickButtonEvent(const JoystickButtonEvent&& butt
     processKey(buttonEvent.button, buttonEvent.state, buttonEvent.deviceGUID);
 }
 
-void KeyBindsManager::processKey(
-    BindableKey::Key_t key, ButtonState buttonState, std::optional<GUID> guid)
+void KeyBindsManager::processKey(BindableKey::Key_t key, ButtonState buttonState, std::optional<GUID> guid)
 {
     for (auto& keyBindsSection : _keyBinds)
     {
@@ -130,8 +126,7 @@ void KeyBindsManager::handleHoldActivator(ButtonState buttonState, KeyBind* keyB
             auto endTimePoint = system_clock::now() + LongPressTimeout;
 
             _taskScheduler.addTask(
-                LongPressTimeout, { ConnectArg_v<&KeyBindsManager::onTaskHold>, this }, keyBind,
-                endTimePoint);
+                LongPressTimeout, { ConnectArg_v<&KeyBindsManager::onTaskHold>, this }, keyBind, endTimePoint);
 
             keyBind->keyPressTimePoint = endTimePoint;
         }

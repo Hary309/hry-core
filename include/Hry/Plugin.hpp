@@ -8,11 +8,11 @@
 
 #include "PluginInfo.hpp"
 
-#include "Events/EventDispatcher.hpp"
-#include "KeyBinding/KeyBinds.hpp"
-
+#include "Hry/AxisBinding/AxisBinds.hpp"
 #include "Hry/Config/Config.hpp"
+#include "Hry/Events/EventDispatcher.hpp"
 #include "Hry/GameType.hpp"
+#include "Hry/KeyBinding/KeyBinds.hpp"
 #include "Hry/Logger/Logger.hpp"
 #include "Hry/SCSSDK/Telemetry.hpp"
 #include "Hry/Utils/Delegate.hpp"
@@ -90,6 +90,14 @@ public:
     virtual void initKeyBinds(KeyBinds* keyBinds) = 0;
 
     /**
+     * @brief Interface for initializing axis bindings
+     *        Is called as fifth
+     *
+     * @param axisBinds Holds class for creating axis bindings
+     */
+    virtual void initAxisBinds(AxisBinds* axisBinds) {}
+
+    /**
      * @brief Interface for registering events
      *        Is called as second
      *
@@ -112,8 +120,11 @@ public:
  * @brief Simple macro for initializing plugin
  *        Put it once in main file with class that inherits from Plugin
  */
-#define INIT_PLUGIN(PLUGIN_TYPE)                                                        \
-    extern "C"                                                                          \
-    {                                                                                   \
-        __declspec(dllexport) hry::Plugin* CreatePlugin() { return new PLUGIN_TYPE(); } \
+#define INIT_PLUGIN(PLUGIN_TYPE)                          \
+    extern "C"                                            \
+    {                                                     \
+        __declspec(dllexport) hry::Plugin* CreatePlugin() \
+        {                                                 \
+            return new PLUGIN_TYPE();                     \
+        }                                                 \
     }

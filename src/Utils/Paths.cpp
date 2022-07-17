@@ -29,11 +29,13 @@ void Paths::Init()
     Paths::HomePath = GetHomePath().string();
     Paths::ConfigsPath = Paths::HomePath + "\\configs";
     Paths::KeyBindsPath = Paths::HomePath + "\\keybinds";
+    Paths::AxisBindsPath = Paths::HomePath + "\\axisbinds";
 
     TryCreateDirectory(Paths::ModulePath);
     TryCreateDirectory(Paths::PluginsPath);
     TryCreateDirectory(Paths::HomePath);
     TryCreateDirectory(Paths::ConfigsPath);
     TryCreateDirectory(Paths::KeyBindsPath);
+    TryCreateDirectory(Paths::AxisBindsPath);
 }
 }

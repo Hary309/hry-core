@@ -25,6 +25,7 @@ public:
     inline static std::string HomePath;     /** @brief path to home directory (is located in `My Documents/hry_core/ets2` or `My Documents/hry_core/ats`) */
     inline static std::string ConfigsPath;  /** @brief path to directory of configs */
     inline static std::string KeyBindsPath; /** @brief path to directory of keybinds */
+    inline static std::string AxisBindsPath;
 
 private:
     static void Init();

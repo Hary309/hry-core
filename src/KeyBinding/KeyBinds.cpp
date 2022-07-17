@@ -59,8 +59,7 @@ void KeyBinds::saveToFile() const
         }
         catch (nlohmann::json::type_error& ex)
         {
-            Core::Logger->error(
-                "Cannot encode config for '{}' because '{}'", this->_name, ex.what());
+            Core::Logger->error("Cannot encode config for '{}' because '{}'", this->_name, ex.what());
         }
         catch (nlohmann::json::exception& ex)
         {

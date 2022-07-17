@@ -16,6 +16,7 @@ class Logger;
 struct EventDispatcher;
 class KeyBinds;
 class Config;
+class AxisBinds;
 
 struct Module
 {
@@ -33,6 +34,7 @@ struct Module
         std::unique_ptr<EventDispatcher> eventDispatcher;
         HryPtr<KeyBinds> keyBinds;
         HryPtr<Config> config;
+        HryPtr<AxisBinds> axisBinds;
     } data;
 
     bool loadAtStart = true;

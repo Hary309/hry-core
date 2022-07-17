@@ -28,6 +28,8 @@ public:
 
     auto& getAxisBinds() { return _axisBinds; }
 
+    void saveAll();
+
 private:
     void axisBindsDeleter(AxisBinds* axisBinds);
     void onJoystickMove(const JoystickMoveEvent&& e);
