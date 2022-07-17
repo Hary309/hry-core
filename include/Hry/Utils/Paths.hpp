@@ -20,12 +20,12 @@ class Paths final
     friend Core;
 
 public:
-    inline static std::string ModulePath;   /** @brief path to directory where hry_core.dll is located */
-    inline static std::string PluginsPath;  /** @brief path to directory hry_plugins/ */
-    inline static std::string HomePath;     /** @brief path to home directory (is located in `My Documents/hry_core/ets2` or `My Documents/hry_core/ats`) */
-    inline static std::string ConfigsPath;  /** @brief path to directory of configs */
-    inline static std::string KeyBindsPath; /** @brief path to directory of keybinds */
-    inline static std::string AxisBindsPath;
+    inline static std::string ModulePath;    /** @brief path to directory where hry_core.dll is located */
+    inline static std::string PluginsPath;   /** @brief path to directory hry_plugins/ */
+    inline static std::string HomePath;      /** @brief path to home directory (is located in `My Documents/hry_core/ets2` or `My Documents/hry_core/ats`) */
+    inline static std::string ConfigsPath;   /** @brief path to directory of configs */
+    inline static std::string KeyBindsPath;  /** @brief path to directory of keybinds */
+    inline static std::string AxisBindsPath; /** @brief path to directory of axisbinds */
 
 private:
     static void Init();
