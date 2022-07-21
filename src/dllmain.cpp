@@ -15,7 +15,11 @@
 
 #include <memory>
 
-static std::unique_ptr<hry::Core> core;
+namespace
+{
+std::unique_ptr<hry::Core> core;
+HINSTANCE hInstance;
+}
 
 __declspec(dllexport) SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version, const scs_telemetry_init_params_t* const params)
 {
@@ -23,12 +27,15 @@ __declspec(dllexport) SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version, 
     {
         return SCS_RESULT_unsupported;
     }
+    MH_Initialize();
 
     auto* initParams = (scs_telemetry_init_params_v100_t*)(params);
 
     auto log = initParams->common.log;
 
-    if (core == nullptr || core->isInited())
+    core = std::make_unique<hry::Core>(hInstance);
+
+    if (core->isInited())
     {
         log(SCS_LOG_TYPE_message, "hry_core is already initialized");
         return SCS_RESULT_ok;
@@ -51,6 +58,7 @@ __declspec(dllexport) SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version, 
 
 __declspec(dllexport) SCSAPI_VOID scs_telemetry_shutdown(void)
 {
+    MH_Uninitialize();
     core.reset();
 }
 
@@ -60,14 +68,12 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID /*unused*/)
     {
         case DLL_PROCESS_ATTACH:
         {
-            MH_Initialize();
-            core = std::make_unique<hry::Core>(hinstDLL);
+            hInstance = hinstDLL;
         }
         break;
         case DLL_PROCESS_DETACH:
         {
             core.reset();
-            MH_Uninitialize();
         }
         break;
     }

@@ -46,11 +46,13 @@ MainWindow::MainWindow(
     ModuleManager& moduleMgr,
     ConfigManager& configMgr,
     KeyBindsManager& keyBindsMgr,
+    AxisBindsManager& axisBindsMgr,
     EventManager& eventMgr,
     InternalEventDispatcher& eventDispatcher)
     : _pluginsPage(moduleMgr)
     , _configPage(configMgr)
     , _keyBindsPage(keyBindsMgr, eventDispatcher)
+    , _controlsPage(axisBindsMgr, eventDispatcher)
     , _eventMgr(eventMgr)
 {
 }
@@ -91,7 +93,7 @@ void MainWindow::imguiRender()
                 textPos, ImGui::ColorConvertFloat4ToU32(ImColor(150, 150, 240).Value), text.c_str());
         }
 
-        ImGui::Columns(4, "tabs##plugin_manager", false);
+        ImGui::Columns(5, "tabs##plugin_manager", false);
 
         if (TabButton("Plugins", _currentPage == &_pluginsPage))
         {
@@ -110,6 +112,13 @@ void MainWindow::imguiRender()
         if (TabButton("Key binds", _currentPage == &_keyBindsPage))
         {
             _currentPage = &_keyBindsPage;
+        }
+
+        ImGui::NextColumn();
+
+        if (TabButton("Controls", _currentPage == &_controlsPage))
+        {
+            _currentPage = &_controlsPage;
         }
 
         ImGui::NextColumn();

@@ -9,6 +9,7 @@
 #include "Core.hpp"
 
 #include "Events/Proxies/TelemetryEventProxy.hpp"
+#include "Events/Proxies/XInputEventProxy.hpp"
 #include "Proxies/DInput8EventProxy.hpp"
 #include "Proxies/TelemetryEventProxy.hpp"
 #include "Proxies/WndProcEventProxy.hpp"
@@ -21,12 +22,12 @@ void EventManager::init(scs_telemetry_init_params_v100_t* scsTelemetry)
 
     _eventProxies.push_back(std::make_unique<WndProcEventProxy>(*this));
     _eventProxies.push_back(std::make_unique<DInput8EventProxy>(*this));
+    _eventProxies.push_back(std::make_unique<XInputEventProxy>(*this));
     _eventProxies.push_back(std::make_unique<TelemetryEventProxy>(*this, scsTelemetry));
 }
 
 EventDispatcher EventManager::createEventDispatcher()
 {
-    // clang-format off
     return {
         {
             system.windowResizeSignal,
@@ -46,7 +47,7 @@ EventDispatcher EventManager::createEventDispatcher()
             system.joystickButtonReleaseSignal,
 
             system.imguiRenderSignal,
-            system.overlayStateChangeSignal
+            system.overlayStateChangeSignal,
         },
         {
             game.frameStartSignal,
@@ -58,7 +59,7 @@ EventDispatcher EventManager::createEventDispatcher()
                 game.gameplay.playerFinedSignal,
                 game.gameplay.playerTollgatePaidSignal,
                 game.gameplay.playerUseFerrySignal,
-                game.gameplay.playerUseTrainSignal
+                game.gameplay.playerUseTrainSignal,
             },
             {
                 game.config.substancesSignal,
@@ -66,16 +67,14 @@ EventDispatcher EventManager::createEventDispatcher()
                 game.config.hshifterSignal,
                 game.config.truckSignal,
                 game.config.trailerSignal,
-                game.config.jobSignal
-            }
-        }
+                game.config.jobSignal,
+            },
+        },
     };
-    // clang-format on
 }
 
 InternalEventDispatcher EventManager::createInternalEventDispatcher()
 {
-    // clang-format off
     return {
         {
             system.windowResizeSignal,
@@ -98,7 +97,7 @@ InternalEventDispatcher EventManager::createInternalEventDispatcher()
 
             system.logSignal,
             system.wndProcSignal,
-            system.overlayStateChangeSignal
+            system.overlayStateChangeSignal,
         },
         {
             game.frameStartSignal,
@@ -110,10 +109,9 @@ InternalEventDispatcher EventManager::createInternalEventDispatcher()
                 game.config.hshifterSignal,
                 game.config.truckSignal,
                 game.config.trailerSignal,
-                game.config.jobSignal
-            }
-        }
+                game.config.jobSignal,
+            },
+        },
     };
-    // clang-format on
 }
 }

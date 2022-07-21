@@ -8,6 +8,7 @@
 
 #include "ImGuiImplEvents.hpp"
 
+#include "AxisBinding/AxisBindsManager.hpp"
 #include "Config/ConfigManager.hpp"
 #include "Events/EventManager.hpp"
 #include "KeyBinding/KeyBindsManager.hpp"
@@ -56,6 +57,7 @@ private:
     Renderer _renderer;
     ConfigManager _configMgr;
     KeyBindsManager _keyBindsMgr;
+    AxisBindsManager _axisBindsMgr;
     ModuleManager _moduleMgr;
 
     MainWindow _mainWindow;
@@ -80,6 +82,7 @@ public:
 
     void initConfig();
     void initKeyBinds();
+    void initAxisBinds();
 
     [[nodiscard]] bool isInited() const { return _isInited; }
 

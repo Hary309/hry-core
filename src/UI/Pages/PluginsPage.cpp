@@ -100,12 +100,14 @@ void PluginsPage::renderList()
         {
             module->loadAtStart = true;
             _moduleMgr.load(module.get());
+            _moduleMgr.saveListToFile();
         }
         ImGui::SameLine();
         if (ButtonColored("Off", isLoaded ? red : gray, isLoaded) && isLoaded)
         {
             module->loadAtStart = false;
             _moduleMgr.unload(module.get());
+            _moduleMgr.saveListToFile();
         }
 
         // if user loaded or unloaded module

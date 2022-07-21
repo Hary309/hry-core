@@ -65,52 +65,48 @@ public:
      *
      * @tparam Args Arguments for formatting
      * @param level Level of message
-     * @param format Formatting string
-     * @param args Arguments for formatting
+     * @param args Arguments
      */
     template<typename... Args>
-    void log(Level level, std::string_view format, Args&&... args)
+    void log_format(Level level, Args&&... args)
     {
-        log(level, fmt::format(format, std::forward<Args>(args)...));
+        log(level, fmt::format(std::forward<Args>(args)...));
     }
 
     /**
      * @brief Write log message with info level
      *
      * @tparam Args Arguments for formatting
-     * @param format Formatting string
      * @param args Arguments for formatting
      */
     template<typename... Args>
-    void info(std::string_view format, Args&&... args)
+    void info(Args&&... args)
     {
-        log(Level::Info, format, std::forward<Args>(args)...);
+        log_format(Level::Info, std::forward<Args>(args)...);
     }
 
     /**
      * @brief Write log message with warning level
      *
      * @tparam Args Arguments for formatting
-     * @param format Formatting string
      * @param args Arguments for formatting
      */
     template<typename... Args>
-    void warning(std::string_view format, Args&&... args)
+    void warning(Args&&... args)
     {
-        log(Level::Warning, format, std::forward<Args>(args)...);
+        log_format(Level::Warning, std::forward<Args>(args)...);
     }
 
     /**
      * @brief Write log message with error level
      *
      * @tparam Args Arguments for formatting
-     * @param format Formatting string
      * @param args Arguments for formatting
      */
     template<typename... Args>
-    void error(std::string_view format, Args&&... args)
+    void error(Args&&... args)
     {
-        log(Level::Error, format, std::forward<Args>(args)...);
+        log_format(Level::Error, std::forward<Args>(args)...);
     }
 };
 }

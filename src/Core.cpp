@@ -9,6 +9,8 @@
 #include "Hooks/D3D11Hook.hpp"
 #include "Hooks/DInput8Hook.hpp"
 #include "Hooks/OpenGLHook.hpp"
+#include "Hooks/XInputHook.hpp"
+
 #include "Logger/LoggerFactory.hpp"
 #include "Utils/InternalImGuiUtils.hpp"
 
@@ -42,8 +44,9 @@ Core::Core(HINSTANCE hInst)
     , _channelAggregator(_eventDispatcher)
     , _renderer(*this, _eventMgr)
     , _keyBindsMgr(_eventDispatcher)
-    , _moduleMgr(_eventMgr, _configMgr, _keyBindsMgr, _channelAggregator.getTelemetry())
-    , _mainWindow(_moduleMgr, _configMgr, _keyBindsMgr, _eventMgr, _eventDispatcher)
+    , _axisBindsMgr(_eventDispatcher)
+    , _moduleMgr(_eventMgr, _configMgr, _keyBindsMgr, _axisBindsMgr, _channelAggregator.getTelemetry())
+    , _mainWindow(_moduleMgr, _configMgr, _keyBindsMgr, _axisBindsMgr, _eventMgr, _eventDispatcher)
     , _loggerWindow(_eventDispatcher)
     , _imguiImplEvents(_eventDispatcher)
 {
@@ -90,6 +93,7 @@ bool Core::init(scs_telemetry_init_params_v100_t* scsTelemetry)
 
     initConfig();
     initKeyBinds();
+    initAxisBinds();
 
     _moduleMgr.init();
 
@@ -160,6 +164,10 @@ void Core::initKeyBinds()
     }
 }
 
+void Core::initAxisBinds()
+{
+}
+
 void Core::imguiRender()
 {
     if (_showImGuiDemo)
@@ -194,7 +202,8 @@ bool Core::InstallHooks()
 
     success &= rendererSuccess;
 
-    success &= DInput8Hook::Install();
+    DInput8Hook::Install();
+    XInputHook::Install();
 
     if (success)
     {

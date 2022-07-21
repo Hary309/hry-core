@@ -37,10 +37,16 @@ inline bool IsApiCompatible(Version version)
     return version.major == ApiVersion.major;
 }
 
-ModuleManager::ModuleManager(EventManager& eventMgr, ConfigManager& configMgr, KeyBindsManager& keyBindsMgr, const Telemetry& telemetry)
+ModuleManager::ModuleManager(
+    EventManager& eventMgr,
+    ConfigManager& configMgr,
+    KeyBindsManager& keyBindsMgr,
+    AxisBindsManager& axisBindsMgr,
+    const Telemetry& telemetry)
     : _eventMgr(eventMgr)
     , _configMgr(configMgr)
     , _keyBindsMgr(keyBindsMgr)
+    , _axisBindsMgr(axisBindsMgr)
     , _telemetry(telemetry)
 {
 }
@@ -48,7 +54,6 @@ ModuleManager::ModuleManager(EventManager& eventMgr, ConfigManager& configMgr, K
 ModuleManager::~ModuleManager()
 {
     unloadAll();
-    saveListToFile();
 }
 
 void ModuleManager::init()
@@ -218,6 +223,7 @@ bool ModuleManager::load(Module* mod)
 
     mod->data.config = _configMgr.createConfig(name);
     mod->data.keyBinds = _keyBindsMgr.createKeyBinds(name);
+    mod->data.axisBinds = _axisBindsMgr.createAxisBinds(name);
     mod->data.logger = LoggerFactory::GetLogger(name);
     mod->data.eventDispatcher = std::make_unique<EventDispatcher>(_eventMgr.createEventDispatcher());
 
@@ -230,6 +236,7 @@ bool ModuleManager::load(Module* mod)
         mod->plugin->initEvents(mod->data.eventDispatcher.get());
         mod->plugin->initConfig(mod->data.config.get());
         mod->plugin->initKeyBinds(mod->data.keyBinds.get());
+        // mod->plugin->initAxisBinds(mod->data.axisBinds.get());
 
         if (!mod->data.config->loadFromFile())
         {
@@ -240,12 +247,19 @@ bool ModuleManager::load(Module* mod)
         {
             mod->data.keyBinds->saveToFile();
         }
+
+        if (!mod->data.axisBinds->loadFromFile())
+        {
+            mod->data.axisBinds->saveToFile();
+        }
+
         return true;
     }
 
     Core::Logger->error("Cannot load plugin [{}]", mod->loadResult);
 
     unload(mod);
+
     return false;
 }
 
@@ -264,6 +278,7 @@ void ModuleManager::unload(Module* mod)
     mod->data.logger.reset();
     mod->data.config.reset();
     mod->data.keyBinds.reset();
+    mod->data.axisBinds.reset();
 
     if (mod->dllHandle != nullptr)
     {

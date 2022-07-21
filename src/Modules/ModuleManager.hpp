@@ -8,10 +8,6 @@
 
 #include "Module.hpp"
 
-#include "Config/ConfigManager.hpp"
-#include "Events/EventManager.hpp"
-#include "KeyBinding/KeyBindsManager.hpp"
-
 #include "Hry/SCSSDK/Telemetry.hpp"
 
 #include <filesystem>
@@ -21,6 +17,11 @@
 
 namespace hry
 {
+class EventManager;
+class ConfigManager;
+class KeyBindsManager;
+class AxisBindsManager;
+
 class ModuleManager
 {
 private:
@@ -34,6 +35,7 @@ private:
     EventManager& _eventMgr;
     ConfigManager& _configMgr;
     KeyBindsManager& _keyBindsMgr;
+    AxisBindsManager& _axisBindsMgr;
     const Telemetry& _telemetry;
 
     std::string _pluginListFilePath;
@@ -43,6 +45,7 @@ public:
         EventManager& eventMgr,
         ConfigManager& configMgr,
         KeyBindsManager& keyBindsMgr,
+        AxisBindsManager& axisBindsMgr,
         const Telemetry& telemetry);
 
     ~ModuleManager();
@@ -59,8 +62,9 @@ public:
 
     [[nodiscard]] const auto& getModules() const { return _modules; }
 
-private:
     void saveListToFile();
+
+private:
     void loadListFromFile();
 
     Module* tryAdd(const std::filesystem::path& path);

@@ -30,14 +30,6 @@ namespace hry
  */
 template<typename T>
 using HryPtr = std::unique_ptr<T, Delegate<void(T*)>>;
-
-/**
- * @brief Convert GUID to formatted string
- *
- * @param guid GUID to be converted
- * @return Formatted string
- */
-HRY_API std::string FormatGUID(const GUID& guid);
 }
 
 namespace fmt
@@ -54,8 +46,7 @@ struct formatter<GUID>
     template<typename FormatContext>
     auto format(GUID const& guid, FormatContext& ctx)
     {
-        return format_to(
-            ctx.out(), "{{{:x}-{:x}-{:x}-{:x}}}", guid.Data1, guid.Data2, guid.Data3, fmt::join(guid.Data4, ""));
+        return format_to(ctx.out(), "{{{:08x}-{:04x}-{:04x}-{:02x}}}", guid.Data1, guid.Data2, guid.Data3, fmt::join(guid.Data4, ""));
     }
 };
 }

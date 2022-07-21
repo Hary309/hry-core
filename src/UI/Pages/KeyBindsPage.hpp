@@ -12,6 +12,7 @@
 
 #include "Hry/Events/Event.hpp"
 #include "Hry/Utils/Signal.hpp"
+#include "Hry/Utils/TaskScheduler.hpp"
 
 namespace hry
 {
@@ -21,6 +22,9 @@ private:
     KeyBindsManager& _keyBindsMgr;
 
     KeyBind* _keyToSetBind = nullptr;
+
+    TaskScheduler<void()> _taskScheduler;
+    std::optional<JoystickButtonEvent> _deviceToBind;
 
 public:
     KeyBindsPage(KeyBindsManager& keyBindsMgr, InternalEventDispatcher& dispatcher);
@@ -33,5 +37,7 @@ private:
     void handleJoystickButtonPress(const JoystickButtonEvent&&);
 
     void applyChanges();
+
+    void onBindDInput();
 };
 }
