@@ -62,8 +62,9 @@ public:
 
     [[nodiscard]] const auto& getModules() const { return _modules; }
 
-private:
     void saveListToFile();
+
+private:
     void loadListFromFile();
 
     Module* tryAdd(const std::filesystem::path& path);

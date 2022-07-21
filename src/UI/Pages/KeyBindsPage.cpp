@@ -117,9 +117,9 @@ void KeyBindsPage::handleKeyPress(const KeyboardEvent&& keyboardEvent)
 {
     if (_keyToSetBind != nullptr)
     {
-        auto newKey = GetBindableKey(keyboardEvent.key);
+        const auto* newKey = GetBindableKey(keyboardEvent.key);
 
-        if (newKey)
+        if (newKey != nullptr)
         {
             _keyToSetBind->key = newKey;
             _keyToSetBind->joystickGUID.reset();
@@ -132,9 +132,9 @@ void KeyBindsPage::handleMouseButtonPress(const MouseButtonEvent&& buttonEvent)
 {
     if (_keyToSetBind != nullptr)
     {
-        auto newKey = GetBindableKey(buttonEvent.button);
+        const auto* newKey = GetBindableKey(buttonEvent.button);
 
-        if (newKey)
+        if (newKey != nullptr)
         {
             _keyToSetBind->key = newKey;
             _keyToSetBind->joystickGUID.reset();

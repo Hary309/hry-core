@@ -58,7 +58,7 @@ public:
      * @param level Level of message
      * @param msg Message content
      */
-    HRY_API void log_msg(Level level, std::string_view msg);
+    HRY_API void log(Level level, std::string_view msg);
 
     /**
      * @brief Write log message with formatting
@@ -68,9 +68,9 @@ public:
      * @param args Arguments
      */
     template<typename... Args>
-    void log(Level level, Args&&... args)
+    void log_format(Level level, Args&&... args)
     {
-        log_msg(level, fmt::format(std::forward<Args>(args)...));
+        log(level, fmt::format(std::forward<Args>(args)...));
     }
 
     /**
@@ -82,7 +82,7 @@ public:
     template<typename... Args>
     void info(Args&&... args)
     {
-        log(Level::Info, std::forward<Args>(args)...);
+        log_format(Level::Info, std::forward<Args>(args)...);
     }
 
     /**
@@ -94,7 +94,7 @@ public:
     template<typename... Args>
     void warning(Args&&... args)
     {
-        log(Level::Warning, std::forward<Args>(args)...);
+        log_format(Level::Warning, std::forward<Args>(args)...);
     }
 
     /**
@@ -106,7 +106,7 @@ public:
     template<typename... Args>
     void error(Args&&... args)
     {
-        log(Level::Error, std::forward<Args>(args)...);
+        log_format(Level::Error, std::forward<Args>(args)...);
     }
 };
 }

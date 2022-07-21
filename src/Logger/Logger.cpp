@@ -10,7 +10,7 @@
 
 namespace hry
 {
-void Logger::log_msg(Level level, std::string_view msg)
+void Logger::log(Level level, std::string_view msg)
 {
     LoggerFactory::WriteLine(level, _moduleName, msg);
 }
