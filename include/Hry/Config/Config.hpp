@@ -33,25 +33,17 @@ class Config final
     friend ConfigManager;
     friend ConfigPage;
 
-    using BindingStructCtor_t = void* (*)();
-    using BindingStructDtor_t = void (*)(void*, void*);
-
 private:
     std::string _name;
-    std::vector<std::unique_ptr<ConfigFieldBase>> _fields;
+    std::vector<std::shared_ptr<IConfigField>> _fields;
 
     std::string _configFilePath;
 
-    size_t _bindingStructSize{};
-    Hash64_t _bindingStructHash{};
-    BindingStructCtor_t _bindingStructCtor{};
-    BindingStructDtor_t _bindingStructDtor{};
-
 public:
-    /**
+    /**z
      * @brief is called when settings are loaded or applied (pressing save in settings)
      */
-    hry::Delegate<void(const ConfigCallbackData&)> onChangesApplied;
+    hry::Delegate<void()> onChangesApplied;
 
     /**
      * @brief use to save extra data in config
@@ -72,37 +64,19 @@ public:
     explicit Config(std::string name);
 
     /**
-     * @brief Set the base config type
-     *
-     * @tparam T Type of config
-     */
-    template<typename T>
-    void setBindingType()
-    {
-        _bindingStructSize = sizeof(T);
-        _bindingStructHash = TypeID<T>();
-        _bindingStructCtor = +[]() -> void* {
-            return new T();
-        };
-        _bindingStructDtor = +[](void* /*nth*/, void* data) {
-            delete static_cast<T*>(data);
-        };
-    }
-
-    /**
      * @brief Register config field
      *
      * Use classes that inherit from ConfigFieldBuilderBase to construct field
      *
      * @param configField Field to be registered
      */
-    void add(std::unique_ptr<ConfigFieldBase>&& configField)
+    template<typename ConfigFieldBuilder>
+    std::shared_ptr<ConfigFieldBase<typename ConfigFieldBuilder::ValueType_t>> add(ConfigFieldBuilder&& builder)
     {
-        if (configField != nullptr)
-        {
-            configField->_bindingStructHash = _bindingStructHash;
-            _fields.push_back(std::move(configField));
-        }
+        auto configField = builder.build();
+        _fields.push_back(std::move(configField));
+
+        return configField;
     }
 
     /**
@@ -120,7 +94,7 @@ public:
 private:
     [[nodiscard]] const std::string& getName() const { return _name; }
 
-    bool isDirty() const;
+    [[nodiscard]] bool isDirty() const;
     [[nodiscard]] bool isEmpty() const { return _fields.empty(); }
 
     void applyChanges();

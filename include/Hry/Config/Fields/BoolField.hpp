@@ -17,7 +17,7 @@ namespace hry
 {
 class BoolFieldBuilder;
 
-class HRY_API BoolField final : public ConfigFieldBase
+class HRY_API BoolField final : public ConfigFieldBase<bool>
 {
     friend BoolFieldBuilder;
 
@@ -46,9 +46,9 @@ public:
     void toJson(nlohmann::json& json) override;
     void fromJson(const nlohmann::json& json) override;
 
-    void setupCallbackData(ConfigCallbackData& callbackData) override
+    bool getValue() const override
     {
-        callbackData.insert(_bindingFieldOffset, _value);
+        return _value;
     }
 };
 
@@ -82,9 +82,9 @@ public:
      *
      * @return Constructed config field
      */
-    std::unique_ptr<ConfigFieldBase> build() const
+    std::shared_ptr<BoolField> build() const
     {
-        auto* boolField = new BoolField();
+        auto boolField = std::make_shared<BoolField>();
         boolField->_defaultValue = _defaultValue;
         boolField->_value = _defaultValue;
         boolField->_dirtyValue = _defaultValue;
@@ -92,7 +92,7 @@ public:
 
         buildBase(*boolField);
 
-        return std::unique_ptr<ConfigFieldBase>(boolField);
+        return boolField;
     }
 };
 }

@@ -23,7 +23,7 @@ template<typename, typename>
 class NumericFieldBuilder;
 
 template<typename T, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
-class NumericField final : public ConfigFieldBase
+class NumericField final : public ConfigFieldBase<T>
 {
     template<typename, typename>
     friend class NumericFieldBuilder;
@@ -101,9 +101,9 @@ public:
         }
     }
 
-    void setupCallbackData(ConfigCallbackData& callbackData) override
+    T getValue() const override
     {
-        callbackData.insert(_bindingFieldOffset, _value);
+        return _value;
     }
 
 private:

@@ -19,7 +19,6 @@
 
 #include <filesystem>
 
-
 namespace fs = std::filesystem;
 
 namespace hry
@@ -50,8 +49,7 @@ void Config::saveToFile() const
         }
         catch (nlohmann::json::type_error& ex)
         {
-            Core::Logger->error(
-                "Cannot encode config for '{}' because '{}'", this->_name, ex.what());
+            Core::Logger->error("Cannot encode config for '{}' because '{}'", this->_name, ex.what());
         }
         catch (nlohmann::json::exception& ex)
         {
@@ -82,8 +80,7 @@ bool Config::loadFromFile()
         }
         catch (nlohmann::json::parse_error& ex)
         {
-            Core::Logger->error(
-                "Cannot parse config for '{}' because '{}'", this->_name, ex.what());
+            Core::Logger->error("Cannot parse config for '{}' because '{}'", this->_name, ex.what());
         }
         catch (nlohmann::json::exception& ex)
         {
@@ -214,18 +211,6 @@ void Config::fromJson(const nlohmann::json& json)
 
 void Config::invokeCallback()
 {
-    if (_bindingStructSize > 0)
-    {
-        HryPtr<void> data{ _bindingStructCtor(), { _bindingStructDtor, nullptr } };
-
-        ConfigCallbackData callbackData{ data.get(), _bindingStructSize };
-
-        for (auto& field : _fields)
-        {
-            field->setupCallbackData(callbackData);
-        }
-
-        onChangesApplied(callbackData);
-    }
+    onChangesApplied();
 }
 }

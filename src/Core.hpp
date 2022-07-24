@@ -87,7 +87,7 @@ public:
     [[nodiscard]] bool isInited() const { return _isInited; }
 
 private:
-    void onConfigChangesApplied(const ConfigCallbackData& data);
+    void onConfigChangesApplied();
 
 private:
     static bool InstallHooks();

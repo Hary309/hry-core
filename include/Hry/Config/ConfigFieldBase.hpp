@@ -25,73 +25,9 @@ class Config;
 template<class, class, typename>
 class ConfigFieldBuilderBase;
 
-class ConfigCallbackData final
+class IConfigField
 {
-    friend Config;
-
-private:
-    uint8_t* _data{};
-    size_t _dataSize{};
-
-private:
-    explicit ConfigCallbackData(void* data, size_t dataSize)
-        : _data(static_cast<uint8_t*>(data))
-        , _dataSize(dataSize)
-    {
-    }
-
-public:
-    /**
-     * @brief Insert data into config data structure
-     *
-     * @tparam T type of data type
-     * @param offset Offset of member in struct
-     * @param value Value of data
-     */
-    template<typename T>
-    void insert(int64_t offset, const T& value)
-    {
-        static_assert(std::is_copy_constructible_v<T>, "T must be copyable!");
-
-        if (offset >= 0 && offset + sizeof(T) <= _dataSize)
-        {
-            auto* ptr = reinterpret_cast<T*>(_data + offset);
-
-            if constexpr (std::is_trivial_v<T>)
-            {
-                *ptr = value;
-            }
-            else
-            {
-                new (ptr) T(value);
-            }
-        }
-    }
-
-    /**
-     * @brief Get the config data of T type
-     *
-     * @tparam T type of config data
-     * @return Config data
-     */
-    template<typename T>
-    const T* getData() const
-    {
-        if (sizeof(T) != _dataSize)
-        {
-            return nullptr;
-        }
-
-        return reinterpret_cast<const T*>(_data);
-    }
-};
-
-/**
- * @brief Base class of config field
- */
-class ConfigFieldBase
-{
-    template<class, class, typename>
+        template<class, class, typename>
     friend class ConfigFieldBuilderBase;
 
     friend Config;
@@ -101,18 +37,15 @@ protected:
     std::string _label;
     std::string _description;
 
-    int64_t _bindingFieldOffset = -1;
-    Hash64_t _bindingStructHash{};
-
 protected:
-    ConfigFieldBase() = default;
+    IConfigField() = default;
 
 public:
-    ConfigFieldBase(ConfigFieldBase&&) = default;
-    ConfigFieldBase(const ConfigFieldBase&) = default;
-    ConfigFieldBase& operator=(ConfigFieldBase&&) = default;
-    ConfigFieldBase& operator=(const ConfigFieldBase&) = default;
-    virtual ~ConfigFieldBase() = default;
+    IConfigField(IConfigField&&) = default;
+    IConfigField(const IConfigField&) = default;
+    IConfigField& operator=(IConfigField&&) = default;
+    IConfigField& operator=(const IConfigField&) = default;
+    virtual ~IConfigField() = default;
 
     /**
      * @brief Apply changes made by user
@@ -163,13 +96,12 @@ public:
      * @param json Json object
      */
     virtual void fromJson(const nlohmann::json& json) = 0;
+};
 
-    /**
-     * @brief Config structure filling
-     *
-     * @param callbackData Config data to be filled
-     */
-    virtual void setupCallbackData(ConfigCallbackData& callbackData) = 0;
+template<typename ValueType>
+class ConfigFieldBase : IConfigField
+{
+    virtual ValueType getValue() const = 0;
 };
 
 template<class ConfigField, class ConfigFieldBuilder, typename ValueType>
@@ -177,10 +109,9 @@ class ConfigFieldBuilderBase
 {
     friend Config;
 
-    using Value_t = std::conditional_t<
-        std::is_trivial_v<ValueType>,
-        ValueType,
-        std::add_const_t<std::add_lvalue_reference_t<const ValueType>>>;
+public:
+    using ConfigField_t = ConfigField;
+    using ValueType_t = ValueType;
 
 protected:
     std::string _id;
@@ -188,9 +119,6 @@ protected:
     std::string _description;
 
     ValueType _defaultValue;
-
-    // offset of field in binding struct
-    int64_t _bindingFieldOffset = -1;
 
 public:
     ConfigFieldBuilderBase() = default;
@@ -248,25 +176,9 @@ public:
         return *static_cast<ConfigFieldBuilder*>(this);
     }
 
-    /**
-     * required
-     * @brief bind structure field to config field
-     *
-     * @param member Pointer to member
-     */
-    template<typename ObjectType>
-    ConfigFieldBuilder& bind(ValueType ObjectType::*member)
-    {
-        _bindingFieldOffset = static_cast<int64_t>(OffsetOf(member));
-        return *static_cast<ConfigFieldBuilder*>(this);
-    }
-
 protected:
     void buildBase(ConfigField& field) const
     {
-        field._bindingFieldOffset = _bindingFieldOffset;
-        field._id = _id;
-        field._label = _label;
         field._description = _description;
     }
 };

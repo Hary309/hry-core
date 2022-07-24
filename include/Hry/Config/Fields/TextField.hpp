@@ -15,7 +15,7 @@ namespace hry
 {
 class TextFieldBuilder;
 
-class HRY_API TextField final : public ConfigFieldBase
+class HRY_API TextField final : public ConfigFieldBase<std::string>
 {
     friend TextFieldBuilder;
 
@@ -58,9 +58,9 @@ public:
     void toJson(nlohmann::json& json) override;
     void fromJson(const nlohmann::json& json) override;
 
-    void setupCallbackData(ConfigCallbackData& callbackData) override
+    std::string getValue() const override
     {
-        callbackData.insert(_bindingFieldOffset, _value);
+        return _value;
     }
 };
 

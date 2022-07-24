@@ -116,7 +116,6 @@ void Core::lateInit()
 void Core::initConfig()
 {
     _coreConfig = _configMgr.createConfig("Core");
-    _coreConfig->setBindingType<CoreConfig>();
     _coreConfig->onChangesApplied.connect<&Core::onConfigChangesApplied>(this);
 
     _coreConfig->add(
@@ -124,28 +123,22 @@ void Core::initConfig()
             .setID("show_imgui_demo")
             .setLabel("Show ImGui Demo")
             .setDescription("Developer option")
-            .bind(&CoreConfig::showImGuiDemo)
-            .setDefaultValue(false)
-            .build());
+            .setDefaultValue(false));
 
     _coreConfig->add(
         BoolFieldBuilder()
             .setID("show_log_window")
             .setLabel("Show log window")
             .setDescription("Developer option")
-            .bind(&CoreConfig::showLogWindow)
-            .setDefaultValue(false)
-            .build());
+            .setDefaultValue(false));
 
     _coreConfig->add(
         NumericFieldBuilder<float>()
             .setID("log_window_opacity")
             .setLabel("Log window opacity")
             .setDescription("Developer option")
-            .bind(&CoreConfig::logWindowOpacity)
             .setDefaultValue(0.94f)
-            .useSlider(0, 1, "%.2f")
-            .build());
+            .useSlider(0, 1, "%.2f"));
 
     if (!_coreConfig->loadFromFile())
     {
@@ -181,14 +174,13 @@ void Core::imguiRender()
     _eventMgr.system.imguiRenderSignal.call();
 }
 
-void Core::onConfigChangesApplied(const ConfigCallbackData& data)
+void Core::onConfigChangesApplied()
 {
-    const auto* coreConfigData = data.getData<CoreConfig>();
 
-    _loggerWindow.setEnabled(coreConfigData->showLogWindow);
-    _loggerWindow.setOpacity(coreConfigData->logWindowOpacity);
+    // _loggerWindow.setEnabled(coreConfigData->showLogWindow);
+    // _loggerWindow.setOpacity(coreConfigData->logWindowOpacity);
 
-    _showImGuiDemo = coreConfigData->showImGuiDemo;
+    // _showImGuiDemo = coreConfigData->showImGuiDemo;
 }
 
 bool Core::InstallHooks()

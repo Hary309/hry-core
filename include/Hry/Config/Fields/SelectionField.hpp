@@ -18,7 +18,7 @@ namespace hry
 {
 class SelectionFieldBuilder;
 
-class HRY_API SelectionField final : public ConfigFieldBase
+class HRY_API SelectionField final : public ConfigFieldBase<std::string>
 {
     friend SelectionFieldBuilder;
 
@@ -49,9 +49,9 @@ public:
     void toJson(nlohmann::json& json) override;
     void fromJson(const nlohmann::json& json) override;
 
-    void setupCallbackData(ConfigCallbackData& callbackData) override
+    std::string getValue() const override
     {
-        callbackData.insert(_bindingFieldOffset, _options[_selectedIndex]);
+        return _options[_selectedIndex];
     }
 
 private:
