@@ -27,7 +27,7 @@ jobs:
         run: cmake --build . --config ${{ matrix.configuration }} --target hry-core -j 16
 
       - name: Upload binaries
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: hry-core-${{ matrix.configuration }}
           path: |
@@ -51,7 +51,7 @@ jobs:
         run: mv assets hry_assets
 
       - name: Upload zip
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: hry-core-runtime
           path: |
@@ -84,7 +84,7 @@ jobs:
           cp vendor/imgui/imgui.h deploy/include
 
       - name: Download debug files
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: hry-core-Debug
 
@@ -95,7 +95,7 @@ jobs:
           mv hry-core.lib deploy/lib/debug
 
       - name: Download release files
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: hry-core-Release
 
@@ -106,7 +106,7 @@ jobs:
           mv hry-core.lib deploy/lib/release
 
       - name: Upload zip
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: hry-core-sdk
           path: |
