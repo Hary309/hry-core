@@ -42,7 +42,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Download Release build
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: hry-core-Release
 
